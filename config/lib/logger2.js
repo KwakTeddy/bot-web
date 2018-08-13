@@ -11,8 +11,22 @@ var validFormats = ['combined', 'common', 'dev', 'short', 'tiny'];
 
 // build logger service
 var logger = {
-  getFormat: getLogFormat, // log format to use
-  getOptions: getLogOptions // log options to use
+    getFormat: getLogFormat, // log format to use
+    getOptions: getLogOptions, // log options to use
+    systemInfo: function()
+    {
+        if(process.env.NODE_ENV == 'development')
+        {
+            console.log(chalk.blue.apply(null, arguments));
+        }
+    },
+    systemLog: function()
+    {
+        if(process.env.NODE_ENV == 'development')
+        {
+            console.log(chalk.magenta.apply(null, arguments));
+        }
+    }
 };
 
 // export the logger service
@@ -67,6 +81,7 @@ function getLogOptions () {
           options.stream = fileStreamRotator.getStream({
             filename: options.stream.directoryPath + '/' + options.stream.rotatingLogs.fileName,
             frequency: options.stream.rotatingLogs.frequency,
+            date_format: options.stream.date_format || 'YYYY-MM-DD',
             verbose: options.stream.rotatingLogs.verbose
           });
 

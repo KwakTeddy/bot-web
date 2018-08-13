@@ -1,0 +1,166 @@
+.channel-title
+{
+    font-size: 17px;
+    font-weight: 600;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.channel-content-row
+{
+    display: flex;
+    margin: 10px 0px 8px;
+    min-width: 875px;
+    padding: 0 5px;
+}
+
+.channel-content-item
+{
+    position: relative;
+    min-width: 18.3%;
+    height: 252px;
+    border: 1px solid #d3e4ee;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 0 5px;
+    width: 50%;
+}
+.empty-channel{
+    position: relative;
+    min-width: 18.3%;
+    width: 50%;
+    padding: 12px;
+    margin: 0 5px;
+}
+.channel-content-item img
+{
+
+}
+
+.channel-content-item:hover{
+    background:#e7f1f7;
+    transition: all 1s cubic-bezier(.25,.8,.25,1);
+}
+.channel-content-item > div > *
+{
+    vertical-align: middle;
+}
+
+.channel-content-item img
+{
+    margin: 10px auto;
+    display: block;
+}
+span.empha{
+    color: #fff;
+    padding: 1px 4px;
+    background: #767676;
+    border-radius: 4px;
+    margin: 0 3px;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.channel-content-item-name
+{
+    padding-top: 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.channel-input
+{
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 74%;
+
+    font-size: 13px;
+}
+
+.bot-link-text
+{
+    font-size: 14px;
+    font-weight: 100;
+}
+
+.channel-content-item-question
+{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    cursor: pointer;
+
+    padding: 3px 10px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #ddd;
+    border-radius: 50%;
+}
+
+.channel-content-item-question:HOVER
+{
+    background-color: #efefef;
+}
+
+
+.modal-body p
+{
+    margin: 20px 0;
+}
+
+.modal-title
+{
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+
+.channel-content-item > .connect-button
+{
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 30px 0;
+}
+
+.webhook
+{
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 74%;
+}
+
+.channel-description
+{
+    padding: 15px 30px 30px 30px;
+}
+
+.channel-description + div
+{
+    margin-bottom: 20px;
+}
+
+.channel-description > li
+{
+    margin: 10px 0;
+    list-style:circle;
+}
+
+.point
+{
+    color: #fff;
+    font-size: 11px;
+    font-weight: 200;
+    background: #eb5945;
+    padding: 3px;
+    line-height: 22px;
+    border-radius: 4px;
+    margin-left: 2px;
+    letter-spacing: 0.5px;
+}

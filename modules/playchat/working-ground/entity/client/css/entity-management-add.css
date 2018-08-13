@@ -1,0 +1,171 @@
+.entity-management-add-header
+{
+    height: 64px;
+    background: #f8f8f8;
+}
+
+.entity-management-add-close
+{
+    position: absolute;
+    top: 18px;
+    left: 16px;
+}
+
+.entity-management-add-header p
+{
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 65px;
+    text-align: center;
+}
+
+.entity-management-add-subject
+{
+    font-size: 15px;
+    font-weight: 600;
+    padding-left: 18px;
+    padding-top: 2px;
+    display: inline-block;
+}
+
+.entity-management-add-input
+{
+    padding: 8px 18px 9px !important;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #d7d7d7;
+    margin: 10px auto;
+    width: 90%;
+    display: block;
+    box-sizing: border-box;
+
+}
+
+.entity-management-add-input-wrapper
+{
+    position: relative;
+}
+
+.entity-management-add-input-wrapper .image-button
+{
+    position: absolute;
+    right: 25px;
+    bottom: 5px;
+}
+
+.entity-management-add-input-plus
+{
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    background: #768ea2;
+    position: relative;
+    top: -20px;
+
+    display: inline-block;
+
+    cursor: pointer;
+}
+
+.entity-management-add-input-plus::before
+{
+    font-size: 25px;
+    line-height: 18px;
+    content: '+';
+    color: #fff;
+}
+
+.entity-management-add-content-label
+{
+    position: relative;
+    width: 100%;
+}
+
+.entity-management-add-content-label > li
+{
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 32px;
+    display: inline-block;
+    color: #7e7e7e;
+}
+
+.entity-content
+{
+    padding: 0 55px 0 42px;
+}
+
+.entity-synonyms
+{
+    padding: 0 28px 0 44px;
+}
+
+.entity-management-add-content-row
+{
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    background: #fff;
+    padding: 5px;
+    position: relative;
+    word-wrap: break-word;
+
+    width: 90%;
+    margin: 5px auto;
+    box-sizing: border-box;
+}
+
+.entity-management-add-content-box
+{
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+}
+
+.entity-management-add-content-box .inside
+{
+    font-size: 14px;
+    font-weight: 500;
+    margin: 5px 2px;
+    padding: 5px;
+
+    border: 1px solid #efefef;
+    border-radius: 6px;
+
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.entity-management-add-content-box .element
+{
+    font-size: 13px;
+    font-weight: 500;
+    background: #eef4ff;
+    border-radius: 18px;
+    padding: 4px 11px 6px;
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+    max-width: 75%;
+}
+
+.entity-management-add-content-box .element span:focus
+{
+    outline: 1px solid #eef4ff;
+}
+
+.entity-management-add-content-box img
+{
+    vertical-align: middle;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.entity-management-add-content-row > img
+{
+    position: absolute;
+    top: 14px;
+    right: 5px;
+}

@@ -1,0 +1,162 @@
+var dialogs = [
+    {
+        "name": "답변IF 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "기능",
+                    "nlp": "기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "답변IF 기능은 하나의 대화카드에서 조건에 따라 다른 답변을 내놓는 기능입니다.\n\n예를 들어, 사용자의 대화 채널(카카오, 페이스북 등)에 따라 다른 답변을 내놓아야 할 때 활용할 수 있습니다.\n\n챗봇 답변을 여러개 만들었을 시  사용 가능합니다.\n\nIF 안에서 변수에 대한 접근이 가능합니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "답변IF 구현 _ 소켓",
+        "input": [
+            {
+                "text": {
+                    "raw": "소켓 구현",
+                    "nlp": "소켓 구현"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓(socket) 채널로 대화중입니다.",
+                "if": "context.user.channel == 'socket'"
+            },
+            {
+                "kind": "Content",
+                "text": "대화 이름 : 답변IF 구현 _ 소켓\n\n소켓이 아닌 다른 채널에서 대화중입니다."
+            }
+        ],
+        "id": "default1"
+    },
+    {
+        "name": "답변IF 구현 _ 카카오",
+        "input": [
+            {
+                "text": {
+                    "raw": "카카오 구현",
+                    "nlp": "카카오 구현"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n\n카카오 채널로 대화중입니다.",
+                "if": "context.user.channel == 'kakao'"
+            },
+            {
+                "kind": "Content",
+                "text": "대화 이름 : 답변IF 구현 _ 카카오\n\n소켓 채널로 대화중입니다."
+            }
+        ],
+        "id": "default2"
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "开始",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "开始",
+                    "nlp": "开始"
+                }
+            },
+            {
+                "text": {
+                    "raw": "初始画面",
+                    "nlp": "初始画面"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "您好, 我是+bot.name+。"
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "返回",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "返回",
+                    "nlp": "返回"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "上一页",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "上一页",
+                    "nlp": "上一页"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "没有回答",
+        "input": "",
+        "output": [
+            {
+                text: "我不是很明白您的意思。",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

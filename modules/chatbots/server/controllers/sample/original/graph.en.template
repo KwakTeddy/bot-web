@@ -1,0 +1,351 @@
+var dialogs = [
+    {
+        "name": "1.인사",
+        "input": [
+            {
+                "text": {
+                    "raw": "안녕",
+                    "nlp": "안녕"
+                }
+            },
+            {
+                "text": {
+                    "raw": "하이",
+                    "nlp": "하이"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "안녕하세요~"
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "2.이름",
+        "input": [
+            {
+                "text": {
+                    "raw": "이름",
+                    "nlp": "이름"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "저는 +name+입니다.\n이름이 뭐예요?"
+            }
+        ],
+        "id": "default1",
+        "children": [
+            {
+                "name": "2.task",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "+myname+ 참 예쁜 이름이네요^^"
+                    }
+                ],
+                "task": {
+                    "name": "savemyname"
+                },
+                "id": "default2",
+                "children": []
+            }
+        ]
+    },
+    {
+        "name": "3.type(타입)",
+        "input": [
+            {
+                "types": "mobile"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "+mobile+이에요~\n\n그럼 다음에 +myname+한테 전화해야지~>-<"
+            }
+        ],
+        "id": "default3",
+        "children": [
+            {
+                "name": "3.인텐트",
+                "input": [
+                    {
+                        "intent": "네"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "좋아요^^ㅎㅎ\n전화번호 진짜거지요?"
+                    }
+                ],
+                "id": "default4",
+                "children": [
+                    {
+                        "name": "3.action-up",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "번호",
+                                    "nlp": "번호"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "전화번호",
+                                    "nlp": "전화번호"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "up": 1
+                            }
+                        ],
+                        "id": "default11"
+                    }
+                ]
+            },
+            {
+                "name": "3.action-repeat",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "repeat": 1,
+                        "options": {
+                            "output": "좋다고 할 때까지 안 물어볼거에요~\n돼요? 돼요?"
+                        }
+                    }
+                ],
+                "id": "default10"
+            }
+        ]
+    },
+    {
+        "name": "4.정규식",
+        "input": [
+            {
+                "regexp": "[날씨]"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "날씨 좋고 햇살 많아요~~"
+            }
+        ],
+        "id": "default5",
+        "children": []
+    },
+    {
+        "name": "5.엔터티",
+        "input": [
+            {
+                "entities": "@주소"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "가서 뭐 할거예요?"
+            }
+        ],
+        "id": "default6",
+        "children": []
+    },
+    {
+        "name": "6.이미지",
+        "input": [
+            {
+                "text": {
+                    "raw": "사진",
+                    "nlp": "사진"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "이 사진 어때요?\n(별로/예쁘다)\n\n*예쁘다고 하면 좋겠어요~",
+                "image": {
+                    "url": "/files/blank_zsslovelyg_1513674143338-1513676651308-拔萝卜.jpg",
+                    "displayname": "拔萝卜.jpg"
+                }
+            }
+        ],
+        "id": "default7",
+        "children": [
+            {
+                "name": "6.action-return call",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "예쁘다",
+                            "nlp": "예쁘다"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "returnCall": 1
+                    }
+                ],
+                "id": "default12"
+            }
+        ]
+    },
+    {
+        "name": "7.버튼",
+        "input": [
+            {
+                "text": {
+                    "raw": "지도",
+                    "nlp": "지도"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "지도  보려면 아래 버튼을 누르면 됩니다~",
+                "buttons": [
+                    {
+                        "url": "https://map.naver.com/?mapmode=0&lng=2ce68ec691fa0eb6d7450f9db857bfbb&pinId=18735742&lat=64f38a8b152f9d7f5ef77247624152e3&dlevel=11&enc=b64&pinType=site",
+                        "text": "네이버지도(클릭)"
+                    },
+                    {
+                        "url": "https://www.google.co.kr/maps/place/Nambusunhwan-ro+289-gil,+Bangbae+3(sam)-dong,+%E7%91%9E%E8%8D%89%E5%8C%BA%E6%B1%89%E5%9F%8E/data=!4m2!3m1!1s0x357ca053b2a81481:0x9abf921f60bc9eef?sa=X&ved=0ahUKEwjliJqi8ZXYAhULi7wKHRtFCKMQ8gEIJDAA",
+                        "text": "구글지도(클릭)"
+                    }
+                ]
+            }
+        ],
+        "id": "default8"
+    },
+    {
+        "name": "8.action-call",
+        "input": [
+            {
+                "text": {
+                    "raw": "주소",
+                    "nlp": "주소"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "7.버튼"
+            }
+        ],
+        "id": "default9"
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "start",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "first",
+                    "nlp": "first"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "Hello, my name is +bot.name+."
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "back",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "previous",
+                    "nlp": "previous"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "upper",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "parent",
+                    "nlp": "parent"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "noanswer",
+        "input": "",
+        "output": [
+            {
+                text: "I don't know.",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

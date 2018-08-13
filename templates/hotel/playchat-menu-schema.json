@@ -1,0 +1,16 @@
+{
+    "menus" : [
+        { "name" : "Dashboard", "url" : "/templates/dashboard", "icon" : "dashboard.png" },
+        { "name" : "Manage Contents", "url" : "/templates/contents", "icon" : "contents.png", "childMenus" : [
+            { "name" : "Basic Information", "url" : "/templates/contents/basic", "icon" : "basic.png" },
+            { "name" : "Manage Parking", "url" : "/templates/contents/park", "icon" : "park.png" },
+            { "name" : "Manage Shuttle", "url" : "/templates/contents/shuttle", "icon" : "shuttle.png" },
+            { "name" : "Manage Event", "url" : "/templates/contents/event", "icon" : "event.png" },
+            { "name" : "Manage Facility", "url" : "/templates/contents/facility", "icon" : "facility.png" },
+            { "name" : "Manage Room", "url" : "/templates/contents/room", "icon" : "room.png" },
+            { "name" : "Manage Dining", "url" : "/templates/contents/restaurant", "icon" : "restaurant.png" },
+            { "name" : "Manage Booking", "url" : "/templates/contents/reservation", "icon" : "reservation.png" }
+        ] },
+        { "name" : "Dialog Management", "url": "/development/dialog-set", "icon": "speech_select_mini.png" }
+    ]
+}

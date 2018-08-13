@@ -1,9 +1,11 @@
 # OS
 # ===========
 .DS_Store
+modules/chatbots/client/views/chatbot-create.client.view.html
 ehthumbs.db
 Icon?
 Thumbs.db
+package-lock.json
 
 # Node and related ecosystem
 # ==========================
@@ -15,6 +17,10 @@ app/tests/coverage/
 .bower-*/
 .idea/
 coverage/
+custom_modules/
+custom_modules/*
+tmp/
+bot-server
 
 # MEAN.js app and assets
 # ======================
@@ -22,7 +28,8 @@ public/dist/
 uploads
 modules/users/client/img/profile/uploads
 config/env/local.js
-*.pem
+
+aws-s3-credentials.json
 
 # Ignoring MEAN.JS's gh-pages branch for documenation
 _site/
@@ -73,4 +80,16 @@ mongod
 *.njsproj
 *.sln
 
+# ETC
 config/sslcerts/
+*.dialog.js
+public/js/dialog.json
+public/files
+public/videos
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+quibble_test.js

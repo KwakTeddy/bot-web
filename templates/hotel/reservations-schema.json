@@ -1,0 +1,14 @@
+{
+    "order_user": "String",
+    "order_phone": "String",
+    "order_room": "String",
+    "order_category":"String",
+    "order_oneprice": "Number",
+    "order_price": "Number",
+    "order_date": "String",
+    "order_paydate": "String",
+    "order_daynumbers": "Number",
+    "order_period":"String",
+    "order_peoplenumber": "Number",
+    "order_status": "String"
+}

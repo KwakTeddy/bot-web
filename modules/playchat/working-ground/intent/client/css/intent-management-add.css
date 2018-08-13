@@ -1,0 +1,90 @@
+.intent-management-add-header
+{
+    height: 64px;
+    background: #f8f8f8;
+}
+
+.intent-management-add-close
+{
+    position: absolute;
+    top: 18px;
+    left: 16px;
+}
+
+.intent-management-add-header p
+{
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 65px;
+    text-align: center;
+}
+
+.intent-management-add-content
+{
+    position: relative;
+}
+
+.intent-management-add-subject
+{
+    font-size: 15px;
+    font-weight: 600;
+    padding-left: 18px;
+    padding-top: 2px;
+    display: inline-block;
+}
+
+.intent-management-add-input
+{
+    padding: 8px 18px 9px !important;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #d7d7d7;
+    margin: 10px 16px;
+    width: 295px;
+}
+
+.intent-management-add-input-wrapper
+{
+    position: relative;
+}
+
+.intent-management-add-input-wrapper .image-button
+{
+    position: absolute;
+    right: 25px;
+    bottom: 17px;
+}
+
+.intent-management-add-input-plus
+{
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    background: #768ea2;
+    position: relative;
+    top: -20px;
+
+    display: inline-block;
+
+    cursor: pointer;
+}
+
+.intent-management-add-input-plus::before
+{
+    font-size: 25px;
+    line-height: 18px;
+    content: '+';
+    color: #fff;
+}
+
+.intent-content-name
+{
+    height: 30px;
+    transition: height 0.3s;
+}
+
+.intent-content-name:focus
+{
+    height: 120px;
+}

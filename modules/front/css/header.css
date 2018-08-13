@@ -1,0 +1,31 @@
+@charset "utf-8";
+/* CSS Document */
+/* header fix */
+.stick-fixed {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    z-index: 11;
+    background: #fff;
+    width: 100%;
+}
+@media (min-width: 768px) {
+    .stick-fixed {
+        top: 0px;
+        /*background: rgba(255, 255, 255, .97);*/
+        -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+        -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+        position: relative;
+    }
+
+    .header {
+        display: table;
+        height: 60px;
+        position: fixed;
+        left: 0;
+        width: 100%;
+        z-index: 5;
+        transition: all 0.2s;
+    }
+}

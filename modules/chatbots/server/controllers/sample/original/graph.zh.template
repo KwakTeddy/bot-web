@@ -1,0 +1,357 @@
+var dialogs = [
+    {
+        "name": "1.打招呼",
+        "input": [
+            {
+                "text": {
+                    "raw": "您好",
+                    "nlp": "您好"
+                }
+            },
+            {
+                "text": {
+                    "raw": "你好",
+                    "nlp": "你好"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "您好~"
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "2.名字",
+        "input": [
+            {
+                "text": {
+                    "raw": "名字",
+                    "nlp": "名字"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "我是+name+。\n你叫什么名字?"
+            }
+        ],
+        "id": "default1",
+        "children": [
+            {
+                "name": "2.task",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "+myname+好好听哦^^"
+                    }
+                ],
+                "task": {
+                    "name": "savemyname"
+                },
+                "id": "default2",
+                "children": []
+            }
+        ]
+    },
+    {
+        "name": "3.type(类型)",
+        "input": [
+            {
+                "types": "mobile"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "电话号码是+mobile+~\n\n那么下次我要给+myname+打电话~>-<"
+            }
+        ],
+        "id": "default3",
+        "children": [
+            {
+                "name": "3.意图",
+                "input": [
+                    {
+                        "intent": "好的"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "好棒^^哈哈\n是真的电话号吧?"
+                    }
+                ],
+                "id": "default4",
+                "children": [
+                    {
+                        "name": "3.action-up",
+                        "input": [
+                            {
+                                "text": {
+                                    "raw": "号码",
+                                    "nlp": "号码"
+                                }
+                            },
+                            {
+                                "text": {
+                                    "raw": "电话号码",
+                                    "nlp": "电话号码"
+                                }
+                            }
+                        ],
+                        "output": [
+                            {
+                                "kind": "Action",
+                                "up": 1
+                            }
+                        ],
+                        "id": "default11"
+                    }
+                ]
+            },
+            {
+                "name": "3.action-repeat",
+                "input": [
+                    {
+                        "if": "true"
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "repeat": 1,
+                        "options": {
+                            "output": "等到你说好为止~\n好不? 好不?"
+                        }
+                    }
+                ],
+                "id": "default10"
+            }
+        ]
+    },
+    {
+        "name": "4.正则表达式",
+        "input": [
+            {
+                "regexp": "[天气]"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "天气真是太好了，阳光好棒~~"
+            }
+        ],
+        "id": "default5",
+        "children": []
+    },
+    {
+        "name": "5.实体",
+        "input": [
+            {
+                "entities": "@地址"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "去那儿干什么?"
+            }
+        ],
+        "id": "default6",
+        "children": []
+    },
+    {
+        "name": "6.图片",
+        "input": [
+            {
+                "text": {
+                    "raw": "照片",
+                    "nlp": "照片"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "这张照片怎么样?\n(不怎么样/好看)\n\n*回复【好看】就好啦~",
+                "image": {
+                    "url": "/files/blank_zsslovelyg_1513674143338-1513676651308-拔萝卜.jpg",
+                    "displayname": "拔萝卜.jpg"
+                }
+            }
+        ],
+        "id": "default7",
+        "children": [
+            {
+                "name": "6.action-return call",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "好看",
+                            "nlp": "好看"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "returnCall": 1
+                    }
+                ],
+                "id": "default12"
+            }
+        ]
+    },
+    {
+        "name": "7.按钮",
+        "input": [
+            {
+                "text": {
+                    "raw": "地图",
+                    "nlp": "地图"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "想看地图的话就点击下面的按钮",
+                "buttons": [
+                    {
+                        "url": "https://map.naver.com/?mapmode=0&lng=2ce68ec691fa0eb6d7450f9db857bfbb&pinId=18735742&lat=64f38a8b152f9d7f5ef77247624152e3&dlevel=11&enc=b64&pinType=site",
+                        "text": "Naver地图(点击)"
+                    },
+                    {
+                        "url": "https://www.google.co.kr/maps/place/Nambusunhwan-ro+289-gil,+Bangbae+3(sam)-dong,+%E7%91%9E%E8%8D%89%E5%8C%BA%E6%B1%89%E5%9F%8E/data=!4m2!3m1!1s0x357ca053b2a81481:0x9abf921f60bc9eef?sa=X&ved=0ahUKEwjliJqi8ZXYAhULi7wKHRtFCKMQ8gEIJDAA",
+                        "text": "谷歌地图(点击)"
+                    }
+                ]
+            }
+        ],
+        "id": "default8"
+    },
+    {
+        "name": "8.action-call",
+        "input": [
+            {
+                "text": {
+                    "raw": "地址",
+                    "nlp": "地址"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "call": "7.按钮"
+            }
+        ],
+        "id": "default9"
+    }
+];
+
+var commonDialogs = [
+     {
+         "id": "startDialog",
+         "name": "开始",
+         "input": [
+             {
+                 "text": {
+                     "raw": "start",
+                     "nlp": "start"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "开始",
+                     "nlp": "开始"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "初始画面",
+                     "nlp": "初始画面"
+                 }
+             }
+         ],
+         "output": [{
+             "kind": "Content",
+             "text": "您好, 我是+bot.name+。"
+         }]
+     },
+     {
+         "id": "backDialog",
+         "name": "返回",
+         "input": [
+             {
+                 "text": {
+                     "raw": "back",
+                     "nlp": "back"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "返回",
+                     "nlp": "返回"
+                 }
+             }
+         ],
+         "output": [
+             {
+                 "kind": "Action",
+                 "type": "back"
+             }
+         ]
+     },
+     {
+         "id": "upDialog",
+         "name": "上一页",
+         "input": [
+             {
+                 "text": {
+                     "raw": "up",
+                     "nlp": "up"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "上一页",
+                     "nlp": "上一页"
+                 }
+             }
+         ],
+         "output": [
+             {
+                 "kind": "Action",
+                 "type": "up"
+             }
+         ]
+     },
+     {
+         "id": "noanswer",
+         "name": "没有回答",
+         "input": "",
+         "output": [
+             {
+                 text: "我不是很明白您的意思。",
+                 kind: 'Content'
+             }
+         ]
+     }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

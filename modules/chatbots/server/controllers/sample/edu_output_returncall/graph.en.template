@@ -1,0 +1,201 @@
+var dialogs = [
+    {
+        "name": "돌아가기용 대화이동 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "기능",
+                    "nlp": "기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n돌아가기용 대화이동 기능은 대화이동과 동일하게 작동합니다.\n\n다만 대화이동한 후 특정 대화 카드에서 돌아가기 기능을 실행했을 시, 돌아가기용 대화이동을 실행했던 대화 카드의 부모 카드로 커서가 이동합니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "돌아가기용 대화이동 실행",
+        "input": [
+            {
+                "text": {
+                    "raw": "실행",
+                    "nlp": "실행"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "돌아가기용 대화이동 실행 실행을 위해서 아래의 버튼을 눌러주세요.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "돌아가기용 대화 이동 실행"
+                    }
+                ]
+            }
+        ],
+        "id": "default1",
+        "children": [
+            {
+                "name": "돌아가기용 대화 이동 실행카드",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "돌아가다 대화 이동 실행",
+                            "nlp": "돌아가다 대화 이동 실행"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "returnCall": "돌아가기 대화 준비",
+                        "options": {
+                            "output": "돌아가기용 대화 이동 기능을 실행했습니다.\n\n돌아가고 싶을 경우 돌아가기 기능을 이용해주세요.\n\n돌아가기용 대화이동 기능을 실행한 부모 대화카드로 커서가 이동합니다."
+                        }
+                    }
+                ],
+                "id": "default4"
+            }
+        ]
+    },
+    {
+        "name": "돌아가기 대화 준비",
+        "input": [
+            {
+                "if": "false"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "사용자 입력이 if(false)이기 때문에 대화 이동으로만 접근 가능합니다.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "돌아가기 실행"
+                    }
+                ]
+            }
+        ],
+        "id": "default2",
+        "children": [
+            {
+                "name": "돌아가기",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "돌아가다 실행",
+                            "nlp": "돌아가다 실행"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "return": 1,
+                        "options": {
+                            "output": "돌아가기"
+                        }
+                    }
+                ],
+                "id": "default3"
+            }
+        ]
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "start",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "first",
+                    "nlp": "first"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "Hello, my name is +bot.name+."
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "back",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "previous",
+                    "nlp": "previous"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "upper",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "parent",
+                    "nlp": "parent"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "noanswer",
+        "input": "",
+        "output": [
+            {
+                text: "I don't know.",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

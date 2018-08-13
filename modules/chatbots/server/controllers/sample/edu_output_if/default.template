@@ -1,0 +1,10 @@
+module.exports = function(bot)
+{
+    var defaultTask = {
+        name: 'defaultTask',
+        action: function(task, context, callback) {
+            callback(task, context);
+        }
+    };
+    bot.setTask("defaultTask", defaultTask);
+};

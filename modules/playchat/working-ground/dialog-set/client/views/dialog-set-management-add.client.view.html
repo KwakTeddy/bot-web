@@ -1,0 +1,81 @@
+<style>
+.intent-management-add-form > div
+{
+    margin: 30px 0;
+}
+
+.intent-management-add-form label.required > span::after
+{
+    content: '*';
+
+    color: #038eda;
+    font-size: 12px;
+    position: relative;
+    top: -5px;
+    left: 2px;
+}
+
+.intent-management-add-form label > span
+{
+    font-size: 15px;
+    font-weight: 600;
+    width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.intent-management-add-form input
+{
+    border-bottom: 1px solid #a0a0a0;
+    width: 494px;
+    margin: 0 4px;
+    padding: 10px;
+}
+
+.intent-management-add-form input:focus
+{
+    border-bottom: 2px solid #038eda;
+}
+
+.intent-management-add-form .intent-management-add-button
+{
+    border: 1px solid #038eda;
+    border-radius: 4px;
+    padding: 7px 15px;
+    margin-left: 10px;
+    font-size: 16px;
+
+    color: #038eda;
+}
+
+.intent-management-add-form table thead th
+{
+    text-align: left;
+    padding-left: 40px;
+}
+</style>
+
+<div ng-controller="DialogSetManagementAddController" style="margin-top: -20px;">
+    <div>
+        <form class="intent-management-add-form" ng-submit="save();">
+            <div>
+                <label class="required">
+                    <span>{{lan('Name') }}</span>
+                    <input type="text" ng-model="title" required="true" autofocus="true" >
+                </label>
+            </div>
+            <div >
+                <label style="width: 100%;">
+                    <span style="vertical-align: top;">{{lan('Content') }}</span>
+                    <textarea placeholder="{{lan('Type contents')}}" name="content" ng-model="content" class="data-input" style="width: 60%; height: 90px;"></textarea>
+                </label>
+            </div>
+            <div style="text-align: right;width:70%;">
+                <button class="blue-button mr5">{{lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="cancel();">{{lan('Cancel') }}</button>
+            </div>
+        </form>
+    </div>
+</div>

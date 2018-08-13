@@ -1,0 +1,158 @@
+<div ng-controller="TaskManagementController">
+    <div class="upSide">
+        <form class="inline-block">
+            <input id="search" name="search" type="search" class="search">
+        </form>
+        <!--<div class="funtionbtn1">-->
+            <!--<a href="#">-->
+                <!--<img src="modules/playchat/working-ground/common/client/imgs/export.png">-->
+                <!--<span ng-click="modal.importModal.open();">Import</span>-->
+                <!--<img src="modules/playchat/working-ground/common/client/imgs/Q.png">-->
+            <!--</a>-->
+        <!--</div>-->
+    </div>
+    <div class="tab01" style="margin-top: 10px;">
+        <ul class="tabs1">
+            <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
+            <!--<li><a href="#">{{lan('Store') }}</a></li>-->
+            <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
+        </ul>
+        <!--<div class="btn02 flR" ng-click="open();">-->
+            <!--<a href="#" class="">Add New</a>-->
+        <!--</div>-->
+    </div>
+    <div class="downSide">
+        <table class="tb02">
+            <colgroup>
+                <col style="width: 30%;">
+                <col style="width: 30%;">
+                <col style="width: 30%;">
+                <col style="width: 15%;">
+                <!--<col style="width: 10%;">-->
+            </colgroup>
+            <thead>
+            <tr>
+                <th>{{lan('File Name') }}</th>
+                <th>{{lan('Task Name') }}</th>
+                <th>{{lan('Last Update') }}</th>
+                <th></th>
+                <!--<th>Usable</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-if="tasks.length == 0">
+                <td colspan="4">Empty</td>
+            </tr>
+            <tr ng-repeat="item in tasks">
+                <td>{{ item.fileName }}</td>
+                <td style="text-align: left;">{{ item.name }}</td>
+                <td>{{ item.user.displayName }}</td>
+                <td>
+                    <!--<a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>-->
+                    <a href="#" class="flR mr5" ng-click="modify(item);"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
+                </td>
+                <!--<td>-->
+                <!--<div class="slide on">-->
+                <!--<input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />-->
+                <!--<label for="{{ item._id }}" ng-click="updateUsable(item);"></label>-->
+                <!--</div>-->
+                <!--</td>-->
+            </tr>
+            </tbody>
+        </table>
+        <!--<div class="tablePaging">-->
+            <!--<div class="tablePagingC">-->
+                <!--<a href="/playchat/management/task?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">-->
+                    <!--<img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">-->
+                <!--</a>-->
+                <!--<a ng-repeat="page in pageOptions.pages" href="/playchat/management/task?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>-->
+                <!--<a href="/playchat/management/task?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">-->
+                    <!--<img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+
+
+    <div class="modal-background management-modal" ng-show="modal.mgmtModal.isOpened">
+        <div class="modal">
+            <form name="modalFormDefault" ng-submit="save(modal.mgmtModal);" style="width: 600px;">
+                <div class="form-row">
+                    <label class="required" ng-if="!modal.mgmtModal.isNewFile">
+                        <span class="form-title">{{lan('File Name') }}</span>
+                        <div class="select-wrapper">
+                            <select ng-model="modal.mgmtModal.data.fileName" ng-required="true" class="task-file-select jumbo-select" ng-change="selectedFileName();">
+                                <option>[{{lan('Create File') }}]</option>
+                                <option ng-repeat="option in taskFiles" value="{{ option }}">{{ option }}</option>
+                            </select>
+                        </div>
+                    </label>
+                    <label class="required" ng-if="modal.mgmtModal.isNewFile">
+                        <span class="form-title">{{lan('File Name') }}</span>
+                        <input type="text" placeholder="Enter file name" name="filename" ng-model="modal.mgmtModal.data.fileName" class="task-title data-input" ng-required="true" disabled="true">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label class="required">
+                        <span class="form-title">{{lan('Name') }}</span>
+                        <input type="text" placeholder="Task Name(English, Number, _)" name="name" ng-model="modal.mgmtModal.data.name" class="task-title data-input" ng-required="true" pattern="[^0-9]+[a-zA-Z_0-9]*" disabled="true">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label  style="width: 98%;">
+                        <span>Content</span>
+                        <div class="dialog-graph-task-add-logic" style="margin: 0;">
+                            <p><span style="color: #708;">function</span>(<span style="color: #00f;">task</span>, <span style="color: #00f;">context</span>, <span style="color: #00f;">callback</span>) {</p>
+                            <textarea style="display: none;" id="dialogGraphEditorTaskLogic"></textarea>
+                            <p>}</p>
+                        </div>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <!--<button class="blue-button">저장</button>-->
+                    <button type="button" class="default-button" ng-click="modal.mgmtModal.close();">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
+        <div class="modal">
+            <form name="modalFormDefault" ng-submit="save(modal.importModal);">
+                <div class="form-row">
+                    <label class="required">
+                        <span class="form-title">{{lan('Name') }}</span>
+                        <input type="text" placeholder="태스크 이름을 입력해주세요" name="name" ng-model="modal.importModal.data.name" class="task-title data-input" ng-required="true">
+                    </label>
+                </div>
+                <!--<div class="form-row">-->
+                    <!--<label class="required">-->
+                        <!--<span>Type</span>-->
+                        <!--<div class="form-box">-->
+                            <!--<input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">-->
+                            <!--<span> {{lan('(csv or xlsx file)') }}</span>-->
+                        <!--</div>-->
+                    <!--</label>-->
+                <!--</div>-->
+                <div class="form-row">
+                    <label class="required">
+                        <span>File</span>
+                        <div class="form-box">
+                            <input type="file" nv-file-select uploader="uploader" ng-required="true" />
+                        </div>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>
+                        <span>{{lan('Content') }}</span>
+                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
+                    </label>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{lan('Save') }}</button>
+                    <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

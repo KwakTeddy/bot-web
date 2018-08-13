@@ -1,410 +1,204 @@
 <!doctype html>
-<html class="fixed">
-<head>
-  <base href="/">
 
-  <!-- Basic -->
-  <meta charset="UTF-8">
+<html>
+<head ng-controller="TitleController">
 
-  <title>Dashboard | Porto Admin - Responsive HTML5 Template 1.5.2</title>
-  <meta name="keywords" content="HTML5 Admin Template"/>
-  <meta name="description" content="Porto Admin - Responsive HTML5 Template">
-  <meta name="author" content="okler.net">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93998259-1"></script>
+    <script>
+        if('{{env}}' == 'production')
+        {
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
-  <!-- Mobile Metas -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-
-  <!-- Web Fonts  -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet"
-        type="text/css">
-
-  <!-- Vendor CSS -->
-  <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.css"/>
-
-  <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css"/>
-  <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css"/>
-  <link rel="stylesheet" href="/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css"/>
-
-  <!-- Specific Page Vendor CSS -->
-  <!--<link rel="stylesheet" href="/vendor/jquery-ui/jquery-ui.css" />-->
-  <!--<link rel="stylesheet" href="/vendor/jquery-ui/jquery-ui.theme.css" />-->
-  <!--<link rel="stylesheet" href="/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />-->
-  <!--<link rel="stylesheet" href="/vendor/morris.js/morris.css" />-->
-
-  <link rel="stylesheet" href="/vendor/select2/css/select2.css"/>
-  <link rel="stylesheet" href="/vendor/select2-bootstrap-theme/select2-bootstrap.css"/>
-  <link rel="stylesheet" href="/vendor/jquery-datatables-bs3/assets/css/datatables.css"/>
-  <link rel="stylesheet" href="/vendor/dropzone/basic.css" />
-  <!--<link rel="stylesheet" href="/vendor/dropzone/dropzone.css" />-->
-
-  <!-- Specific Page Vendor CSS 코드에디터 -->
-  <link rel="stylesheet" href="/vendor/codemirror/lib/codemirror.css"/>
-  <link rel="stylesheet" href="/vendor/codemirror/theme/monokai.css"/>
-
-  <!--<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">-->
-  <!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">-->
-  <!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">-->
+            gtag('config', 'UA-93998259-1');
+        }
+    </script>
 
 
-  <!-- Theme CSS -->
-  <link rel="stylesheet" href="/css/theme.css"/>
+    <!-- Google Tag Manager -->
+    <script>
+        if('{{env}}' == 'production')
+        {
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-5JVQMVS');
+        }
+    </script>
+    <!-- End Google Tag Manager -->
 
-  <!-- Skin CSS -->
-  <link rel="stylesheet" href="/css/skins/default.css"/>
 
-  <!-- Theme Custom CSS -->
-  <link rel="stylesheet" href="/css/theme-custom.css">
+    <base href="/">
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="Keywords" content="인공지능 AI 챗봇 Chatbot 딥러닝 Deep Learning">
+    <meta name="Description" content="NLP 자연어처리 NLU 자연어 이해 대화관리 Dialog Management 딥러닝 Deep Learning 인텐트 Intent 엔터티 Entity">
+    <meta name="author" content="MoneyBrain">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700&subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+    <title ng-bind="enterpriseTitle"></title>
 
-  <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/lib/codemirror/lib/codemirror.css">
 
-  <!-- Head Libs -->
-  <script src="/vendor/modernizr/modernizr.js"></script>
+    {% if env != 'production' %}
 
-  <script>
-    var mobileKeyWords = new Array('iPhone', 'iPod', 'BlackBerry', 'Android', 'Windows CE', 'LG', 'MOT', 'SAMSUNG', 'SonyEricsson');
-    for (var word in mobileKeyWords){
-      if (navigator.userAgent.match(mobileKeyWords[word]) != null){
-        location.href = '/?_p=m';
-        break;
-      }
-    }
-    var _platform = "web";
-    var _os = '';
-    var _facebookAppId = "{{facebookAppId}}";
-    var _kakaoJSId = "{{kakaoJSAppId}}";
-    var _ogTitle = "{{title}}";
-    var _ogDescription = "{{description}}";
-    var _ogUrl = "{{url}}";
-    var _ogLogo = "{{logo}}";
-  </script>
+    {% for cssFile in cssFiles %}
+    <link rel="stylesheet" type="text/css" href="{{cssFile}}">
+    {% endfor %}
+
+    {% endif %}
+
+    {% if env == 'production' %}
+    <link rel="stylesheet" type="text/css" href="dist/application.min.css?rel={{app_version}}">
+    {% endif %}
+
+    <link href="/modules/playchat/gnb/client/css/gnb-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 1024px)" id="gnb-responsive-css">
+    <link href="/modules/playchat/simulator/client/css/simulator-responsive.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 900px)" id="simulator-responsive-css">
+
+
+    <script>
+        window.__CONFIG = {};
+        //window.__CONFIG.platform = 'web';
+        //if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
+        //{
+        //    window.__CONFIG.platform = 'mobile';
+        //}
+        //window.__CONFIG.os = '';
+        //window.__CONFIG.facebookAppId = "{{facebookAppId}}";
+        //window.__CONFIG.kakaoJSId = "{{kakaoJSAppId}}";
+        //window.__CONFIG.ogTitle = "{{title}}";
+        //window.__CONFIG.ogDescription = "{{description}}";
+        //window.__CONFIG.ogUrl = "{{url}}";
+        //window.__CONFIG.ogLogo = "{{logo}}";
+
+        window.__CONFIG.PLATFORM = '{{ platform }}';
+        window.__CONFIG.user = {{ user | json | safe }};
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '874201392715500');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=874201392715500&ev=PageView&noscript=1"/></noscript>
+    <!-- End Facebook Pixel Code -->
 
 </head>
-<body>
-<section class="body">
-  <section ng-include="'/modules/core/client/views/header.client.view.html'"></section>
-  <div class="inner-wrapper">
-    <!--<section ng-include="'/modules/core/client/views/menu.client.view.html'"></section>-->
+<body ng-controller="MainController">
 
-    <aside id="sidebar-left" class="sidebar-left">
-
-      <div class="sidebar-header">
-        <div class="sidebar-title">
-          Navigation
-        </div>
-        <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html"
-             data-fire-event="sidebar-left-toggle">
-          <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
-        </div>
-      </div>
-
-      <div class="nano">
-        <div class="nano-content">
-          <nav id="menu" class="nav-main" role="navigation">
-            <ul class="nav nav-main">
-              <li class="nav-active">
-                <a ui-sref="home">
-                  <i class="fa fa-comments-o" aria-hidden="true"></i>
-                  <span>대화하기</span>
-                </a>
-              </li>
-              <li class="nav">
-                <a ui-sref="bots.list">
-                  <i class="fa fa-cube" aria-hidden="true"></i>
-                  <span>봇 관리</span>
-                </a>
-              </li>
-
-              <li class="nav">
-                <a ui-sref="bot-users.list">
-                  <i class="fa fa-users" aria-hidden="true"></i>
-                  <span>친구 목록</span>
-                </a>
-              </li>
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-copy" aria-hidden="true"></i>
-                  <span>대화 관리</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="dialogsets.list">
-                      대화Set 관리
-                    </a>
-                  </li>
-                  <li>
-                    <a href="pages-signin.html">
-                      테스크 관리
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-parent" ng-if="false">
-                <a>
-                  <i class="fa fa-tasks" aria-hidden="true"></i>
-                  <span>대화 템플릿 관리</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a href="ui-elements-typography.html">
-                      템플릿 Base 관리
-                    </a>
-                  </li>
-                  <li>
-                    <a href="ui-elements-tabs.html">
-                      사용자별 템플릿 관리
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-parent" ng-if="false">
-                <a>
-                  <i class="fa fa-list-alt" aria-hidden="true"></i>
-                  <span>권한관리</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a href="forms-basic.html">
-                      사용자 관리
-                    </a>
-                  </li>
-                  <li>
-                    <a href="forms-advanced.html">
-                      사용자별 메뉴 관리
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-table" aria-hidden="true"></i>
-                  <span>지식DB 관리</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="dicts.list">
-                      사전
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="concepts.list">
-                      개념
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="canonicals.list">
-                      기본형
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="facts.list">
-                      지식
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav">
-                <a ui-sref="learnings.create">
-                  <i class="fa fa-users" aria-hidden="true"></i>
-                  <span>대화학습</span>
-                </a>
-              </li>
-
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-asterisk" aria-hidden="true"></i>
-                  <span>연동 인터페이스</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="common-actions.list">
-                      Common Action 관리
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="custom-actions.list">
-                      Custom Action 관리
-                    </a>
-                  </li>
-                </ul>
-              </li>
-
-              <li class="nav">
-                <a ui-sref="campaigns.list">
-                  <i class="fa fa-calendar-o" aria-hidden="true"></i>
-                  <span>캠페인 관리</span>
-                </a>
-              </li>
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-                  <span>메시지 발송</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="messages.send">
-                      발송하기
-                    </a>
-                  </li>
-                  <li>
-                    <a ui-sref="messages.list">
-                      발송내역
-                    </a>
-                  </li>
-                </ul>
-              </li>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5JVQMVS"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 
-              <li class="nav-parent" ng-if="false">
-                <a>
-                  <i class="fa fa-align-left" aria-hidden="true"></i>
-                  <span>분석도구</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a>사용자 대화 분석</a>
-                  </li>
-                  <li>
-                    <a>사용자 실패율 분석</a>
-                  </li>
-                  <li>
-                    <a>분석 최적화</a>
-                  </li>
-                </ul>
-              </li>
+<div class="main-logo-background">
+    <div class="logo"></div>
+</div>
 
-              <li class="nav-parent" ng-show="false">
-                <a>
-                  <i class="fa fa-align-left" aria-hidden="true"></i>
-                  <span>배달봇</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="restaurants.list">음식점관리</a>
-                  </li>
-                  <li>
-                    <a ui-sref="franchises.list">프랜차이즈관리</a>
-                  </li>
-                  <li>
-                    <a ui-sref="deliveryOrders.list">주문관리</a>
-                  </li>
-                </ul>
-              </li>
+<section ng-include="'/modules/core/client/views/header.client.view.html'"></section>
 
-
-              <li class="nav-parent">
-                <a>
-                  <i class="fa fa-align-left" aria-hidden="true"></i>
-                  <span>분석</span>
-                </a>
-                <ul class="nav nav-children">
-                  <li>
-                    <a ui-sref="user-bots.context-analytics">Context 분석</a>
-                  </li>
-                  <li>
-                    <a ui-sref="user-bots.context-learning">Context 학습</a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.dashboard">Dashboard</a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.user-count">사용자수 분석</a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.dialog-usage">대화별 사용량</a>
-                  </li>
-<!--
-                  <li>
-                    <a ui-sref="analytics.session-success">대화(세션) 성공률</a>
-                  </li>
--->
-                  <li>
-                    <a ui-sref="analytics.dialog-success">문장 성공률</a>
-                  </li>
-                  <li>
-                    <a ui-sref="analytics.dialog-failure">대화실패 분석</a>
-                  </li>
-                </ul>
-              </li>
-
-            </ul>
-          </nav>
-
-
-          <script>
-            // Preserve Scroll Position
-            if (typeof localStorage !== 'undefined') {
-              if (localStorage.getItem('sidebar-left-position') !== null) {
-                var initialPosition = localStorage.getItem('sidebar-left-position'),
-                  sidebarLeft = document.querySelector('#sidebar-left .nano-content');
-
-                sidebarLeft.scrollTop = initialPosition;
-              }
-            }
-          </script>
-
-        </div>
-      </div>
-
-    </aside>
-
-    <section role="main" class="content-body">
-      {% block content %}{% endblock %}
-    </section>
-
-    <section id="chat-include" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></section>
-
-  </div>
+<section id="main" role="main">
+    <section ui-view style="height: 100%; overflow: auto;"></section>
 </section>
 
-<!-- Vendor -->
-<script src="/vendor/jquery/jquery.js"></script>
-<script src="/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.js"></script>
-<script src="/vendor/nanoscroller/nanoscroller.js"></script>
-<script src="/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script src="/vendor/magnific-popup/jquery.magnific-popup.js"></script>
-<script src="/vendor/jquery-placeholder/jquery-placeholder.js"></script>
+<!--<aside id="chat-include" class="sidebar-right" style="z-index: 11;" ng-include="'/modules/bots/client/views/chat-user-bot.client.view.html'"></aside>-->
 
-<!-- Specific Page Vendor -->
-<script src="/vendor/jquery-ui/jquery-ui.js"></script>
-<script src="/vendor/jqueryui-touch-punch/jqueryui-touch-punch.js"></script>
-<script src="/vendor/jquery-appear/jquery-appear.js"></script>
-<script src="/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
-<script src="/vendor/select2/js/select2.js"></script>
-<script src="/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-<script src="/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-<script src="/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-<script src="/vendor/jquery-maskedinput/jquery.maskedinput.js"></script>
-<script src="/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-<!--<script src="/vendor/dropzone/dropzone.js"></script>-->
 
-<!--&lt;!&ndash; Theme Base, Components and Settings &ndash;&gt;-->
-<script src="/js/theme.js"></script>
 
-<!--&lt;!&ndash; Theme Custom &ndash;&gt;-->
-<script src="/js/theme.custom.js"></script>
 
-<!--&lt;!&ndash; Theme Initialization Files &ndash;&gt;-->
-<script src="/js/theme.init.js"></script>
 
-<!--Embedding The User Object-->
-<script type="text/javascript">
-  var user = {{ user | json | safe }};
+
+<!-- 필요한 라이브러리 import -->
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script src="/lib/angular/angular.js"></script>
+<script src="/lib/angular-resource/angular-resource.js"></script>
+<script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="/lib/angular-cookies/angular-cookies.js"></script>
+<script src="/lib/angular-file-upload/dist/angular-file-upload.js"></script>
+<script src="/lib/codemirror/lib/codemirror.js"></script>
+<link rel="stylesheet" href="/lib/codemirror/lib/codemirror.css">
+<script src="/lib/codemirror/mode/javascript/javascript.js"></script>
+<!--<script src="/lib/d3/d3.min.js"></script>-->
+<script src="/lib/chart.js/dist/Chart.js"></script>
+
+<script type="text/javascript" src="/lib/moment/min/moment.min.js"></script>
+<link rel="stylesheet" href="/lib/bootstrap-daterangepicker/daterangepicker.css">
+<script src="/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+
+<script>
+    // UI 공통 에러 구현.. 임시로 여기 위치.
+    var Beagle = {};
+    Beagle.error = function(e)
+    {
+        console.error(e);
+    };
 </script>
 
-<!--Load The Socket.io File-->
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
-<!--Application JavaScript Files-->
+{% if env != 'production' %}
 {% for jsFile in jsFiles %}
 <script type="text/javascript" src="{{jsFile}}"></script>
 {% endfor %}
-
-{% if livereload %}
-<!--Livereload script rendered -->
-<script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
 {% endif %}
 
+
+
+
+{% if env == 'production' %}
+<script type="text/javascript" src="dist/application.min.js?rel={{app_version}}"></script>
+{% endif %}
+
+
+
+
+
+
+
+<script>
+    $.ajaxPrefilter(function( options, original_Options, jqXHR )
+    {
+        options.async = true;
+    });
+</script>
+
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script src="https://connect.facebook.net/en_US/all.js" async></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js" async></script>
+<script>
+    var facebookAppId = {{ facebookAppId | json | safe }};
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : facebookAppId,
+            status     : true,
+            xfbml      : true,
+            version    : 'v2.8'
+        });
+    };
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    //var kakaoJSID = {{ kakaoJSID | json | safe }};
+    //    Kakao.init(kakaoJSID);  // 사용할 앱의 JavaScript 키를 설정해 주세요.
+</script>
 </body>
 </html>
-

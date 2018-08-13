@@ -1,0 +1,146 @@
+var dialogs = [
+    {
+        "name": "입력 조건문 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "입력 조건문 기능",
+                    "nlp": "입력 조건문 기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "입력 조건문은 '사용자 입력'에 해당 카드 실행에 조건을 입력하는 기능입니다. \n\n'입력 조건문'을 IF 문으로 입력하면 특정한 조건을 만족시킬 시에 해당 대화 카드를 실행시킬 수 있습니다.\n \n예를 들어,  사용자 인증을 거쳤냐의 여부에 따라 해당 대화 카드를 실행시킬 경우 입력 조건문을 활용할 수 있습니다. \n\n'사용자 입력'에 if를 입력하면 입력 조건문 가이드가 실행됩니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "입력 조건 _ 사용자 인증",
+        "input": [
+            {
+                "if": "context.user.auth"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 사용자 인증 여부를 판단합니다.\n\n사용자가 인증을 거쳐 context.user.auth에 값이 존재할 시에 해당 대화 카드가 실행됩니다."
+            }
+        ],
+        "id": "default1"
+    },
+    {
+        "name": "입력 조건 _ 무조건 실행",
+        "input": [
+            {
+                "if": "true"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 true입니다.\n\n입력 조건이 true이기 때문에 해당 대화 카드는 모든 사용자 입력에 대해 실행됩니다."
+            }
+        ],
+        "id": "default2"
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "start",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "スタート",
+                    "nlp": "スタート"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "こんにちは、私は +bot.name+です。"
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "back",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "前",
+                    "nlp": "前"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "upper",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "親",
+                    "nlp": "親"
+                }
+            },
+            {
+                "text": {
+                    "raw": "アップ",
+                    "nlp": "アップ"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "noanswer",
+        "input": "",
+        "output": [
+            {
+                text: "知らない",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

@@ -1,0 +1,170 @@
+var dialogs = [
+    {
+        "name": "변수 접근 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "변수 접근 기능",
+                    "nlp": "변수 접근 기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "'챗봇 답변'은 고정된 답변을 해줄 수도 있지만, 동적인 답변을 해줘야 하는 경우도 있습니다.\n\n예를 들어, 챗봇 답변에서 챗봇 이름을 직접 입력할 수도 있지만(상수), 변수를 이용해 입력 할 수도 있습니다.\n\n예시 : \\+botName+\n\n변수는 context.user 혹은 context.dialog 혹은 context.bot 객체의 key 값입니다. \n\n예시 : context.bot.botName -> 변수명 : botName\n\n변수들은 default.js 파일에서 조작할 수 있습니다.\n\n변수의 값은 문자열, 객체, 배열 중 하나입니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "변수 접근 구현 _ 문자열",
+        "input": [
+            {
+                "text": {
+                    "raw": "문자열",
+                    "nlp": "문자열"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "값이 문자열인 변수는 \\+변수명+ 형태로 접근할 수 있습니다.\n\ncontext.bot.botName에 접근하고 싶을 때는 다음과 같이 입력합니다.\n\n\\+botName+\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n+botName+"
+            }
+        ],
+        "id": "default1"
+    },
+    {
+        "name": "변수 접근 구현 _객체",
+        "input": [
+            {
+                "text": {
+                    "raw": "객체",
+                    "nlp": "객체"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "값이 객체인 변수는 \\+변수명.key+ 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.dialog.movieDataObject = \n{\n date: '2018년',\ntitle: '살인사건'\n}\n일 경우, 다음과 같이 접근합니다.\n\n\\+movieDataObject.date+\n\\+movieDataObject.title+\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n+movieDataObject.date+\n+movieDataObject.title+"
+            }
+        ],
+        "id": "default2"
+    },
+    {
+        "name": "변수 접근 구현 _배열",
+        "input": [
+            {
+                "text": {
+                    "raw": "배열",
+                    "nlp": "배열"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "값이 배열인 변수는 \\#변수명\\# 형태로 접근할 수 있습니다.\n\n예를 들어, \ncontext.dialog.movieDataArray = \n[\n\n{\n date: '2018년',\ntitle: '살인사건'\n},\n{\n date: '2017년',\ntitle: '추격자'\n},\n\n]\n일 경우, 다음과 같이 접근합니다.\n\n\\#movieDataArray\\#\n\n\\#변수\\#을 할 경우, 자체적으로 배열에 담긴 요소 하나씩에 접근합니다. \n\n배열에 담긴 요소 하나씩을 접근해 나타내기 위해서는 다음과 같이 접근합니다.\n\n\\#변수\\#각 요소에 대한 접근\\#\n\n마지막 \\#은 각 요소에 대한 접근을 마무리한다는 의미이며, 그에 따라 \\#각 요소에 대한 접근\\# 부분이 반복됩니다.\n\n\\#각 요소에 대한 접근\\#에서는 \\+key+의 형태로 각 요소의 value에 접근할 수 있습니다.\n\n\\#movieDataArray\\# \\+date+ +title+\\#\n\n\\#각 요소에 대한 접근\\#에서는 \\+index+가 자동으로 추가되어 해당 요소의 순번을 알 수가 있습니다.\n\n최종적으로 다음과 같이 활용 가능합니다.\n\n\\#movieDataArray\\#\n\\+index+.\n타이틀은 \\+title+입니다.\n날짜는 \\+date+입니다.\n\n\\#\n\n아래는 이스케이프 없이 구성된 결과입니다.\n\n#movieDataArray#\n+index+.\n타이틀은 +title+입니다.\n날짜는 +date+입니다.\n\n#"
+            }
+        ],
+        "id": "default3"
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "시작",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "시작",
+                    "nlp": "시작"
+                }
+            },
+            {
+                "text": {
+                    "raw": "처음",
+                    "nlp": "처음"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "안녕하세요, +bot.name+ 입니다."
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "이전",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "상위",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상위",
+                    "nlp": "상위"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "답변없음",
+        "input": "",
+        "output": [
+            {
+                text: "알아듣지 못했습니다.",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

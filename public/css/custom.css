@@ -1,138 +1,91 @@
-
-/*.chat_container {*/
-    /*background-color: #bdcfd9;*/
-    /*color: #222;*/
-
-    /*width: 600px;*/
-    /*height: 700px;*/
-
-    /*border: solid 1px black;*/
-/*}*/
-
-/*.chat_header {*/
-    /*background-color: #fafafa;*/
-    /*padding: 10px 0px 0px 0px;*/
-    /*margin: 0 auto;*/
-    /*width: 100%;*/
-    /*height: 40px;*/
-    /*font-size: 16px;*/
-    /*text-align: center;*/
-    /*border-bottom: solid 1px #bfbfbf;*/
-/*}*/
-
-/*.chat_main {*/
-    /*padding: 20px 20px 0 20px;*/
-    /*margin: 0 auto;*/
-    /*width: 100%;*/
-    /*height: 400px;*/
-
-    /*overflow-x: hidden;*/
-    /*overflow-y: auto;*/
-
-/*}*/
-
-/*.chat_footer {*/
-    /*margin: 0 auto;*/
-    /*width: 100%;*/
-    /*height: 40px;*/
-/*}*/
-/*!* .bubble *!*/
-
-/*.bubble {*/
-    /*background-color: white;*/
-    /*!*border: solid 1px rgba(0, 0, 0, 0.5);*!*/
-    /*!* vendor rules *!*/
-    /*border-radius: 7px;*/
-    /*!* vendor rules *!*/
-    /*box-shadow: inset 0 5px 5px rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);*/
-    /*!* vendor rules *!*/
-    /*box-sizing: border-box;*/
-    /*clear: both;*/
-    /*float: left;*/
-    /*margin-bottom: 20px;*/
-    /*padding: 8px 30px;*/
-    /*position: relative;*/
-    /*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);*/
-    /*width: auto;*/
-    /*max-width: 100%;*/
-    /*word-wrap: break-word;*/
-/*}*/
-
-/*.bubble:before, .bubble:after {*/
-    /*border-radius: 20px / 20px;*/
-    /*content: '';*/
-    /*display: block;*/
-    /*position: absolute;*/
-/*}*/
-
-/*.bubble:before {*/
-    /*border: 10px solid transparent;*/
-    /*border-bottom-color: rgba(0, 0, 0, 0.5);*/
-    /*bottom: 0;*/
-    /*left: -7px;*/
-    /*z-index: -2;*/
-/*}*/
-
-/*.bubble:after {*/
-    /*border: 8px solid transparent;*/
-    /*border-bottom-color: white;*/
-    /*bottom: 1px;*/
-    /*left: -5px;*/
-/*}*/
-
-/*.bubble--alt {*/
-    /*background-color: white;*/
-    /*!*border: solid 1px rgba(0, 0, 0, 0.5);*!*/
-    /*!* vendor rules *!*/
-    /*border-radius: 7px;*/
-    /*!* vendor rules *!*/
-    /*box-shadow: inset 0 5px 5px rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);*/
-    /*!* vendor rules *!*/
-    /*box-sizing: border-box;*/
-    /*clear: both;*/
-    /*float: right;*/
-    /*margin-bottom: 20px;*/
-    /*padding: 8px 30px;*/
-    /*position: relative;*/
-    /*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);*/
-    /*width: auto;*/
-    /*max-width: 100%;*/
-    /*word-wrap: break-word;*/
-/*}*/
-
-
-/*.bubble--alt:before {*/
-    /*border-bottom-color: rgba(0, 0, 0, 0.5);*/
-    /*border-radius: 20px / 10px;*/
-    /*left: auto;*/
-    /*right: -7px;*/
-/*}*/
-
-/*.bubble--alt:after {*/
-    /*border-bottom-color: white;*/
-    /*border-radius: 20px / 10px;*/
-    /*left: auto;*/
-    /*right: -5px;*/
-/*}*/
-
 /************************** new **************************/
+body {
+    overflow-y: hidden;
+}
 
 .content-body {
-    margin-right: 400px;
+    margin-right: 330px;
+    margin-left: 230px !important;
+    padding: 20px;
+    height: 100%;   /* 메인 영역 스크롤 */
+    overflow: auto; /* 메인 영역 스크롤 */
+}
+
+html.fixed.sidebar-left-collapsed .content-body {
+    margin-left: 73px !important;
 }
 
 .page-header {
-    padding-right: 400px;
+    top: 50px !important;
+    height: 40px;
+    padding-right: 330px;
+    left: 230px !important;
+}
 
+html.fixed.sidebar-left-collapsed .page-header {
+    left: 73px !important;
+}
+
+.page-header h2 {
+    border-bottom-color: #CCCCCC;;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.4em;
 }
 
 
+.page-header .right-wrapper {
+    height:40px;
+    display: block;
+}
+
+#header {height: 50px;}
+
+.header-right {height: 46px;}
+
+.inner-wrapper {
+    padding-top: 90px !important;
+    height: 100%; // 메인 영역 스크롤
+}
+
+
+#content {
+    width: 100%;
+    position: absolute;
+    padding: 0 0 0 45px;
+}
+
+.sidebar-left {
+    width: 230px;
+    top: 50px !important;
+}
+
+.sidebar-left .name {
+    font-size: 1.3rem;
+    color: #abb4be;
+    white-space: nowrap;
+}
+
+.sidebar-left .custom-caret {
+    font-size: 1.3rem;
+    color: #abb4be;
+    font-weight: bold;
+}
+
+.sidebar-right {
+    margin-right: 0px;
+    background: transparent;
+}
+
+figure.profile-picture {display: none !important;}
+
 #chat-include {
-    width: 400px;
+    width: 330px;
     position: fixed;
     right: 0px;
-    top: 120px;
+    top: 95px;
     bottom: 0px;
+    box-shadow: -1px 0px 1px 0px #999;
 }
 
 
@@ -167,7 +120,7 @@
 .chat_main {
     height: 444px !important;
     padding: 10px 0 0 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -196,6 +149,7 @@
     line-height: 16px;
     height: 48px;
     overflow: hidden;
+    white-space: pre-wrap;
 }
 
 
@@ -249,6 +203,17 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
+}
+
+.item-avatar .message-image {
+    position: relative;
+    top: 0;
+    left: 0;
+    max-width: 150px;
+    max-height: 400px;
+    width: 100%;
+    height: 100%;
+    border-radius: initial;
 }
 
 .chat_main .item .bubble {
@@ -359,3 +324,174 @@
 }
 
 
+.smart_reply {
+    display: block !important;
+    clear: both;
+    text-align: center;
+    position: absolute;
+    bottom: 115px;
+    z-index: 100;
+
+    width: 313px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.smart_reply .owl-stage-outer{
+    text-align: center;
+}
+
+.smart_reply .owl-stage {
+    display: inline-block;
+}
+
+.smart_reply .owl-stage {
+    display: inline-block;
+}
+
+.smart_reply .item {
+    display: inline;
+    margin: 0px;
+}
+
+.smart_reply button {
+    background-color: white;
+    color: #379dfc;
+    border: solid 1px #379dfc;
+    border-radius: 20px;
+    padding: 0 5px 0 5px;
+    margin: 0px;
+}
+
+
+#chat-include .chat-header {
+    display: none;
+}
+
+#chat-include .chat_main {
+    min-height: 100vh;
+    padding-bottom: 130px;
+    margin-bottom: -130px;
+}
+
+.hide-log {
+    display: none;
+}
+
+.show-log {
+    height: 200px;
+    padding-left: 230px;padding-right: 330px;background: white;position: fixed;bottom: 0px;width: 100%;box-shadow: 0px -1px 0px 0px #ccc;
+}
+
+.log-button {
+    opacity: 0.75;background: #282d36;border-radius: 7px 7px 0 0;height: 25px;width:40px;position: fixed;right: 340px;bottom: 0px;text-align: center;
+    cursor: pointer;
+}
+
+.log-button-hide {
+    bottom: 200px !important;
+}
+
+.hide-intent {
+    display: none;
+}
+
+.show-intent {
+    height: 200px;
+    padding-left: 230px;padding-right: 330px;/*background: white;*/position: fixed;bottom: 0px;width: 100%;box-shadow: 0px -1px 0px 0px #ccc;
+}
+
+.intent-button {
+    opacity: 0.75;background: #282d36;border-radius: 7px 7px 0 0;height: 25px;width:40px;position: fixed;right: 385px;bottom: 0px;text-align: center;
+    cursor:pointer;
+}
+
+.intent-button-hide {
+    bottom: 200px !important;
+}
+
+.content-body-show-log {
+    margin-bottom: 200px
+}
+
+.tree-content-show-log {
+    padding-bottom: 200px
+}
+
+.scroll-to-top {
+    display: none !important;
+}
+
+.pagination > .active > a {
+    z-index: auto;
+}
+*:focus {
+outline: 0;
+outline: none;
+}
+
+#modalForm {
+    display:none;
+    width: 450px;
+    height: 100%;
+    /*min-height: 86vh;*/
+    /*max-height: 86vh;*/
+    margin-top: -5px;
+    padding: 8px 5px 0 5px;
+    z-index: 1;
+    background:white;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+#modalTaskForm {
+    display:none;
+    width: 450px;
+    height: 100%;
+    /*min-height: 86vh;*/
+    /*max-height: 86vh;*/
+    margin-top: -5px;
+    padding: 8px 5px 0 5px;
+    z-index: 1;
+    background:white;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+#filetree{
+    background: gray;
+    min-height: 100vh;
+    margin-top: -5px;
+    padding: 8px 5px 0 5px;
+    width: 42px;
+    z-index: 1;
+}
+
+#filetree > .panel-body{
+    min-height: 80vh;
+}
+
+#filelabel0 {
+    color: rgb(192, 192, 192);
+    font-size: 1.1em;
+    display: none;
+    float: left;
+    padding: 10px 0 0 5px;
+}
+
+#filelabel1 {
+    writing-mode: lr-tb;
+    color: rgb(192, 192, 192);
+    font-size: 1.1em;
+    padding: 10px 5px 0 5px;
+}
+
+#dt_filter > label {float: left; width: 25%;}
+
+#dt_wrapper > .toolbar {float: right; margin-bottom: 10px;}
+
+#dt_wrapper > #dt_paginate {float: none; text-align: center;}
+
+#intent-include .form-group {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}

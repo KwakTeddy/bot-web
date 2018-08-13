@@ -1,0 +1,252 @@
+<style>
+.dashboard-dialog-develop.basic > div
+{
+    width: 30%;
+}
+
+.dashboard-dialog-develop.menu > div
+{
+    width: 30%;
+}
+
+.dashboard-dialog-develop.cupon > div
+{
+    width: 47%;
+}
+
+.dashboard-dialog-develop.order > div
+{
+    width: 47%;
+}
+</style>
+
+<div ng-controller="deliveryDashboardController">
+    <div ng-if="isFirst">
+        <h1 style="font-size: 25px; font-weight: 600; margin: 10px; line-height: 45px;">챗봇이 만들어졌습니다! <br> 지금 채널에 연결하면 바로 자동응답이 시작됩니다.</h1>
+    </div>
+
+    <div ng-if="!isFirst">
+        <div class="dashboard-summary-title">Bot Profile</div>
+        <div class="dashboard-bot-profile">
+            <div class="dashboard-bot-profile-image">
+                <div class="dashboard-bot-profile-image-wrapper">
+                    <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
+                    <span></span>
+                </div>
+            </div>
+            <div class="dashboard-bot-profile-content">
+                <div>
+                    <span>Bot Name</span>
+                    <input type="text" value="{{ chatbot.name }}" disabled="true">
+                </div>
+                <div>
+                    <p>Description</p>
+                    <textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-summary-title">Basic Information</div>
+    <div class="dashboard-dialog-develop basic">
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/store.png"></a> 매장명</div>
+                <p>매장명을 관리 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/phone_.png"></a> 전화번호</div>
+                <p>매장 대표 전화번호를 관리할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/mobile.png"></a> 핸드폰 번호</div>
+                <p>고객의 주문 내역을 핸드폰으로 보내드립니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/adress.png"></a> 주소</div>
+                <p>매장 주소를 관리 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/clock.png"></a> 영업시간</div>
+                <p>영업시간을 관리할 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-summary-title">메뉴관리</div>
+    <div class="dashboard-dialog-develop menu">
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/kind.png"></a> 종류</div>
+                <p>메뉴 종류를 카테고리별로 관리 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/size.png"></a> 사이즈</div>
+                <p>여러 사이즈가 있는 메뉴를 손쉽게 관리 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/price.png"></a> 가격</div>
+                <p>메뉴별 가격을 관리 할 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-summary-title">주문관리</div>
+    <div class="dashboard-dialog-develop order">
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/wait.png"></a> 접수대기</div>
+                <p>접수 대기중인 주문 내역을 확인 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ok.png"></a> 접수완료</div>
+                <p>배달 준비중인 주문 내역을 확인 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/delivery_.png"></a> 배달완료</div>
+                <p>배달이 완료된 주문 내역을 확인 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ordercancel.png"></a> 접수취소</div>
+                <p>접수된 주문 내역을 확인하고 취소 할 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-summary-title">쿠폰관리</div>
+    <div class="dashboard-dialog-develop cupon">
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/coupon.png"></a> 쿠폰관리</div>
+                <p>쿠폰 등록 및 관리 기능을 제공합니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/coupon.png"></a> 쿠폰 이용현황</div>
+                <p>쿠폰별 이용 내역을 확인 할 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-summary-title">Channel</div>
+    <div class="dashboard-dialog-develop">
+        <div class="dashboard-channel">
+            <p>Messenger</p>
+            <p>다양한 메신져에 나의 챗봇을 연결 할 수 있습니다.</p>
+            <div>
+                <a href="/playchat/channel" class="blue-button">바로가기</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-summary-title">Operation</div>
+    <div class="dashboard-dialog-develop operation">
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div class="">
+                <div><a href="/playchat/operation/user"><img src="/modules/playchat/working-ground/dashboard/client/imgs/user_manager.png"></a> 사용자 관리</div>
+                <p>나의 챗봇을 이용하는 사용자를 관리 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div class="">
+                <div><a href="/playchat/operation/chat-log/ai"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech_usage.png"></a> 대화 내역</div>
+                <p>대화 내역을 확인 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div class="">
+                <div><a href="/playchat/operation/chat-log/human"><img src="/modules/playchat/working-ground/dashboard/client/imgs/direct.png"></a> 직접 대화</div>
+                <p>나의 챗봇을 이용하는 사용자를 관리 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div class="">
+                <div><a href="/playchat/operation/chat-log/failed-dialogs"><img src="/modules/playchat/working-ground/dashboard/client/imgs/failed.png"></a> 미학습 대화 내역</div>
+                <p>응답하지 못한 사용자의 질문에 대한 답변을 학습시킬 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-summary-title">Analysis</div>
+    <div class="dashboard-dialog-develop analysis"  style="padding: 20px 30px 0px;">
+        <div class="dashboard-dialog-management-card">
+            <a href="/playchat/analysis/summary" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="/playchat/analysis/summary"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ana.png"></a> 분석 요약</div>
+                <p>ㄴㅇㄹㅇㄴㄹ</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="/playchat/analysis/user" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="/playchat/analysis/user"><img src="/modules/playchat/working-ground/dashboard/client/imgs/user.png"></a> User</div>
+                <p>나의 챗봇을 이용하는 사용자를 관리 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="/playchat/analysis/dialog-training-usage" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="/playchat/analysis/dialog-training-usage"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech.png"></a> Dialog Traffic</div>
+                <p>나의 챗봇을 이용하는 사용자를 관리 할 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div>
+                <div><a href="/playchat/analysis/dialog-training-input"><img src="/modules/playchat/working-ground/dashboard/client/imgs/hat.png"></a> Dialog Learning</div>
+                <p>응답하지 못한 사용자의 질문에 대한 답변을 학습시킬 수 있습니다.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="#" class="dashboard-dialog-cover"></a>
+            <div class="">
+                <div><a href="/playchat/analysis/dialog-graph-path"><img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_graph_min.png"></a> Dialog Graph</div>
+                <p>Manage the trained dialog knowledge.</p>
+            </div>
+        </div>
+        <div class="dashboard-dialog-management-card">
+            <a href="/playchat/analysis/intent" class="dashboard-dialog-cover"></a>
+            <div class="">
+                <div><a href="/playchat/analysis/intent"><img src="/modules/playchat/working-ground/dashboard/client/imgs/intent.png"></a> 인텐트/엔터티</div>
+                <p>학습 시킨 대화 지식을 관리할 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+</div>

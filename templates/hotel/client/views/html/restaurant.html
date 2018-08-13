@@ -1,0 +1,96 @@
+<style>
+    .template-title
+    {
+        font-size: 20px;
+        font-weight: 600;
+        padding-left: 30px;
+    }
+
+    .template-body
+    {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .template-body input
+    {
+        border: 1px solid #ddd;
+        padding: 10px 20px;
+    }
+</style>
+
+<!--<h1 class="template-title">다이닝정보관리</h1>-->
+<div ng-controller="hotelRestaurantController" class="template-body">
+    <form ng-submit="save($event);">
+        <table class="tb02" style="table-layout:fixed;">
+            <colgroup>
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>이름</th>
+                <th>위치</th>
+                <th>아침시간</th>
+                <th>점심시간</th>
+                <th>저녁시간</th>
+                <th>좌석수</th>
+                <th>룸 몇실</th>
+                <th>소개</th>
+                <th>이미지</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="data in datas">
+                <td>
+                    <input type="text" placeholder="한식당" ng-model="data.category_name">
+                </td>
+                <td>
+                    <input type="text" placeholder="머니브레인 3층" ng-model="data.restaurant_location">
+                </td>
+                <td>
+                    <input type="text" placeholder="07:00~09:00" ng-model="data.restaurant_mopentime">
+                </td>
+                <td>
+                    <input type="text" placeholder="12:00~14:30" ng-model="data.restaurant_aopentime">
+                </td>
+                <td>
+                    <input type="text"  placeholder="18:00~22:00" ng-model="data.restaurant_nopentime">
+                </td>
+                <td>
+                    <input type="number" placeholder="40" ng-model="data.restaurant_seat">
+                </td>
+                <td>
+                    <input type="text" placeholder="룸 6실" ng-model="data.restaurant_room">
+                </td>
+                <td>
+                    <input type="text"  ng-model="data.restaurant_introduction">
+                </td>
+                <td>
+                    <img src="{{ data.restaurant_image }}" style="width: 50px;" ng-if="data.restaurant_image" ng-click="editImage($event);">
+                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.restaurant_image" />
+                </td>
+                <td>
+                    <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <button type="button" class="default-button" ng-click="add();">다이닝 추가</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

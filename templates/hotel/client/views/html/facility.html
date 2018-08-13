@@ -1,0 +1,86 @@
+<style>
+    .template-title
+    {
+        font-size: 20px;
+        font-weight: 600;
+        padding-left: 30px;
+    }
+
+    .template-body
+    {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .template-body input
+    {
+        border: 1px solid #ddd;
+        text-overflow: ellipsis;
+        padding: 7px;
+        border-radius: 6px;
+        margin: 1px 4px;
+        width: 80%;
+    }
+</style>
+
+<!--<h1 class="template-title">시설정보관리</h1>-->
+<div ng-controller="hotelFacilityController" class="template-body">
+    <form ng-submit="save($event);">
+        <table class="tb02" style="table-layout:fixed;">
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 12%;">
+                <col style="width: 30%;">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+                <col style="width: 18%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>시설 종류</th>
+                <th>시설 소개</th>
+                <th>위치</th>
+                <th>규모</th>
+                <th>수용 가능 인원수</th>
+                <th>시설 이미지</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="data in datas">
+                <td>
+                    <input type="text" ng-model="data.category_name">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.facility_introduction" style="width: 83%;">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.facility_location" style="width: 93%;">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.facility_size">
+                </td>
+                <td>
+                    <input type="number"  ng-model="data.facility_number">
+                </td>
+                <td>
+                    <img src="{{ data.facility_image }}" style="width: 50px;" ng-if="data.facility_image" ng-click="editImage($event);">
+                    <input type="file" nv-file-select uploader="data.uploader" ng-show="!data.facility_image" style="border: none;"/>
+                </td>
+                <td>
+                    <button type="button" class="default-button" ng-click="delete($index)" style="width: 70px;">삭제</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <button type="button" class="default-button" ng-click="add();">시설 추가</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;float: right;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

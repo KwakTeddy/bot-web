@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>10분만에 챗봇 만들기</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="github.css">
+    <link rel="stylesheet" href="custom.css">
+
+
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+       <div id="topbar"></div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-2  col-md-offset-1" style="left: 10px">
+      <div id="nav"></div>
+    </div>
+
+
+    <div class="col-md-7 new-discussion-timeline experiment-repo-nav" style="right: 10px">
+         <!--본문 내용-->
+
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#nav").load("navigation.html");
+
+        $("#topbar").load("topbar.html #ko", function () {
+            $('#').addClass('js-selected-navigation-item selected reponav-item')
+        });
+        $(function(){
+            var nav = $("#wiki-rightbar");
+            var top = nav.offset().top;
+
+            $(window).scroll(function() {
+                var position = $(window).scrollTop(); // 현재 스크롤바의 위치
+
+                if (position <= top && nav.css("position") == 'fixed')
+                {
+                    nav.css("position", "static");
+                    nav.css("top", top);
+                }
+                else if(position > top && nav.css("position") != 'fixed')
+                {
+                    var width = nav.css('width');
+                    nav.css("width", width);
+                    nav.css("position", "fixed");
+                    nav.css("top", "10px");
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

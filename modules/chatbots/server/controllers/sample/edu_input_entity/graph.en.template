@@ -1,0 +1,140 @@
+var dialogs = [
+    {
+        "name": "엔터티 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "터티 기능",
+                    "nlp": "터티 기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "엔터티는 '개체명'이라고 번역할 수 있습니다. 예를 들어, 말, 고양이, 호랑이 등의 '개체'들을 동물이라는 '개체명' 즉, 엔터티로 묶을 수 있습니다. \n'사용자 입력'에 @ 입력시 자동으로 엔터티 가이드가 등장합니다. 말, 고양이, 호랑이 등을 포함한 @동물 엔터티를 만들고, '사용자 입력' @동물을 입력하면, 사용자가 말, 고양이, 호랑이를 입력했을 때 해당 대화 카드가 실행됩니다.\n엔터티 관리는 왼쪽 네비게이션 바에  관리 -> 엔터티 에서 할 수 있습니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "엔터티 구현",
+        "input": [
+            {
+                "entities": "동물"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "@동물 엔터티에는 말, 호랑이, 고양이가 포함되어 있습니다. 사용자가 말, 호랑이, 고양이를 입력했을 시에 본 대화 카드가 실행됩니다."
+            }
+        ],
+        "id": "default1"
+    },
+    {
+        "name": "엔터티 구현2",
+        "input": [
+            {
+                "entities": "상의"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "@상의 엔터티에는 긴팔, 반팔 등이 포함되어 있습니다. 사용자가 김팔, 반팔 등을 입력했을 시에 본 대화카드가 실행됩니다."
+            }
+        ],
+        "id": "default2"
+    }
+];
+
+var commonDialogs = [
+     {
+         "id": "startDialog",
+         "name": "start",
+         "input": [
+             {
+                 "text": {
+                     "raw": "start",
+                     "nlp": "start"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "first",
+                     "nlp": "first"
+                 }
+             }
+         ],
+         "output": [{
+             "kind": "Content",
+             "text": "Hello, my name is +bot.name+."
+         }]
+     },
+     {
+         "id": "backDialog",
+         "name": "back",
+         "input": [
+             {
+                 "text": {
+                     "raw": "back",
+                     "nlp": "back"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "previous",
+                     "nlp": "previous"
+                 }
+             }
+         ],
+         "output": [
+             {
+                 "kind": "Action",
+                 "type": "back"
+             }
+         ]
+     },
+     {
+         "id": "upDialog",
+         "name": "upper",
+         "input": [
+             {
+                 "text": {
+                     "raw": "up",
+                     "nlp": "up"
+                 }
+             },
+             {
+                 "text": {
+                     "raw": "parent",
+                     "nlp": "parent"
+                 }
+             }
+         ],
+         "output": [
+             {
+                 "kind": "Action",
+                 "type": "up"
+             }
+         ]
+     },
+     {
+         "id": "noanswer",
+         "name": "noanswer",
+         "input": "",
+         "output": [
+             {
+                 text: "I don't know.",
+                 kind: 'Content'
+             }
+         ]
+     }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

@@ -1,0 +1,149 @@
+#logroom
+{
+    height: 100%;
+}
+
+#logroom > table
+{
+    width: 100%;
+    height: 100%;
+}
+
+#logroom > table > thead tr
+{
+    height: 40px;
+    background: #e8ebf0;
+    border-top: #e7e7e7 solid 1px;
+    border-bottom: #e7e7e7 solid 1px;
+}
+
+#logroom > table > thead th
+{
+    cursor: pointer;
+}
+
+#logroom > table table thead tr
+{
+    height: 30px;
+    border-bottom: 1px solid #e7e7e7;
+    border-top: 1px solid #e7e7e7;
+}
+
+#logroom > table table thead tr th
+{
+    border-left: 1px solid #e7e7e7;
+    font-weight: bold;
+}
+
+#logroom > table table thead tr th:first-child
+{
+    border-left: 0;
+}
+
+#logroom > table table tbody tr
+{
+    border-bottom: 1px solid #e7e7e7;
+}
+
+#logroom > table tbody td
+{
+    padding: 10px;
+    border-left: 1px solid #e7e7e7;
+}
+
+#logroom > table tbody td:first-child
+{
+    border-left: 0;
+}
+
+#logroom > table tbody td > div
+{
+    overflow: auto;
+    height: 100%;
+}
+
+#logroom > table tbody ul
+{
+    padding-left: 15px;
+}
+
+#logroom > table tbody li
+{
+    display: list-item;
+    list-style: square !important;
+    margin: 5px 10px;
+}
+
+.log-row
+{
+    margin: 5px 0;
+}
+
+
+.log-analysis .logHeader
+{
+    height: 38px;
+    background:#e8ebf0;
+    border-bottom: #e7e7e7 solid 1px;
+    border-top: #e7e7e7 solid 1px;
+}
+
+.log-analysis .logTab
+{
+    line-height: 20px;
+    padding: 7px 30px;
+    cursor: pointer;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.1px;
+    font-weight: 600;
+}
+
+.log-analysis .tab
+{
+    font-weight: 500;
+    height: 100%;
+    width: 100%;
+}
+
+.log-analysis .select
+{
+    border-bottom:#038eda solid 4px;
+}
+
+.log-analysis .logsystem
+{
+    position: absolute;
+    right: 14px;
+    top: 13px;
+}
+
+.log-analysis .logsystem > a
+{
+    padding: 13px 4px;
+}
+
+@media screen and (max-width: 1480px)
+{
+    .log-analysis .logTab
+    {
+        padding: 7px 25px;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    .log-analysis .logTab
+    {
+        padding: 7px 15px;
+    }
+}
+
+@media screen and (max-width: 500px)
+{
+    .log-analysis
+    {
+        display: none;
+    }
+}

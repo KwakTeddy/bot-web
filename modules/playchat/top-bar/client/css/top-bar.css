@@ -1,0 +1,177 @@
+.top-bar .breadcrumbs
+{
+    position: relative;
+    top: 0;
+    font-weight: 400;
+    display: inline-block;
+    font-size: 0;
+    height: 64px;
+    vertical-align: top;
+}
+
+.top-bar .menu-name-icon
+{
+    vertical-align: top;
+    margin-right: 12px;
+    cursor: auto;
+    margin: 20px 10px 14px 25px;
+}
+
+.top-bar .label
+{
+    display: inline-block;
+    height: 64px;
+}
+
+.top-bar .label span
+{
+    vertical-align: top;
+}
+
+.top-bar .current
+{
+    display: block;
+    line-height: 1.25;
+    margin-top: 20px;
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 17px;
+    color: #494949;
+}
+
+.top-bar .system
+{
+    position: absolute;
+    top: 17px;
+    right: 30px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.top-bar .store-btn
+{
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 66px;
+    height: 32px;
+    border-radius:4px;
+    overflow: hidden;
+    background-color: #eef4ff;
+    background-size: 18px 18px;
+    transition: box-shadow 80ms ease,background-color 80ms ease;
+    margin-right:22px;
+    color:#038eda;
+}
+
+.top-bar .store-btn span
+{
+    line-height: 30px;
+    padding-left: 16px;
+}
+
+.top-bar .notify
+{
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    background: url(/modules/core/client/imgs/notify.png) no-repeat 0px;
+    width: 16px;
+    height: 19px;
+    margin-right:34px;
+    padding-top:10px;
+}
+
+.top-bar .login
+{
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    background: url(/modules/core/client/imgs/log.png) no-repeat 0px;
+    width: 16px;
+    height: 19px;
+    padding-top:16px;
+    margin-right:10px;
+    margin-left:15px;
+}
+
+@media screen and (max-width: 800px)
+{
+    .top-bar .system
+    {
+        position: absolute;
+        top: 17px;
+        right: 20px;
+        white-space: nowrap;
+    }
+
+    .top-bar .notify
+    {
+        margin-right: 20px;
+    }
+
+    .top-bar .login
+    {
+        margin:0;
+    }
+
+    .top-bar .store-btn
+    {
+        margin-right:15px;
+    }
+}
+
+@media screen and (max-width: 500px)
+{
+    .top-bar .notify
+    {
+        margin-right: 20px;
+    }
+
+    .top-bar .login
+    {
+        margin: 0;
+    }
+
+    .top-bar .current
+    {
+        font-size: 16px;
+        line-height: 1.24;
+    }
+
+    .top-bar .menu-name-icon
+    {
+        margin: 20px 15px 14px 19px;
+    }
+}
+
+@media screen and (max-width: 420px)
+{
+    .top-bar .store-btn
+    {
+        background:#fff url(/modules/playchat/top-bar/client/imgs/cart.gif) no-repeat 0px;
+        width: 20px;
+        height: 29px;
+        margin-right: 16px;
+
+    }
+
+    .top-bar .store-btn span
+    {
+        display: none;
+    }
+}
+
+
+.reporting-content
+{
+    width: 100%; min-height: 150px; border: 1px solid #ddd; box-sizing: border-box; padding: 10px;
+    transition: border-color 0.5s;
+}
+
+.reporting-content:focus
+{
+    outline: 0;
+    border-color: #aaa;
+}

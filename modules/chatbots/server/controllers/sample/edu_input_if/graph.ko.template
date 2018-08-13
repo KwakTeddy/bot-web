@@ -1,0 +1,146 @@
+var dialogs = [
+    {
+        "name": "입력 조건문 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "입력 조건문 기능",
+                    "nlp": "입력 조건문 기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "입력 조건문은 '사용자 입력'에 해당 카드 실행에 조건을 입력하는 기능입니다. \n\n'입력 조건문'을 IF 문으로 입력하면 특정한 조건을 만족시킬 시에 해당 대화 카드를 실행시킬 수 있습니다.\n \n예를 들어,  사용자 인증을 거쳤냐의 여부에 따라 해당 대화 카드를 실행시킬 경우 입력 조건문을 활용할 수 있습니다. \n\n'사용자 입력'에 if를 입력하면 입력 조건문 가이드가 실행됩니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "입력 조건 _ 사용자 인증",
+        "input": [
+            {
+                "if": "context.user.auth"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 사용자 인증 여부를 판단합니다.\n\n사용자가 인증을 거쳐 context.user.auth에 값이 존재할 시에 해당 대화 카드가 실행됩니다."
+            }
+        ],
+        "id": "default1"
+    },
+    {
+        "name": "입력 조건 _ 무조건 실행",
+        "input": [
+            {
+                "if": "true"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "if입력 조건이 실행됐습니다.\n\n위의 입력 조건은 true입니다.\n\n입력 조건이 true이기 때문에 해당 대화 카드는 모든 사용자 입력에 대해 실행됩니다."
+            }
+        ],
+        "id": "default2"
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "시작",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "시작",
+                    "nlp": "시작"
+                }
+            },
+            {
+                "text": {
+                    "raw": "처음",
+                    "nlp": "처음"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "안녕하세요, +bot.name+ 입니다."
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "이전",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "상위",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상위",
+                    "nlp": "상위"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "답변없음",
+        "input": "",
+        "output": [
+            {
+                text: "알아듣지 못했습니다.",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

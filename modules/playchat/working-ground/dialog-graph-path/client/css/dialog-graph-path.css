@@ -1,0 +1,76 @@
+.dialog-graph-path-body
+{
+    position: relative;
+    padding: 0 30px;
+}
+
+.dialog-graph-path-title
+{
+    display: flex;
+    padding: 0 30px;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.dialog-graph-path-title span
+{
+    font-size: 20px;
+    font-weight: 600;
+    color: #424242;
+    text-align: center;
+}
+
+.dialog-graph-path-title > span:first-child
+{
+    width: 10%;
+}
+
+.dialog-graph-path-title > span:last-child
+{
+    width: 90%;
+}
+
+.dialog-graph-path-row
+{
+    display: flex;
+    padding: 10px 0;
+
+    border-top: 1px solid #efefef;
+}
+
+.dialog-graph-path-body > .dialog-graph-path-row:first-child
+{
+    border: 0;
+}
+
+.dialog-graph-path-row > span
+{
+    width: 10%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #7e7e7e;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog-graph-path-row > .dialog-graph-paths
+{
+    width: 90%;
+}
+
+.dialog-graph-path-card
+{
+    display: inline-block;
+    width: 150px;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    background-color: #f8f8f8;
+    font-size: 14px;
+    text-align: center;
+    color: #7e7e7e;
+    margin: 10px;
+    padding: 15px 20px;
+}

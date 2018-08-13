@@ -1,0 +1,12 @@
+{
+    "resname": "String",
+    "phone": "String",
+    "mobile": "String",
+    "address": "String",
+    "startTime": "String",
+    "endTime": "String",
+    "minPrice": "Number",
+    "language": "String",
+    "description" : "String",
+    "botId": "String"
+}

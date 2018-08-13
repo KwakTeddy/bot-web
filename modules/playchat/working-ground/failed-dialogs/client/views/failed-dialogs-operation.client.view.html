@@ -1,0 +1,19 @@
+<style>
+.tab01 li
+{
+    width: 120px;
+}
+</style>
+
+<div class="failed-dialog" ng-controller="FailedDialogsOperationController">
+    <div class="tab01" style="margin-top: 10px;">
+        <ul class="tabs1">
+            <li class="select_tab" ng-click="changeTab($event, 'failedDialogTraining');"><a href="#failedDialogTraining">{{lan('Dialog Training') }}</a></li>
+            <li ng-click="changeTab($event, 'failedDialogGraph');"><a href="#failedDialogGraph">{{lan('Dialog Graph') }}</a></li>
+            <li ng-click="changeTab($event, 'failedIntent');"><a href="#failedIntent">{{lan('Intent') }}</a></li>
+        </ul>
+    </div>
+    <div class="tab-body" data-id="failedDialogTraining" ng-include="'/modules/playchat/working-ground/failed-dialogs/client/views/failed-dialog-training.client.view.html'" ng-controller="FailedDialogTrainingController" style="display: block;"></div>
+    <div class="tab-body" data-id="failedDialogGraph" ng-include="'/modules/playchat/working-ground/failed-dialogs/client/views/failed-dialog-graph.client.view.html'" ng-controller="FailedDialogGraphController"></div>
+    <div class="tab-body" data-id="failedIntent" ng-include="'/modules/playchat/working-ground/failed-dialogs/client/views/failed-intent-list.client.view.html'" ng-controller="FailedDialogIntentController"></div>
+</div>
