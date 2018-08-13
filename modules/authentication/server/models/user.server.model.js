@@ -93,12 +93,18 @@ var UserSchema = new Schema({
   localEmailConfirmExpires: {
     type: Date
   },
+  localEmailConfirmCode: {
+      type: String
+  },
   localEmailConfirmed: {
     type: Boolean,
     default: false
   },
   messengerIds: Schema.Types.Mixed,
-    language: { type: String, default: 'en' }
+  language: {
+    type: String,
+    default: 'en'
+  }
 
 });
 

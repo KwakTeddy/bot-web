@@ -2,15 +2,16 @@
 {
     'use strict';
 
-    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', 'LanguageService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService, LanguageService)
+    angular.module('playchat').controller('ChatbotListController', ['$scope', '$resource', '$location', '$cookies', '$state', 'PagingService', 'CaretService', 'LanguageService', 'LogService', function ($scope, $resource, $location, $cookies, $state, PagingService, CaretService, LanguageService, LogService)
     {
         var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
         var ChatBotRenameService = $resource('/api/chatbots/:botId/rename', { botId: '@botId' }, { update: { method: 'PUT' } });
         var ChatBotDuplicateService = $resource('/api/chatbots/:botId/duplicate', { botId: '@botId' });
         var ChatBotShareService = $resource('/api/chatbots/:botId/share', { botId: '@botId' });
+        var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
         var SharedChatBotService = $resource('/api/chatbots/shared');
 
-        if($cookies.get('login') === 'false')
+        if($cookies.get('login') !== 'true')
         {
             $location.url('/signin');
             return;
@@ -19,8 +20,8 @@
         var page = 1;
         var countPerPage = $location.search().countPerPage || 50;
 
-        var chatbot = $cookies.getObject('chatbot');
-
+        var user = $cookies.getObject('user');
+        $scope.restrictService = user.email;
         $scope.selectedBot = undefined;
         $scope.openShareModal = false;
         $scope.share = {};
@@ -37,12 +38,20 @@
             ChatBotService.query({ page: page, countPerPage: countPerPage, name : name }, function(list)
             {
                 $scope.list = list;
+                
+                for(var i=0; i<list.length; i++)
+                {
+                    if(list[i].language == 'ko')
+                    {
+                        list[i].languageCode = ''
+                    }
+                }
+                
                 $scope.$parent.loading = false;
             });
 
             SharedChatBotService.query({}, function(list)
             {
-                console.log('리스트 : ', list);
                 $scope.sharedList = list;
             });
         };
@@ -62,10 +71,55 @@
             }
         });
 
-        $scope.selectChatbot = function(chatbot)
+        $scope.selectChatbot = function(chatbot, callback)
         {
-            $cookies.putObject('chatbot', chatbot);
-            $location.url('/playchat');
+            LogService.botId = chatbot._id;
+            // alert(JSON.stringify(chatbot))
+            // delete chatbot.user;
+            ChatbotAuthService.get({ botId: chatbot._id }, function(result)
+            {
+                var version = result.version;
+                var list = result.list;
+                if(list.length > 0)
+                {
+                    chatbot.myBotAuth = { read : list[0].read, edit: list[0].edit };
+                    $cookies.putObject('chatbot', chatbot);
+
+                    if(!version)
+                    {
+                        alert(LanguageService('It is a chatbot made in old version PlayChat. Go to old version PlayChat.'));
+                        console.log('흠 : ', 'https://old.playchat.ai/playchat/chatbots');
+                        window.open(
+                            'https://old.playchat.ai/playchat/',
+                            '_blank' // <- This is what makes it open in a new window.
+                        );
+                    }
+                    else
+                    {
+                        if(!callback)
+                        {
+                            $location.url('/playchat');
+                        }
+                        else
+                        {
+                            callback();
+                        }
+                    }
+                }
+                else
+                {
+                    alert(LanguageService('You do not have permission to access this bot'));
+                    location.href = '/playchat/chatbots';
+                }
+
+            }, function(err)
+            {
+                if(err.status == 401)
+                {
+                    alert(LanguageService('You do not have permission to access this bot'));
+                    location.href = '/playchat/chatbots';
+                }
+            });
         };
 
         $scope.moveTab = function(e, name)
@@ -74,7 +128,7 @@
             angular.element('#botContent').hide();
             angular.element('#sharedBotContent').hide();
             angular.element('#' + name).show();
-            angular.element(e.currentTarget).addClass('select_tab');
+            if(e)angular.element(e.currentTarget).addClass('select_tab');
         };
 
         $scope.toPage = function(page)
@@ -116,10 +170,14 @@
         {
             if(name == 'Rename')
             {
-                var target = angular.element('li[data-id="' + $scope.selectedBot.id + '"]').attr('contenteditable', 'true').get(0);
-                CaretService.placeCaretAtEnd(target);
-
-                target.style.cursor = 'text';
+                $scope.selectChatbot($scope.selectedBot, function()
+                {
+                    $location.url('/playchat/chatbot-edit');
+                });
+                // var target = angular.element('div[data-id="' + $scope.selectedBot.id + '"]').attr('contenteditable', 'true').get(0);
+                // CaretService.placeCaretAtEnd(target);
+                //
+                // target.style.cursor = 'text';
             }
             else if(name == 'Share')
             {
@@ -216,7 +274,7 @@
                 return false;
             }
 
-            ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)) }, function(result)
+            ChatBotShareService.save({ botId: $scope.selectedBot._id, data: JSON.parse(angular.toJson($scope.share)), language: user.language }, function(result)
             {
                 $scope.openShareModal = false;
                 alert('Shared ' + $scope.selectedBot.name + ' to ' + $scope.share.email);
@@ -227,20 +285,15 @@
             });
         };
 
-        $scope.selectBot = function(bot)
-        {
-            delete bot.user;
-            $cookies.putObject('chatbot', bot);
-            $state.go('playchat-main');
-        };
-
         $scope.moveToCreate = function()
         {
             $location.url('/playchat/chatbots/create');
         };
 
         $scope.getList();
-
+        if($scope.restrictService=='sam@moneybrain.ai'){
+            $scope.moveTab(null, 'sharedBotContent');
+        }
         $scope.lan = LanguageService;
     }]);
 })();

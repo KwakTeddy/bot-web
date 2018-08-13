@@ -1,0 +1,13 @@
+{
+    "botId":"String",
+    "category" : "String",
+    "name" : "String",
+    "price" : "Number",
+    "picture" : "String",
+    "description" : "String",
+    "code" : "String",
+    "sale_price" : "Number",
+    "delivery" : "String",
+    "VIP" : "String",
+    "status":"String"
+}

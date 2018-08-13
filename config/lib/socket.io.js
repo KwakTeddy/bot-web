@@ -24,47 +24,49 @@ module.exports = function (app, db)
         {
             key: privateKey,
             cert: certificate,
-            ca: ca,
-            requestCert : true,
+            ca: ca
+            // requestCert : true,
             //rejectUnauthorized : true,
             // secureProtocol: 'TLSv1.2_method',
-            secureProtocol: 'SSLv23_method',
-            secureOptions: constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_SSLv2,
-            ciphers: [
-                'ECDHE-RSA-AES128-GCM-SHA256',
-                'ECDHE-ECDSA-AES128-GCM-SHA256',
-                'ECDHE-RSA-AES256-GCM-SHA384',
-                'ECDHE-ECDSA-AES256-GCM-SHA384',
-                'DHE-RSA-AES128-GCM-SHA256',
-                'ECDHE-RSA-AES128-SHA256',
-                'DHE-RSA-AES128-SHA256',
-                'ECDHE-RSA-AES256-SHA384',
-                'DHE-RSA-AES256-SHA384',
-                'ECDHE-RSA-AES256-SHA256',
-                'DHE-RSA-AES256-SHA256',
-                'HIGH',
-                '!aNULL',
-                '!eNULL',
-                '!EXPORT',
-                '!DES',
-                '!RC4',
-                '!MD5',
-                '!PSK',
-                '!SRP',
-                '!CAMELLIA'
-            ].join(':'),
-            honorCipherOrder: true
+            // secureProtocol: 'SSLv23_method',
+            // secureOptions: constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_SSLv2,
+            // ciphers: [
+            //     'ECDHE-RSA-AES128-GCM-SHA256',
+            //     'ECDHE-ECDSA-AES128-GCM-SHA256',
+            //     'ECDHE-RSA-AES256-GCM-SHA384',
+            //     'ECDHE-ECDSA-AES256-GCM-SHA384',
+            //     'DHE-RSA-AES128-GCM-SHA256',
+            //     'ECDHE-RSA-AES128-SHA256',
+            //     'DHE-RSA-AES128-SHA256',
+            //     'ECDHE-RSA-AES256-SHA384',
+            //     'DHE-RSA-AES256-SHA384',
+            //     'ECDHE-RSA-AES256-SHA256',
+            //     'DHE-RSA-AES256-SHA256',
+            //     'HIGH',
+            //     '!aNULL',
+            //     '!eNULL',
+            //     '!EXPORT',
+            //     '!DES',
+            //     '!RC4',
+            //     '!MD5',
+            //     '!PSK',
+            //     '!SRP',
+            //     '!CAMELLIA'
+            // ].join(':'),
+            // honorCipherOrder: true
         };
 
         // Create new HTTPS Server
         server = https.createServer(options, app);
 
         // HTTP to HTTPS redirect
-        http.createServer(function (req, res)
+        const http_server = http.createServer(function (req, res)
         {
             res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
             res.end();
-        }).listen(80);
+        });
+
+        http_server.listen(80);
 
     }
     else
@@ -81,5 +83,5 @@ module.exports = function (app, db)
     // logger.systemInfo(config.files.server.sockets.toString().replace(/,/gi, '\n'));
     // logger.systemInfo('=====================================================================');
 
-    return { server: server, io: io };
+    return { server: server, app: app, io: io };
 };

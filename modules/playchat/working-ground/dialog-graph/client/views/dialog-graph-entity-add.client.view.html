@@ -6,27 +6,40 @@
         <p>{{lan('Entity Add') }}</p>
     </div>
     <div class="entity-management-add-content">
+        <!--<p class="entity-management-add-subject">{{lan('Entity name')node  }}</p>-->
+        <!--<input type="text" class="entity-management-add-input" placeholder="Entity Name" ng-model="entity.name" ng-required="true" ng-keydown="checkNamePattern($event);">-->
+        <!--<ul class="entity-management-add-content-label">-->
+            <!--<li class="entity-content">{{lan('Value Name') }}</li>-->
+        <!--</ul>-->
+        <!--<div class="entity-management-add-content-row" ng-repeat="content in entity.entityContents">-->
+            <!--<div class="entity-management-add-content-box" style="width: 34%;">-->
+                <!--<input type="text" class="inside" ng-required="true" ng-model="content.name" ng-keydown="keydown($event, $index);">-->
+            <!--</div>-->
+            <!--<div class="entity-management-add-content-box" style="width: 64%;">-->
+                <!--<span class="element" ng-repeat="synonym in content.synonyms track by $index" ng-click="focusToContentEditable($event);">-->
+                    <!--<span contenteditable="true" ng-keydown="synonymKeyDown($event, content, $index);" ng-keyup="synonymKeyUp($event, content.synonyms, $index);">{{ synonym.name }}</span>-->
+                    <!--<img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png" class="image-button" ng-click="deleteEntityContentSynonym(content, $index, $event);">-->
+                <!--</span>-->
+            <!--</div>-->
+            <!--<img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteEntityContent($index);">-->
+        <!--</div>-->
+        <!--<div style="position: relative;">-->
+            <!--<a href="#" class="dialog-editor-plus-wrapper" ng-click="addEntityContent($event);" tabindex="-1"><span class="dialog-editor-plus"></span></a>-->
+        <!--</div>-->
+
+
         <p class="entity-management-add-subject">{{lan('Entity name') }}</p>
-        <input type="text" class="entity-management-add-input" placeholder="Entity Name" ng-model="entity.name" ng-required="true" ng-keydown="checkNamePattern($event);">
-        <ul class="entity-management-add-content-label">
-            <li class="entity-content">{{lan('Value Name') }}</li>
-            <li class="entity-synonyms">{{lan('Synonyms') }}</li>
-        </ul>
-        <div class="entity-management-add-content-row" ng-repeat="content in entity.entityContents">
-            <div class="entity-management-add-content-box" style="width: 34%;">
-                <input type="text" class="inside" ng-required="true" ng-model="content.name" ng-keydown="keydown($event, $index);">
-            </div>
-            <div class="entity-management-add-content-box" style="width: 64%;">
-                <span class="element" ng-repeat="synonym in content.synonyms track by $index" ng-click="focusToContentEditable($event);">
-                    <span contenteditable="true" ng-keydown="synonymKeyDown($event, content, $index);" ng-keyup="synonymKeyUp($event, content.synonyms, $index);">{{ synonym.name }}</span>
-                    <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png" class="image-button" ng-click="deleteEntityContentSynonym(content, $index, $event);">
-                </span>
-            </div>
+        <input type="text" class="entity-management-add-input" placeholder="Intent Name" ng-model="entity.name" ng-required="true" ng-keydown="checkNamePattern($event);">
+        <p class="entity-management-add-subject">{{lan('Value Name') }}</p>
+        <div class="entity-management-add-input-wrapper" ng-repeat="content in entity.entityContents">
+            <input type="text" class="entity-management-add-input" ng-keydown="keydown($event, $index);" ng-model="content.name">
             <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteEntityContent($index);">
         </div>
-        <div style="position: relative;">
-            <a href="#" class="dialog-editor-plus-wrapper" ng-click="addEntityContent($event);" tabindex="-1"><span class="dialog-editor-plus"></span></a>
+        <div style="text-align: center;">
+            <span class="entity-management-add-input-plus" ng-click="addEntityContent();"></span>
         </div>
+
+
         <div class="dialog-editor-footer">
             <button class="blue-button">{{lan('Save') }}</button>
             <button type="button" class="default-button" ng-click="close($event);">{{lan('Cancel') }}</button>

@@ -170,7 +170,7 @@ module.exports.findOne = function(req, res)
                 query.liveChat = true;
             }
 
-            UserDialog.find(query).limit(50).sort('-created').sort('-inOut').exec(function(err, userDialog)
+            UserDialog.find(query).limit(100).sort('-created').sort('-inOut').exec(function(err, userDialog)
             {
                 if(err)
                 {

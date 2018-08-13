@@ -5,18 +5,23 @@
 
     angular.module('playchat').factory('LanguageService', function($cookies, $rootScope)
     {
-        var user = $cookies.getObject('user');
-        var userLang = navigator.language || navigator.userLanguage;
-        var code = user ? user.language : userLang || 'en';
+        // var user = $cookies.getObject('user');
+        // var userLang = navigator.language || navigator.userLanguage;
+        // var code = user ? user.language : userLang || 'en';
 
-        code = code.split('-')[0];
+        // code = code.split('-')[0];
+
+        var code = $cookies.get('language');
 
         $rootScope.$on('changeLanguage', function()
         {
-            user = $cookies.getObject('user');
-            code = user ? user.language : userLang || 'en';
+            // user = $cookies.getObject('user');
+            //
+            // code = user ? user.language : userLang || 'en';
+            //
+            // code = code.split('-')[0];
 
-            code = code.split('-')[0];
+            code = $cookies.get('language');
         });
 
         var languages = {
@@ -30,7 +35,7 @@
                 "ko": "로그인해주세요.",
                 "en": "Please sign in with your account.",
                 "jp": "ログインしてください。",
-                "zh": "请使用账号密码登录。"
+                "zh": "请使用账号密码进行登录"
             },
             "Sign in with your social network account.": {
                 "ko": "SNS 계정으로 로그인해보세요.",
@@ -116,9 +121,9 @@
                 "jp": "暗証番号確認",
                 "zh": "密码确认"
             },
-            "Agree to Terms of Use and Privacy Policy": {
+            "Agree to Terms of Use and Privacy Policy.": {
                 "ko": "이용약관 및 개인정보 보호 정책에 동의합니다.",
-                "en": "Agree to Terms of Use and Privacy Policy",
+                "en": "Agree to Terms of Use and Privacy Policy.",
                 "jp": "利用約款および個人情報保護政策に同意します。",
                 "zh": "同意使用条款和隐私政策"
             },
@@ -127,6 +132,12 @@
                 "en": "Sign up",
                 "jp": "ログイン",
                 "zh": "登录"
+            },
+            "Your verification URL has expired.": {
+                "ko": "인증 URL이 만료되었습니다.",
+                "en": "Your verification URL has expired.",
+                "zh": "您的验证网址已过期。",
+                "jp": "確認URLの有効期限が切れています。"
             },
             "We sent a verification e-mail to": {
                 "ko": "이메일로 인증 이메일이 전송되었습니다.",
@@ -288,7 +299,7 @@
                 "ko": "새 봇 만들기",
                 "en": "New chatbot",
                 "jp": "新しいチェッボッ",
-                "zh": "新的聊天机器人"
+                "zh": "新建聊天机器人"
             },
             "Chatbot": {
                 "ko": "챗봇",
@@ -342,7 +353,7 @@
                 "ko": "새봇",
                 "en": "New Chatbot",
                 "jp": "新しいチェッボッ",
-                "zh": "新的聊天机器人"
+                "zh": "创建聊天机器人"
             },
             "Blank Bot": {
                 "ko": "빈 봇",
@@ -390,19 +401,13 @@
                 "ko": "설명",
                 "en": "Description",
                 "jp": "説明",
-                "zh": "描述"
+                "zh": "说明"
             },
             "Create": {
-                "ko": "Create",
+                "ko": "생성",
                 "en": "Create",
                 "jp": "作り",
                 "zh": "创建"
-            },
-            " 머니브레인 MoneyBrain": {
-                "ko": "아테나 Athena - 인공지능 챗봇 플랫폼",
-                "en": " 머니브레인 MoneyBrain",
-                "jp": "Athena - Conversational A.I. Platform",
-                "zh": " MoneyBrain"
             },
             "Docs": {
                 "ko": "Docs",
@@ -447,10 +452,10 @@
                 "zh": "对话学习"
             },
             "Dialog Graph": {
-                "ko": "다이얼로그 그래프",
-                "en": "Dialog Graph",
-                "jp": "ダイアロググラフ",
-                "zh": "对话框图"
+                "ko": "대화 시나리오",
+                "en": "Dialog Scenario",
+                "jp": "ダイアログシナリオ",
+                "zh": "对话场景"
             },
             "Dialog Learning trains questions and answers accordingly.": {
                 "ko": "대화 학습 기능은 1:1로 이루어진 질문답변을 챗봇에게 학습 시키는 기능입니다.",
@@ -477,10 +482,10 @@
                 "zh": "对话管理"
             },
             "Dialog Set": {
-                "ko": "대화셋",
+                "ko": "대화 셋",
                 "en": "Dialog Set",
-                "jp": "デファセッ",
-                "zh": "问答添加模块"
+                "jp": "ダイアログセット",
+                "zh": "对话集"
             },
             "Intent": {
                 "ko": "인텐트",
@@ -510,7 +515,7 @@
                 "ko": "대화 그래프를 관리 할 수 있습니다.",
                 "en": "Manage your dialog graph.",
                 "jp": "対話のグラフを管理できます。",
-                "zh": "可以管理对话框图。"
+                "zh": "可以管理对话场景。"
             },
             "Add or Edit your Intent.": {
                 "ko": "Intent를 추가 및 편집 할 수 있습니다.",
@@ -540,13 +545,13 @@
                 "ko": "Answer",
                 "en": "Answer",
                 "jp": "答弁",
-                "zh": "答案"
+                "zh": "回答"
             },
             "New Dialog": {
                 "ko": "New Dialog",
                 "en": "New Dialog",
                 "jp": "新しい対話",
-                "zh": "新的对话框"
+                "zh": "新的对话"
             },
             "Topic": {
                 "ko": "Topic",
@@ -599,8 +604,26 @@
             "Update is not saved. Do you want to exit without saving?": {
                 "ko": "변경사항이 저장되지 않았습니다. 이동하시겠습니까?",
                 "en": "Update is not saved. Do you want to exit without saving?",
-                "jp": "変更事項が保存されませんでした。 移動しますか。",
+                "jp": "変更事項が保存されませんでした。 移動しますか。?",
                 "zh": "变动的部分还没有进行保存。您确定要转向其他页面吗？"
+            },
+            "Update is not saved. Do you want to close without saving?": {
+                "ko": "변경사항이 저장되지 않았습니다. 취소하시겠습니까?",
+                "en": "Update is not saved. Do you want to close without saving?",
+                "jp": "更新は保存されません。 保存せずに終了しますか？",
+                "zh": "更新没有保存。 你想关闭而不储蓄？"
+            },
+            "search description1": {
+              "ko": "검색: Ctrl or Command + F",
+              "en": "Search: Ctrl or Command + F",
+              "jp": "サーチ: Ctrl or Command + F",
+              "zh": "搜索: Ctrl or Command + F"
+            },
+            "search description2": {
+                "ko": "다음으로 계속 검색: Ctrl or Command + G",
+                "en": "Next Occurrence: Ctrl or Command + G",
+                "jp": "次の発生: Ctrl or Command + G",
+                "zh": "下一次发生: Ctrl or Command + G"
             },
             "Graph Loading Failed": {
                 "ko": "그래프 로드 실패",
@@ -613,6 +636,36 @@
                 "en": "File not found.",
                 "jp": "ファイルが見つかりません。",
                 "zh": "未找到文件。"
+            },
+            "Bot files not found.": {
+                "ko": "봇 파일을 찾을 수 없습니다",
+                "en": "Bot files not found.",
+                "jp": "ボットファイルが見つかりません。",
+                "zh": "没有找到Bot文件。"
+            },
+            "You do not have permission to access this bot": {
+                "ko": "이 봇에 접근할 수 있는 권한이 없습니다.",
+                "en": "You do not have permission to read this bot",
+                "jp": "このボットにアクセスする権限がありません。",
+                "zh": "您无权访问此机器人。"
+            },
+            "You do not have permission to edit this bot": {
+                "ko": "이 봇을 편집할 수 있는 권한이 없습니다.",
+                "en": "You do not have permission to edit this bot",
+                "jp": "あなたはこのボットを編集する権限を持っていません。",
+                "zh": "您无权编辑此机器人。"
+            },
+            "Your bot's permissions are not set. Please select bot again. This message is shown only once at the beginning.": {
+                "ko": "봇의 권한이 설정되어 있지 않습니다. 봇을 다시 선택하십시오. 이 메시지는 처음에 한 번만 표시됩니다.",
+                "en": "Your bot's permissions are not set. Please select bot again. This message is shown only once at the beginning.",
+                "jp": "あなたのボットの権限は設定されていません。 ボットをもう一度選択してください。 このメッセージは最初に1回だけ表示されます。",
+                "zh": "你的机器人的权限没有设置。 请再次选择机器人。 此消息在开始时只显示一次。"
+            },
+            "The bot is not selected. Please select a bot.": {
+                "ko": "봇이 선택되지 않았습니다. 봇을 선택해주세요.",
+                "en": "The bot is not selected. Please select a bot.",
+                "jp": "ボットは選択されていません。 ボットを選択してください。",
+                "zh": "机器人未被选中。 请选择一个机器人。"
             },
             "The last entity cannot be deleted.": {
                 "ko": "마지막 엔티티는 삭제할 수 없습니다",
@@ -642,13 +695,13 @@
                 "ko": "더 보기",
                 "en": "More",
                 "jp": "もっと見る",
-                "zh": "更"
+                "zh": "更多"
             },
             "Add Child": {
-                "ko": "차일드 생성",
+                "ko": "자식카드 생성",
                 "en": "Add Child",
                 "jp": "チャイルド生成",
-                "zh": "添加子对话框"
+                "zh": "添加子对话场景卡片"
             },
             "Move Up": {
                 "ko": "위로 가기",
@@ -668,6 +721,12 @@
                 "jp": "コピー",
                 "zh": "复制"
             },
+            "Duplicate only this card": {
+                "ko": "이 카드만 복제하기",
+                "en": "Duplicate only this card",
+                "jp": "このカードのみを複製する",
+                "zh": "仅复制此卡片"
+            },
             "Delete": {
                 "ko": "삭제하기",
                 "en": "Delete",
@@ -678,7 +737,7 @@
                 "ko": "새로만들기",
                 "en": "New dialog",
                 "jp": "新たに創出すること",
-                "zh": "新的对话框"
+                "zh": "新的对话场景卡片"
             },
             "Advanced": {
                 "ko": "고급",
@@ -690,7 +749,7 @@
                 "ko": "대화이름",
                 "en": "Dialog name",
                 "jp": "対話の名前",
-                "zh": "对话框名称"
+                "zh": "对话场景卡片名称"
             },
             "Input": {
                 "ko": "입력값",
@@ -721,12 +780,6 @@
                 "en": "Write URL address here.",
                 "jp": "URLを入力してください",
                 "zh": "请在这里写URL地址。"
-            },
-            " #인텐트": {
-                "ko": "키워드",
-                "en": " #인텐트",
-                "jp": " @엔티티",
-                "zh": " $타입"
             },
             "and": {
                 "ko": "그리고",
@@ -764,17 +817,47 @@
                 "jp": "イメージの挿入",
                 "zh": "添加图片"
             },
+            "Change chatbot image": {
+                "ko": "챗봇 이미지 변경",
+                "en": "Change chatbot image",
+                "zh": "更改chatbot图像。",
+                "jp": "chatbotイメージを変更します。"
+            },
+            "Upload bot image": {
+                "ko": "챗봇 이미지 업로드",
+                "en": "Add image",
+                "jp": "チャットボット画像をアップロードする",
+                "zh": "上传chatbot图片"
+            },
+            "Insert external image": {
+                "ko": "외부 이미지 삽입",
+                "en": "Add image",
+                "jp": "外部画像を挿入",
+                "zh": "插入图片链接"
+            },
             "Click to change image": {
                 "ko": "이미지 변경",
-                "en": "Click to change image",
+                "en": "Change img",
                 "jp": "イメージ変更",
                 "zh": "点击更改图像"
+            },
+            "Click to upload image": {
+                "ko": "챗봇 이미지 업로드",
+                "en": "Click to upload image",
+                "jp": "クリックして画像をアップロード",
+                "zh": "点击上传图片"
             },
             "Add button": {
                 "ko": "버튼 삽입",
                 "en": "Add button",
                 "jp": "ボタン挿入",
                 "zh": "添加按钮"
+            },
+            "Add action": {
+                "ko": "대화 흐름 조절",
+                "en": "Control dialog flow",
+                "zh": "控制对话流动",
+                "jp": "ダイアログフローの制御"
             },
             "Action1": {
                 "ko": "액션 1",
@@ -792,7 +875,7 @@
                 "ko": "대화 선택",
                 "en": "Dialog Select",
                 "jp": "対話選択",
-                "zh": "对话框选择"
+                "zh": "对话选择"
             },
             "Option": {
                 "ko": "옵션",
@@ -842,10 +925,10 @@
                 "jp": "最後のOutputは削除することはできません",
                 "zh": "最后的输出不能被删除。"
             },
-            "\"When editing output with complex structure": {
+            "When editing output with complex structure": {
                 "ko": "복잡한 Output 구조 편집중에는 Basic모드로 전환할 수 없습니다.",
-                "en": "\"When editing output with complex structure",
-                "jp": " it is not possible to switch to the basic mode.\"",
+                "en": "When editing output with complex structure",
+                "jp": " it is not possible to switch to the basic mode.",
                 "zh": "複雑なOutput構造、編集中にはBasicモードに転換できません。"
             },
             "Entity Add": {
@@ -921,7 +1004,7 @@
                 "zh": "文件名称"
             },
             "empty": {
-                "ko": "비우기",
+                "ko": "데이터가 없습니다.",
                 "en": "empty",
                 "jp": "空にすること",
                 "zh": "无"
@@ -996,7 +1079,7 @@
                 "ko": "대화셋 이름을 입력해주세요",
                 "en": "Dialog Set Name",
                 "jp": "デファセッの名前を入力してください",
-                "zh": "对话框设置名称"
+                "zh": "学习对话框名称"
             },
             "Type contents": {
                 "ko": "내용을 입력해주세요",
@@ -1046,11 +1129,11 @@
                 "jp": "エントティ修正",
                 "zh": "实体编辑"
             },
-            "OO is duplicated name. ": {
-                "ko": "OO은 중복된 이름 입니다.",
-                "en": "OO is duplicated name. ",
-                "jp": "OOは重複する名前です。",
-                "zh": "OO是重复的名称。"
+            "is duplicated": {
+                "ko": " 은 중복된 이름 입니다.",
+                "en": " is duplicated.",
+                "jp": " は重複する名前です。",
+                "zh": " 是重复的名称。"
             },
             "Type the Intent Name.": {
                 "ko": "인텐트 이름을 입력해주세요",
@@ -1069,6 +1152,12 @@
                 "en": "contents",
                 "jp": "内容",
                 "zh": "内容"
+            },
+            "Delete only this card": {
+                "ko": "이 카드만 삭제하기",
+                "en": "Delete only this card",
+                "jp": "このカードのみを削除する。",
+                "zh": "仅删除此卡片"
             },
             "delete": {
                 "ko": "삭제",
@@ -1116,7 +1205,7 @@
                 "ko": "실패대화",
                 "en": "Failed Dialog",
                 "jp": "失敗対話",
-                "zh": "失败的对话框"
+                "zh": "失败的对话场景卡片"
             },
             "Management": {
                 "ko": "관리",
@@ -1128,10 +1217,10 @@
                 "ko": "이전 대화",
                 "en": "Previous Dialog",
                 "jp": "以前対話",
-                "zh": "上一个对话框"
+                "zh": "上一个对话场景卡片"
             },
             "User Input": {
-                "ko": "사용자 입력값",
+                "ko": "사용자 입력",
                 "en": "User Input",
                 "jp": "ユーザ入力値",
                 "zh": "用户输入"
@@ -1185,7 +1274,7 @@
                 "zh": "累计用户量"
             },
             "Recent(30 days) Users.": {
-                "ko": "최근 30일 이용자",
+                "ko": "이용자 (30일)",
                 "en": "Recent(30 days) Users.",
                 "jp": "最近、30日利用者",
                 "zh": "最近30天的用户"
@@ -1206,7 +1295,7 @@
                 "ko": "대화 성공률",
                 "en": "Rate of Successive Dialogs",
                 "jp": "対話の成功率",
-                "zh": "成功的对话数"
+                "zh": "对话成功率"
             },
             "Success": {
                 "ko": "성공",
@@ -1236,7 +1325,7 @@
                 "ko": "시나리오 사용량 TOP 10",
                 "en": "Top 10 scenario usage",
                 "jp": "シナリオの使用量TOP 10",
-                "zh": "场景使用量前10"
+                "zh": "对话场景使用前10"
             },
             "Dialog": {
                 "ko": "대화",
@@ -1257,19 +1346,19 @@
                 "zh": "Excel下载"
             },
             "Historical amount of dialog(channel)": {
-                "ko": "기간별 대화량 (채널)",
+                "ko": "일별 대화량",
                 "en": "Historical amount of dialog(channel)",
                 "jp": "期間別デファリャン(チャネル)",
-                "zh": "不同时间段对话量（频道）"
+                "zh": "日对话量（频道）"
             },
             "Historical amount of dialog(Success/Fail)": {
-                "ko": "기간별 대화량 (성공/실패)",
+                "ko": "일별 대화 성공/실패",
                 "en": "Historical amount of dialog(Success/Fail)",
                 "jp": "期間別デファリャン(成功/失敗)",
-                "zh": "不同时间段对话量（成功/失败）"
+                "zh": "日对话量（成功/失败）"
             },
             "Ratio of dialog on channels": {
-                "ko": "채널별 대화 비율",
+                "ko": "채널별 대화",
                 "en": "Ratio of dialog on channels",
                 "jp": "チャンネル別対話の割合",
                 "zh": "不同频道上的对话比率"
@@ -1470,7 +1559,7 @@
                 "ko": "실패 대화 로그",
                 "en": "Failed Chat log",
                 "jp": "失敗対話ログ",
-                "zh": "失败的聊天记录"
+                "zh": "失败对话记录"
             },
             "Analysis": {
                 "ko": "분석",
@@ -1482,7 +1571,7 @@
                 "ko": "요약",
                 "en": "Summary",
                 "jp": "要約",
-                "zh": "概括"
+                "zh": "总结"
             },
             "Dialog Traffic": {
                 "ko": "대화량",
@@ -1494,49 +1583,86 @@
                 "ko": "세션",
                 "en": "Session",
                 "jp": "セッション",
-                "zh": "对话"
+                "zh": "时域"
             },
             "Dialog Graph Path": {
                 "ko": "대화 경로",
                 "en": "Dialog Graph Path",
                 "jp": "対話ルート",
-                "zh": "对话框图路径"
+                "zh": "对话路径"
             },
             "Dialog Training": {
                 "ko": "대화학습",
                 "en": "Dialog Training",
-                "zh": "对话培训",
+                "zh": "对话学习",
                 "jp": "ダイアログトレーニング"
             },
-            "Dialog Training Usage": {
-                "ko": "대화 학습 이용",
-                "en": "Dialog Training Usage",
-                "jp": "会話学習の利用",
-                "zh": "对话学习的使用"
+            "Dialog Set Usage": {
+                "ko": "대화량 - 대화셋",
+                "en": "Dialog Traffic - Dialog Set",
+                "jp": "デファリャン - ダイアログセット",
+                "zh": "对话量 - 对话集"
+
+                // "ko": "대화셋 이용",
+                // "en": "Dialog Set Usage",
+                // "jp": "ダイアログセットの使用法",
+                // "zh": "对话场景卡片使用量"
             },
-            "Dialog Graph Usage": {
-                "ko": "대화 그래프 이용",
-                "en": "Dialog Graph Usage",
-                "jp": "対話グラフを利用",
-                "zh": "对话框图的使用"
+            "Dialog Scenario Usage": {
+                "ko": "대화량 - 시나리오",
+                "en": "Dialog Traffic - Dialog Scenario",
+                "jp": "デファリャン - ダイアログシナリオ",
+                "zh": "对话量 - 对话场景"
+
+                // "ko": "대화 시나리오 이용",
+                // "en": "Dialog Scenario Usage",
+                // "jp": "ダイアログシナリオの使用法",
+                // "zh": "对话场景使用情况"
+            },
+            "User Detail": {
+                "ko": "사용자 세부 정보",
+                "en": "User Detail",
+                "jp": "ユーザーの詳細",
+                "zh": "用户详情"
             },
             "Dialog Training Input": {
-                "ko": "대화 학습 입력값",
-                "en": "Dialog Training Input",
-                "jp": "対話学習、入力値",
-                "zh": "对话学习输入"
+                "ko": "사용자 입력 - 대화셋",
+                "en": "User Input - Dialog set",
+                "jp": "ユーザー入力 - ダイアログセット",
+                "zh": "用户输入 - 对话集"
+
+                // "ko": "대화 학습 입력값",
+                // "en": "Dialog Training Input",
+                // "jp": "対話学習、入力値",
+                // "zh": "对话学习输入"
             },
             "Dialog Graph Input": {
-                "ko": "대화 그래프 입력값",
-                "en": "Dialog Graph Input",
-                "jp": "対話のグラフの入力値",
-                "zh": "对话框图输入"
+                "ko": "사용자 입력 - 대화 시나리오",
+                "en": "User Input - Dialog Scenario",
+                "jp": "ユーザー入力 - ダイアログシナリオ",
+                "zh": "用户输入 - 对话场景"
+
+                // "ko": "대화 그래프 입력값",
+                // "en": "Dialog Graph Input",
+                // "jp": "対話のグラフの入力値",
+                // "zh": "对话场景输入"
+            },
+            "User Input Intent": {
+                "ko": "사용자 입력 - 인텐트",
+                "en": "User Input - Intent",
+                "jp": "ユーザー入力 - インテント",
+                "zh": "用户输入 - 意图"
+
+                // "ko": "대화 그래프 입력값",
+                // "en": "Dialog Graph Input",
+                // "jp": "対話のグラフの入力値",
+                // "zh": "对话场景输入"
             },
             "Failed Dialogs": {
                 "ko": "실패 대화",
                 "en": "Failed Dialogs",
                 "jp": "失敗対話",
-                "zh": "失败的对话框"
+                "zh": "失败对话"
             },
             "Bot Link": {
                 "ko": "Bot Link",
@@ -1553,7 +1679,7 @@
             "Intent analysis": {
                 "ko": "인텐트 분석",
                 "en": "Intent analysis",
-                "jp": "Intent analysis",
+                "jp": "インテント分析",
                 "zh": "意图分析"
             },
             "KaKao Talk": {
@@ -1719,7 +1845,7 @@
             "Dialog Input": {
                 "ko": "대화입력",
                 "en": "Dialog Input",
-                "zh": "对话框输入",
+                "zh": "对话输入",
                 "jp": "ダイアログ入力"
             },
             "Basic Information": {
@@ -1749,13 +1875,13 @@
             "Choose Dialogset": {
                 "ko": "대화셋 선택",
                 "en": "Choose Dialogset",
-                "zh": "选择对话框",
+                "zh": "选择对话场景卡片",
                 "jp": "ダイアログセットを選択"
             },
             "Enter dialogset name": {
                 "ko": "대화셋 이름을 입력해주세요",
                 "en": "Enter dialogset name",
-                "zh": "输入对话框名称。",
+                "zh": "输入对话场景卡片名称。",
                 "jp": "ダイアログセット名を入力します。"
             },
             "If you would like to receive the e-mail again, please click on the again button.": {
@@ -1774,7 +1900,7 @@
                 "ko": "Try now",
                 "en": "Try now",
                 "zh": "现在试试",
-                "jp": "今すぐやってみて下さい\n"
+                "jp": "今すぐやってみて下さい"
             },
             "Connect": {
                 "ko": "연결하기",
@@ -1795,10 +1921,16 @@
                 "jp": "少なくとも1つの権限を選択してください"
             },
             "Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)": {
-                "ko": "키워드, #인텐트, @엔티티, $타입, /정규식/, if(조건식)",
+                "ko": "키워드, #인텐트, @엔터티, $타입, /정규식/, if(조건식)",
                 "en": "Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)",
-                "zh": "关键词, #意图, @实体, $类型, /正则表达式/, if(条件)",
+                "zh": "关键字, #意图, @实体, $类型, /正则表达式/, if(条件)",
                 "jp": "キーワード, #インテント, @エンティティ, $タイプ, /正規表現/, if(調子)"
+            },
+            "Keyword": {
+                "ko": "키워드",
+                "en": "Keyword",
+                "zh": "关键字",
+                "jp": "キーワード"
             },
             "Human Chat log": {
                 "ko": "상담원 대화 내역",
@@ -1820,9 +1952,9 @@
                 "jp": "タスク名を入力してください"
             },
             "Ignore": {
-                "ko": "Ignore",
+                "ko": "무시하기",
                 "en": "Ignore",
-                "zh": "忽视",
+                "zh": "忽略",
                 "jp": "無視する"
             },
             "Jump": {
@@ -1843,6 +1975,19 @@
                 "zh": "图形文件或图形文件的不受支持的版本中存在错误。",
                 "jp": "グラフファイルまたはサポートされていないバージョンのグラフファイルにエラーがあります。"
             },
+            "There is an unsupported version of the graph file. if you are using previous version, then please move below.": {
+                "ko": "더 이상 지원하지 않는 버전의 그래프 파일입니다.<br/>아래 주소로 이동해서 사용해주세요.",
+                "en": "There is an unsupported version of the graph file.<br/>if you are using previous version, then please move below.",
+                "zh": "有一个不受支持的图形文件版本。<br/>如果您使用的是以前的版本，请在下面移动。",
+                "jp": "サポートされていないバージョンのグラフファイルがあります。<br/>以前のバージョンを使用している場合は、下に移動してください。"
+            },
+            "It is a chatbot made in old version PlayChat. Go to old version PlayChat.":
+            {
+                "ko": "구 버전 플레이챗에서 제작된 챗봇입니다. 구 버전 플레이챗으로 이동합니다.",
+                "en": "It is a chatbot made in old version PlayChat. Go to old version PlayChat.",
+                "zh": "这是一个旧版PlayChat制作的聊天机器人。 转到旧版PlayChat。",
+                "jp": "古いバージョンのPlayChatで作られたチャットボットです。 古いバージョンのPlayChatに移動します。"
+            },
             "View Source": {
                 "ko": "소스보기",
                 "en": "View Source",
@@ -1855,17 +2000,17 @@
                 "zh": "检测到JSON格式错误。 聊天机器人可能无法正常工作。 您想保存吗？",
                 "jp": "JSONフォーマットエラーが検出されました。 チャットボットが正しく動作しない可能性があります。 それを保存しますか？"
             },
-            "Typing the regular expression, press Enter to finish.": {
-                "ko": "정규식 입력 중, 마치려면 Enter를 입력해주세요.",
-                "en": "While typing the regular expression, press Enter to finish.",
-                "zh": "输入正则表达式，按Enter完成。",
-                "jp": "正規表現を入力し、Enterキーを押して終了します。"
+            "Please enter a regular expression.": {
+                "ko": "정규식을 입력해주세요. ex) /[a-z]*/",
+                "en": "Please enter a regular expression. ex) /[a-z]*/",
+                "zh": "请输入正则表达式。 ex）/[a-z]*/",
+                "jp": "正規表現。 ex）/[a-z]*/"
             },
-            "Entering conditional statements, press Enter to finish.": {
-                "ko": "조건문 입력 중, 마치려면 Enter를 입력해주세요.",
-                "en": "Entering conditional statements, press Enter to finish.",
-                "zh": "输入条件语句，按Enter完成。",
-                "jp": "条件文を入力し、Enterキーを押して終了します。"
+            "Entering conditional statements.": {
+                "ko": "조건문을 입력해주세요. ex) if(a == b)",
+                "en": "Please enter the condition. ex) if (a == b)",
+                "zh": "请输入条件。 ex）if（a == b）",
+                "jp": "条件を入力してください。 ex） if（a == b）"
             },
             "Back to Graph edit mode": {
                 "ko": "그래프 편집으로 돌아가기",
@@ -1891,6 +2036,18 @@
                 "zh": "每个会话的平均通信量",
                 "jp": "セッションあたりの平均会話量"
             },
+            "Amount of Session": {
+                "ko": "세션수량",
+                "en": "Amount of Session",
+                "zh": "会话数量",
+                "jp": "セッション量"
+            },
+            "Usage of Dialog Set": {
+                "ko": "대화 사용량",
+                "en": "Usage of Dialog Set",
+                "zh": "对话场景卡片的使用",
+                "jp": "ダイアログセットの使用法"
+            },
             "Ratio": {
                 "ko": "비율",
                 "en": "Ratio",
@@ -1912,7 +2069,7 @@
             "Graph Path" :{
                 "ko": "그래프 경로",
                 "en": "Graph Path",
-                "zh": "对话框图路径",
+                "zh": "对话路径",
                 "jp": "グラフパス"
             },
             "Usage Count": {
@@ -1982,6 +2139,12 @@
                 "zh": "名称已经在使用",
                 "jp": "名前は既に使用しています"
             },
+            "BotId is already using": {
+                "ko": "봇 아이디가 이미 사용중입니다.",
+                "en": "BotId is already using",
+                "zh": "BotId已经在使用",
+                "jp": "BotIdは既に使用しています"
+            },
             "Manage Contents": {
                 "ko": "컨텐츠 관리",
                 "en": "Manage Contents",
@@ -2009,7 +2172,7 @@
             "Manage Conversation Graph":{
                 "ko": "대화그래프관리",
                 "en": "Manage Conversation Graph",
-                "zh": "对话框图管理",
+                "zh": "对话场景管理",
                 "jp": "Manage Conversation Graph"
             },
             "Manage Intent":{
@@ -2105,7 +2268,7 @@
             "Let it study conversation":{
                 "ko": "대화 학습 시키기",
                 "en": "Let it study conversation",
-                "zh": "让它学习对话",
+                "zh": "开始对话学习",
                 "jp": "Let it study conversation"
             },
             "We may let it learn how to answer accordingly towards the questions guests has asked":{
@@ -2141,13 +2304,13 @@
             "Connect Channel":{
                 "ko": "채널 연결",
                 "en": "Connect Channel",
-                "zh": "链接频道",
+                "zh": "连接频道",
                 "jp": "Connect Channel"
             },
             "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.":{
                 "ko": "전화, 카카오톡, 페이스북에 연결해서 챗봇을 서비스합니다.",
                 "en": "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.",
-                "zh": "我们提供连接到电话，Kakao Talk和Facebook以提供聊天机器人的服务。",
+                "zh": "我们提供将聊天机器人连接到电话，微信，Kakao Talk和Facebook等平台上的服务。",
                 "jp": "We service chatbot by connecting to Phoneline, KakaoTalk or Facebook."
             },
             "Dialogue Breakdown":{
@@ -2159,13 +2322,13 @@
             "Artificial Intelligence may automatically review the dialogue breakdown of the conversation.":{
                 "ko": "인공지능이 자동으로 상담한 대화내역을 확인 할 수 있습니다.",
                 "en": "Artificial Intelligence may automatically review the dialogue breakdown of the conversation.",
-                "zh": "您可以查看AI自动咨询的对话历史记录。",
+                "zh": "您可以查看AI回复的对话历史记录。",
                 "jp": "Artificial Intelligence may automatically review the dialogue breakdown of the conversation."
             },
             "We can make it learn how to answer to the questions that it was not able to reply.":{
                 "ko": "응답하지 못한 질문에 대한 답변을 학습시 킬수 있습니다.",
                 "en": "We can make it learn how to answer to the questions that it was not able to reply.",
-                "zh": "您可以让它学习回答它回答不了的问题。",
+                "zh": "您可以让它学习它回答不了的问题。",
                 "jp": "We can make it learn how to answer to the questions that it was not able to reply."
             },
             "usage statistics":{
@@ -2187,11 +2350,17 @@
                 "zh": "请使用下面两种方式轻松地开发聊天机器人。",
                 "jp": "Use the template bots to make your own chatbot in a second."
             },
+            "Bot Id": {
+                "ko": "챗봇 아이디",
+                "en": "Bot Id",
+                "zh": "机器ID",
+                "jp": "ボットID"
+            },
             "Bot Name":{
                 "ko": "챗봇명",
                 "en": "Bot Name",
                 "zh": "机器人名",
-                "jp": "Bot Name"
+                "jp": "机器人名称"
             },
             "Use the template bots to make your own chatbot in a second":{
                 "ko": "아래 두가지 방식으로 챗봇을 쉽게 개발해 보세요.",
@@ -2204,35 +2373,35 @@
 
 
             //channel
-            "Create a Kakao YellowID(https://yellowid.kakao.com/login)":{
-                "ko": "카카오 옐로아이디를 만들어요(https://yellowid.kakao.com/login)",
-                "en": "Create a Kakao YellowID(https://yellowid.kakao.com/login)",
-                "zh": "注册Kakao Talk Yellow账号(https://yellowid.kakao.com/login)",
-                "jp": "Create a Kakao YellowID(https://yellowid.kakao.com/login)"
+            "Create a Kakao YellowID":{
+                "ko": "카카오 플러스친구에 가입하세요.(https://center-pf.kakao.com/login)",
+                "en": "Create a Kakao Plusfriend account(https://center-pf.kakao.com/login)",
+                "zh": "申请一个Kakao yellow账号。(https://center-pf.kakao.com/login)",
+                "jp": "Kakao Plusfriendアカウントを作成する(https://center-pf.kakao.com/login)"
             },
             "Make a Yellow ID profile.":{
-                "ko": "옐로아이디 프로필을 만들어요.",
-                "en": "Make a Yellow ID profile.",
-                "zh": "填写完Yellow账号的个人资料",
-                "jp": "Make a Yellow ID profile."
+                "ko": "새 플러스친구를 만들어 주세요.",
+                "en": "Make a new plusfriend.",
+                "zh": "创建一个新的plus朋友主页。",
+                "jp": "新しいプラスフレンドを作る。"
             },
             "Go to the Auto ID page.":{
-                "ko": "옐로아이디 페이지 자동응답 탭으로 들어가요",
-                "en": "Go to the Auto ID page.",
-                "zh": "个人资料会自动转到相应Yellow账号的主页上",
-                "jp": "Go to the Auto ID page."
+                "ko": "플러스 친구 관리자 센터로 접속하세요.",
+                "en": "Go to the administrator page of plusfriend",
+                "zh": "点击左侧菜单的智能聊天按钮，然后点击API型下方的设置进入API设置画面。",
+                "jp": "plusfriendの管理者ページに移動します。"
             },
             "Go to API auto-response setup page.":{
-                "ko": "API 자동응답 설정하기로 들어가요",
-                "en": "Go to API auto-response setup page.",
-                "zh": "然后进入API自动回复设置",
-                "jp": "Go to API auto-response setup page."
+                "ko": "스마트채팅 메뉴로 이동 후 API형 설정하기를 클릭하세요.",
+                "en": "Click to API setting button after go to smart chatting.",
+                "zh": "分别输入APP的名称，API的URL（可以在聊天机器人频道中的微信里获得），电话号码等。",
+                "jp": "スマートチャットに行った後、APIタイプ設定ボタンをクリックしてください。"
             },
             "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!":{
-                "ko": "앱 이름, URL, 설명, 전화번호를 설정해요. 이 때 URL을 아래의 URL로 설정해야돼요!",
-                "en": "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!",
-                "zh": "设置应用名称，URL，说明，电话号码。这时可以利用下面的URL对URL进行设置！",
-                "jp": "Set the app name, URL, description, and phone number. You need to set the URL to the URL below!"
+                "ko": "앱 이름, URL, 설명, 전화번호를 입력하세요. 이 때 URL을 아래의 Webhook URL로 설정해야 합니다.",
+                "en": "Set the app name, URL, description, and phone number. You need to set the URL to the Webhook URL below!",
+                "zh": "然后点击保存后，点击开始按钮，并在左侧菜单中的1对1聊天中设置主要的漏出权限。",
+                "jp": "アプリ名、URL、説明、電話番号を設定します。 以下のWebhook URLにURLを設定する必要があります。"
             },
             "You must be a member of Line. Please log in first with Lind application or Web.":{
                 "ko": "LINE회원이어야해요 LINE 앱 또는 웹으로 회원가입해요",
@@ -2297,49 +2466,49 @@
             "Sign in with a corporate ID or a representative personal ID":{
                 "ko": "회사 단체아이디 또는 대표성있는 개인아이디로 로그인",
                 "en": "Sign in with a corporate ID or a representative personal ID",
-                "zh": "用团体账号或者是CEO的个人账号登录",
+                "zh": "用团体账号或者是个人账号登录",
                 "jp": "Sign in with a corporate ID or a representative personal ID"
             },
             "Manage My Account> Create New Chat Account":{
                 "ko": "내 계정관리 > 새로운 톡톡 계정 만들기 클릭",
                 "en": "Manage My Account> Create New Chat Account",
-                "zh": "我的账号管理>点击注册新的Talk Talk账号",
+                "zh": "进入我的账号管理>点击创建新的Talk Talk",
                 "jp": "Manage My Account> Create New Chat Account"
             },
             "Click on 'Link to Service Later' without selecting a service from the list.":{
                 "ko": "서비스 선택하기에서 서비스 선택없이 서비스 연결 나중에 하기 클릭!",
                 "en": "Click on 'Link to Service Later' without selecting a service from the list.",
-                "zh": "在服务选择中点击不选择服务以后再连接",
+                "zh": "在服务选项中先不要选择服务，点击以后再连接服务!",
                 "jp": "Click on 'Link to Service Later' without selecting a service from the list."
             },
             "When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact.":{
                 "ko": "테스트 계정생성시 개인을 선택, 서비스 계정생성시 사업자 또는 기관/단체을 선택 후 다음 대표이미지, 프로필명, 휴대폰 번호 등 정보를 입력 후 사용신청하세요.",
                 "en": "When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact.",
-                "zh": "创建测试账户时，选择个人，创建服务账户时选择企业或者是机关/团体，然后输入代表人的姓名，个人资料和联系人信息等。",
+                "zh": "创建测试账户时，选择个人，创建服务账户时选择企业或者是机关/团体，在输入代表的姓名，个人资料和联系人信息等后申请使用。",
                 "jp": "When you create a test account, select an individual, and when creating a service account, select a business or an organization, and then input information such as the representative image, profile name and contact."
             },
             "The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS":{
                 "ko": "생성된 계정은 검수중 상태이며, 검수가 완료되면 사용중상태로 변경되고 SMS로 알림 전송됩니다.",
                 "en": "The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS",
-                "zh": "申请的账号在审查状态，等审查完后您会收到审查状态变更短信",
+                "zh": "申请的账号在审查状态，等审查完后您会收到审查状态变更短信。",
                 "jp": "The created account is in the process validation. When the verification is completed, it will be in an active status and the notification will be sent by SMS"
             },
             "In Account Management, click Account Home under Account Management in the list of registered accounts.":{
                 "ko": "내 계정관리의 등록된 계정 리스트에서 계정관리로 계정 홈을 클릭하세요.",
                 "en": "In Account Management, click Account Home under Account Management in the list of registered accounts.",
-                "zh": "在我的账号管理里点击注册账号的账号主页",
+                "zh": "在我的账号管理里点击申请的账号进入当然账号主页。",
                 "jp": "In Account Management, click Account Home under Account Management in the list of registered accounts."
             },
             "Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)":{
                 "ko": "좌측 메뉴 챗봇 API 하위 API 설정 메뉴를 통해 이용약관동의 및 챗봇을 설정하세요. (beta기간에는 등록신청 필요)",
                 "en": "Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)",
-                "zh": "通过左侧菜单中聊天机器人API子菜单中的API设置菜单选择同意使用条款然后进行聊天机器人设置（需要注册申请beta时间）",
+                "zh": "通过左侧菜单中聊天机器人API子菜单中的API设置菜单选择同意使用条款然后进行聊天机器人设置（需要输入申请测试时间）",
                 "jp": "Click 'API Setting' menu of agreement and chatbot through setting menu. (registration required for beta period)"
             },
             "After Naver has approved the use of API, please enter the URL provided by playchat.":{
                 "ko": "네이버의 API사용 승인이 된 후 playchat에서 제공하는 URL을 입력하여 연결하세요.",
                 "en": "After Naver has approved the use of API, please enter the URL provided by playchat.",
-                "zh": "通过左侧菜单中聊天机器人API子菜单中的API设置菜单选择同意使用条款然后进行聊天机器人设置（需要注册申请beta时间）",
+                "zh": "当NaverAPI可以使用后再输入Playchat提供的URL就可以连接上啦。",
                 "jp": "After Naver has approved the use of API, please enter the URL provided by playchat."
             },
             "Page name":{
@@ -2427,13 +2596,20 @@
                 "jp": "Go to https://mp.weixin.qq.com/ and apply for \"WeChat Official Accounts\" at the top."
             },
             "wechatScription3":{
-                "ko": "신청 후 \"Basic configuration“라는 버튼 클릭하세요. 그 다음 오른 쪽에 있는 \"I agree” 앞에 체크를 하시고, “Become a developer“라는 버튼 클릭하세요.",
+                "ko": "신청 후 \"Basic configuration\"라는 버튼 클릭하세요. 그 다음 오른 쪽에 있는 \"I agree” 앞에 체크를 하시고, “Become a developer“라는 버튼 클릭하세요.",
                 "en": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\".",
                 "zh": "申请以后点击“基本配置”按钮，然后在左边画面里点击“我同意”后，点击“成为开发者”按钮。",
                 "jp": "After applying, please click \"Basic configuration\" button. Then check the box next to \"I agree\" on the right-hand side and click on the button \"Become a developer\"."
             },
+            "wechatScription3-1":
+            {
+                "ko": "AppId와 EncodingAESKey를 복사해서 아래에 입력하고 저장 버튼을 클릭합니다. EncodingAESKey는 Change Configuration 버튼 클릭 후 생성할 수 있습니다.",
+                "en": "Copy the AppId and EncodingAESKey below and click the Save button. EncodingAESKey can be created after clicking the \"Change Configuration\" button.",
+                "zh": "复制下面的AppId和EncodingAESKey并单击保存按钮。 EncodingAESKey可以在单击“更改配置”按钮后创建。",
+                "jp": "下のAppIdとEncodingAESKeyをコピーし、[保存]ボタンをクリックします。 EncodingAESKeyは、Change Configurationボタンをクリックした後に作成できます。"
+            },
             "wechatScription4":{
-                "ko": "“Change Configuration” 라는 버튼 클릭하세요. 입력칸에는 Playchat 페이지 왼쪽 메뉴 중 Channel를 클릭하고 wechat의 연결버튼을 눌렀을 때 안내되는 URL을 입력하시면 됩니다. 그후, Token에는 moneybrain_token 이라고 입력하세요.",
+                "ko": "\"Change Configuration\" 라는 버튼 클릭하세요. 입력칸에는 Playchat 페이지 왼쪽 메뉴 중 Channel를 클릭하고 wechat의 연결버튼을 눌렀을 때 안내되는 URL을 입력하시면 됩니다. 그후, Token에는 moneybrain_token 이라고 입력하세요.",
                 "en": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token.",
                 "zh": "然后点击左下方的“基本配置”按钮，输入URL（从playchat里面的频道里点击微信下方的链接获得），然后在Token中输入“moneybrain_token”。",
                 "jp": "Click on \"Change Configuration\" button. In the input box, type the URL address which can be checked from Playchat page.(Channel>Connect to Wechat). Then, in the Token, type moneybrain_token."
@@ -2441,7 +2617,7 @@
             "wechatScription5":{
                 "ko": "그리고 Encoding AESKey는  Encoding AESKey 뒤에 있는 “Random Generation“라는 버튼을 클릭하면 자동적으로 생성됩니다. 그 후, “Change Configuration” 라는 버튼 옆에 있는 “Enable“라는 버튼을 클릭하세요.",
                 "en": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\".",
-                "zh": "接着点击Encoding AESKey后方的“随机生成”，然后提交。提交完毕后再点击“修改配置”旁边的“启用按钮”。",
+                "zh": "接着点击Encoding AESKey后方的“随机生成”，然后提交。提交完毕后再点击“修改配置”旁边的“启用按钮”。然后把相对应的AppId和EncodingAESKey输入到playchat频道菜单中微信连接里面并提交。",
                 "jp": "Encoding AESKey is created automatically when you click on the button called \"Random Generation\" after Encoding AESKey. Then click on the button labeled \"Enable\", which is placed next to the button labeled \"Change Configuration\"."
             },
             "wechatScription6":{
@@ -2590,11 +2766,11 @@
                 "zh": "12月",
                 "jp": "12月"
             },
-            "This e-mail is under screening process. Please wait for results.": {
-                "ko": "클로즈베타 심사중인 Email입니다. 결과를 기다려주세요.",
-                "en": "This e-mail is under screening process. Please wait for results.",
-                "zh": "这个邮箱正在审查中，请等待结果",
-                "jp": "この電子メールは審査中です。 結果を待ってください。"
+            "This e-mail is under confirm process. Please confirm your email.": {
+                "ko": "E-mail이 아직 인증되지 않았습니다.",
+                "en": "This e-mail is under confirm process. Please confirm your email.",
+                "zh": "This e-mail is under confirm process. Please confirm your email.",
+                "jp": "This e-mail is under confirm process. Please confirm your email."
             },
             "This e-mail is not registered or the password is wrong.": {
                 "ko": "가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다",
@@ -2605,7 +2781,7 @@
             "Open Dialogset": {
                 "ko": "대화셋 열기",
                 "en": "Open Dialogset",
-                "zh": "打开对话框",
+                "zh": "打开学习对话框",
                 "jp": "開くダイアログセット"
             },
             "Template Download": {
@@ -2633,19 +2809,19 @@
                 "ko": "대화 그래프로 이동하기",
                 "en": "Move to Dialog Graph",
                 "jp": "Move to Dialog Graph",
-                "zh": "转到对话框图"
+                "zh": "转到对话场景"
             },
             "Navigate Dialog": {
                 "ko": "다이얼로그 네이게이션",
                 "en": "Navigate Dialog",
                 "jp": "Navigate Dialog",
-                "zh": "导航对话框"
+                "zh": "对话导航"
             },
             "Move Dialog Up/Down": {
                 "ko": "다이얼로그 위/아래로 옮기기",
                 "en": "Move Dialog Up/Down",
                 "jp": "Move Dialog Up/Down",
-                "zh": "向上/向下移动对话框"
+                "zh": "向上/向下移动对话场景卡片"
             },
             "Open Edit Dialog": {
                 "ko": "다이얼로그 수정하기",
@@ -2663,31 +2839,31 @@
                 "ko": "Child 다이얼로그 추가하기",
                 "en": "Add Child dialog",
                 "jp": "Add Child dialog",
-                "zh": "添加子对话框"
+                "zh": "添加子对话场景卡片"
             },
             "Add Sibling dialog": {
                 "ko": "Sibling 다이얼로그 추가하기",
                 "en": "Add Sibling dialog",
                 "jp": "Add Sibling dialog",
-                "zh": "添加姊妹对话框"
+                "zh": "添加姊妹对话场景卡片"
             },
             "Delete Dialog": {
                 "ko": "다이얼로그 삭제",
                 "en": "Delete Dialog",
                 "jp": "Delete Dialog",
-                "zh": "删除对话框"
+                "zh": "删除对话场景卡片"
             },
             "Expand/Collapse Child Dialog": {
                 "ko": "Child 다이얼로그 늘이기/줄이기",
                 "en": "Expand/Collapse Child Dialog",
                 "jp": "Expand/Collapse Child Dialog",
-                "zh": "展开/折叠子对话框"
+                "zh": "展开/折叠子对话场景卡片"
             },
             "Dialog Graph Editor ShortCut": {
                 "ko": "대화 그래프 수정 바로가기",
                 "en": "Dialog Graph Editor ShortCut",
                 "jp": "Dialog Graph Editor ShortCut",
-                "zh": "对话框图编辑快捷方式"
+                "zh": "对话场景编辑快捷方式"
             },
             "Move focus to next input": {
                 "ko": "다음 인풋으로 이동하기",
@@ -2729,7 +2905,7 @@
                 "ko": "Dialog Graph Code Editor Shortcut",
                 "en": "Dialog Graph Code Editor Shortcut",
                 "jp": "Dialog Graph Code Editor Shortcut",
-                "zh": "转到对话框图代码"
+                "zh": "转到对话场景代码"
             },
             "Move to previous or next tab": {
                 "ko": "Move to previous or next tab",
@@ -2741,13 +2917,13 @@
                 "ko": "Dialog Set Shortcut",
                 "en": "Dialog Set Shortcut",
                 "jp": "Dialog Set Shortcut",
-                "zh": "对话框设置快捷方式"
+                "zh": "学习对话框快捷方式"
             },
             "Add Multi Input or Output": {
                 "ko": "multi input/output 추가",
                 "en": "Add Multi Input or Output",
                 "jp": "Add Multi Input or Output",
-                "zh": "对话框设置快捷方式"
+                "zh": "对话学习快捷方式"
             },
             "Move focus to upper or lower input": {
                 "ko": "Move focus to upper or lower input",
@@ -2771,7 +2947,7 @@
                 "ko": "Move focus to dialog graph or dialog set",
                 "en": "Move focus to dialog graph or dialog set",
                 "jp": "Move focus to dialog graph or dialog set",
-                "zh": "将光标移动到对话框图或者对话集处"
+                "zh": "将光标移动到对话场景或者对话集处"
             },
             "Reset simulator": {
                 "ko": "Reset simulator",
@@ -2794,8 +2970,26 @@
             "Sample Bot": {
                 "ko": "샘플로 만들기",
                 "en": "Create by sample",
-                "zh": "按样品创建",
+                "zh": "使用样本创建",
                 "jp": "サンプルで作成"
+            },
+            "Sample Hotel": {
+                "ko": "샘플 호텔봇",
+                "en": "Sample Hotel Bot",
+                "zh": "酒店聊天机器人样本",
+                "jp": "サンプルホテルボット"
+            },
+            "Sample Restaurant": {
+                "ko": "샘플 레스토랑봇",
+                "en": "Sample Restaurant Bot",
+                "zh": "餐厅机器人样本",
+                "jp": "サンプルレストランボット"
+            },
+            "Sample Hospital": {
+                "ko": "샘플 병원봇",
+                "en": "Sample Hospital Bot",
+                "zh": "医院机器人样本",
+                "jp": "サンプル病院ボット"
             },
             "Email has been sent again.": {
                 "ko": "이메일이 다시 전송되었습니다.",
@@ -2862,6 +3056,565 @@
                 "en": "Successfully transferred!",
                 "zh": "成功转移！",
                 "jp": "転送に成功しました！"
+            },
+            "Move Dialog": {
+                "ko": "대화 이동",
+                "en": "Call",
+                "zh": "移动对话场景卡片",
+                "jp": "移動ダイアログ"
+            },
+            "Ask the question again": {
+                "ko": "다시 질문하기",
+                "en": "Ask the question again",
+                "zh": "再次提问",
+                "jp": "もう一度質問してください"
+            },
+            "Search after dialog moved": {
+                "ko": "대화 이동 후 검색",
+                "en": "Search after dialog moved",
+                "zh": "移动对话场景卡片后搜索。",
+                "jp": "ダイアログが移動した後の検索。"
+            },
+            "Move to previous dialog": {
+                "ko": "이전 대화로 이동",
+                "en": "Move to previous dialog",
+                "zh": "移到上一个对话场景卡片",
+                "jp": "前のダイアログに移動"
+            },
+            "Move to parent dialog": {
+                "ko": "상위 대화로 이동",
+                "en": "Move to parent dialog",
+                "zh": "返回上一层对话的父母卡片",
+                "jp": "上位スレッドに移動"
+            },
+            "Return": {
+                "ko": "돌아가기",
+                "en": "Return",
+                "zh": "返回",
+                "jp": "戻る"
+            },
+            "Return call": {
+                "ko": "돌아가기용 대화 이동",
+                "en": "Return Call",
+                "zh": "返回移动",
+                "jp": "リターンコール"
+            },
+            "Card Name": {
+                "ko": "카드 이름",
+                "en": "Card Name",
+                "zh": "卡片名称",
+                "jp": "カード名"
+            },
+            "Function before Answer": {
+                "ko": "답변 전 실행함수",
+                "en": "Function before Answer",
+                "zh": "回答前执行的函数",
+                "jp": "回答前の機能"
+            },
+            "Chatbot Answer": {
+                "ko": "챗봇 답변",
+                "en": "Chatbot Answer",
+                "zh": "聊天机器人回答",
+                "jp": "チャットロボットアンサー"
+            },
+
+            "SampleBot Category": {
+                "ko": "샘플봇 종류",
+                "en": "SampleBot Category",
+                "zh": "样本机器人分类",
+                "jp": "サンプルのボットカテゴリ"
+            },
+            "edu_input_keyword" : {
+                "ko": "기능가이드 챗봇 (사용자입력_키워드)",
+                "en": "Feature Guide Chatbot (User Input_keyword)",
+                "zh": "功能指南Chatbot（用户输入关键字）",
+                "jp": "機能ガイドチャットボット（ユーザー入力_キーワード）"
+            },
+            "edu_input_entity" : {
+                "ko": "기능가이드 챗봇 (사용자입력_엔터티)",
+                "en": "Feature Guide Chatbot (User Input_Entity)",
+                "zh": "功能指南Chatbot（用户输入实体）",
+                "jp": "機能ガイドChatbot（User Input_Entity）"
+            },
+            "edu_input_intent" : {
+                "ko": "기능가이드 챗봇 (사용자입력_인텐트)",
+                "en": "Feature Guide Chatbot (User Input_Intent)",
+                "zh": "功能指南Chatbot（用户Input_Intent）",
+                "jp": "機能ガイドチャットボット（ユーザー入力_番号）"
+            },
+            "edu_input_regexp" : {
+                "ko": "기능가이드 챗봇 (사용자입력_정규식)",
+                "en": "Feature Guide Chatbot (User Input_Regexp)",
+                "zh": "功能指南Chatbot（用户输入_Regexp）",
+                "jp": "機能ガイドChatbot（ユーザー入力_Regexp）"
+            },
+            "edu_input_type" : {
+                "ko": "기능가이드 챗봇 (사용자입력_타입)",
+                "en": "Feature Guide Chatbot (User Input_Type)",
+                "zh": "功能指南Chatbot（用户输入类型）",
+                "jp": "機能ガイドチャットボット（ユーザー入力タイプ）"
+            },
+            "edu_input_if" : {
+                "ko": "기능가이드 챗봇 (사용자입력_조건문)",
+                "en": "Feature Guide Chatbot (User Input_if)",
+                "zh": "功能指南Chatbot（用户输入_if）",
+                "jp": "機能ガイドChatbot（User Input_if）"
+            },
+            "edu_input_variable" : {
+                "ko": "기능가이드 챗봇 (사용자입력_변수)",
+                "en": "Feature Guide Chatbot (User Input_Variable)",
+                "zh": "功能指南Chatbot（用户输入变量）",
+                "jp": "機能ガイドチャットボット（ユーザー入力_可変）"
+            },
+            "edu_task_crawling" : {
+                "ko": "기능가이드 챗봇 (함수_크롤링)",
+                "en": "Feature Guide Chatbot (Function_Crawling)",
+                "zh": "功能指南Chatbot（功能_爬行）",
+                "jp": "機能ガイドChatbot（Function_Crawling）"
+            },
+            "edu_task_api" : {
+                "ko": "기능가이드 챗봇 (함수_API)",
+                "en": "Feature Guide Chatbot (Function_API)",
+                "zh": "功能指南Chatbot（Function_API）",
+                "jp": "機能ガイドChatbot（Function_API）"
+            },
+            "edu_output_variable" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_변수)",
+                "en": "Feature Guide Chatbot (Chatbot Answer_Variable)",
+                "zh": "功能指南Chatbot（Chatbot Answer_Variable）",
+                "jp": "機能ガイドチャットボット（チャットボットAnswer_Variable）"
+            },
+            "edu_output_if" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_조건문)",
+                "en": "Feature Guide Chatbot (Chatbot Answer_if)",
+                "zh": "功能指南Chatbot（Chatbot Answer_if）",
+                "jp": "機能ガイドチャットボット（Chatbot Answer_if）"
+            },
+            "edu_output_call" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_대화이동)",
+                "en": "Feature Guide Chatbot (Chatbot Answer_Move other dialog)",
+                "zh": "功能指南Chatbot（Chatbot Answer_Move其他对话框）",
+                "jp": "機能ガイドチャットボット（Chatbot Answer_Move他のダイアログ）"
+            },
+            "edu_output_repeat" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_다시질문하기)",
+                "en": "Feature Guide Chatbot (Chatbot Answer_Repeat question)",
+                "zh": "功能指南Chatbot（Chatbot Answer_Repeat问题）",
+                "jp": "機能ガイドチャットボット（チャットボットアンサー_質問の返信）"
+            },
+            "edu_output_up" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_이전대화이동)",
+                "en": "Feature Guide Chatbot (Chatbot Answer_Move previous dialog)",
+                "zh": "特征指南Chatbot（Chatbot Answer_Move前一个对话框）",
+                "jp": "機能ガイドチャットボット（チャットボットアンサー_前のダイアログ）"
+            },
+            "edu_output_callchild" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_대화이동 후 검색)",
+                "en": "Feature Guide Chatbot (Chatbot Answer_Move Move other dialog then search)",
+                "zh": "特征指南Chatbot（Chatbot Answer_Move移动其他对话框然后搜索）",
+                "jp": "機能ガイドChatbot（Chatbot Answer_Move他のダイアログを移動してから検索する)"
+            },
+            "edu_output_returncall" : {
+                "ko": "기능가이드 챗봇 (챗봇답변_돌아오기용 대화이동)",
+                "en": "Feature Guide Chatbot (Move other dialog for return)",
+                "zh": "功能指南Chatbot（移动其他对话框以返回）",
+                "jp": "機能ガイドチャットボット（他のダイアログを移動して戻る）"
+            },
+            "DM_Cut": {
+                "ko": "잘라내기",
+                "en": "Cut",
+                "zh": "剪切",
+                "jp": "カット。"
+            },
+            "DM_Copy": {
+                "ko": "복사하기",
+                "en": "Copy",
+                "zh": "复制",
+                "jp": "コピー"
+            },
+            "DM_Paste": {
+                "ko": "붙여넣기",
+                "en": "Paste",
+                "zh": "粘贴",
+                "jp": "ペースト"
+            },
+            "DialogGraphManagementCreateDescription": {
+                "ko": "파일 이름은 알파벳 대문자 또는 알파벳 소문자로 시작해야하며 알파벳 또는 숫자 또는 대시 (-) 여야합니다.",
+                "en": "File names must start with a alphabet capital letter or a alphabet small letter and must be alphabet or number or dash(-).",
+                "zh": "文件名必须以字母大写或小写字母开头，并且必须是字母或数字或破折号（-）。",
+                "jp": "ファイル名はアルファベット大文字またはアルファベット小文字で始まり、アルファベットまたは数字またはダッシュ（-）でなければなりません。"
+            },
+            "Double click to editing": {
+                "ko": "편집하려면 더블클릭 하세요.",
+                "en": "Double click to editing",
+                "zh": "双击进行编辑。",
+                "jp": "ダブルクリックして編集します。"
+            },
+            "BotIdPattern": {
+                "ko": "봇 아이디는 알파벳 소문자 혹은 대문자로 시작해야 합니다.",
+                "en": "Bot id must be starts with alphabet small or capital letter",
+                "zh": "机器ID必须以字母小写或大写字母开头。",
+                "jp": "ボットIDはアルファベット小文字または大文字で始まる必要があります。"
+            },
+            "Has been applied": {
+                "ko": "적용되었습니다.",
+                "en": "Has been applied",
+                "zh": "已被应用。",
+                "jp": "適用された。"
+            },
+            "There was a temporary error. Please try again in a few minutes.": {
+                "ko": "일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+                "en": "There was a temporary error. Please try again in a few minutes.",
+                "zh": "有一个暂时的错误。 请在几分钟后再试一次。",
+                "jp": "一時的なエラーがありました。 数分後にもう一度お試しください。"
+            },
+            "Your email is not signed up.": {
+                "ko": "가입되지 않은 Email 입니다.",
+                "en": "Your email is not signed up.",
+                "zh": "您的电子邮件未注册。",
+                "jp": "あなたのメールアドレスはサインアップされていません。"
+            },
+            "Get started right away.": {
+                "ko": "바로시작하기",
+                "en": "Get started right away.",
+                "zh": "立即开始。",
+                "jp": "すぐに始めましょう。"
+            },
+            "Your email is verified.": {
+                "ko": "인증되었습니다.",
+                "en": "Your email is verified.",
+                "zh": "您的电子邮件已验证。",
+                "jp": "あなたの電子メールが確認されます。"
+            },
+            "There are already added images. Do you want to change it?": {
+                "ko": "이미 추가된 이미지가 있습니다. 변경하시겠습니까?",
+                "en": "There are already added images. Do you want to change it?",
+                "zh": "已经添加了图像。 你想改变它吗？",
+                "jp": "既に画像が追加されています。 あなたはそれを変更したいですか？"
+            },
+            "Image address string length is big. please down sizing image adress string length.": {
+                "ko": "이미지 주소 문자열 길이가 깁니다. 이미지 주소 문자열 길이를 줄이십시오.",
+                "en": "Image address string length is big. please down sizing image adress string length.",
+                "zh": "图像地址字符串的长度很大。 请缩小图像地址字符串长度。",
+                "jp": "イメージアドレス文字列の長さが大きいです。 イメージアドレス文字列の長さを縮小してください。"
+            },
+            "ko": {
+                "ko": "한국어",
+                "en": "Korean",
+                "zh": "韩国语",
+                "jp": "韓国語"
+            },
+            "en": {
+                "ko": "영어",
+                "en": "English",
+                "zh": "英语",
+                "jp": "英語"
+            },
+            "zh": {
+                "ko": "중국어",
+                "en": "Chinese",
+                "zh": "中文",
+                "jp": "中国語"
+            },
+            "jp": {
+                "ko": "일본어",
+                "en": "Japanese",
+                "zh": "日本语",
+                "jp": "日本語"
+            },
+            "default.js": {
+                "ko": "함수 작업공간",
+                "en": "Function workspace",
+                "zh": "函数功能实现区",
+                "jp": "関数ワークスペース"
+            },
+            "default.graph.js": {
+                "ko": "대화시나리오",
+                "en": "Dialog Scenario",
+                "zh": "对话场景卡片图",
+                "jp": "ダイアログシナリオ"
+            },
+            "bot.js": {
+                "ko": "챗봇 설정",
+                "en": "Chatbot Settings",
+                "zh": "Chatbot设置",
+                "jp": "チャットボットの設定"
+            },
+            "Changing information": {
+                "ko": "정보수정",
+                "en": "Changing information",
+                "zh": "信息修改",
+                "jp": "情報の変更"
+            },
+            "Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend? if select the 'Cancel', then you can send to our email.": {
+                "ko": "질문 또는 오류보고 및 개선제안은 카카오톡 플러스친구로 받고 있습니다. 플레이챗 플러스친구로 이동하시겠습니까?\n\n'취소'를 선택하시면 저희에게 직접 메일을 보내실 수 있습니다.",
+                "en": "Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend?\n\nif select the 'Cancel', then you can send to our email.",
+                "zh": "与KakaoTalk Plus一起收到问题或错误报告以及改进建议。 移至PlayChat Plus朋友？\n\n如果选择“取消”，那么你可以发送到我们的电子邮件。",
+                "jp": "質問やエラー報告、改善の提案は、カカオトークプラスで友人として受け取ります。 PlayChat Plusの友達に移動しますか？\n\n'キャンセル'を選択した場合、私たちの電子メールに送信することができます。"
+            },
+            "Chatbot Basic Information": {
+                "ko": "챗봇 기본정보",
+                "en": "Chatbot Basic Information",
+                "zh": "Chatbot基本信息",
+                "jp": "チャットボットの基本情報"
+            },
+            "Chatbot Options": {
+                "ko": "챗봇 옵션",
+                "en": "Chatbot Options",
+                "zh": "Chatbot选项",
+                "jp": "チャットボットのオプション"
+            },
+            "Option Name": {
+                "ko": "옵션 명",
+                "en": "Option Name",
+                "zh": "选项名称",
+                "jp": "オプション名"
+            },
+            "Option Value": {
+                "ko": "옵션 값",
+                "en": "Option Value",
+                "zh": "期权价值",
+                "jp": "オプション値"
+            },
+            "Chatbot Usable": {
+                "ko": "챗봇 사용여부",
+                "en": "Chatbot Usable",
+                "zh": "Chatbot可用",
+                "jp": "Chatbot使用可能"
+            },
+            "Chatbot Usable Description": {
+                "ko": "(default: true) false일 경우 챗봇 사용이 중지됩니다.",
+                "en": "(default: true) If false, chatbots will be disabled.",
+                "zh": "（默认值：true）如果为false，chatbots将被禁用。",
+                "jp": "（デフォルト：true）falseの場合、チャットボットは無効になります。"
+            },
+            "Auto Correction Usable": {
+                "ko": "오타자동수정 기능 사용여부",
+                "en": "Auto Correction Usable",
+                "zh": "自动校正可用",
+                "jp": "使用可能な自動補正"
+            },
+            "Auto Correction Usable Description": {
+                "ko": "(default: false) true일경우 오타수정기능이 사용됩니다.",
+                "en": "(default: false) If true, typo correction will be used.",
+                "zh": "（默认值：false）如果为true，则会使用拼写错误更正。",
+                "jp": "（デフォルト：false）trueの場合は、誤植が使用されます。"
+            },
+            "Chatbot Sharing": {
+                "ko": "챗봇 공유",
+                "en": "Chatbot Sharing",
+                "zh": "聊天机器人共享",
+                "jp": "チャットボットの共有"
+            },
+            "Start cards can not be deleted": {
+                "ko": "시작카드는 삭제할 수 없습니다",
+                "en": "Start cards can not be deleted",
+                "zh": "启动卡不能被删除",
+                "jp": "スタートカードは削除できません"
+            },
+            "The format does not match": {
+                "ko": "형식이 일치하지 않습니다.",
+                "en": "The format does not match",
+                "zh": "格式不匹配",
+                "jp": "フォーマットが一致しません"
+            },
+            "User input analysis": {
+                "ko": "사용자입력 분석",
+                "en": "User input analysis",
+                "zh": "用户输入分析",
+                "jp": "ユーザー入力分析"
+            },
+            "Entity Analysis": {
+                "ko": "엔티티 분석",
+                "en": "Entity Analysis",
+                "zh": "实体分析",
+                "jp": "エンティティ分析"
+            },
+            "Task Log": {
+                "ko": "태스크 로그",
+                "en": "Task Log",
+                "zh": "任务日志",
+                "jp": "タスクログ"
+            },
+            "Answer Analysis": {
+                "ko": "답변 분석",
+                "en": "Answer Analysis",
+                "zh": "答案分析",
+                "jp": "回答の分析"
+            },
+            "Natural language processing": {
+                "ko": "자연어처리",
+                "en": "Natural language processing",
+                "zh": "自然语言处理",
+                "jp": "自然言語処理"
+            },
+            "Natural language analysis": {
+                "ko": "자연어 분석",
+                "en": "Natural language analysis",
+                "zh": "自然语言分析",
+                "jp": "自然言語解析"
+            },
+            "Word class": {
+                "ko": "품사",
+                "en": "Word class",
+                "zh": "词类",
+                "jp": "単語クラス"
+            },
+            "Matching Intent": {
+                "ko": "일치 인텐트",
+                "en": "Matching Intent",
+                "zh": "匹配意图",
+                "jp": "マッチングの意図"
+            },
+            "Matching Rate": {
+                "ko": "매치율",
+                "en": "Matching Rate",
+                "zh": "匹配率",
+                "jp": "マッチング率"
+            },
+            "Email": {
+                "ko": "이메일주소",
+                "en": "Email",
+                "zh": "电子邮件",
+                "jp": "Eメール"
+            },
+            "Authority": {
+                "ko": "권한",
+                "en": "Authority",
+                "zh": "权威",
+                "jp": "権限"
+            },
+            "Add Member": {
+                "ko": "멤버 추가",
+                "en": "Add Member",
+                "zh": "添加成员",
+                "jp": "メンバーを追加"
+            },
+            "User Key": {
+                "ko": "사용자 아이디",
+                "en": "User Key",
+                "zh": "用户密钥",
+                "jp": "ユーザー・キー"
+            },
+            "Last conversation date": {
+                "ko": "마지막 대화일자",
+                "en": "Last conversation date",
+                "zh": "上次会话日期",
+                "jp": "最後の会話日"
+            },
+            "Date of first conversation": {
+                "ko": "첫 대화 날짜",
+                "en": "Date of first conversation",
+                "zh": "第一次对话的日期",
+                "jp": "最初会話の日付"
+            },
+            "Mobile": {
+                "ko": "휴대폰 번호",
+                "en": "Mobile",
+                "zh": "移动",
+                "jp": "モバイル"
+            },
+            "Provider": {
+                "ko": "제공자",
+                "en": "Provider",
+                "zh": "提供商",
+                "jp": "プロバイダ"
+            },
+            "The newly added card is still being edited.": {
+                "ko": "새로 추가한 카드가 아직 편집중입니다.",
+                "en": "The newly added card is still being edited.",
+                "zh": "新添加的卡仍在编辑中。",
+                "jp": "新しく追加されたカードはまだ編集中です。"
+            },
+            "Key": {
+                "ko": "키",
+                "en": "Key",
+                "zh": "键",
+                "jp": "キー"
+            },
+            "Value": {
+                "ko": "값",
+                "en": "Value",
+                "zh": "值",
+                "jp": "値"
+            },
+            "Dialog Card Id": {
+                "ko": "대화카드 아이디",
+                "en": "Dialog Card Id",
+                "zh": "对话卡ID",
+                "jp": "ダイアログカードID"
+            },
+            "Dialog Card Name": {
+                "ko": "대화카드 이름",
+                "en": "Dialog Card Name",
+                "zh": "对话卡名称",
+                "jp": "ダイアログ・カード名"
+            },
+            "Dialogset Name": {
+                "ko": "대화셋 이름",
+                "en": "Dialogset Name",
+                "zh": "对话框名称",
+                "jp": "ダイアログセット名"
+            },
+            "Matched Dialog Card": {
+                "ko": "매칭된 대화카드",
+                "en": "Matched Dialog Card",
+                "zh": "匹配的对话卡",
+                "jp": "一致したダイアログカード"
+            },
+            "Minimum": {
+                "ko": "최소",
+                "en": "Minimum",
+                "zh": "匹配的对话卡",
+                "jp": "一致したダイアログカード"
+            },
+            "Action Target": {
+                "ko": "액션 대상",
+                "en": "Action Target",
+                "zh": "行动目标",
+                "jp": "アクションターゲット"
+            },
+            "Options": {
+                "ko": "옵션",
+                "en": "Options",
+                "zh": "选项",
+                "jp": "オプション"
+            },
+            "Edit": {
+                "ko": "수정하기",
+                "en": "Edit",
+                "zh": "编辑",
+                "jp": "編集"
+            },
+            "Telegram": {
+                "ko": "텔레그램",
+                "en": "Telegram",
+                "zh": "Telegram",
+                "jp": "Telegram"
+            },
+            "Connected": {
+                "ko": "연결되었습니다",
+                "en": "Connected",
+                "zh": "连接的。",
+                "jp": "接続されました。"
+            },
+            "MiniWebChat": {
+                "ko": "미니웹 채팅창",
+                "en": "Mini Web Chat",
+                "zh": "迷你网络聊天",
+                "jp": "ミニウェブチャット"
+            },
+            "Insert the code below into the head or body of the website where you want to attach the mini-web chat window": {
+                "ko": "미니 웹 채팅창을 붙일 웹사이트의 <head> 또는 <body>에 아래 코드를 삽입하세요.",
+                "en": "Insert the code below into the <head> or <body> of the website where you want to attach the mini-web chat window",
+                "zh": "将以下代码插入您想要附加迷你网络聊天窗口的网站的<head>或<body>中。",
+                "jp": "ミニウェブチャットウィンドウを付けるウェブサイトの<head>または<body>に次のコードを挿入します。"
+            },
+            "Mobile Web Url": {
+                "ko": "모바일 웹 주소",
+                "en": "Mobile Web Url",
+                "zh": "移动网址",
+                "jp": "モバイルウェブURL"
             }
         };
 
@@ -2869,10 +3622,11 @@
 
         var lan = function(key)
         {
-            if(!key)
-                return '';
+
+            if(!key) return '';
 
             key = key.trim();
+
             if(!languages[key])
             {
                 if(!list[key])

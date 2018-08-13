@@ -10,40 +10,103 @@ var mongoose = require('mongoose');
 
 var frontLanguage = require(path.resolve('./modules/core/server/controllers/front.language.js'));
 
+var UserLog = mongoose.model('UserLog');
+
+var supportedLan = ["en", "ko", "zh", "jp"];
+var accepts = require('accepts');
+
+var urlExist = require('url-exists');
+
+exports.renderWebChatBot = function(req, res)
+{
+    var Bot = mongoose.model('Bot');
+    Bot.findOne({ id: req.params.botId }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(500).send({ error: err });
+        }
+
+        var param = { botId: bot.id, botName: bot.name, botDescription: bot.description };
+
+        res.render('modules/core/server/views/web-chatbot', param);
+    });
+};
+
+exports.renderMobileChatBot = function(req, res)
+{
+    if(!req.params.botId)
+    {
+        return res.status(404).end();
+    }
+
+    var Bot = mongoose.model('Bot');
+    Bot.findOne({ id: req.params.botId }).exec(function(err, bot)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(500).send({ error: err });
+        }
+
+        var param = {
+            botId: bot.id,
+            botName: bot.name,
+            image_url:'/modules/playchat/simulator/client/imgs/bot.png'
+        };
+
+        if(bot.imageFile && bot.imageFile != ''){
+            urlExist(bot.imageFile,function(e,r){
+                if(r){
+                    param.image_url = bot.imageFile;
+                }
+                res.render('modules/core/server/views/mobile-web-chat', param);
+            });
+        }else{
+            res.render('modules/core/server/views/mobile-web-chat', param);
+        }
+    });
+};
+
 /**
  * Render the main application page
  */
 exports.renderIndex = function (req, res, next)
 {
+    if(req.path.startsWith('/kakao') || req.path.startsWith('/line') || req.path.startsWith('/facebook') || req.path.startsWith('/navertalk') || req.path.startsWith('/wechat'))
+    {
+        return next();
+    }
+
     if(req.path == '/')
     {
-        var code = req.headers["accept-language"];
-        if(!code)
-            code = '';
+        var accept = accepts(req);
+        var browserLan = accept.language()[0];
+        var queryLan = req.query.lan;
 
-        code = code.split('-')[0];
+        console.log(browserLan);
 
-        code = req.query.lan || code || 'en';
-
-        if(!req.query.lan)
+        if(browserLan.indexOf('-') != -1)
         {
-            res.redirect('/?lan=' + code);
-            return;
+            browserLan = browserLan.split('-')[0];
         }
 
-        if(code.indexOf(',') != -1)
+        if(supportedLan.indexOf(browserLan) == -1)
         {
-            code = code.split(',')[0];
-            res.redirect('/?lan=' + code);
-            return;
+            browserLan = 'en';
         }
+
+        if(supportedLan.indexOf(queryLan) == -1)
+        {
+            queryLan = undefined;
+        }
+
+        var code = queryLan || browserLan;
 
         res.render('modules/front/index', frontLanguage(code));
         return;
     }
-
-    var path_uri = req.path;
-    var path = path_uri.split('/');
 
     var platform = 'web';
     if(req.headers['user-agent'])
@@ -60,6 +123,7 @@ exports.renderIndex = function (req, res, next)
 
     req.session.platform = platform;
 
+    console.log(req.subdomains);
     res.render('modules/core/server/views/layout', { user: req.user || null, platform: platform });
 };
 
@@ -95,6 +159,28 @@ exports.renderNotFound = function (req, res) {
   });
 };
 
+
+/**
+ * get config
+ */
+exports.logging = function (req, res) {
+    var userLog = new UserLog();
+    userLog.userId = req.body.userId;
+    userLog.url = req.body.url;
+    userLog.botId = req.body.botId;
+
+    userLog.save(function (err) {
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).send({error: err});
+        }
+        res.end();
+    })
+
+
+
+};
 
 /**
 * get config

@@ -24,37 +24,16 @@
 
         $scope.keydown = function(e, index)
         {
-            if(e.keyCode == 13 && (e.ctrlKey || e.metaKey))
-            {
-                e.preventDefault();
-                $scope.entity.entityContents.splice(index + 1, 0, { name: '', synonyms: [''] });
-
-                $timeout(function()
-                {
-                    angular.element('.entity-management-add-content-row').get(index + 1).children[0].children[0].focus();
-                }, 50);
-            }
-        };
-
-        $scope.synonymKeyDown = function(e, content, index)
-        {
             if(e.keyCode == 13)
             {
-                content.synonyms.splice(index + 1, 0, '');
+                e.preventDefault();
+                $scope.entity.entityContents.splice(index + 1, 0, { name: '' });
 
                 $timeout(function()
                 {
-                    e.currentTarget.parentElement.nextElementSibling.children[0].focus();
+                    angular.element('.entity-management-add-input-wrapper').get(index + 1).children[0].focus();
                 }, 50);
-
-                e.preventDefault();
-                e.stopPropagation();
             }
-        };
-
-        $scope.synonymKeyUp = function(e, synonyms, index)
-        {
-            synonyms[index] = e.currentTarget.innerText;
         };
 
         $scope.focusToContentEditable = function(e)
@@ -65,7 +44,7 @@
 
         $scope.addEntityContent = function()
         {
-            $scope.entity.entityContents.push({ name: '', synonyms: [''] });
+            $scope.entity.entityContents.push({ name: '' });
 
             $timeout(function()
             {
@@ -89,29 +68,20 @@
             }, 100);
         };
 
-        $scope.deleteEntityContentSynonym = function(content, index, e)
-        {
-            if(content.synonyms.length == 1)
-            {
-                alert($scope.lan('The last synonym cannot be deleted.'));
-                return;
-            }
-
-            var target = e.currentTarget.parentElement.previousElementSibling;
-            if(!target)
-                target = e.currentTarget.parentElement.nextElementSibling;
-
-            target.children[0].focus();
-
-            content.synonyms.splice(index, 1);
-        };
-
         $scope.save = function(e)
         {
             var params = {};
             params.botId = chatbot.id;
             params.name = $scope.entity.name;
-            params.entityContents = JSON.parse(angular.toJson($scope.entity.entityContents));
+            params.entityContents = [];
+
+            for(var i=0; i<$scope.entity.entityContents.length; i++)
+            {
+                if($scope.entity.entityContents[i].name)
+                {
+                    params.entityContents.push($scope.entity.entityContents[i]);
+                }
+            }
 
             console.log(params);
 
@@ -146,13 +116,19 @@
 
         formElement.openCallback = function(name)
         {
-            $scope.$apply(function()
-            {
+            if ($scope.$$phase == '$apply' || $scope.$$phase == '$digest' ) {
                 $scope.entity = {
                     name: name,
                     entityContents: [{ name: '', synonyms: [''] }]
                 };
-            });
+            } else {
+                $scope.$apply(function () {
+                    $scope.entity = {
+                        name: name,
+                        entityContents: [{ name: '', synonyms: [''] }]
+                    };
+                });
+            }
         };
         $scope.lan=LanguageService;
     }]);

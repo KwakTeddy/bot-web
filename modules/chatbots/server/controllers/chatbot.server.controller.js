@@ -1,6 +1,11 @@
 var path = require('path');
 var mongoose = require('mongoose');
 var fs = require('fs');
+var accepts = require('accepts');
+var async = require('async');
+
+
+var S3 = require(path.resolve('./modules/common/s3.js'));
 
 var ncp = require('ncp').ncp;
 ncp.limit = 16;
@@ -11,11 +16,14 @@ var Template = mongoose.model('Template');
 var User = mongoose.model('User');
 
 var Intent = mongoose.model('Intent');
+var IntentContent = mongoose.model('IntentContent');
 var Entity = mongoose.model('Entity');
+var EntityContent = mongoose.model('EntityContent');
 
 var IntentController = require(path.resolve('./modules/playchat/working-ground/intent/server/controllers/intent.server.controller.js'));
 var EntityController = require(path.resolve('./modules/playchat/working-ground/entity/server/controllers/entity.server.controller.js'));
 
+var lanService = require(path.resolve('./modules/core/server/controllers/front.language.js'));
 exports.findTotalPage = function(req, res)
 {
     var countPerPage = req.query.countPerPage || 10;
@@ -53,6 +61,7 @@ exports.find = function (req, res)
     {
         if(err)
         {
+            console.error(err);
             return res.status(400).send({ message: err.stack || err });
         }
         else
@@ -93,151 +102,251 @@ exports.findOne = function(req, res)
     });
 };
 
+var deleteBotObjectFromS3 = function(botId, callback)
+{
+    if(process.env.NODE_ENV == 'production')
+    {
+        // var params = {  Bucket: 'playchat-custom-modules', Key: botId };
+        // s3.deleteObject(params, function(err, data)
+        // {
+        //     if(callback)
+        //     {
+        //         callback(err, data);
+        //     }
+        // });
+    }
+};
+
 exports.create = function(req, res)
 {
-    ChatBot.findOne({ name: req.body.name }).exec(function(err, bot)
+
+    var language = req.body.language;
+    console.log(language);
+
+    ChatBot.findOne({ id: req.body.id }).exec(function(err, bot)
     {
         if(err)
         {
             return res.status(400).send({ message: err.stack || err });
         }
-
         if(bot)
         {
-            return res.status(400).send({ message: 'Duplicated Bot' });
+            return res.status(400).send({ message: 'Duplicated Bot Id' });
         }
 
-        var chatbot = new ChatBot(req.body);
-        chatbot.user = req.user;
-        chatbot.save(function(err)
+        ChatBot.findOne({ name: req.body.name }).exec(function(err, bot)
         {
             if(err)
             {
-                console.error(err);
                 return res.status(400).send({ message: err.stack || err });
             }
 
-            Template.populate(chatbot, {path:"templateId"}, function(err, chatbot)
+            if(bot)
             {
-                // 배달봇같은 서비스 형태의 봇은 카피하지 않고 원천소스를 그대로 사용한다.
-                // if(chatbot.templateId)
-                // {
-                //     var templateDir = path.resolve('./templates/' + req.body.templateDir);
-                //
-                //     var files = fs.readdirSync(templateDir + '/bot');
-                //     for(var i=0; i<files.length; i++)
-                //     {
-                //         if(files[i].endsWith('.js'))
-                //         {
-                //             var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
-                //             fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
-                //         }
-                //     }
-                // }
-                // else
-                // {
-                if(!chatbot.templateId)
+                return res.status(400).send({ message: 'Duplicated Bot' });
+            }
+
+            var chatbot = new ChatBot(req.body);
+            if(!req.body.type.startsWith('sample') && req.body.type != 'blank')
+            {
+                chatbot.templateId = req.body.type;
+            }
+            chatbot.user = req.user;
+            chatbot.save(function(err)
+            {
+                if(err)
                 {
-                    var dir = path.resolve('./custom_modules/' + req.body.id);
-                    if(!fs.existsSync(dir))
-                    {
-                        fs.mkdirSync(dir);
-                    }
+                    console.error(err);
+                    return res.status(400).send({ message: err.stack || err });
+                }
 
-                    var language = req.body.language;
-                    if(language === undefined) language = 'en';
-
-                    if(req.body.isSample)
-                    {
-                        var botjs = fs.readFileSync(__dirname + '/sample/bot.template');
-                        var defaultjs = fs.readFileSync(__dirname + '/sample/default.template');
-                        var graphjs = fs.readFileSync(__dirname + '/sample/graph.' + language + '.template');
-
-                        fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                        fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-
-                        var contents = IntentController.parseXlsx(__dirname + '/sample/intent.' + language + '.xlsx');
-                        if(contents.length > 0)
-                        {
-                            var intent = new Intent();
-                            intent.botId = req.body.id;
-                            intent.name = 'sample';
-                            intent.user = req.user;
-
-                            intent.save(function(err)
-                            {
-                                if(err)
-                                {
-                                    console.error(err);
-                                }
-                                else
-                                {
-                                    IntentController.saveIntentContents(req.body.id, '', req.body.language, req.user, intent._id, contents, function()
-                                    {
-                                    },
-                                    function(err)
-                                    {
-                                        console.error(err);
-                                    });
-                                }
-                            });
+                Template.populate(chatbot, {path:"templateId"}, function(err, chatbot) {
+                    // 배달봇같은 서비스 형태의 봇은 카피하지 않고 원천소스를 그대로 사용한다.
+                    if (chatbot.templateId) {
+                        var dir = path.resolve('./custom_modules/' + req.body.id);
+                        if (!fs.existsSync(dir)) {
+                            fs.mkdirSync(dir);
                         }
+                        //var templateDir = path.resolve('./templates/election');
+                        var templateDir = path.resolve('./templates/' + req.body.templateDir);
 
-                        var entities = EntityController.parseXlsx(__dirname + '/sample/entity.' + language + '.xlsx');
-                        if(entities.length > 0)
-                        {
-                            var entity = new Entity();
-                            entity.botId = req.body.id;
-                            entity.name = 'sample';
-                            entity.user = req.user;
+                        var files = fs.readdirSync(templateDir + '/bot');
+                        for (var i = 0; i < files.length; i++) {
+                            if (files[i].endsWith('.js')) {
+                                var fileData = fs.readFileSync(templateDir + '/bot/' + files[i]).toString();
 
-                            entity.save(function(err)
-                            {
-                                if(err)
-                                {
-                                    console.error(err);
+                                if(files[i].indexOf('bot.js')>=0 && (!language || language != 'ko')){
+                                    botData = botData.replace("시작",lanService(language)['start']);
                                 }
-                                else
-                                {
-                                    EntityController.saveEntityContents(req.body.id, '', req.user, entity._id, entities, function(){}, function(err)
-                                    {
-                                        console.error(err);
-                                    });
-                                }
-                            });
+
+
+                                fs.writeFileSync(dir + '/' + files[i], fileData.replace(/{botId}/gi, chatbot.id));
+                            }
                         }
+                        var botAuth = new BotAuth();
+                        botAuth.bot = chatbot._id;
+                        botAuth.user = req.user;
+                        botAuth.giver = req.user;
+                        botAuth.edit = true;
+
+                        botAuth.save(function (err) {
+                            if (err) {
+                                console.error(err);
+                                return res.status(400).send({message: err.stack || err});
+                            }
+
+                            res.jsonp(chatbot);
+                        });
                     }
                     else
                     {
-                        // 템플릿 아이디가 없으면 아예 생성도 하지 않음.
-                        // 이 기능은 서비스봇인경우에 templateId를 가지는데 custom_modules에 생성할 필요도 없음.
-                        var botjs = fs.readFileSync(__dirname + '/bot.template');
-                        var defaultjs = fs.readFileSync(__dirname + '/default.template');
-                        var graphjs = fs.readFileSync(__dirname + '/graph.' + language + '.template');
+                        var type = req.body.type || 'blank';
+                        var dir = path.resolve('./custom_modules/' + req.body.id);
+                        if (!fs.existsSync(dir)) {
+                            fs.mkdirSync(dir);
+                        }
 
-                        fs.writeFileSync(dir + '/default.graph.js', graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                        fs.writeFileSync(dir + '/default.js', defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
-                        fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name));
+                        if (language === undefined) language = 'en';
+
+                        if (type == 'sample') {
+                            var botjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/bot.template');
+                            var defaultjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/default.template');
+                            var graphjs = fs.readFileSync(__dirname + '/sample/' + req.body.sampleCategory + '/graph.' + language + '.template');
+
+                            var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                            var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+
+
+                            var botData = botjs.toString();
+
+                            if(!language || language != 'ko'){
+                                botData = botData.replace("시작",lanService(language)['start']);
+                            }
+
+                            botData = botData.replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+
+                            fs.writeFileSync(dir + '/default.graph.js', graphData);
+                            fs.writeFileSync(dir + '/default.js', defaultData);
+                            fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
+
+                            if (process.env.NODE_ENV == 'production') {
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                            }
+
+                            var contents = IntentController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/intent.' + language + '.xlsx');
+                            if (contents.length > 0) {
+                                var intent = new Intent();
+                                intent.botId = req.body.id;
+                                intent.name = 'sample';
+                                intent.user = req.user;
+
+                                intent.save(function (err) {
+                                    if (err) {
+                                        console.error(err);
+                                    }
+                                    else {
+                                        IntentController.saveIntentContents(req.body.id, '', req.body.language, req.user, intent._id, contents, function () {
+                                            },
+                                            function (err) {
+                                                console.error(err);
+                                            });
+                                    }
+                                });
+                            }
+
+                            var entities = EntityController.parseXlsx(__dirname + '/sample/' + req.body.sampleCategory + '/entity.' + language + '.xlsx');
+                            if (entities.length > 0) {
+                                var entity = new Entity();
+                                entity.botId = req.body.id;
+                                entity.name = 'sample';
+                                entity.user = req.user;
+
+                                entity.save(function (err) {
+                                    if (err) {
+                                        console.error(err);
+                                    }
+                                    else {
+                                        EntityController.saveEntityContents(req.body.id, '', req.user, entity._id, entities, function () {
+                                        }, function (err) {
+                                            console.error(err);
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                        else if (type == 'blank') {
+                            var botjs = fs.readFileSync(__dirname + '/sample/blank/bot.template');
+                            var defaultjs = fs.readFileSync(__dirname + '/sample/blank/default.template');
+                            var graphjs = fs.readFileSync(__dirname + '/sample/blank/graph.' + language + '.template');
+
+                            var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                            var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                            var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+
+                            if(!language || language != 'ko'){
+                                console.log(lanService(language));
+                                botData = botData.replace("시작",lanService(language)['start']);
+                            }
+
+                            fs.writeFileSync(dir + '/default.graph.js', graphData);
+                            fs.writeFileSync(dir + '/default.js', defaultData);
+                            fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
+
+                            if (process.env.NODE_ENV == 'production') {
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                            }
+                        }
+                        else {
+                            var bot_tpl_path = '';
+
+                            try{
+                                fs.lstatSync('./custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language)).isDirectory();
+
+                                bot_tpl_path = './custom_modules/' + type + ( chatbot.language == 'ko' ? '' : '_' + chatbot.language);
+                            }catch(e){
+                                bot_tpl_path = './custom_modules/' + type;
+                            }
+
+                            var botjs = fs.readFileSync(path.resolve(bot_tpl_path  + '/bot.js'));
+                            var defaultjs = fs.readFileSync(path.resolve(bot_tpl_path + '/default.js'));
+                            var graphjs = fs.readFileSync(path.resolve(bot_tpl_path + '/default.graph.js'));
+
+                            var botData = botjs.toString();
+
+                            if(!language || language != 'ko'){
+                                botData = botData.replace("시작",lanService(language)['start']);
+                            }
+
+                            fs.writeFileSync(dir + '/default.graph.js', graphjs.toString());
+                            fs.writeFileSync(dir + '/default.js', defaultjs.toString());
+                            fs.writeFileSync(dir + '/bot.js', botData);
+
+                            if (process.env.NODE_ENV == 'production') {
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                                S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                            }
+                        }
+
+                        var botAuth = new BotAuth();
+                        botAuth.bot = chatbot._id;
+                        botAuth.user = req.user;
+                        botAuth.giver = req.user;
+                        botAuth.edit = true;
+
+                        botAuth.save(function (err) {
+                            if (err) {
+                                console.error(err);
+                                return res.status(400).send({message: err.stack || err});
+                            }
+
+                            res.jsonp(chatbot);
+                        });
                     }
-                }
-                // }
-
-                var botAuth = new BotAuth();
-                botAuth.bot = chatbot._id;
-                botAuth.user = req.user;
-                botAuth.giver = req.user;
-                botAuth.edit = true;
-
-                botAuth.save(function(err)
-                {
-                    if(err)
-                    {
-                        console.error(err);
-                        return res.status(400).send({ message: err.stack || err });
-                    }
-
-                    res.jsonp(chatbot);
                 });
             });
         });
@@ -288,6 +397,146 @@ exports.rename = function(req, res)
     });
 };
 
+var getCloneName = function(name, index, callback)
+{
+    ChatBot.findOne({ name: name + (index == 0 ? '' : index) }).exec(function(err, item)
+    {
+        if(err)
+        {
+            callback(err);
+        }
+        else if(item)
+        {
+            getCloneName(name, index+1, callback);
+        }
+        else
+        {
+            callback(null, index);
+        }
+    });
+};
+
+var duplicateIntent = function(srcBotId, destBotId, callback)
+{
+    Intent.find({ botId: srcBotId }).exec(function(err, list)
+    {
+        if(err)
+        {
+            console.error(err);
+            return callback();
+        }
+
+        async.eachSeries(list, function(intent, next)
+        {
+            var newIntent = new Intent();
+            newIntent.user = intent.user;
+            newIntent.name = intent.name;
+            newIntent.botId = destBotId;
+
+            newIntent.save(function(err)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return next();
+                }
+
+                IntentContent.find({ intentId: intent._id }).exec(function(err, list)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                        return next();
+                    }
+
+                    async.eachSeries(list, function(intentContent, next)
+                    {
+                        var newIntentContent = new IntentContent();
+                        newIntentContent.input = intentContent.input;
+                        newIntentContent.name = intentContent.name;
+                        newIntentContent.intentId = newIntent._id;
+                        newIntentContent.botId = destBotId;
+                        newIntentContent.user = intentContent.user;
+
+                        newIntentContent.save(function()
+                        {
+                            next();
+                        });
+                    },
+                    function()
+                    {
+                        next();
+                    });
+                });
+            });
+        },
+        function()
+        {
+            callback();
+        });
+    });
+};
+
+var duplicateEntity = function(srcBotId, destBotId, callback)
+{
+    Entity.find({ botId: srcBotId }).exec(function(err, list)
+    {
+        if(err)
+        {
+            console.error(err);
+            return callback();
+        }
+
+        async.eachSeries(list, function(entity, next)
+        {
+            var newEntity = new Entity();
+            newEntity.user = entity.user;
+            newEntity.name = entity.name;
+            newEntity.botId = destBotId;
+
+            newEntity.save(function(err)
+            {
+                if(err)
+                {
+                    console.error(err);
+                    return next();
+                }
+
+                EntityContent.find({ entityId: entity._id }).exec(function(err, list)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                        return next();
+                    }
+
+                    async.eachSeries(list, function(entityContent, next)
+                    {
+                        var newEntityContent = new EntityContent();
+                        newEntityContent.name = entityContent.name;
+                        newEntityContent.intentId = newEntity._id;
+                        newEntityContent.user = entityContent.user;
+                        newEntityContent.botId = destBotId;
+
+                        newEntityContent.save(function()
+                        {
+                            next();
+                        });
+                    },
+                    function()
+                    {
+                        next();
+                    });
+                });
+            });
+        },
+        function()
+        {
+            callback();
+        });
+    });
+};
+
 exports.duplicate = function(req, res)
 {
     ChatBot.findOne({ _id: req.params.botId }).exec(function(err, item)
@@ -299,48 +548,31 @@ exports.duplicate = function(req, res)
         }
         else
         {
-            var clone = new ChatBot();
-            clone.id = item.id + '_Clone';
-            clone.name = item.name + 'Clone';
-            clone.description = item.description;
-            clone.user = req.user;
-
-            clone.save(function(err)
+            getCloneName(item.name + 'Clone', 0, function(err, index)
             {
                 if(err)
                 {
+                    console.error(err);
                     return res.status(400).send({ message: err.stack || err });
                 }
 
-                if(!item.templateId)
+                var clone = new ChatBot();
+                clone.id = item.id + '_Clone' + (index == 0 ? '' : index);
+                clone.name = item.name + 'Clone' + (index == 0 ? '' : index);
+                clone.description = item.description;
+                clone.user = req.user;
+
+                clone.save(function(err)
                 {
-                    var dest = path.resolve('./custom_modules/' + item.id + '_Clone');
-                    ncp(path.resolve('./custom_modules/' + item.id), dest, function (err)
+                    if(err)
                     {
-                        if (err)
-                        {
-                            console.error(err);
-                            return res.status(400).send({ message: err.stack || err });
-                        }
+                        return res.status(400).send({ message: err.stack || err });
+                    }
 
-                        var fileList = fs.readdirSync(dest);
-                        for(var i=0; i<fileList.length; i++)
-                        {
-                            var content = fs.readFileSync(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
-                            content = content.toString();
-                            content = content.replace(new RegExp(item.id, 'gi'), clone.id);
-
-                            fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
-                        }
-                        
-                        var botAuth = new BotAuth();
-                        botAuth.giver = req.user;
-                        botAuth.user = req.user;
-                        botAuth.bot = clone._id;
-                        botAuth.read = true;
-                        botAuth.edit = true;
-
-                        botAuth.save(function(err)
+                    if(!item.templateId)
+                    {
+                        var dest = path.resolve('./custom_modules/' + item.id + '_Clone' + (index == 0 ? '' : index));
+                        ncp(path.resolve('./custom_modules/' + item.id), dest, function (err)
                         {
                             if (err)
                             {
@@ -348,14 +580,51 @@ exports.duplicate = function(req, res)
                                 return res.status(400).send({ message: err.stack || err });
                             }
 
-                            res.jsonp(clone);
+                            var fileList = fs.readdirSync(dest);
+                            for(var i=0; i<fileList.length; i++)
+                            {
+                                var content = fs.readFileSync(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
+                                content = content.toString();
+                                content = content.replace(new RegExp('Bot\\([\'\"]+' + item.id, 'gi'), 'Bot(\'' + clone.id);
+
+                                fs.writeFile(path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]), content);
+
+                                if(process.env.NODE_ENV == 'production')
+                                {
+                                    S3.uploadFile('playchat-custom-modules', clone.id, fileList[i], path.resolve('./custom_modules/' + clone.id + '/' + fileList[i]));
+                                }
+                            }
+
+                            var botAuth = new BotAuth();
+                            botAuth.giver = req.user;
+                            botAuth.user = req.user;
+                            botAuth.bot = clone._id;
+                            botAuth.read = true;
+                            botAuth.edit = true;
+
+                            botAuth.save(function(err)
+                            {
+                                if (err)
+                                {
+                                    console.error(err);
+                                    return res.status(400).send({ message: err.stack || err });
+                                }
+
+                                duplicateIntent(item.id, clone.id, function()
+                                {
+                                    duplicateEntity(item.id, clone.id, function()
+                                    {
+                                        res.jsonp(clone);
+                                    });
+                                });
+                            });
                         });
-                    });
-                }
-                else
-                {
-                    res.jsonp(clone);
-                }
+                    }
+                    else
+                    {
+                        res.jsonp(clone);
+                    }
+                });
             });
         }
     });
@@ -374,12 +643,16 @@ exports.delete = function(req, res)
         {
             var rimraf = require('rimraf');
             rimraf(path.resolve('./custom_modules') + '/' + req.query.botDisplayId, function () { res.end(); });
+
+            deleteBotObjectFromS3(req.params.botId);
         }
     });
 };
 
 exports.share = function(req, res)
 {
+    var language = req.body.language;
+
     User.findOne({ $or: [{ email: req.body.data.email }, { username: req.body.data.email }] }).exec(function(err, item)
     {
         if(err)
@@ -394,7 +667,7 @@ exports.share = function(req, res)
             botAuth.bot = req.params.botId;
             botAuth.user = item._id;
             botAuth.giver = req.user;
-            botAuth.edit = req.body.data.write ? true : false;
+            botAuth.edit = req.body.data.edit ? true : false;
 
             botAuth.save(function(err)
             {
@@ -409,7 +682,7 @@ exports.share = function(req, res)
         }
         else
         {
-            res.status(404).send({ message: req.body.data.email + ' is not found' });
+            res.status(404).send({ message: req.body.data.email + ' ' + lanService(language)['L091'] });
         }
     });
 };

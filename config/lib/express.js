@@ -47,13 +47,15 @@ module.exports.initLocalVariables = function (app)
     app.locals.env = process.env.NODE_ENV;
     app.locals.app_version = '';
 
-    if(process.env.NODE_ENV == 'production')
-    {
-        var stats = fs.statSync("public/dist/application.min.js");
-        var mtime = new Date(util.inspect(stats.mtime));
-        app.locals.app_version = mtime.getTime() + "";
-    }
-
+    //if(process.env.NODE_ENV == 'production')
+    //{
+    //    var stats = fs.statSync("public/dist/application.min.js");
+    //    var mtime = new Date(util.inspect(stats.mtime));
+    //    app.locals.app_version = mtime.getTime() + "";
+    //}
+    app.all('*.php',function(req,res,next){
+        res.status(500);
+    });
     // Passing the request url to environment locals
     app.use(function (req, res, next)
     {
@@ -162,6 +164,7 @@ module.exports.initModulesConfiguration = function (app, db)
 /**
  * Configure Helmet headers configuration
  */
+
 module.exports.initHelmetHeaders = function (app) {
   // Use helmet to secure Express headers
   var SIX_MONTHS = 15778476000;
@@ -182,19 +185,19 @@ module.exports.initHelmetHeaders = function (app) {
  */
 module.exports.initModulesClientRoutes = function (app)
 {
-    app.use(function forceWWW(req, res, next)
-    {
-        var host = req.header("host");
-
-        if (host == 'playchat.ai')
-        {
-            return res.redirect(301, 'https://www.' + host + req.path);
-        }
-        else
-        {
-            return next();
-        }
-    });
+    // app.use(function forceWWW(req, res, next)
+    // {
+    //     var host = req.header("host");
+    //
+    //     if (host == 'playchat.ai')
+    //     {
+    //         return res.redirect(301, 'https://www.' + host + req.path);
+    //     }
+    //     else
+    //     {
+    //         return next();
+    //     }
+    // });
 
      // Setting the app router and static folder
     app.use('/front', express.static(path.resolve('./modules/front')));
@@ -263,7 +266,7 @@ module.exports.initModulesServerRoutes = function (app)
 
                     var query = {};
 
-                    if(ObjectId.isValid(botId))
+                    if(/^[0-9a-fA-F]{24}$/gi.test(botId))
                         query._id = botId;
                     else
                         query.id = botId;

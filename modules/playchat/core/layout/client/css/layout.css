@@ -15,7 +15,10 @@
     background-color: #363636;
     text-transform: capitalize;
 
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    transition: width 0.3s;
 
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -31,6 +34,8 @@
     right: 0;
     bottom: 0;
     height: 100%;
+
+    transition: left 0.3s;
 }
 
 .playchat-background .top-bar
@@ -111,3 +116,4 @@
 
     z-index: 2000;
 }
+

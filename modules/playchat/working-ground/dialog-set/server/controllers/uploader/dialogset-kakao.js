@@ -1,11 +1,11 @@
 var fs = require('fs');
 var path = require('path');
 var async = require('async');
-var fileutil = require(path.resolve('./engine/bot/action/common/fileutil.js'));
-var mongoModule = require(path.resolve('./engine/bot/action/common/mongo.js'));
+var fileutil = require(path.resolve('./engine-old/bot/action/common/fileutil.js'));
+var mongoModule = require(path.resolve('./engine-old/bot/action/common/mongo.js'));
 var dialogsetModule = require('./dialogset-uploader');
 
-// var bot = require(path.resolve('./engine/bot.js')).getBot('private_bot');
+// var bot = require(path.resolve('./engine2/bot.js')).getBot('private_bot');
 
 // var baseDir = path.resolve('public/files/');
 
@@ -301,43 +301,3 @@ function insertDatasetFile(infile, dialogset, callback) {
 }
 
 exports.insertDatasetFile = insertDatasetFile;
-
-var nlp = require(path.resolve('./engine/bot/engine/nlp/processor'));
-
-function processInput(context, inRaw, callback) {
-  var nlpKo = new nlp({
-    stemmer: true,      // (optional default: true)
-    normalizer: true,   // (optional default: true)
-    spamfilter: false     // (optional default: false)
-  });
-
-  var sentenceType = [
-    'declarative',    // 평서문
-    'imperative',     // 명령
-    'exclamatory',    // 감탄
-    'interrogative'   // 질문
-  ];
-
-  var _sentenceType = '';
-  var _in = '';
-  var _nlpRaw = [];
-  var _nlp = [];
-  nlpKo.tokenize(inRaw, function(err, result) {
-    for(var i in result) {
-      // console.log(result[i].text);
-      if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlpRaw.push(result[i]);
-      if(result[i].pos !== 'Josa' && result[i].pos !== 'Punctuation') _nlp.push(result[i].text);
-    }
-
-    _in = _nlp.join(' ');
-
-    for(var i in result) {
-      if(result[i].text === '?') _sentenceType = 'interrogative';
-      // else if(result[i].text === '!') _sentenceType = 'exclamatory';
-    }
-
-    if(_sentenceType === '') _sentenceType = 'declarative';
-
-    callback(_in, {_nlp: _nlpRaw});
-  });
-}

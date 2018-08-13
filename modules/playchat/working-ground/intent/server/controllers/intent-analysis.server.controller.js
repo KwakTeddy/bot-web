@@ -1,12 +1,18 @@
 var mongoose = require('mongoose');
+var async = require('async');
 
-var Intent = mongoose.model('Intent');
+var IntentContent = mongoose.model('IntentContent');
 var MatchedIntent = mongoose.model('MatchedIntent');
 
 module.exports.analysis = function(req, res)
 {
     var query = [
-        { $match: { botId: req.params.botId, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } }},
+        { $match:
+                {
+                    botId: req.params.botId,
+                    created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }
+                }
+        },
         { $group: { _id: '$intent', count: { $sum: 1 } }},
         { $sort: { created: -1 }}
     ];
@@ -18,14 +24,21 @@ module.exports.analysis = function(req, res)
             return res.status(400).send({ message: err.stack || err });
         }
 
-        Intent.populate(list, { path: '_id' }, function(err, result)
+        async.eachSeries(list, function(item, next)
         {
-            if(err)
+            IntentContent.findOne({ _id: item._id }).populate('intentId').exec(function(err, intentContent)
             {
-                return res.status(400).send({ message: err.stack || err });
-            }
+                if(intentContent)
+                {
+                    item._id = intentContent;
+                }
 
-            res.jsonp(result);
+                next();
+            });
+        },
+        function()
+        {
+            res.jsonp(list);
         });
     });
 };

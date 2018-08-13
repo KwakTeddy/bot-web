@@ -23,25 +23,159 @@
 </style>
 
 <div id="logroom" ng-controller="LogAnalysisController">
-    <div class="logHeader">
-        <div class="logTab select" ng-click="selectTab($event, '#logcontent');">
-            <a href="#">{{lan('LOG') }}</a>
-        </div>
-        <div class="logTab" ng-click="selectTab($event, '#entitycontent');">
-            <a href="#">{{lan('Entity analysis') }}</a>
-        </div>
-        <div class="logTab" ng-click="selectTab($event, '#intentcontent');">
-            <a href="#">{{lan('Intent analysis') }}</a>
-        </div>
-        <div class="logsystem">
-            <a href="#" ng-click="toggleExpand();"><img src="modules/playchat/log-analysis/client/imgs/depart.png"></a>
-            <!--<a href="#" class="mr1"><img src="modules/playchat/log-analysis/client/imgs/expand.png"></a>-->
-            <a href="#" ng-click="close();"><img src="modules/playchat/log-analysis/client/imgs/logclose.png"></a>
-        </div>
-    </div>
-    <div class="logcontent">
-        <div id="logcontent"></div>
-        <div id="entitycontent"></div>
-        <div id="intentcontent"></div>
-    </div>
+    <table>
+        <colgroup>
+            <col style="width: 19%;"/>
+            <col style="width: 19%;"/>
+            <col style="width: 19%;"/>
+            <col style="width: 19%;"/>
+            <col style="width: 19%;"/>
+            <col style="width: 5%;"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th>{{ lan('User input analysis') }}</th>
+                <th>{{ lan('Intent analysis') }}</th>
+                <th>{{ lan('Entity Analysis') }}</th>
+                <th>{{ lan('Task Log') }}</th>
+                <th>{{ lan('Answer Analysis') }}</th>
+                <th>
+                    <div class="logsystem">
+                        <a href="#" ng-click="toggleExpand();"><img src="modules/playchat/log-analysis/client/imgs/depart.png"></a>
+                        <!--<a href="#" class="mr1"><img src="modules/playchat/log-analysis/client/imgs/expand.png"></a>-->
+                        <a href="#" ng-click="close($event);"><img src="modules/playchat/log-analysis/client/imgs/logclose.png"></a>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div ng-show="userInput">
+                        <div class="log-row">{{ lan('User input analysis') }}: {{ userInput.text }}</div>
+                        <div class="log-row">{{ lan('Natural language processing') }}: {{ userInput.nlpText }}</div>
+                        <div class="log-row">
+                            <p>{{ lan('Natural language analysis') }}</p>
+                            <ul>
+                                <li ng-repeat="n in userInput.nlp">{{ n.text }} [{{ lan('Word class') }}: {{ n.pos }}]</li>
+                            </ul>
+                        </div>
+                        <div class="log-row" ng-show="userInput.matchedIntent">{{ lan('Matching Intent') }}: {{ userInput.matchedIntent }}</div>
+                        <div class="log-row" ng-show="userInput.matchedEntity">
+                            <div>{{ lan('Entity Analysis') }}</div>
+                            <ul>
+                                <li>@{{ userInput.matchedEntity.key }} - {{ userInput.matchedEntity.matchedName }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div ng-show="userInput.intents && userInput.intents.length > 0">
+                        <table style="width: 100%;">
+                            <colgroup>
+                                <col style="width: 75%;"/>
+                                <col style="width: 25%;"/>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>{{ lan('Name') }}</th>
+                                    <th>{{ lan('Matching Rate') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="intent in userInput.intents">
+                                    <td>{{ intent.intentName }}</td>
+                                    <td style="text-align: center;">{{ intent.matchRateText }}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+                <td>
+                    <div ng-repeat="(key, words) in userInput.entities">
+                        <div>{{ key }}</div>
+                        <ul>
+                            <li ng-repeat="word in words">{{ word.name }}</li>
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    <div ng-show="taskLogs && taskLogs.length > 0">
+                        <p ng-repeat="log in taskLogs track by $index">{{ log }}</p>
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div ng-show="target && output">
+                        <table style="width: 100%;">
+                            <colgroup>
+                                <col style="width: 40%;"/>
+                                <col style="width: 60%;"/>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>{{ lan('Key') }}</th>
+                                    <th>{{ lan('Value') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if="target.card">
+                                    <th>{{ lan('Dialog Card Id') }}</th>
+                                    <td>{{ target.card.id }}</td>
+                                </tr>
+                                <tr ng-if="target.card">
+                                    <th>{{ lan('Dialog Card Name')}}</th>
+                                    <td>{{ target.card.name }}</td>
+                                </tr>
+                                <tr ng-if="!target.card && target.dialogset">
+                                    <th>{{ lan('Dialogset Name') }}</th>
+                                    <td>{{ target.dialogset.title}}</td>
+                                </tr>
+                                <tr ng-if="!target.card && target.dialogset">
+                                    <th>{{ lan('Matched Dialog Card')}}</th>
+                                    <td>{{ target.inputRaw[0] }}</td>
+                                </tr>
+                                <tr ng-show="target.matchRate">
+                                    <th>{{ lan('Matching Rate') }}</th>
+                                    <td>{{ target.matchRateText }}%</td>
+                                </tr>
+                                <tr ng-show="target.requiredMatchRate">
+                                    <th>{{ lan('Minimum') }} {{ lan('Matching Rate') }}</th>
+                                    <td>{{ target.requiredMatchRate }}%</td>
+                                </tr>
+                                <tr ng-if="output.kind == 'Action'">
+                                    <th>{{ lan('Action Type') }}</th>
+                                    <td>{{ output.type }}</td>
+                                </tr>
+                                <tr ng-if="output.kind == 'Action' && output.dialogId">
+                                    <th>{{ lan('Action Target') }}</th>
+                                    <td>[{{ output.dialogId }}] {{ output.dialogName }}</td>
+                                </tr>
+                                <tr ng-if="output.kind == 'Action' && output.options">
+                                    <th>{{ lan('Options') }}</th>
+                                    <td>{{ JSON.stringify(output.options) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!--<div class="logHeader">-->
+        <!--<div class="logTab select" ng-click="selectTab($event, '#logcontent');">-->
+            <!--<a href="#">{{lan('LOG') }}</a>-->
+        <!--</div>-->
+        <!--<div class="logTab" ng-click="selectTab($event, '#entitycontent');">-->
+            <!--<a href="#">{{lan('Entity analysis') }}</a>-->
+        <!--</div>-->
+        <!--<div class="logTab" ng-click="selectTab($event, '#intentcontent');">-->
+            <!--<a href="#">{{lan('Intent analysis') }}</a>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="logcontent">-->
+        <!--<div id="logcontent"></div>-->
+        <!--<div id="entitycontent"></div>-->
+        <!--<div id="intentcontent"></div>-->
+    <!--</div>-->
 </div>

@@ -38,8 +38,7 @@
     width: 142px;
     height: 142px;
     border-radius: 4px;
-    background-color: #dbdbdb;
-
+    background-color: #f2f2f2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,7 +85,7 @@
 .dashboard-bot-profile-content input
 {
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 2px;
     margin-left: 20px;
     vertical-align: middle;
 
@@ -124,22 +123,96 @@
 
 .dashboard-dialog-management-card
 {
-    padding: 32px 24px;
-    margin: 0 5px;
+    height:200px;
+    margin: 0 7px;
     width: 50%;
     min-width: 18.3%;
-    height: 73px;
     display: inline-block;
     position: relative;
-    border: 1px solid #d3e4ee;
-    border-radius: 6px;
-    cursor: pointer;
+    border-radius:6px;
+    -webkit-box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.08);
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    
 }
 .dashboard-dialog-management-card:hover{
-    background: #e7f1f7;
-    transition: all 1s cubic-bezier(.25,.8,.25,1);
+	-webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+    -webkit-box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.13);
+    box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.13);
 }
 
+.dashboard-dialog-management-card .card1{
+	background: #93c0d9;
+	padding: 17px;
+	border-radius:6px 6px 0 0;
+	text-align: center;
+}
+
+.dashboard-dialog-management-card .card2{
+	background: #82c5c6;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+
+.dashboard-dialog-management-card .card3{
+	background: #77c7a0;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+.dashboard-dialog-management-card .card4{
+	background: #afb5d4;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+/*new start*/
+.dashboard-dialog-management-newcard
+{
+    height:200px;
+    margin: 0 7px;
+    width: 50%;
+    min-width: 18.3%;
+    display: inline-block;
+    position: relative;
+    border-radius:6px;
+    -webkit-box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.08);
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    
+}
+
+.dashboard-dialog-management-newcard .card1{
+	background: #93c0d9;
+	padding: 17px;
+	border-radius:6px 6px 0 0;
+	text-align: center;
+}
+
+.dashboard-dialog-management-newcard .card2{
+	background: #82c5c6;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+
+.dashboard-dialog-management-newcard .card3{
+	background: #77c7a0;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+.dashboard-dialog-management-newcard .card4{
+	background: #afb5d4;
+	padding: 17px;
+	border-radius:6px 6px 0 0; 
+	text-align: center;
+}
+/*new end*/
 .dashboard-dialog-cover
 {
     position: absolute;
@@ -173,11 +246,17 @@
 }
 .dashboard-dialog-management-card > div > div
 {
-    text-align: left;
-    margin-bottom: 10px;
-    color: #038eda;
-    font-weight: 600;
-    margin-left: 10px;
+    text-align: center;
+    margin-bottom: 14px;
+    font-weight: 700;
+    font-size: 14px;
+}
+.dashboard-dialog-management-newcard > div > div
+{
+    text-align: center;
+    margin-bottom: 14px;
+    font-weight: 700;
+    font-size: 14px;
 }
 .dashboard-dialog-management-card > div > div a>img{
     margin-right: 5px;
@@ -247,7 +326,6 @@
     position: relative;
     border: 1px solid #d3e4ee;
     border-radius: 6px;
-    cursor: pointer;
 }
 
 .dashboard-dialog-management-card-first > div > div

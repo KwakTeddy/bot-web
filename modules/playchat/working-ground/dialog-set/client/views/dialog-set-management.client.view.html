@@ -4,18 +4,19 @@
             <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
         </form>
     </div>
-    <div class="tab01">
+
+    <div class="tab01" style="margin-top: 10px;">
         <ul class="tabs1">
             <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
             <!--<li><a href="#">{{lan('Store') }}</a></li>-->
             <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
-        <div class="flR" style="position: relative; top: -40px;">
+        <div class="flR" style="position: relative; top: -40px;" ng-if="myBotAuth.edit">
             <div class="funtionbtn1" style="margin-right: 20px; position: relative; top: -2px;">
                 <a href="#">
                     <img src="modules/playchat/working-ground/common/client/imgs/import.png">
                     <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
-                    <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
+                    <!--<img ng-click="modal.importModal.open();" src="modules/playchat/working-ground/common/client/imgs/Q.png">-->
                 </a>
             </div>
             <div class="btn02" style="width: 110px; display: inline-block;">
@@ -23,6 +24,7 @@
             </div>
         </div>
     </div>
+
     <div class="downSide">
         <table class="tb02">
             <colgroup>
@@ -51,16 +53,19 @@
                     <td>{{ item.content }}</td>
                     <td>{{ item.user.displayName }}</td>
                     <td>
-                        <a href="#" class="flR" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
-                        <a href="/playchat/management/dialog-set/add?_id={{ item._id }}" class="flR mr5"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
+                        <a href="#" class="flR" ng-if="myBotAuth.edit && item.title != 'default'" ng-click="delete(item);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                        <a href="/playchat/management/dialog-set/add?_id={{ item._id }}" ng-if="myBotAuth.edit && item.title != 'default'" class="flR mr5"><img src="modules/playchat/working-ground/common/client/imgs/modify.png" class="modify-img"></a>
                     </td>
                     <td ng-if="!item.importState">
-                        <div class="slide" ng-class="item.usable ? 'on' : ''">
+                        <div class="slide" ng-class="item.usable ? 'on' : ''" ng-if="myBotAuth.edit">
                             <input type="checkbox" id="{{ item._id }}" ng-model="item.usable" />
                             <label for="{{ item._id }}" ng-click="updateUsable(item);"></label>
                         </div>
                     </td>
-                    <td ng-if="item.importState"><img style="vertical-align: middle;" src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif"></td>
+                    <td ng-if="item.importState == 'start'"><img style="vertical-align: middle;" src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif"></td>
+                    <td ng-if="item.importState && item.importState != 'start'">
+                        <span style="color: red; font-size: 11px;">{{ lan(item.importState) }}</span>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -122,12 +127,12 @@
                 <div class="form-row">
                     <label class="required" style="width: 100%;">
                         <span>File</span>
-                        <div class="form-box">
-                            <input type="file" name="file" id="file" ng-required="true" class="inputfile" data-multiple-caption="{count} files selected" nv-file-select uploader="uploader"/>
-                            <label for="file">{{lan('Choose a file')}}</label>
-                            <button type="button" class="default-button" style="float: right; width: 200px;" ng-click="exelDownload();">{{ lan('Template Download') }}</button>
-                        </div>
                     </label>
+                </div>
+                <div class="form-box">
+                    <input type="file" name="file" id="file" ng-required="true" class="inputfile" nv-file-select uploader="uploader"/>
+                    <label for="file">{{lan('Choose a file')}}</label>
+                    <button type="button" class="default-button" style="float: right; width: 200px;" ng-click="exelDownload();">{{ lan('Template Download') }}</button>
                 </div>
                 <div class="form-row">
                     <label style="width: 100%;">

@@ -51,10 +51,10 @@ exports.userCount = function (req, res)
             {$project:
                 {
                     _id: 1,
-                    kakao: {$cond:[{$eq: ["$_id.channel", "kakao"]}, 1,0]},
-                    facebook: {$cond:[{$eq: ["$_id.channel", "facebook"]}, 1,0]},
-                    navertalk: {$cond:[{$eq: ["$_id.channel", "navertalk"]}, 1,0]},
-                    socket: {$cond:[{$eq: ["$_id.channel", "socket"]}, 1,0]}
+                    kakao: {$cond:[{$eq: ["$_id.channel.name", "kakao"]}, 1,0]},
+                    facebook: {$cond:[{$eq: ["$_id.channel.name", "facebook"]}, 1,0]},
+                    navertalk: {$cond:[{$eq: ["$_id.channel.name", "navertalk"]}, 1,0]},
+                    socket: {$cond:[{$eq: ["$_id.channel.name", "socket"]}, 1,0]}
                 }
             },
             {$group:

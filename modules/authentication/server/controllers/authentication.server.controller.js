@@ -26,7 +26,12 @@ module.exports.signin = function(req, res, next)
                 // Generate random token
                 function (done) {
                     crypto.randomBytes(20, function (err, buffer) {
+
+                        var veriCode = Math.floor(1000 + Math.random() * 9000);
+
+
                         var token = buffer.toString('hex');
+                        user.localEmailConfirmCode = veriCode;
                         user.localEmailConfirmToken = token;
                         user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
                         // Then save the user
@@ -39,12 +44,12 @@ module.exports.signin = function(req, res, next)
                                 // Remove sensitive data before login
                                 user.password = undefined;
                                 user.salt = undefined;
-                                done(err, token, user);
+                                done(err, token, veriCode, user);
                             }
                         });
                     });
                 },
-                function (token, user, done) {
+                function (token, veriCode, user, done) {
 
                     var httpTransport = 'http://';
                     if (config.secure && config.secure.ssl === true) {
@@ -54,7 +59,8 @@ module.exports.signin = function(req, res, next)
                     {
                         name: user.displayName,
                         appName: 'Play Chat',
-                        url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
+                        url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token,
+                        veriCode: veriCode
                     }, function (err, emailHTML)
                     {
                         done(err, emailHTML, user);
@@ -99,12 +105,6 @@ module.exports.signin = function(req, res, next)
                 // Remove sensitive data before login
                 user.password = undefined;
                 user.salt = undefined;
-
-                if(user.state === false)
-                {
-                    res.status(401).send('not registration');
-                    return;
-                }
 
                 req.login(user, function (err)
                 {
@@ -176,7 +176,6 @@ module.exports.signup = function(req, res, next)
 
     // Add missing user fields
     user.provider = 'local';
-    user.state = false; // for closed beta
     // user.displayName = user.username;
 
     makeUsername(0, function(username)
@@ -199,12 +198,44 @@ module.exports.signup = function(req, res, next)
             {
                 if (result && (result.provider == 'local'))
                 {
-                    return res.status(400).send({ message: 'Email is already signed up.' });
+                    if(req.body.front)
+                    {
+                        passport.authenticate('local', function (err, user, info)
+                        {
+                            if (err || !user)
+                            {
+                                res.status(400).send(info);
+                            }
+                            else
+                            {
+                                // Remove sensitive data before login
+                                user.password = undefined;
+                                user.salt = undefined;
+
+                                req.login(user, function (err)
+                                {
+                                    if (err)
+                                    {
+                                        res.status(400).send(err);
+                                    }
+                                    else
+                                    {
+                                        res.cookie('login', true);
+                                        res.json(user);
+                                    }
+                                });
+                            }
+                        })(req, res, next);
+                    }
+                    else
+                    {
+                        return res.status(400).send({ message: 'Email is already signed up.' });
+                    }
                 }
 
                 if (result && (result.provider !== 'local'))
                 {
-                    return res.status(400).send({ message: 'SNS', provider : result.provider });
+                    return res.status(400).send({ message: 'Email is already signed up with '+ result.provider, provider : result.provider });
                 }
 
                 async.waterfall([
@@ -213,11 +244,16 @@ module.exports.signup = function(req, res, next)
                     {
                         crypto.randomBytes(20, function (err, buffer)
                         {
+                            var veriCode = Math.floor(1000 + Math.random() * 9000);
+
+
                             var token = buffer.toString('hex');
+                            user.localEmailConfirmCode = veriCode;
                             user.localEmailConfirmToken = token;
                             user.localEmailConfirmExpires = Date.now() + 3600000; // 1 hour
                             if (!result)
                             {
+                                user.language = req.body.language;
                                 // Then save the user
                                 user.save(function (err)
                                 {
@@ -231,7 +267,7 @@ module.exports.signup = function(req, res, next)
                                         // Remove sensitive data before login
                                         user.password = undefined;
                                         user.salt = undefined;
-                                        done(err, token, user);
+                                        done(err, token, veriCode, user);
                                     }
                                 });
                             }
@@ -245,10 +281,12 @@ module.exports.signup = function(req, res, next)
 
                                 result.password = JSON.parse(JSON.stringify(user.password));
                                 result['localEmailConfirmToken'] = JSON.parse(JSON.stringify(user.localEmailConfirmToken));
+                                result['localEmailConfirmCode'] = JSON.parse(JSON.stringify(user.localEmailConfirmCode));
                                 result['localEmailConfirmExpires'] = JSON.parse(JSON.stringify(user.localEmailConfirmExpires));
 
                                 user.password = undefined;
                                 user.roles = undefined;
+                                user.localEmailConfirmCode = undefined;
                                 user.localEmailConfirmToken = undefined;
                                 user.localEmailConfirmExpires = undefined;
                                 result.additionalProvidersData[user.provider] = user;
@@ -268,13 +306,13 @@ module.exports.signup = function(req, res, next)
                                         // Remove sensitive data before login
                                         result.password = undefined;
                                         result.salt = undefined;
-                                        done(err, token, user);
+                                        done(err, token, veriCode, user);
                                     }
                                 });
                             }
                         });
                     },
-                    function (token, user, done)
+                    function (token, veriCode, user, done)
                     {
                         var httpTransport = 'http://';
                         if (config.secure && config.secure.ssl === true)
@@ -282,11 +320,12 @@ module.exports.signup = function(req, res, next)
                             httpTransport = 'https://';
                         }
 
-                        res.render(path.resolve('modules/authentication/server/templates/email-confirm' + (user.language ? '-'+user.language: '-en')),
+                        res.render(path.resolve('modules/authentication/server/templates/email-confirm' + '-' + req.body.language),
                         {
                             name: user.displayName,
                             appName: 'Play Chat',
-                            url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token
+                            url: httpTransport + req.headers.host + '/api/auth/emailconfirm/' + token,
+                            veriCode: veriCode
                         }, function (err, emailHTML)
                         {
                             done(err, emailHTML, user);
@@ -338,44 +377,123 @@ module.exports.validateEmailConfirmToken = function(req, res)
     //Define email search query
     var emailConfirmQuery = {};
     emailConfirmQuery['localEmailConfirmToken'] = req.params.token;
-    emailConfirmQuery['localEmailConfirmExpires'] = {
-        $gt: Date.now()
-    };
 
     User.findOne(emailConfirmQuery, function (err, user)
     {
-        if (!user)
+        if(err)
         {
-            return res.redirect('/emailconfirm/invalid');
+            console.error(err);
+            return res.redirect('/signup?error=true&type=database');
         }
 
-        user.localEmailConfirmed = true;
-        user.localEmailConfirmToken = undefined;
-        user.localEmailConfirmExpires = undefined;
-
-        user.save(function (err)
+        if(user)
         {
-            if (err)
+            if(user.localEmailConfirmExpires >= Date.now())
             {
-                console.log(err);
-            }
-            else
-            {
-                req.login(user, function (err)
+                user.localEmailConfirmed = true;
+                user.localEmailConfirmToken = undefined;
+                user.localEmailConfirmExpires = undefined;
+
+                user.save(function (err)
                 {
                     if (err)
                     {
-                        res.status(400).send(err);
+                        console.log(err);
                     }
                     else
                     {
-                        //for closedbeta
-                        // res.cookie('login', true);
-                        res.redirect('/');
+                        req.login(user, function (err)
+                        {
+                            if (err)
+                            {
+                                res.status(400).send(err);
+                            }
+                            else
+                            {
+                                //for closedbeta
+                                res.cookie('login', true);
+                                res.redirect('/signup?verified=true');
+                            }
+                        });
                     }
                 });
             }
-        });
+            else
+            {
+                res.redirect('/signup?invalid=true&email=' + user.email);
+            }
+        }
+        else
+        {
+            return res.redirect('/signup?error=true&type=email');
+        }
+    });
+};
+
+module.exports.validateEmailConfirmCode = function(req, res)
+{
+    //Define email search query
+    var emailConfirmQuery = {};
+    emailConfirmQuery['email'] = req.body.email;
+
+    User.findOne(emailConfirmQuery, function (err, user)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.end();
+        }
+
+        if(user)
+        {
+            if(user.localEmailConfirmExpires >= Date.now())
+            {
+                if(user.localEmailConfirmCode == req.body.veriCode)
+                {
+                    user.localEmailConfirmed = true;
+                    user.localEmailConfirmToken = undefined;
+                    user.localEmailConfirmCode = undefined;
+                    user.localEmailConfirmExpires = undefined;
+
+                    user.save(function (err)
+                    {
+                        if (err)
+                        {
+                            console.log(err);
+                        }
+                        else
+                        {
+                            req.login(user, function (err)
+                            {
+                                if (err)
+                                {
+                                    res.status(400).send(err);
+                                }
+                                else
+                                {
+                                    //for closedbeta
+                                    res.cookie('login', true);
+                                    return res.end();
+                                }
+                            });
+                        }
+                    });
+                }
+                else
+                {
+                    return res.status(400).send({ message: 'Verification Code does not match' });
+                }
+
+            }
+            else
+            {
+                return res.status(400).send({ message: 'Verification Code does not match' });
+            }
+        }
+        else
+        {
+            return res.end();
+        }
     });
 };
 
@@ -535,7 +653,7 @@ exports.oauthCallback = function (strategy, scope) {
                 }
                 else
                 {
-                    return res.redirect('/');
+                    return res.redirect('/playchat/chatbots');
                 }
             });
         })(req, res, next);

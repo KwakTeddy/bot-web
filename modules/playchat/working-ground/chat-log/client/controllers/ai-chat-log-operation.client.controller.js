@@ -7,6 +7,14 @@ angular.module('playchat').controller('AIChatLogController', ['$window', '$scope
 
     var chatbot = $cookies.getObject('chatbot');
 
+    $scope.myBotAuth = chatbot.myBotAuth;
+    if(!$scope.myBotAuth.edit)
+    {
+        alert(LanguageService('You do not have permission to edit this bot'));
+        location.href='/playchat/';
+        return;
+    }
+
     (function()
     {
         $scope.searchKeyDown = function(e)

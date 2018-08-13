@@ -45,8 +45,7 @@ var UserDialogSchema = new Schema(
     preDialogId: { type: String },
     preDialogName: { type: String },
     created: { type: Date, default: Date.now },
-    clear: { type: String },
-    liveChat: { type: Boolean }
+    clear: { type: String }
 });
 
 mongoose.model('UserDialog', UserDialogSchema);

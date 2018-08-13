@@ -15,7 +15,7 @@ var hospital = {
     },
     use: true,
     kakao: {
-        keyboard: { type :"buttons", buttons:["대화시작"]}
+        keyboard: { type :"buttons", buttons:["Start"]}
     },
     commonButtons: [{"text": "이전"}, {"text": "처음"}],
     commonQuickReplies: [{"text": "이전"}, {"text": "처음"}]

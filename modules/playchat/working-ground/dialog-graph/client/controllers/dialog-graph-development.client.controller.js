@@ -4,13 +4,25 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
     var FailedDialogService = $resource('/api/:botId/operation/failed-dialogs/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
     var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
+    var GraphFileService = $resource('/api/:botId/graphfiles/:fileName', { botId: '@botId', fileName: '@fileName' });
 
     var chatbot = $cookies.getObject('chatbot');
 
+    $scope.myBotAuth = chatbot.myBotAuth;
+
     $scope.fromFailedDialog = false;
     $scope.failedDialogSaved = false;
+    $scope.focus = true;
+
+    DialogGraphEditor.myBotAuth = chatbot.myBotAuth;
+
+    //topBar숨기기 default
+    angular.element("#top-bar-container").css("position", "relative").css("top", "-63px");
+    angular.element('#middle-container').css("top", "0px");
+    angular.element('.video-popup').css('left', '75px');
 
     // 실제 그래프 로직이 들어있는 서비스
+    DialogGraph.isFocused = true;
     DialogGraph.setScope($compile, $scope, $rootScope);
     DialogGraph.setDialogTemplate(angular.element('#dialogGraphTemplate').html());
     DialogGraph.setCanvas('#graphDialogCanvas');
@@ -35,17 +47,27 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
     {
         $scope.$parent.loaded('working-ground');
 
-        $scope.$on('makeNewType', function(context, name)
+        $scope.$on('refreshGraph', function(context, data)
         {
-            var text = 'var ' + name + ' = {\n' +
-                       '  typeCheck: function (text, type, task, context, callback) {\n' +
-                       '    var matched = true;\n' +
-                       '    \n' +
-                       '    callback(text, task, matched);\n' +
-                       '\t}\n' +
-                       '};\n' +
-                       '\n' +
-                       'bot.setType(\'' + name + '\', ' + name + ');';
+            $scope.loadFile(data.fileName || 'default.graph.js');
+        });
+
+        $scope.$on('releaseGraphFocus', function()
+        {
+            $scope.focus = false;
+            DialogGraph.isFocused = false;
+        });
+
+        $scope.$on('makeNewType', function(context, name, sourceFileName)
+        {
+            var text = '    bot.setType(\'' + name + '\',\n' +
+                       '    {\n' +
+                       '        typeCheck: function (dialog, context, callback)\n' +
+                       '        {\n' +
+                       '            var matched = false;\n' +
+                       '            callback(matched);\n' +
+                       '        }\n' +
+                       '    });';
             for(var i=0; i<$scope.fileList.length; i++)
             {
                 if($scope.fileList[i].endsWith('.js') && !$scope.fileList[i].endsWith('.bot.js') && !$scope.fileList[i].endsWith('.graph.js'))
@@ -55,21 +77,15 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource', sourceFileName: sourceFileName });
                     break;
                 }
             }
         });
 
-        $scope.$on('makeNewTask', function(context, name)
+        $scope.$on('makeNewTask', function(context, name, sourceFileName)
         {
-            var text = 'var ' + name + ' = {\n' +
-                       '  action: function (task,context,callback) {\n' +
-                       '    callback(task,context);\n' +
-                       '\t}\n' +
-                       '};\n' +
-                       '\n' +
-                       'bot.setTask(\'' + name + '\', ' + name + ');';
+            var text = '\tbot.setTask(\'' + name + '\', \n\t{\n\t\taction: function (dialog, context, callback)\n\t\t{\n\t\t\tcallback();\n\t\t}\n\t});';
             for(var i=0; i<$scope.fileList.length; i++)
             {
                 if($scope.fileList[i].endsWith('.js') && !$scope.fileList[i].endsWith('.bot.js') && !$scope.fileList[i].endsWith('.graph.js'))
@@ -79,7 +95,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
                     $location.search().fileName = $scope.fileList[i];
 
-                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text });
+                    angular.element('.dialog-graph-code-editor').get(0).openCodeEditor($scope.fileList[i], { isCreate: true, code: text, mode: 'graphsource', sourceFileName: sourceFileName });
                     break;
                 }
             }
@@ -95,21 +111,34 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(data.fileName, { isView: true, target: data.name });
         });
 
-        $scope.$on('$locationChangeStart', function(event, next, current)
+        // $scope.$on('$locationChangeStart', function(event, next, current)
+        // {
+        //     if(DialogGraph.isDirty())
+        //     {
+        //         if(!confirm('변경사항이 저장되지 않았습니다. 이동하시겠습니까?'))
+        //         {
+        //             event.preventDefault();
+        //         }
+        //     }
+        // });
+
+        $scope.$on('saveDialogGraph', function(context, data)
         {
-            if(DialogGraph.isDirty())
-            {
-                if(!confirm('변경사항이 저장되지 않았습니다. 이동하시겠습니까?'))
-                {
-                    event.preventDefault();
-                }
-            }
+            $scope.save(data.saveFileName, data.saveHistory);
         });
 
-        $scope.$on('saveDialogGraph', function()
+        $scope.isFocused = function()
         {
-            $scope.save();
-        });
+            return $scope.focus;
+        };
+
+        $scope.toFocus = function()
+        {
+            $scope.focus = true;
+            DialogGraph.isFocused = true;
+
+            $rootScope.$broadcast('focusToDialogGraph');
+        };
 
         $scope.checkFailedDialog = function()
         {
@@ -124,34 +153,23 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
 
             $scope.fromFailedDialog = true;
 
-            DialogGraph.onLoad(function()
+            DialogGraph.focusById(preDialogId);
+
+            setTimeout(function()
             {
-                var data = {
-                    input: [{ text: dialog }]
-                };
-                DialogGraph.focusById(preDialogId);
-
-                setTimeout(function()
+                DialogGraph.openEditorForFocused(dialog);
+                DialogGraphEditor.setSaveCallback(function(data)
                 {
-                    DialogGraph.openEditorForFocused();
-                    DialogGraphEditor.setSaveCallback(function(data)
+                    for(var i=0; i<data.input.length; i++)
                     {
-                        for(var i=0; i<data.input.length; i++)
+                        if(data.input[i].text == dialog)
                         {
-                            if(data.input[i].text == dialog)
-                            {
-                                $scope.failedDialogSaved = true;
-                                break;
-                            }
+                            $scope.failedDialogSaved = true;
+                            break;
                         }
-                    });
-                }, 100);
-
-                setTimeout(function()
-                {
-                    DialogGraph.bindDataToEditor(data);
-                }, 500);
-            });
+                    }
+                });
+            }, 100);
         };
 
         $scope.backToFailedDialog = function()
@@ -176,6 +194,15 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         {
             DialogGraphsService.query({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '' }, function(fileList)
             {
+                for(var i=0; i<fileList.length; i++)
+                {
+                    // if(fileList[i].endsWith('bot.js'))
+                    // {
+                    //     fileList.splice(i, 1);
+                    //     break;
+                    // }
+                }
+
                 $scope.fileList = fileList;
 
                 var fileName = $location.search().fileName;
@@ -189,23 +216,57 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                         angular.element('.dialog-graph-code-editor').hide();
                         $scope.loadFile(fileName);
                     }
+                    else
+                    {
+                        angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
+                    }
                 }
                 else
                 {
+                    var isLoad = false;
                     for(var i=0; i<fileList.length; i++)
                     {
                         if(fileList[i].endsWith('graph.js'))
                         {
+                            isLoad = true;
                             $scope.currentTabName = fileList[i];
                             $scope.loadFile($scope.currentTabName);
                             break;
+                        }
+                    }
+
+                    if(!isLoad && fileList.length > 0)
+                    {
+                        $scope.currentTabName = fileList[0];
+                        if(fileList[0].endsWith('graph.js'))
+                        {
+                            $scope.loadFile($scope.currentTabName);
+                        }
+                        else
+                        {
+                            var timer = setInterval(function()
+                            {
+                                if(angular.element('.dialog-graph-code-editor').get(0))
+                                {
+                                    angular.element('.tab-body li:first').click();
+                                    clearInterval(timer);
+                                }
+                            }, 50);
                         }
                     }
                 }
             },
             function(err)
             {
-                console.error(err);
+                if(err.status == 404)
+                {
+                    alert($scope.lan('Bot files not found.'));
+                    location.href = '/playchat/';
+                }
+                else
+                {
+                    console.error(err);
+                }
             });
         };
 
@@ -221,6 +282,15 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             tabBody.scrollLeft += 100;
         };
 
+        $scope.$on('selectTab', function(context, fileName)
+        {
+            angular.element('.tab-body .select_tab').removeClass('select_tab');
+            angular.element('#' + fileName.replace(/\./gi, '\\.')).addClass('select_tab');
+
+            $location.search().fileName = fileName;
+            $scope.currentTabName = fileName;
+        });
+
         $scope.selectTab = function(e, fileName)
         {
             angular.element('.tab-body .select_tab').removeClass('select_tab');
@@ -232,8 +302,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             {
                 angular.element('.dialog-graph-code-editor').hide();
 
-                if(!DialogGraph.isDirty())
-                    $scope.loadFile(fileName);
+                // if(!DialogGraph.isDirty())
+                //     $scope.loadFile(fileName);
             }
             else
             {
@@ -248,23 +318,28 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             $scope.initialize();
 
             angular.element('.graph-body').append('<div class="dialog-graph-error"><h1>Loading...</h1></div>');
-            DialogGraphsService.get({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '', fileName: fileName }, function(result)
+            GraphFileService.get({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '', fileName: fileName }, function(result)
             {
                 angular.element('.graph-body .dialog-graph-error').remove();
                 angular.element('#graphDialogCanvas').html('');
 
-                var data = result.data;
-                if(data)
+                if(result && result.dialogs && result.commonDialogs)
                 {
                     //최초 로딩한거 history에 넣어둠.
-                    $scope.graphHistory.push(data);
+                    $scope.graphHistory.push(JSON.parse(JSON.stringify(result)));
                     $scope.graphHistoryIndex = $scope.graphHistory.length-1;
 
-                    var result = DialogGraph.loadFromFile(data, fileName);
+                    var result = DialogGraph.loadFromFile(result, fileName);
                     if(!result)
                     {
                         angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1>' + $scope.lan('There is an error in the graph file or an unsupported version of the graph file.') + '</h1><button type="button" class="blue-button" ng-click="viewGraphSource();">' + $scope.lan('View Source') + '</button></div></div>')($scope));
                     }
+
+                    $scope.checkFailedDialog();
+                }
+                else
+                {
+                    angular.element('.graph-body').append($compile('<div class="dialog-graph-error"><div><h1 style="line-height: 50px; margin-bottom: 20px;">' + $scope.lan('There is an unsupported version of the graph file. if you are using previous version, then please move below.') + '</h1><a style="font-size: 20px;" href="https://old.playchat.ai">https://old.playchat.ai</a></div></div>')($scope));
                 }
             },
             function(err)
@@ -288,11 +363,18 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             }
 
             var target = e.currentTarget.parentElement.nextElementSibling;
-            DialogGraph.toggleChild(target);
+            DialogGraph.toggleChiwld(target);
         };
 
         $scope.toggleCommonMode = function()
         {
+            // to Detail
+            $scope.compactMode = 'Compact';
+
+            angular.element('.graph-dialog-input').show();
+            angular.element('.graph-dialog-output').show();
+            angular.element('.graph-dialog-buttons').show();
+
             if($scope.commonMode == 'Common')
             {
                 // to commonDialogs
@@ -309,7 +391,7 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         $scope.viewGraphSource = function()
         {
             var fileName = $scope.currentTabName;
-            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName, { mode: 'graphsource' });
+            angular.element('.dialog-graph-code-editor').get(0).openCodeEditor(fileName, { mode: 'graphsource', refresh: true });
         };
 
         $scope.toggleCompactMode = function()
@@ -360,6 +442,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 angular.element('svg line').attr('shape-rendering', 'crispEdges');
             }
 
+            angular.element('.dialog-menu').css('zoom', $scope.zoom);
+
             DialogGraph.refreshLine();
         };
 
@@ -373,6 +457,8 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 // 1 이하로 줌이 내려가면 line이 사라지는 현상 해결용 코드
                 angular.element('svg line').attr('shape-rendering', 'geometricPrecision');
             }
+
+            angular.element('.dialog-menu').css('zoom', $scope.zoom);
 
             DialogGraph.refreshLine();
         };
@@ -417,7 +503,10 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                         }
                     }
 
-                    DialogGraph.focus($scope.searchedDialogs[$scope.searchedDialogFocus]);
+                    if($scope.searchedDialogs.length > 0)
+                    {
+                        DialogGraph.focus($scope.searchedDialogs[$scope.searchedDialogFocus]);
+                    }
                 }
 
                 e.preventDefault();
@@ -429,50 +518,64 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
             }
         };
 
-        $scope.save = function()
+        $scope.save = function(saveFileName, saveHistory)
         {
-            if(!$scope.isDirty)
+            if(!DialogGraph.isDirty())
                 return;
 
             var data = DialogGraph.getCompleteData();
 
-            var fileName = $location.search().fileName || 'default.graph.js';
+            var fileName = saveFileName || $location.search().fileName || 'default.graph.js';
             DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
             {
                 //저장할때마다 history 업데이트
-                $scope.graphHistory.splice($scope.graphHistoryIndex + 1, $scope.graphHistory.length - $scope.graphHistoryIndex - 1);
-
-                $scope.graphHistory.push(data);
-                $scope.graphHistoryIndex = $scope.graphHistory.length-1;
-
-                DialogGraph.setDirty(false);
-
-                if($scope.fromFailedDialog && $scope.failedDialogSaved)
+                if(saveHistory !== false)
                 {
-                    FailedDialogService.update({ botId: chatbot._id, _id: $location.search().userDialogId }, function()
-                    {
-                    },
-                    function(err)
-                    {
-                        alert(err.data.error || err.data.message);
-                    });
+                    $scope.graphHistory.splice($scope.graphHistoryIndex + 1, $scope.graphHistory.length - $scope.graphHistoryIndex - 1);
                 }
 
-                $rootScope.$broadcast('simulator-build');
-
-                angular.element('.graph-controller .alert-success').show();
-                $timeout(function()
+                GraphFileService.get({ botId: chatbot.id, templateId: chatbot.templateId ? chatbot.templateId.id : '', fileName: fileName }, function(result)
                 {
-                    angular.element('.graph-controller .alert-success').css('opacity', 1);
-                    $timeout(function()
+                    if(result && result.dialogs && result.commonDialogs)
                     {
-                        angular.element('.graph-controller .alert-success').css('opacity', 0);
-                        $timeout(function()
+                        if(saveHistory !== false)
                         {
-                            angular.element('.graph-controller .alert-success').hide();
-                        }, 600);
-                    }, 1500);
-                }, 5);
+                            $scope.graphHistory.push(JSON.parse(JSON.stringify(result)));
+                            $scope.graphHistoryIndex = $scope.graphHistory.length - 1;
+                        }
+
+                        DialogGraph.setDirty(false);
+
+                        $rootScope.$broadcast('simulator-build');
+
+                        if($scope.fromFailedDialog && $scope.failedDialogSaved)
+                        {
+                            FailedDialogService.update({ botId: chatbot._id, _id: $location.search().userDialogId }, function()
+                            {
+                            },
+                            function(err)
+                            {
+                                alert(err.data.error || err.data.message);
+                            });
+                        }
+                    }
+                });
+
+                // $rootScope.$broadcast('simulator-build-without-reset-focus');
+
+                // angular.element('.graph-controller .alert-success').show();
+                // $timeout(function()
+                // {
+                //     angular.element('.graph-controller .alert-success').css('opacity', 1);
+                //     $timeout(function()
+                //     {
+                //         angular.element('.graph-controller .alert-success').css('opacity', 0);
+                //         $timeout(function()
+                //         {
+                //             angular.element('.graph-controller .alert-success').hide();
+                //         }, 600);
+                //     }, 1500);
+                // }, 5);
             }, function(error)
             {
                 alert($scope.lan('저장 실패 : ') + error.message);
@@ -493,7 +596,15 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>그래프 로드 실패</h1></div>');
             }
 
-            DialogGraph.setDirty(true);
+            var data = DialogGraph.getCompleteData();
+            var fileName = $location.search().fileName || 'default.graph.js';
+            DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
+            {
+                $rootScope.$broadcast('simulator-build');
+            }, function(error)
+            {
+                alert($scope.lan('저장 실패 : ') + error.message);
+            });
         };
 
         $scope.redo = function()
@@ -510,15 +621,15 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
                 angular.element('.graph-body').html('<div class="dialog-graph-error"><h1>그래프 로드 실패</h1></div>');
             }
 
-            if($scope.graphHistoryIndex == $scope.graphHistory.length-1)
+            var data = DialogGraph.getCompleteData();
+            var fileName = $location.search().fileName || 'default.graph.js';
+            DialogGraphsService.save({ data: data, botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : ''), fileName: fileName }, function()
             {
-                //리두 하고 나서 history의 마지막 데이터가 되면 저장할 필요 없어짐. 왜냐 마지막 세이브 이후 다시 저장하지 않는한 history의 마지막 데이터가 최신이다.
-                DialogGraph.setDirty(false);
-            }
-            else
+                $rootScope.$broadcast('simulator-build');
+            }, function(error)
             {
-                DialogGraph.setDirty(true);
-            }
+                alert($scope.lan('저장 실패 : ') + error.message);
+            });
         };
 
 
@@ -568,7 +679,6 @@ angular.module('playchat').controller('DialogGraphDevelopmentController', ['$win
         };
     })();
 
-    $scope.checkFailedDialog();
     $scope.initialize();
     $scope.getFileList();
     $scope.lan=LanguageService;

@@ -56,38 +56,42 @@
 }
 </style>
 
+<script>
+
+</script>
+
 <header ng-controller="HeaderController">
     <div class="gnb_entry">
         <div class="header">
-            <a class="logo_min" href="/">
+            <a class="logo_min" href="/playchat/chatbots">
                 <img src="/modules/core/client/imgs/logo.png">
             </a>
         </div>
         <div class="system">
-            <span ng-if="isLogin">
-                <button type="button" class="blue-button" style="width: auto;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>
-            </span>
-            <ul class="docs" style="display: none;">
+            <ul class="docs">
+                <!--<li>
+                    <a href="/" target="_blank">
+                        <img src="/modules/core/client/imgs/home_silver.png">
+                        <span>Home</span>
+                    </a>
+                </li>-->
                 <li>
-                    <a href="#" class="mr20">
-                        <img src="/modules/core/client/imgs/docs.png" class="mr5">
+                    <a href="/docs/{{language}}/5minutes-{{language}}.html" target="_blank">
+                        <img src="/modules/core/client/imgs/docs.png">
                         <span>Docs</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="mr20">
-                        <img src="/modules/core/client/imgs/forum.png" class="mr5">
-                        <span>Forum</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="/modules/core/client/imgs/support.png" class="mr5">
+                    <a href="#" ng-click="reporting();">
+                        <img src="/modules/core/client/imgs/support.png">
                         <span>Support</span>
                     </a>
                 </li>
             </ul>
-            <span style="margin: 0 15px;">
+            <!--<span ng-if="isLogin">-->
+                <!--<button type="button" class="blue-button" style="width: auto;" ng-click="reporting();">{{ lan('Error reporting and suggestions for improvement') }}</button>-->
+            <!--</span>-->
+            <span>
                 <div class="select-wrapper">
                     <select class="jumbo-select" ng-model="language" ng-change="languageChange();" style="height: 33px;">
                         <option value="ko">{{ lan('Korean') }}</option>
@@ -101,9 +105,9 @@
             <a class="login_silver" href="#" ng-if="isLogin" ng-click="openMenu($event);"></a>
             <ul class="popup-menu user-menu">
                 <ul>
-                    <li class="popup-title"">{{ user.username }}</a></li>
-                    <li><a href="/playchat/user-profile">Profile</a></li>
-                    <li><a href="#" ng-click="signout();">Signout</a></li>
+                    <li class="popup-title">{{ user.email }}</a></li>
+                    <li><a href="/playchat/user-profile">{{lan('Profile') }}</a></li>
+                    <li><a href="#" ng-click="signout();">{{lan('Signout') }}</a></li>
                 </ul>
             </ul>
         </div>

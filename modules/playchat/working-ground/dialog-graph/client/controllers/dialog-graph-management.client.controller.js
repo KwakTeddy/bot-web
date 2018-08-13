@@ -6,8 +6,11 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
 
     var DialogGraphExistService = $resource('/api/:botId/dialog-graphs/:fileName/exist', { botId: '@botId', fileName: '@fileName' });
     var DialogGraphsService = $resource('/api/:botId/dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
+    var DialogGraphsTemplateService = $resource('/api/:botId/dialog-graphs-template', { language: '@language' })
 
     var chatbot = $cookies.getObject('chatbot');
+
+    $scope.myBotAuth = chatbot.myBotAuth;
 
     (function()
     {
@@ -79,17 +82,48 @@ angular.module('playchat').controller('DialogGraphManagementController', ['$wind
                 return alert(LanguageService($scope.uploadError));
             }
 
-            // DialogGraphsService.save(params, function(result)
-            // {
-            //     $scope.dialogGraphs.unshift(result.fileName);
-            //     var inputs = document.querySelectorAll( '.inputfiles' );
-            //     Array.prototype.forEach.call( inputs, function( input ) {
-            //         var label = input.nextElementSibling,
-            //             labelVal = LanguageService('Choose a file');
-            //         label.innerHTML = labelVal;
-            //     });
-            //     modal.close();
-            // });
+            if(modal.data.fileType == '.graph')
+            {
+                DialogGraphsTemplateService.get({ language: $cookies.get('language') }, function(data)
+                {
+                    params.data = data.data;
+                    DialogGraphsService.save(params, function(result)
+                    {
+                        $scope.dialogGraphs.unshift(result.fileName);
+                        var inputs = document.querySelectorAll( '.inputfiles' );
+                        Array.prototype.forEach.call( inputs, function( input ) {
+                            var label = input.nextElementSibling,
+                                labelVal = LanguageService('Choose a file');
+                            label.innerHTML = labelVal;
+                        });
+                        modal.close();
+                    });
+                },
+                function(err)
+                {
+                    alert(err);
+                });
+            }
+            else
+            {
+                var data = 'module.exports = function(bot)\n' +
+                           '{\n' +
+                           '};\n';
+
+                params.data = data;
+
+                DialogGraphsService.save(params, function(result)
+                {
+                    $scope.dialogGraphs.unshift(result.fileName);
+                    var inputs = document.querySelectorAll( '.inputfiles' );
+                    Array.prototype.forEach.call( inputs, function( input ) {
+                        var label = input.nextElementSibling,
+                            labelVal = LanguageService('Choose a file');
+                        label.innerHTML = labelVal;
+                    });
+                    modal.close();
+                });
+            }
         };
 
         $scope.save = function(modal)

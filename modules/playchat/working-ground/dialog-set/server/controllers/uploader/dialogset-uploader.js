@@ -1,11 +1,11 @@
 var fs = require('fs');
 var async = require('async');
 var path = require('path');
-var fileutil = require(path.resolve('./engine/bot/action/common/fileutil.js'));
-var mongoModule = require(path.resolve('./engine/bot/action/common/mongo.js'));
+var fileutil = require(path.resolve('./engine-old/bot/action/common/fileutil.js'));
+var mongoModule = require(path.resolve('./engine-old/bot/action/common/mongo.js'));
 // var type = require(path.resolve('./bot-engine/action/common/type'));
 var mongoose = require('mongoose');
-var utils = require(path.resolve('./engine/bot/action/common/utils'));
+var utils = require(path.resolve('./engine-old/bot/action/common/utils'));
 
 var XLSX = require('xlsx');
 
@@ -15,7 +15,7 @@ var commonWords = ['하나요', '경우', '에서', '어디', '무엇', '까지'
 
 var dialogsetKakao = require('./dialogset-kakao');
 
-var NLPManager = require(path.resolve('./engine/bot/engine/nlp/nlp-manager.js'));
+var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
 
 var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
@@ -24,28 +24,15 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
 {
     function processInput(language, rawText, done)
     {
-        var language = 'ko'; //temporary
-        NLPManager.getNlpedText(rawText, language, function(err, result)
+        NLPManager.getNlpedText(language, rawText, function(err, lastChar, nlpText, nlp)
         {
             if(err)
             {
                 return res.status(400).send({ message: err.stack || err });
             }
 
-            done(result);
+            done(nlpText);
         });
-
-        // nlpManager.tokenize(language, rawText, function(result)
-        // {
-        //     var processed = result.processed;
-        //     var nlp = [];
-        //     for(var i in processed)
-        //     {
-        //         if(processed[i].text.search(/^(은|는|이|가|을|를)$/) == -1 && processed[i].pos !== 'Punctuation') nlp.push(processed[i].text);
-        //     }
-        //
-        //     done(nlp.join(' '));
-        // });
     };
 
     function insertDatasetFile1(infile, dialogset, callback)

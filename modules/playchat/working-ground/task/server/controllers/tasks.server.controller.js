@@ -10,9 +10,12 @@ var _ = require('lodash');
 var Task = mongoose.model('Task');
 var TaskEntity = mongoose.model('TaskEntity');
 
-var util = require('util'); //temporary
+var utils = require(path.resolve('./engine2/utils/utils.js'));
 
 var fs = require('fs');
+
+
+var Globals = require(path.resolve('./engine2/globals.js'));
 
 
 exports.findTotalPage = function(req, res)
@@ -126,7 +129,7 @@ exports.findTasks = function(req, res)
         }
 
         var result = [];
-        for(var i=0, l=list.length; i<l; i++)
+        for(var i=0; i<list.length; i++)
         {
             if(list[i].endsWith('.graph.js') || list[i].endsWith('.bot.js') || list[i].endsWith('.test.js') || !list[i].endsWith('.js'))
             {
@@ -137,24 +140,52 @@ exports.findTasks = function(req, res)
         }
 
         var tasks = [];
-        for(var i=0, l=result.length; i<l; i++)
+        for(var i=0; i<result.length; i++)
         {
-            var content = fs.readFileSync(filePath + '/' + result[i]);
-            if(content)
+            (function(index)
             {
-                content = content.toString();
-
-                var match = content.match(/bot.setTask\([^,]*,/gi);
-                if(match)
+                var bot = {};
+                bot.setTask = function(name)
                 {
-                    for(var j=0; j<match.length; j++)
-                    {
-                        var name = match[j].replace('bot.setTask(', '').replace(',', '').replace(/"/gi, '').replace(/'/gi, '');
-                        if(tasks.indexOf(name) == -1)
-                            tasks.push({ fileName: result[i], name: name });
-                    }
+                    tasks.push({ fileName: result[index], name: name });
+                };
+
+                bot.setType = function()
+                {
+
+                };
+
+                bot.setQuibbles = function()
+                {
+
+                };
+
+                var f = utils.requireNoCache(filePath + '/' + result[i], true);
+                if(typeof f == 'function')
+                {
+                    f(bot);
                 }
-            }
+                else
+                {
+                    console.log(result[i] + ' is not a function');
+                }
+            })(i);
+            // var content = fs.readFileSync(filePath + '/' + result[i]);
+            // if(content)
+            // {
+            //     content = content.toString();
+            //
+            //     var match = content.match(/bot.setTask\([^,]*,/gi);
+            //     if(match)
+            //     {
+            //         for(var j=0; j<match.length; j++)
+            //         {
+            //             var name = match[j].replace('bot.setTask(', '').replace(',', '').replace(/"/gi, '').replace(/'/gi, '');
+            //             if(tasks.indexOf(name) == -1)
+            //                 tasks.push({ fileName: result[i], name: name });
+            //         }
+            //     }
+            // }
         }
 
         res.jsonp(tasks);
@@ -163,6 +194,13 @@ exports.findTasks = function(req, res)
 
 exports.findTypes = function(req, res)
 {
+    var types = [];
+
+    for(var key in Globals.types)
+    {
+        types.push({ fileName: '', name: Globals.types[key].name });
+    }
+
     var filePath = path.resolve('./custom_modules/' + req.params.botId);
     if(req.query.templateId)
     {
@@ -187,7 +225,7 @@ exports.findTypes = function(req, res)
             result.push(list[i]);
         }
 
-        var types = [];
+        // var types = [];
         for(var i=0, l=result.length; i<l; i++)
         {
             var content = fs.readFileSync(filePath + '/' + result[i]);
@@ -309,7 +347,7 @@ exports.saveTaskToFile = function(req, res)
     else
     {
         content = "var path = require('path');\r\n";
-        content += "var bot = require(path.resolve('./engine/bot.js')).getBot('" + req.params.botId + "');\r\n\r\n";
+        content += "var bot = require(path.resolve('./engine2/bot.js')).getBot('" + req.params.botId + "');\r\n\r\n";
     }
 
     if(!req.body.editMode && content.indexOf('var ' + req.body.name) != -1)
@@ -359,8 +397,6 @@ exports.create = function(req, res)
  */
 exports.read = function(req, res) {
   console.log('---------------------====');
-  console.log(util.inspect(req.params));
-  console.log(util.inspect(req.body));
   var taskList = global._bots[req.params.botNameId].tasks;
   var task = taskList[req.params.name];
   res.jsonp(task);
@@ -408,7 +444,6 @@ exports.read = function(req, res) {
 exports.update = function(req, res) {
 
   // var task = req.task ;
-  console.log(util.inspect(req.body));
   console.log('=-=-===--.................');
   // task = _.extend(task , req.body);
   Task.findOne({name: req.body.name}, function (err, data) {
@@ -583,8 +618,6 @@ exports.openList = function(req, res) {
  */
 exports.openRead = function(req, res) {
   console.log('opencustest');
-  console.log(util.inspect(req.params));
-  console.log(util.inspect(req.body));
   Task.findOne({name: req.params.name}).exec(function (err, result) {
     if (err) {
       console.log(err);

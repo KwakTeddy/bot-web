@@ -345,6 +345,7 @@
 	.cartCol{
 		text-align: right;
 		z-index: 1;
+		padding-right: 15px;
 	}
 	header a.cart{
 		display: inline-block
@@ -393,9 +394,12 @@ cols    1     2      3      4      5      6      7      8
 px      68    160    252    344    436    528    620    712    */
 
 @media only screen and (min-width: 0px) and (max-width: 767px) {
-
+	.logo-stable{
+		min-width:142px !important;
+		width: 172px;
+	}
 	.container {
-		width: 320px;
+		width: 92%;
 		position: relative
 	}
 
@@ -498,13 +502,30 @@ px      68    160    252    344    436    528    620    712    */
 		float: none;
 		line-height: 40px;
 		height: 40px;
-		font-size: 12px
+		font-size: 12px;
 	}
-
+	.regist-space{
+		margin-top: 20px;
+	}
+	.regist-exp{
+		font-size: 20px;
+		margin-top: 20px;
+	}
+	.main h1{
+		margin: 10px auto 8px;
+		font-size: 28px;
+		line-height: 48px;
+	}
+	.main p:first-of-type{
+		font-size: 17px;
+	}
 	.domainArea {
-		padding: 40px 0
+		padding: 10px 0
 	}
-
+	.domainArea input{
+		width: 80%;
+		margin: 0 auto;
+	}
 	.secPdng {
 		padding: 40px 0
 	}
@@ -1270,17 +1291,15 @@ px      68    160    252    344    436    528    620    712    */
 		display: block;
 		margin-left: 0
 	}
+
 }
-
-
-
-
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
 	.container{
-		width: 450px;
+		width: 93%;
 	}
 	.cartOpt{
 		left: 85px
 	}
+	
 }

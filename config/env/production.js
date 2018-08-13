@@ -1,13 +1,12 @@
 'use strict';
 
 module.exports = {
-  secure: {
-    ssl: true,
-    ca: './config/sslcerts/sub.class1.server.ca.pem',
-    //ca: './config/sslcerts/ca.pem',
-    privateKey: './config/sslcerts/ssl.key',
-    certificate: './config/sslcerts/ssl.crt'
-  },
+    secure: {
+        ssl: true,
+        ca: './config/sslcerts/ChainCA/rsa-dv.chain-bundle.pem',
+        privateKey: './config/sslcerts/ssl.key',
+        certificate: './config/sslcerts/ssl.crt'
+    },
   host: process.env.HOST || 'https://localhost',
   port: process.env.PORT || 443,
   db: {
@@ -52,7 +51,7 @@ module.exports = {
     port: process.env.LB_PORT || 3000
   },
   log: {
-    level: process.env.LOG_LEVEL || 'debug',
+    level: process.env.LOG_LEVEL || 'warning',
 
     // logging with Morgan - https://github.com/expressjs/morgan
     // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
@@ -64,9 +63,10 @@ module.exports = {
         directoryPath: process.env.LOG_DIR_PATH || process.cwd(),
         fileName: process.env.LOG_FILE || 'access.log',
         rotatingLogs: { // for more info on rotating logs - https://github.com/holidayextras/file-stream-rotator#usage
-          active: process.env.LOG_ROTATING_ACTIVE === 'true' ? true : false, // activate to use rotating logs 
+          active: process.env.LOG_ROTATING_ACTIVE === 'true' ? true : false, // activate to use rotating logs
           fileName: process.env.LOG_ROTATING_FILE || 'access-%DATE%.log', // if rotating logs are active, this fileName setting will be used
           frequency: process.env.LOG_ROTATING_FREQUENCY || 'daily',
+          date_format: 'YYYY-MM-DD',
           verbose: process.env.LOG_ROTATING_VERBOSE === 'true' ? true : false
         }
       }
@@ -78,7 +78,7 @@ module.exports = {
       // clientSecret: process.env.FACEBOOK_SECRET || '085c64a8566fefe3833ed3d983623a10',
       clientID: process.env.FACEBOOK_ID || '1557169960967403',
       clientSecret: process.env.FACEBOOK_SECRET || '282b2a30ec8115f364833a5d48b60cf6',
-      callbackURL: '/api/auth/facebook/callback'
+      callbackURL: '/auth/facebook/callback'
   },
   kakao: {
       clientID: process.env.KAKAO_KEY || '482579e97a7f46badd2c88a3a66ba862',
@@ -88,7 +88,7 @@ module.exports = {
   google: {
       clientID: process.env.GOOGLE_ID || '567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com',
       clientSecret: process.env.GOOGLE_SECRET || 'cM_Rcn6dxCNeipINWI8K2QG7',
-      callbackURL: '/api/auth/google/callback'
+      callbackURL: '/auth/google/callback'
   },
   twitter: {
     clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',
@@ -155,5 +155,5 @@ module.exports = {
         roles: ['user', 'enterprise', 'admin']
       }
     }
-  },
+    }
 };

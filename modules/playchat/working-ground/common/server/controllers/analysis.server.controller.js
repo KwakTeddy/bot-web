@@ -84,7 +84,7 @@ module.exports.exelDownload = function (req, res) {
     res.json(wbout);
 };
 
-module.exports.senarioExelDownload = function (req, res) {
+module.exports.scenarioExelDownload = function (req, res) {
     var startYear =  parseInt(req.body.date.start.split('/')[0]);
     var startMonth = parseInt(req.body.date.start.split('/')[1]);
     var startDay =   parseInt(req.body.date.start.split('/')[2]);
@@ -125,7 +125,7 @@ module.exports.senarioExelDownload = function (req, res) {
             }
         },
         {$sort: {_id: -1, day: -1}}
-    ]).exec(function (err, senarioUsage) {
+    ]).exec(function (err, scenarioUsage) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
@@ -134,25 +134,25 @@ module.exports.senarioExelDownload = function (req, res) {
             async.waterfall([
                 function (cb) {
                     if(global._bot && global._bot[req.params.bId]) {
-                        var botSenario = global._bot[req.params.bId];
-                        cb(null, botSenario)
+                        var botScenario = global._bot[req.params.bId];
+                        cb(null, botScenario)
                     }else {
                         botLib.loadBot(req.params.bId, function (realbot) {
-                            var botSenario = realbot.dialogs;
-                            cb(null, botSenario)
+                            var botScenario = realbot.dialogs;
+                            cb(null, botScenario)
                         });
                     }
-                }, function (botSenario, cb) {
+                }, function (botScenario, cb) {
                     var maxDepth = 0;
-                    var senarioIndex = {};
+                    var scenarioIndex = {};
                     var depth = "1";
-                    var indexing = function (senario, depth, index) {
+                    var indexing = function (scenario, depth, index) {
                         var newDepth;
                         newDepth = depth + "-" + index;
-                        senarioIndex[newDepth] = senario.name;
+                        scenarioIndex[newDepth] = scenario.name;
                         if(newDepth.match(/-/g).length > maxDepth) maxDepth = newDepth.match(/-/g).length;
-                        if(senario.children){
-                            senario.children.forEach(function (child, index) {
+                        if(scenario.children){
+                            scenario.children.forEach(function (child, index) {
                                 index++;
                                 index = index.toString();
                                 var prefix = "";
@@ -164,18 +164,18 @@ module.exports.senarioExelDownload = function (req, res) {
                         }
                     };
 
-                    for(var i = 0; i < botSenario.length; i++){
-                        if(!botSenario[i].name) {
+                    for(var i = 0; i < botScenario.length; i++){
+                        if(!botScenario[i].name) {
                             continue;
                         }else{
                             var prefix = "";
                             for(var j = 0; j < depth.length-1; j++){
                                 prefix = prefix + "a"
                             }
-                            senarioIndex[prefix + depth] = botSenario[i].name;
+                            scenarioIndex[prefix + depth] = botScenario[i].name;
                         }
-                        if(botSenario[i].children){
-                            botSenario[i].children.forEach(function (child, index) {
+                        if(botScenario[i].children){
+                            botScenario[i].children.forEach(function (child, index) {
                                 index++;
                                 index = index.toString();
                                 var prefix2 = "";
@@ -189,14 +189,14 @@ module.exports.senarioExelDownload = function (req, res) {
                         depth = depth.toString();
                     }
 
-                    var orderedSenarioDialogName = [];
+                    var orderedScenarioDialogName = [];
                     var indexArray = [];
-                    Object.keys(senarioIndex).forEach(function (index) {
+                    Object.keys(scenarioIndex).forEach(function (index) {
                         indexArray.push(index);
                     });
                     indexArray.sort();
                     indexArray.forEach(function (index) {
-                        orderedSenarioDialogName.push(senarioIndex[index]);
+                        orderedScenarioDialogName.push(scenarioIndex[index]);
                     });
 
 
@@ -218,7 +218,7 @@ module.exports.senarioExelDownload = function (req, res) {
                         dateArray.push(year + '-'+ month + '-' + day);
                     }
 
-                    senarioUsage.forEach(function (doc) {
+                    scenarioUsage.forEach(function (doc) {
                         dateObj[doc._id.year + '-' + doc._id.month + '-' + doc._id.day][doc._id.dialogName] =
                             {
                                 kakao: doc.kakao,
@@ -249,17 +249,17 @@ module.exports.senarioExelDownload = function (req, res) {
                     }
                     exelData.push(dateMenu.concat(dateArray, dateArray, dateArray));
 
-                    orderedSenarioDialogName.forEach(function (dialogName, index) {
-                        var senarioDailyData = [];
+                    orderedScenarioDialogName.forEach(function (dialogName, index) {
+                        var scenarioDailyData = [];
                         var depth = (indexArray[index].match(/-/g) || []).length;
                         for(var i = 0; i < depth; i ++){
-                            senarioDailyData.push(null);
+                            scenarioDailyData.push(null);
                         }
-                        senarioDailyData.push(indexArray[index] + '.' + dialogName);
+                        scenarioDailyData.push(indexArray[index] + '.' + dialogName);
                         for(var i = 0; i < maxDepth - depth; i ++){
-                            senarioDailyData.push(null);
+                            scenarioDailyData.push(null);
                         }
-                        senarioDailyData.push(null);
+                        scenarioDailyData.push(null);
 
                         var kakaoArray = [];
                         var facebookArray = [];
@@ -275,8 +275,8 @@ module.exports.senarioExelDownload = function (req, res) {
                                 navertalkArray.push(0);
                             }
                         });
-                        senarioDailyData = senarioDailyData.concat(kakaoArray, facebookArray, navertalkArray);
-                        exelData.push(senarioDailyData);
+                        scenarioDailyData = scenarioDailyData.concat(kakaoArray, facebookArray, navertalkArray);
+                        exelData.push(scenarioDailyData);
                     });
 
                     function datenum(v, date1904) {

@@ -8,4 +8,6 @@ module.exports = function(app)
 
     app.get('/api/:botId/chatbot-edit', ChatbotEditController.findBot);
     app.put('/api/:botId/chatbot-edit', ChatbotEditController.updateBot);
+    app.get('/api/:botId/chatbot-edit/options', ChatbotEditController.getBotOptions);
+    app.put('/api/:botId/chatbot-edit/options', ChatbotEditController.updateBotOptions);
 };

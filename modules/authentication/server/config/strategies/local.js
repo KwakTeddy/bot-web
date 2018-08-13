@@ -22,15 +22,17 @@ module.exports = function () {
       }
       if (!user || !user.authenticate(password)) {
         return done(null, false, {
-          message: '가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다 '
+          message: '비밀번호가 잘못되었습니다'
+          // message: '가입되지 않은 E-mail이거나 비밀번호가 잘못되었습니다'
         });
       }
-      if (!user.localEmailConfirmed && (user.provider == 'local')){
+      if (!user.localEmailConfirmed && (user.provider == 'local'))
+      {
         return done(null, false, {
-          message: 'E-mail 확인절차를 거치지 않았습니다'
+          message: 'E-mail 확인절차를 거치지 않았습니다',
+          code : 10
         })
       }
-
       return done(null, user);
     });
   }));

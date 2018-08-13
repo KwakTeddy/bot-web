@@ -26,14 +26,14 @@
         </div>
         <div class="question-area">
             <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true"></textarea>
-            <span class="plus-button" ng-click="addInput($event);"></span>
+            <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInput($event);"></span>
         </div>
         <div class="answer-area">
             <textarea type="text" class="data-input" ng-keydown="inputKeydown($event);" ng-required="true"></textarea>
-            <span class="plus-button" ng-click="addInput($event);"></span>
+            <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInput($event);"></span>
         </div>
         <div class="functions-area" style="margin-top: 5px;">
-            <button class="blue-button" style="width: 90px;"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png">{{lan(' Add') }}</button>
+            <button class="blue-button" style="width: 90px;" ng-if="myBotAuth.edit"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png">{{lan(' Add') }}</button>
             <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="{{lan('display: none;') }}">
             <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="{{lan('display: none;') }}">
             <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="{{lan('display: none;') }}">
@@ -56,11 +56,14 @@
             <!--</a>-->
         <!--</div>-->
     </div>
-    <div class="tab01">
+
+    <div class="tab01" style="margin-top: 10px;">
         <ul class="tabs1">
-            <li class="mini" ng-click="openDialogset();"><a href="#"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>
+            <!--<li class="mini" ng-click="openDialogset();"><a href="#"><img src="modules/playchat/working-ground/common/client/imgs/plus.png"></a></li>-->
+            <li ng-repeat="dialogset in dialogsetList" ng-class="dialogset._id == currentDialogsetId ? 'select_tab' : ''" ng-click="selectTab(dialogset);"><a href="#">{{ dialogset.title }}</a></li>
         </ul>
     </div>
+
     <div class="dialog-learning-development-title">
         <span ng-class="topicOpened ? 'topicopen-topic' : 'topicclose-topic'">{{lan('Topic') }}</span>
         <span ng-class="topicOpened ? 'topicopen-question' : 'topicclose-question'">{{lan('Question') }}</span>
@@ -73,42 +76,28 @@
             </div>
         </div>
     </div>
+
     <div class="dialog-learning-development-content">
         <div class="dialog-learning-development-content-row">
             <p class="new-dialog-title">{{lan('New Dialog') }}</p>
             <form ng-submit="addDialog($event);">
-                <div class="topic-area">
-                    <div>
-                        <div>
-                            <p>Topic 1</p>
-                            <div class="select-wrapper">
-                                <select class="data-select" tabindex="-1"></select>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Topic 2</p>
-                            <div class="select-wrapper">
-                                <select class="data-select" tabindex="-1"></select>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Topic 3</p>
-                            <div class="select-wrapper">
-                                <select class="data-select" tabindex="-1"></select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="topic-area"></div>
                 <div class="question-area">
-                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event, 'inputRaw');"></textarea>
-                    <span class="plus-button" ng-click="addInputElement($event);"></span>
+                    <div class="textarea-wrapper">
+                        <textarea type="text" class="data-input" required="true" ng-keydown="inputKeydownElement($event, 'inputRaw');"></textarea>
+                        <img ng-show="myBotAuth.edit && newQuestionInputCount > 1" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteNewInput($event, 'question');">
+                    </div>
+                    <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event, 'question');"></span>
                 </div>
                 <div class="answer-area">
-                    <textarea type="text" class="data-input" ng-required="true" ng-keydown="inputKeydownElement($event, 'output');"></textarea>
-                    <span class="plus-button" ng-click="addInputElement($event);"></span>
+                    <div class="textarea-wrapper">
+                        <textarea type="text" class="data-input" required="true" ng-keydown="inputKeydownElement($event, 'output');"></textarea>
+                        <img ng-show="myBotAuth.edit && newAnswerInputCount > 1" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteNewInput($event, 'answer');">
+                    </div>
+                    <span class="plus-button" ng-if="myBotAuth.edit" ng-click="addInputElement($event, 'answer');"></span>
                 </div>
                 <div class="functions-area" style="margin-top: 5px;">
-                    <button class="blue-button"style="width: 90px;"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png"> {{lan('Add') }}</button>
+                    <button class="blue-button"style="width: 90px;" ng-if="myBotAuth.edit"> <img src="/modules/playchat/working-ground/common/client/imgs/add.png"> {{lan('Add') }}</button>
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saved.png" class="saved-img" style="display: none;">
@@ -116,46 +105,54 @@
                 </div>
             </form>
         </div>
+
         <div class="dialog-learning-development-content-row" ng-repeat="dialog in dialogs" data-id="{{ dialog._id }}">
             <form ng-submit="addDialog($event);" data-id="{{ dialog._id }}">
                 <div class="topic-area">
                     <div>
-                        <div>
-                            <p>Topic 1</p>
-                            <select class="data-select" tabindex="-1">
-                                <option ng-if="dialog.context && dialog.context.parent && dialog.context.parent.parent">{{ dialog.context.parent.parent.name }}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <p>Topic 2</p>
-                            <select class="data-select" tabindex="-1">
-                                <option ng-if="dialog.context && dialog.context.parent">{{ dialog.context.parent.name }}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <p>Topic 3</p>
-                            <select class="data-select" tabindex="-1">
-                                <option ng-if="dialog.context">{{ dialog.context.name }}</option>
-                            </select>
+                        <div ng-repeat="category in dialog.category" style="text-align: center;">
+                            <p>Topic {{ $index + 1 }}</p>
+                            <span class="category">{{ category }}</span>
                         </div>
                     </div>
                 </div>
+
                 <div class="question-area">
-                    <div style="position: relative;" ng-repeat="input in dialog.inputRaw track by $index">
-                        <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw', input);" ng-if="isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">{{ input }}</textarea>
-                        <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.inputRaw, $index);">
+                    <div ng-repeat="input in dialog.inputRaw track by $index">
+                        <textarea
+                            type="text"
+                            class="data-input"
+                            ng-keydown="inputKeydown($event, dialog, 'inputRaw', input);"
+                            ng-if="isArray(dialog.inputRaw);"
+                            ng-focus="checkModify($event);"
+                            ng-keyup="watchModified('input', $event)"
+                            ng-blur="saveModified('input', $event)"
+                        >{{ input }}</textarea>
+                        <img ng-if="$index > 0 && myBotAuth.edit" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.inputRaw, $index);">
                     </div>
+
                     <!--<textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'inputRaw');" ng-if="!isArray(dialog.inputRaw);" ng-focus="checkModify($event);" ng-keyup="watchModified('input', $event)" ng-blur="saveModified('input', $event)">vvv</textarea>-->
                     <span class="plus-button" ng-click="addInput($event, dialog, 'inputRaw');" ng-required="true"></span>
                 </div>
+
                 <div class="answer-area">
-                    <div style="position: relative;" ng-repeat="output in dialog.output track by $index">
-                        <textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output', output);" ng-if="isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ output }}</textarea>
-                        <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.output, $index);">
+                    <div ng-repeat="output in dialog.output track by $index">
+                        <textarea
+                            type="text"
+                            class="data-input"
+                            ng-keydown="inputKeydown($event, dialog, 'output', output);"
+                            ng-if="isArray(dialog.output);"
+                            ng-focus="checkModify($event);"
+                            ng-keyup="watchModified('output', $event)"
+                            ng-blur="saveModified('input', $event)"
+                        >{{ output }}</textarea>
+                        <img ng-if="$index > 0 && myBotAuth.edit" src="/modules/playchat/working-ground/common/client/imgs/delete_lighter.png" class="delete-img" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteInput(dialog.output, $index);">
                     </div>
+
                     <!--<textarea type="text" class="data-input" ng-keydown="inputKeydown($event, dialog, 'output');" ng-if="!isArray(dialog.output);" ng-focus="checkModify($event);" ng-keyup="watchModified('output', $event)" ng-blur="saveModified('input', $event)">{{ dialog.output }}</textarea>-->
                     <span class="plus-button" ng-click="addInput($event, dialog, 'output');" ng-required="true" ></span>
                 </div>
+
                 <div class="functions-area" style="margin-top: 5px;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="editing-img" style="display: none;">
                     <img src="/modules/playchat/working-ground/dialog-set/client/imgs/saving.png" class="saving-img" style="display: none;">
@@ -165,6 +162,7 @@
             </form>
         </div>
     </div>
+
     <div style="text-align: center;">
         <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" class="more-progress" style="opacity: 0;">
     </div>
@@ -210,53 +208,13 @@
         </div>
     </div>
 
-    <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
-        <div class="modal">
-            <form name="modalFormDefault" ng-submit="save(modal.importModal);">
-                <div class="form-row">
-                    <label class="required" style="width: 100%;">
-                        <span class="form-title">{{lan('Title') }}</span>
-                        <input type="text" placeholder="대화셋 이름을 입력해주세요" name="title" ng-model="modal.importModal.data.title" class="dialogset-title data-input" ng-required="true">
-                    </label>
-                </div>
-                <!--<div class="form-row" style="display: none;">-->
-                <!--<label class="required" style="width: 100%;">-->
-                <!--<span>Type</span>-->
-                <!--<div class="form-box">-->
-                <!--<input type="radio" checked="true" ng-model="modal.importModal.data.type" ng-required="true">-->
-                <!--<span>(csv or xlsx)</span>-->
-                <!--</div>-->
-                <!--</label>-->
-                <!--</div>-->
-                <div class="form-row">
-                    <label class="required" style="width: 100%;">
-                        <span>File</span>
-                        <div class="form-box">
-                            <input type="file" nv-file-select uploader="uploader" ng-required="true" />
-                        </div>
-                    </label>
-                </div>
-                <div class="form-row">
-                    <label style="width: 100%;">
-                        <span>{{lan('Content') }}</span>
-                        <textarea placeholder="내용을 입력해주세요" name="content" ng-model="modal.importModal.data.content" class="data-input"></textarea>
-                    </label>
-                </div>
-                <div class="tab-footer">
-                    <button class="blue-button">{{lan('Save') }}</button>
-                    <button type="button" class="default-button" ng-click="modal.importModal.close();">{{lan('Close') }}</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <div class="video-popup">
         <div class="video-controller">
             <img src="modules/playchat/log-analysis/client/imgs/logclose.png" ng-click="closeVideo($event);">
         </div>
         <div class="video-wrapper">
             <div class="video-cover" ng-click="openVideoPopup();"></div>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/1epM6DBUypY" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/ngxlek--a1w" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
         </div>
         <img src="modules/playchat/working-ground/common/client/imgs/Q.png" style="display:none; cursor: pointer;" ng-click="openVideo($event);">
     </div>

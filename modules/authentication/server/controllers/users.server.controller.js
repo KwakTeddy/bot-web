@@ -8,9 +8,11 @@ var nodemailer = require('nodemailer');
 var config = require(path.resolve('./config/config'));
 var smtpTransport = nodemailer.createTransport(config.mailer.options);
 
-module.exports.saveLanguage = function(req, res)
+var crypto = require('crypto');
+
+module.exports.updateUser = function(req, res)
 {
-    User.update({ _id: req.user._id }, {$set: { language: req.body.language }}).exec(function(err, result)
+    User.findOne({ _id: req.user._id }).exec(function(err, user)
     {
         if(err)
         {
@@ -18,7 +20,16 @@ module.exports.saveLanguage = function(req, res)
             return res.status(400).send({ error: err });
         }
 
-        res.end();
+        var query = { language: req.body.language };
+        if(req.body.password)
+        {
+            query.password = crypto.pbkdf2Sync(req.body.password, new Buffer(user.salt, 'base64'), 10000, 64).toString('base64');
+        }
+
+        User.update({ _id: req.user._id }, { $set: query }).exec(function(err, result)
+        {
+            res.end();
+        });
     });
 };
 
@@ -42,6 +53,8 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
             $or: [mainProviderSearchQuery, additionalProviderSearchQuery]
         };
 
+
+
         //Define email search query
         if(providerUserProfile.email){
             var emailSearchQuery = {};
@@ -49,7 +62,12 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
             searchQuery.$or.push(emailSearchQuery);
         }
 
+        console.log('====search query====');
+        console.log(searchQuery);
+        console.log('====search query end====');
+
         User.findOne(searchQuery, function (err, user) {
+
             if (err) {
                 return done(err);
             } else {

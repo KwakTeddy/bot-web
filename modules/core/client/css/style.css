@@ -1,0 +1,200 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+    height: 100%;
+    min-height: 35rem;
+    position: relative;
+    font-family: 'Source Sans Pro';
+    font-weight: 300;
+	min-width:1092px;
+}
+#mainNav{
+	background-color: transparent;
+}
+section.masthead{
+	position:relative;
+	width:100%;
+	padding-top:150px;
+	padding-bottom:100px;
+	color:#fff;
+	background: url(../imgs/pattern-home.png),#038eda;
+	background: url(../imgs/pattern-home.png),linear-gradient(to left,#7b4397,#038eda);
+	background: url(../imgs/pattern-home.png),-webkit-linear-gradient(to left,#7b4397,#038eda);
+}
+section.masthead .section-content{
+	max-width:500px;
+	margin-bottom:100px;
+	text-align:center;
+}
+section.masthead .section-content h1{
+	font-size:30px;
+}
+section.masthead .device-container{
+	max-width:325px;
+	margin-right:auto;
+	margin-left:auto;
+}
+section.masthead .device-container .screen img{
+	border-radius:3px;
+}
+.container {
+    max-width: 1200px;
+	margin-left: auto;
+    margin-right: auto;
+}
+.col-lg-7{
+	-webkit-box-flex:0;
+	-ms-flex:0 0 58.333333%;
+	flex:0 0 58.333333%;
+	max-width:58.333333%
+}
+.col-lg-5{
+	-webkit-box-flex:0;
+	-ms-flex:0 0 41.666667%;
+	flex:0 0 41.666667%;
+	max-width:41.666667%;
+}
+@media (min-width:992px){
+	section.masthead{
+		height:100vh;
+		min-height:775px;
+		padding-top:0;
+		padding-bottom:0
+	}
+	section.masthead .section-content{
+		margin-bottom:0;
+		text-align:left
+	}
+	section.masthead .section-content h1{
+		font-size:44px;
+		letter-spacing:-3px; 
+	}
+	section.masthead .device-container{
+		max-width:325px
+	}
+}
+.list-inline{
+	padding-left:0;list-style:none
+}
+.list-inline-item{
+	display:inline-block
+}
+.list-inline-item:not(:last-child){
+	margin: 0 1.2%;
+}
+ul.list-social{
+	margin-bottom:0;
+	text-align: center;
+}
+ul.list-social li a{
+	font-size:30px;
+	line-height:60px;
+	display:block;
+	width:60px;
+	height:60px;
+	color:#fff;
+	border-radius:100%;
+}
+li.social-twitter a{
+	background-color:#1da1f2;
+}
+li.social-twitter a:hover{
+	background-color:#0d95e8;
+}
+li.social-facebook a{
+	background-color:#3b5998;
+}
+li.social-facebook a:hover{
+	background-color:#344e86;
+}
+li.social-kakao a{
+	background-color:#fdcc52;
+}
+li.social-kakao a:hover{
+	background-color:#e4b02e;
+}
+li.social-link a{
+	background-color: #f36f21;
+}
+li.social-link a:hover{
+	background-color: #e56316;
+}
+.device-mockup.simple.portrait.white>.device, .device-mockup.simple.white>.device {
+    background-image: url(../device-mockups/simple/simple_white_port_empty.png);
+}
+.device-mockup.simple, .device-mockup.simple.portrait {
+    padding-bottom: 201.76%;
+}
+#quick .quick_cts {
+    display: none;
+    position: fixed;
+    top: 211px;
+    right: 170px;
+    width: 400px;
+    background: rgba(46,44,43,0.95);
+    box-sizing: border-box;
+    padding: 40px;
+}
+.info-container{
+	padding: 0 1%;
+}
+.user-area{
+	background:rgba(46,44,43,0.5);
+	box-sizing: border-box;
+    padding: 40px;
+}
+.user-area h1{
+	color: #fff;
+	line-height: 46px;
+    font-weight: 300;
+}
+.user-area p{
+	color: #fff;
+	font-size: 15px;
+    line-height: 25px;
+	padding: 16px 0 26px;
+    border-bottom: 1px solid #f36f21;
+}
+.explain1{
+	box-sizing: border-box;
+    padding: 7% 3% 3%;
+}
+.explain1 h2{
+	font-size: 30px;
+}
+.explain1 h2 img{
+	vertical-align: baseline;
+	padding-right: 1%;
+}
+.explain1 p{
+	font-size: 15px;
+	line-height: 25px;
+}
+.icon-kakao {
+    background: url(../imgs/sns10.png) 50% 50% no-repeat;
+}
+.icon-twitter{
+	background: url(../imgs/sns3.png) 50% 50% no-repeat;
+}
+.icon-facebook{
+	background: url(../imgs/sns4.png) 50% 50% no-repeat;
+}
+
+.icon-Link{
+	background: url(../imgs/sns1.png) 50% 50% no-repeat;
+}
+.explain2 span{
+	line-height: 3.5;
+}
+footer {
+    padding: 25px 0;
+    text-align: center;
+    color: rgba(255,255,255,.3);
+    background-color: #222;
+}
+
+.device-mockup{position:relative;width:100%;padding-bottom:61.775701%;}
+.device-mockup>.device{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background-size:100% 100%;background-repeat:no-repeat;background-image:url(macbook/macbook.png);}
+.device-mockup>.device>.screen{position:absolute;top:6%;bottom:7%;left:0;right:0;overflow:hidden;background: #f8f8f8;}
+.device-mockup>.device>.button{position:absolute;top:0;left:0;display:none;overflow:hidden;border-radius:100%;-webkit-border-radius:100%;-moz-border-radius:100%;cursor:pointer}

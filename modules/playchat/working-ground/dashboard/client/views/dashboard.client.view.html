@@ -31,58 +31,58 @@
                 </div>
             </div>
         </div>
-        <div class="dashboard-dialog-develop" style="margin-top: 70px;opacity: 0.5;">
-            <div class="dashboard-dialog-management-card-first">
-                <a href="/playchat/channel" class="dashboard-dialog-cover"></a>
-                <div style="min-width: 181px;">
-                    <div><a href="/playchat/channel"><img src="/modules/playchat/working-ground/dashboard/client/imgs/phone_.png"></a>{{lan('Connect Channel')}}</div>
-                    <p>{{lan('We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.')}}</p>
+        <div class="dashboard-dialog-develop"  style="margin-top: 70px;opacity: 0.5;">
+            <div class="dashboard-dialog-management-newcard">
+            	<div class="card1"><img src="/modules/playchat/working-ground/dashboard/client/imgs/card1.png"></div>
+                <div style="padding: 18px 24px 24px;">
+                    <div>{{lan('Connect Channel') }}</div>
+                    <p>{{lan('We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.') }}</p>
                 </div>
             </div>
-            <div class="dashboard-dialog-management-card-first">
-                <a href="/playchat/operation/chat-log/ai" class="dashboard-dialog-cover"></a>
-                <div style="min-width: 181px;">
-                    <div><a href="/playchat/operation/chat-log/ai"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech_usage.png"></a>{{lan('Dialogue Breakdown')}}</div>
-                    <p>{{lan('Artificial Intelligence may automatically review the dialogue breakdown of the conversation.')}}</p>
+            <div class="dashboard-dialog-management-newcard">
+            	<div class="card2"><img src="/modules/playchat/working-ground/dashboard/client/imgs/card2.png"></div>
+                <div style="padding: 18px 24px 24px;">
+                    <div>{{lan('Dialogue Breakdown') }}</div>
+                    <p>{{lan('Artificial Intelligence may automatically review the dialogue breakdown of the conversation.') }}</p>
                 </div>
             </div>
-            <div class="dashboard-dialog-management-card-first">
-                <a href="/playchat/operation/failed-dialogs" class="dashboard-dialog-cover"></a>
-                <div style="min-width: 181px;">
-                    <div><a href="/playchat/operation/failed-dialogs"><img src="/modules/playchat/working-ground/dashboard/client/imgs/failed-dialog.png"></a>{{lan('Failed Dialog')}}</div>
-                    <p>{{lan('We can make it learn how to answer to the questions that it was not able to reply.')}}</p>
+            <div class="dashboard-dialog-management-newcard">
+            	<div class="card3"><img src="/modules/playchat/working-ground/dashboard/client/imgs/card3.png"></div>
+                <div style="padding: 18px 24px 24px;">
+                    <div>{{lan('Failed Dialog') }}</div>
+                    <p>{{lan('We can make it learn how to answer to the questions that it was not able to reply.') }}</p>
                 </div>
             </div>
-            <div class="dashboard-dialog-management-card-first">
-                <a href="/playchat/analysis/summary" class="dashboard-dialog-cover"></a>
-                <div style="min-width: 181px;">
-                    <div><a href="/playchat/analysis/summary"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ana.png"></a>{{lan('usage statistics')}}</div>
-                    <p>{{lan('You may search the usage amount by the number of conversations, number of people logged in by dates and etc.')}}</p>
+            <div class="dashboard-dialog-management-newcard">
+            	<div class="card4"><img src="/modules/playchat/working-ground/dashboard/client/imgs/card4.png"></div>
+                <div style="padding: 18px 24px 24px;">
+                    <div>{{lan('usage statistics') }}</div>
+                    <p>{{lan('You may search the usage amount by the number of conversations, number of people logged in by dates and etc.') }}</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div ng-if="!isFirst">
-        <div class="dashboard-summary-title">{{lan('Bot Profile')}}</div>
-        <div class="dashboard-bot-profile">
-            <div class="dashboard-bot-profile-image">
-                <div class="dashboard-bot-profile-image-wrapper">
-                    <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
-                    <span></span>
-                </div>
-            </div>
-            <div class="dashboard-bot-profile-content">
-                <div>
-                    <span>{{lan('Bot Name')}}</span>
-                    <input type="text" value="{{ chatbot.name }}" disabled="true">
-                </div>
-                <div>
-                    <p>{{lan('Description')}}</p>
-                    <textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>
-                </div>
-            </div>
-        </div>
+        <!--<div class="dashboard-summary-title">{{lan('Bot Profile')}}</div>-->
+        <!--<div class="dashboard-bot-profile">-->
+            <!--<div class="dashboard-bot-profile-image">-->
+                <!--<div class="dashboard-bot-profile-image-wrapper">-->
+                    <!--<img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">-->
+                    <!--<span></span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="dashboard-bot-profile-content">-->
+                <!--<div>-->
+                    <!--<span>{{lan('Bot Name')}}</span>-->
+                    <!--<input type="text" value="{{ chatbot.name }}" disabled="true">-->
+                <!--</div>-->
+                <!--<div>-->
+                    <!--<p>{{lan('Description')}}</p>-->
+                    <!--<textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="dashboard-dialog-develop" style="margin-top: 20px;">
             <div class="dashboard-dialog-learning">
                 <img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_learning.png" style="height: 138px;">
@@ -107,30 +107,34 @@
         </div>
         <div class="dashboard-dialog-develop" style="margin-top: 70px;">
             <div class="dashboard-dialog-management-card">
+            	<div class="card1"><img src="/modules/playchat/working-ground/dashboard/client/imgs/card1.png"></div>
                 <a href="/playchat/channel" class="dashboard-dialog-cover"></a>
-                <div style="min-width: 181px;">
-                    <div><a href="/playchat/channel"><img src="/modules/playchat/working-ground/dashboard/client/imgs/phone_.png"></a>{{lan('Connect Channel') }}</div>
+                <div style="padding: 18px 24px 24px;">
+                    <div><a href="/playchat/channel"></a>{{lan('Connect Channel') }}</div>
                     <p>{{lan('We service chatbot by connecting to Phoneline, KakaoTalk or Facebook.') }}</p>
                 </div>
             </div>
             <div class="dashboard-dialog-management-card">
+            	<div class="card2"><img src="/modules/playchat/working-ground/dashboard/client/imgs/card2.png"></div>
                 <a href="/playchat/operation/chat-log/ai" class="dashboard-dialog-cover"></a>
-                <div style="min-width: 181px;">
-                    <div><a href="/playchat/operation/chat-log/ai"><img src="/modules/playchat/working-ground/dashboard/client/imgs/speech_usage.png"></a>{{lan('Dialogue Breakdown') }}</div>
+                <div style="padding: 18px 24px 24px;">
+                    <div><a href="/playchat/operation/chat-log/ai"></a>{{lan('Dialogue Breakdown') }}</div>
                     <p>{{lan('Artificial Intelligence may automatically review the dialogue breakdown of the conversation.') }}</p>
                 </div>
             </div>
             <div class="dashboard-dialog-management-card">
+            	<div class="card3"><img src="/modules/playchat/working-ground/dashboard/client/imgs/card3.png"></div>
                 <a href="/playchat/operation/failed-dialogs" class="dashboard-dialog-cover"></a>
-                <div style="min-width: 181px;">
-                    <div><a href="/playchat/operation/failed-dialogs"><img src="/modules/playchat/working-ground/dashboard/client/imgs/failed-dialog.png"></a>{{lan('Failed Dialog') }}</div>
+                <div style="padding: 18px 24px 24px;">
+                    <div><a href="/playchat/operation/failed-dialogs"></a>{{lan('Failed Dialog') }}</div>
                     <p>{{lan('We can make it learn how to answer to the questions that it was not able to reply.') }}</p>
                 </div>
             </div>
             <div class="dashboard-dialog-management-card">
+            	<div class="card4"><img src="/modules/playchat/working-ground/dashboard/client/imgs/card4.png"></div>
                 <a href="/playchat/analysis/summary" class="dashboard-dialog-cover"></a>
-                <div style="min-width: 181px;">
-                    <div><a href="/playchat/analysis/summary"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ana.png"></a>{{lan('usage statistics') }}</div>
+                <div style="padding: 18px 24px 24px;">
+                    <div><a href="/playchat/analysis/summary"></a>{{lan('usage statistics') }}</div>
                     <p>{{lan('You may search the usage amount by the number of conversations, number of people logged in by dates and etc.') }}</p>
                 </div>
             </div>

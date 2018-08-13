@@ -79,38 +79,23 @@
                     <div style="display: inline-block; vertical-align: top; width: 90%; margin: 20px 0 0 35px;">
                         <table class="tb02" style="width: 100%;margin-top: 0px;">
                             <colgroup>
-                                <col style="width: 30%;">
-                                <col style="width: 60%;">
+                                <col style="width: 90%;">
                                 <col style="width: 10%;">
                             </colgroup>
                             <thead>
-                                <tr>
-                                    <th>{{lan('Contents') }}</th>
-                                    <th>{{lan('Synonym') }}</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>{{lan('Contents') }}</th>
+                                <th></th>
+                            </tr>
                             </thead>
                             <tbody id="entityList">
                                 <tr ng-if="entities.length == 0">
-                                    <td colspan="3">Empty</td>
+                                    <td colspan="2">{{ lan('empty') }}</td>
                                 </tr>
                                 <tr ng-repeat="item in entities">
-                                    <td style="text-align: left;">
-                                        <span style="position: relative;">
-                                            <input type="text" class="entity-content-name" ng-model="item.name">
-                                            <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteContent(entities, $index);">
-                                        </span>
-                                    </td>
-                                    <td class="entity-content-synonyms" style="text-align: left; white-space: normal;">
-                                        <span ng-repeat="synonym in item.synonyms" style="position: relative;">
-                                            <input type="text" class="entity-content-synonym" style="width: 160px; padding: 9px;" placeholder="{{lan('Press Enter to add')}}" ng-model="synonym.name" required="true">
-                                            <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" style="position: absolute; right: 9px; top: -1px;" ng-click="deleteSynonym(item.synonyms, $index);">
-                                        </span>
-                                        <span>
-                                            <input type="text" class="entity-content-synonym" style="width: 160px; padding: 9px;" placeholder="{{lan('Press Enter to add')}}" ng-keydown="addEntityContentSynonym($event, item.synonyms);">
-                                        </span>
-                                    </td>
+                                    <td style="text-align: left;"> <textarea class="entity-content-name" ng-model="item.name" style="width: 100%;"></textarea></td>
                                     <td>
+                                        <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteContent(entities, $index);">
                                     </td>
                                 </tr>
                             </tbody>

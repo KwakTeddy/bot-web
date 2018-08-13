@@ -10,6 +10,8 @@
     {
         var Menu = function()
         {
+            this.tempDialog = undefined;
+            this.tempDialogElement = undefined;
             this.currentDialog = undefined;
             this.isOpened = false;
         };
@@ -39,6 +41,110 @@
             this.closeMenu();
         };
 
+        Menu.prototype.cut = function()
+        {
+            var dialog = this.currentDialog.get(0).children[0].dialog;
+            var parent = this.currentDialog.parent().parent();
+            var parentDialog = parent.get(0).children[0].dialog;
+
+            instance.focusById(parentDialog.id);
+
+            var index = parentDialog.children.indexOf(dialog);
+            parentDialog.children.splice(index, 1);
+
+            parent.find('.graph-fold').get(0).style.display = 'none';
+
+            if(this.currentDialog.next().get(0).nodeName == 'BUTTON')
+            {
+                this.currentDialog.next().css('margin-top', '21.4px');
+            }
+
+            this.currentDialog.parent().get(0).removeChild(this.currentDialog.get(0));
+            
+            this.tempDialogElement = this.currentDialog;
+            this.tempDialog = dialog;
+            this.closeMenu();
+
+            instance.refreshLine();
+
+            angular.element('#menuPaste').attr('data-using', 'true');
+        };
+
+        var changeDialogInfo = function(dialogs)
+        {
+            for(var i=0; i<dialogs.length; i++)
+            {
+                dialogs[i].id += '-Clone';
+                dialogs[i].name += '-Clone';
+
+                if(dialogs[i].children)
+                {
+                    changeDialogInfo(dialogs[i].children);
+                }
+            }
+        };
+
+        Menu.prototype.copy = function()
+        {
+            var dialog = JSON.parse(JSON.stringify(this.currentDialog.get(0).children[0].dialog));
+
+            var clone = this.currentDialog.get(0).cloneNode(true);
+
+            this.tempDialogElement = angular.element(clone);
+            this.tempDialog = dialog;
+
+            changeCloneInfo(this.tempDialog);
+
+            // this.tempDialog.id += '-Clone';
+            // this.tempDialog.name += '-Clone';
+
+            if(this.tempDialog.children)
+            {
+                changeDialogInfo(this.tempDialog.children);
+            }
+
+            this.tempDialogElement.attr('id', this.tempDialog.id);
+            this.tempDialogElement.find('.graph-dialog-header span').text(this.tempDialog.name);
+
+            this.closeMenu();
+
+            angular.element('#menuPaste').attr('data-using', 'true');
+        };
+
+        Menu.prototype.paste = function()
+        {
+            if(this.tempDialog && this.tempDialogElement)
+            {
+                var parentDialog = this.currentDialog.get(0).children[0].dialog;
+                (parentDialog.children || (parentDialog.children = [])).push(this.tempDialog);
+                var children = this.currentDialog.get(0).children[1].children;
+                this.tempDialogElement.insertBefore(children[children.length-1]);
+
+                this.tempDialogElement.get(0).children[0].dialog = this.tempDialog;
+
+                instance.focusById(this.tempDialog.id);
+
+                instance.bindDialogFunctions(this.tempDialogElement);
+
+                this.tempDialog = undefined;
+                this.tempDialogElement = undefined;
+
+                this.currentDialog.find('.graph-fold').get(0).style.display = '';
+
+                instance.refreshLine();
+
+                instance.dirty = true;
+
+                instance.$rootScope.$broadcast('saveDialogGraph', { saveFileName: instance.fileName });
+            }
+
+            angular.element('#menuPaste').attr('data-using', 'false');
+
+            // $rootScope.$broadcast('simulator-build-without-reset-focus');
+
+            this.closeMenu();
+        };
+
         Menu.prototype.moveUp = function()
         {
             instance.moveUpDialog(this.currentDialog);
@@ -59,6 +165,8 @@
             //
             //     instance.setDirty(true);
             // }
+
+            // $rootScope.$broadcast('simulator-build');
 
             this.closeMenu();
         };
@@ -84,19 +192,89 @@
             //     instance.setDirty(true);
             // }
 
+            // $rootScope.$broadcast('simulator-build');
+
             this.closeMenu();
+        };
+
+        var checkUniqueName = function(name, dialogs)
+        {
+            for(var i=0; i<dialogs.length; i++)
+            {
+                if(dialogs[i].name == name)
+                {
+                    return false;
+                }
+                else if(dialogs[i].children)
+                {
+                    if(!checkUniqueName(name, dialogs[i].children))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        };
+
+        var changeCloneInfo = function (dialog)
+        {
+            var postfix = '';
+            while(!checkUniqueName((dialog.name + (postfix += '-Clone')), instance.userDialogs));
+
+            dialog.name = dialog.name + postfix;
+            dialog.id += postfix;
+            if(dialog.children)
+            {
+                for(var i = 0; i < dialog.children.length; i++)
+                {
+                    changeCloneInfo(dialog.children[i]);
+                }
+            }
         };
 
         Menu.prototype.duplicate = function()
         {
             var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
             var dialog = this.currentDialog.get(0).children[0].dialog;
+            var index = -1;
+
+            for(var i=0; i<parentDialog.children.length; i++)
+            {
+                if(parentDialog.children[i].id == dialog.id)
+                {
+                    index = i;
+                    break;
+                }
+            }
 
             var clone = JSON.parse(JSON.stringify(dialog));
 
-            clone.name += ' Clone';
+            changeCloneInfo(clone);
+
+            instance.createDialogId(clone);
+            instance.addChildDialog(parentDialog, clone, index + 1);
+
+            instance.refresh();
+            instance.setDirty(true);
+            instance.focusById(clone.id);
+
+            this.closeMenu();
+        };
+
+        Menu.prototype.duplicatecard = function()
+        {
+            var parentDialog = this.currentDialog.parent().prev().get(0).dialog;
+            var dialog = this.currentDialog.get(0).children[0].dialog;
+
+            var clone = JSON.parse(JSON.stringify(dialog));
+
+            changeCloneInfo(clone);
+
+            delete clone.children;
 
             var index = parentDialog.children.indexOf(dialog);
+            instance.createDialogId(clone);
             instance.addChildDialog(parentDialog, clone, index + 1);
 
             instance.refresh();
@@ -108,8 +286,13 @@
 
         Menu.prototype.delete = function()
         {
-            instance.deleteDialog(this.currentDialog);
+            instance.deleteDialog(this.currentDialog, false);
+            this.closeMenu();
+        };
 
+        Menu.prototype.deletecard = function()
+        {
+            instance.deleteDialog(this.currentDialog, true);
             this.closeMenu();
         };
 
@@ -120,24 +303,36 @@
 
         Menu.prototype.openMenu = function(e, dialog)
         {
-            this.isOpened = true;
-
-            var dialogCard = e.currentTarget.parentElement.parentElement;
-            var left = dialogCard.offsetLeft + dialogCard.offsetWidth - 20;
-            var top = dialogCard.offsetTop;
-
-            this.setCurrentDialog(dialog);
-
-            var graphbody = angular.element('.graph-body').get(0);
-
-            angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
-
-            var menuDialog = angular.element('.dialog-menu').get(0);
-
-            // -30은 스크롤바
-            if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
+            if(this.isOpened)
             {
-                angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px')
+                this.closeMenu();
+            }
+            else
+            {
+                this.isOpened = true;
+
+                var dialogCard = e.currentTarget.parentElement.parentElement;
+                var left = dialogCard.offsetLeft + dialogCard.offsetWidth - 20;
+                var top = dialogCard.offsetTop;
+
+                this.setCurrentDialog(dialog);
+
+                var graphbody = angular.element('.graph-body').get(0);
+
+                angular.element('.dialog-menu').css('left', left + 'px').css('top', top + 'px').show();
+
+                var menuDialog = angular.element('.dialog-menu').get(0);
+
+                // -30은 스크롤바
+                if(left + menuDialog.offsetWidth > graphbody.offsetWidth - 30)
+                {
+                    angular.element('.dialog-menu').css('left', graphbody.offsetWidth - menuDialog.offsetWidth - 30 + 'px');
+                }
+
+                if(top + menuDialog.offsetHeight > graphbody.offsetHeight + graphbody.scrollTop - 30)
+                {
+                    angular.element('.dialog-menu').css('top', top + (graphbody.offsetHeight + graphbody.scrollTop - (top + menuDialog.offsetHeight)) + 'px');
+                }
             }
 
             e.preventDefault();
@@ -173,7 +368,6 @@
 
         var DialogGraph = function()
         {
-            this.originalFileData = undefined;
             this.graphData = undefined;
             this.template = undefined;
             this.canvas = undefined;
@@ -187,9 +381,9 @@
             this.$rootScope = undefined;
 
             this.history = [];
-            this.historyIndex = 0;
 
             this.focusedTarget = undefined;
+            this.testFocusedTarget = undefined;
 
             this.dirtyCallback = undefined;
 
@@ -203,6 +397,8 @@
             this.dirty = false;
 
             this.mode = 'dialog';
+
+            this.isFocused = true;
         };
 
         DialogGraph.prototype.getCommonDialogs = function()
@@ -226,11 +422,16 @@
             $scope.$on('focusToDialogGraph', function()
             {
                 console.dir(that.focusedTarget);
-                that.focusById(that.focusedTarget.dialog.id);
+                // that.focusById(that.focusedTarget.dialog.id);
             });
 
             $scope.$on('saveDialogGraph', function()
             {
+            });
+
+            $scope.$on('dialogGraphTestFocus', function(context, dialogId)
+            {
+                that.testFocus(dialogId);
             });
         };
 
@@ -258,16 +459,14 @@
             var canvas = this.canvas.get(0);
             var graphBody = canvas.parentElement;
 
-            var that = this;
-
             angular.element('.graph-body').on('click' ,function()
             {
-                that.editor.close();
+                // that.editor.close();
             });
 
             canvas.addEventListener('click', function(e)
             {
-                that.editor.close();
+                // that.editor.close();
             });
 
             canvas.parentElement.addEventListener('mousedown', function(e)
@@ -291,8 +490,6 @@
             {
                 if(e.which != 1)
                     return;
-
-                console.log('adf?');
 
                 menuInstance.closeMenu(e);
 
@@ -381,9 +578,36 @@
             }
         };
 
-        DialogGraph.prototype.deleteDialog = function(target)
+        DialogGraph.prototype.deleteFocusedDialog = function()
         {
-            var parentDialog = target.parent().prev().get(0).dialog;
+            this.deleteDialog(angular.element('#' + this.focusedDialog));
+        };
+
+        DialogGraph.prototype.deleteDialogById = function(id, saveHistory, isEditorClose)
+        {
+            if(id)
+            {
+                var target = angular.element('#' + id);
+                if(target.length > 0)
+                {
+                    this.deleteDialog(angular.element('#' + id), null, saveHistory, isEditorClose);
+                }
+            }
+        };
+
+        DialogGraph.prototype.deleteDialog = function(target, withChildren, saveHistory, isEditorClose)
+        {
+            var parentDialog = target.parent().prev().get(0);
+            if(parentDialog)
+            {
+                parentDialog = target.parent().prev().get(0).dialog;
+            }
+            else
+            {
+                alert(this.$scope.lan('Start cards can not be deleted'));
+                return;
+            }
+
             var dialog = target.get(0).children[0].dialog;
 
             var prev = target.prev().get(0);
@@ -403,14 +627,36 @@
                 afterFocusId = parentDialog.id;
             }
 
-            var index = parentDialog.children.indexOf(dialog);
+            if(parentDialog.children)
+            {
+                var index = parentDialog.children.indexOf(dialog);
+                if(index != -1)
+                {
+                    parentDialog.children.splice(index, 1);
 
-            parentDialog.children.splice(index, 1);
+                    if(withChildren && dialog.children.length > 0)
+                    {
+                        for(var i=0; i<dialog.children.length; i++)
+                        {
+                            parentDialog.children.splice(index, 0, dialog.children[i]);
+                        }
+
+                        afterFocusId = dialog.children[0].id;
+                    }
+
+                    instance.setDirty(true, this.fileName, saveHistory);
+                }
+            }
 
             instance.focusedDialog = null;
             instance.refresh();
-            instance.setDirty(true);
             instance.focusById(afterFocusId);
+
+            if(this.editor.focusId != dialog.id && isEditorClose !== false)
+            {
+                //수정창 열어논 상태에서 삭제 해버렸을경우 닫기 위함.
+                this.editor.close(false);
+            }
         };
 
         DialogGraph.prototype.bindKeyboardEventToCanvas = function()
@@ -421,236 +667,264 @@
                 if(location.href.indexOf('/playchat/development/dialog-graph') == -1 || angular.element('.dialog-graph-code-editor').is(':visible') == true)
                     return;
 
-                if(e.srcElement.nodeName != 'BODY')
+                console.log('야 : ', that.editor.isOpen);
+                if(that.editor.isOpen)
                 {
                     //에디터로 포커스 이동되어있을때
                     if(e.keyCode == 27)
                     {
-                        //ESC
                         that.editor.close();
-                        if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
-                            e.target.blur();
                     }
                     else if((e.metaKey || e.ctrlKey) && e.keyCode == 13)
                     {
-                        that.$rootScope.$broadcast('saveDialogGraphEditor');
-                        if(e.target && (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || e.target.value))
+                        if(e.target && e.target.className == 'editable')
+                        {
                             e.target.blur();
+                            that.$rootScope.$broadcast('saveDialogGraphEditor');
+                        }
                     }
 
                     return;
                 }
-
-                if(e.keyCode == 39) // right
+                else if(that.editor.isOpen === false && that.isFocused)
                 {
-                    if(e.ctrlKey || e.metaKey)
+                    if(e.keyCode == 27)
                     {
-
+                        that.editor.close();
                     }
-                    else if(e.altKey)
+                    else if(e.keyCode == 39) // right
                     {
-                        var next = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).next();
-                        if(next.length == 1)
+                        if(e.ctrlKey || e.metaKey)
                         {
-                            var id = next.attr('id').replace(/\./gi, '\\\\.');
 
-                            that.$scope.selectTab({ currentTarget: '#' + id}, next.attr('id'));
-
-                            that.$scope.currentTabName = next.attr('id');
                         }
-                    }
-                    else
-                    {
-                        if(that.focusedTarget.nextElementSibling && that.focusedTarget.nextElementSibling.children.length > 0)
+                        else if(e.altKey)
                         {
-                            if(that.focusedTarget.nextElementSibling.children[0].className.indexOf('plus') != -1)
+                            var next = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).next();
+                            if(next.length == 1)
                             {
-                                // that.focus(that.focusedTarget.nextElementSibling.children[0]);
+                                var id = next.attr('id').replace(/\./gi, '\\\\.');
+
+                                that.$scope.selectTab({ currentTarget: '#' + id}, next.attr('id'));
+
+                                that.$scope.currentTabName = next.attr('id');
+                            }
+                        }
+                        else
+                        {
+                            if(that.focusedTarget.nextElementSibling && that.focusedTarget.nextElementSibling.children.length > 0)
+                            {
+                                if(that.focusedTarget.nextElementSibling.children[0].className.indexOf('plus') != -1)
+                                {
+                                    // that.focus(that.focusedTarget.nextElementSibling.children[0]);
+                                }
+                                else
+                                {
+                                    that.focus(that.focusedTarget.nextElementSibling.children[0].children[0]);
+                                }
+                            }
+                        }
+
+                        e.preventDefault();
+                    }
+                    else if(e.keyCode == 40) // down
+                    {
+                        if(e.ctrlKey || e.metaKey)
+                        {
+                            that.moveDownDialog(angular.element(that.focusedTarget.parentElement));
+                        }
+                        else
+                        {
+                            if(that.focusedTarget.parentElement.nextElementSibling)
+                            {
+                                if(that.focusedTarget.parentElement.nextElementSibling.className.indexOf('plus') != -1)
+                                {
+                                    if(that.focusedTarget.parentElement.parentElement.parentElement.nextElementSibling)
+                                    {
+                                        var parent = that.focusedTarget.parentElement.parentElement.parentElement;
+                                        var target = undefined;
+                                        do
+                                        {
+                                            parent = parent.nextElementSibling;
+                                            if(parent.children.length <= 1)
+                                                return;
+
+                                            target = parent.children[1].children.length > 1 ? parent.children[1].children[0] : undefined;
+
+                                        } while(!target);
+
+                                        that.focus(target.children[0]);
+                                    }
+
+                                    // that.focus(that.focusedTarget.parentElement.nextElementSibling);
+                                }
+                                else
+                                {
+                                    that.focus(that.focusedTarget.parentElement.nextElementSibling.children[0]);
+                                }
+                            }
+                        }
+
+                        e.preventDefault();
+                    }
+                    else if(e.keyCode == 37) // left
+                    {
+                        if(e.ctrlKey || e.metaKey)
+                        {
+
+                        }
+                        else if(e.altKey)
+                        {
+                            var prev = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).prev();
+                            var id = prev.attr('id').replace(/\./gi, '\\\\.');
+
+                            that.$scope.selectTab({ currentTarget: '#' + id}, prev.attr('id'));
+
+                            that.$scope.currentTabName = prev.attr('id');
+                        }
+                        else
+                        {
+                            if (that.focusedTarget.className.indexOf('plus') != -1)
+                            {
+                                // that.focus(that.focusedTarget.parentElement.previousElementSibling);
+                            }
+                            else if (that.focusedTarget.parentElement.parentElement.previousElementSibling)
+                            {
+                                that.focus(that.focusedTarget.parentElement.parentElement.previousElementSibling);
+                            }
+                        }
+
+                        e.preventDefault();
+                    }
+                    else if(e.keyCode == 38) // up
+                    {
+                        if(e.ctrlKey || e.metaKey)
+                        {
+                            that.moveUpDialog(angular.element(that.focusedTarget.parentElement));
+                        }
+                        else
+                        {
+                            if(that.focusedTarget.className.indexOf('plus') != -1)
+                            {
+                                // that.focus(that.focusedTarget.previousElementSibling.children[0]);
+                            }
+                            else if(that.focusedTarget.parentElement.previousElementSibling)
+                            {
+                                if(that.focusedTarget.parentElement.previousElementSibling.nodeName == 'DIV')
+                                {
+                                    that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                                }
                             }
                             else
                             {
-                                that.focus(that.focusedTarget.nextElementSibling.children[0].children[0]);
-                            }
-                        }
-                    }
-
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 40) // down
-                {
-                    if(e.ctrlKey || e.metaKey)
-                    {
-                        that.moveDownDialog(angular.element(that.focusedTarget.parentElement));
-                    }
-                    else
-                    {
-                        if(that.focusedTarget.parentElement.nextElementSibling)
-                        {
-                            if(that.focusedTarget.parentElement.nextElementSibling.className.indexOf('plus') != -1)
-                            {
-                                if(that.focusedTarget.parentElement.parentElement.parentElement.nextElementSibling)
+                                if(that.focusedTarget.parentElement.parentElement.parentElement.previousElementSibling)
                                 {
                                     var parent = that.focusedTarget.parentElement.parentElement.parentElement;
                                     var target = undefined;
                                     do
                                     {
-                                        parent = parent.nextElementSibling;
-                                        if(parent.children.length <= 1)
+                                        parent = parent.previousElementSibling;
+                                        if(!parent || parent.children.length <= 1)
                                             return;
 
-                                        target = parent.children[1].children.length > 1 ? parent.children[1].children[0] : undefined;
+                                        target = parent.children[1].children.length > 1 ? parent.children[1].children[parent.children[1].children.length-2] : undefined;
 
                                     } while(!target);
 
                                     that.focus(target.children[0]);
                                 }
-
-                                // that.focus(that.focusedTarget.parentElement.nextElementSibling);
-                            }
-                            else
-                            {
-                                that.focus(that.focusedTarget.parentElement.nextElementSibling.children[0]);
                             }
                         }
+
+                        e.preventDefault();
                     }
-
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 37) // left
-                {
-                    if(e.ctrlKey || e.metaKey)
+                    else if(e.keyCode == 13)
                     {
-
-                    }
-                    else if(e.altKey)
-                    {
-                        console.log(that.$scope.currentTabName.replace(/\./gi, '\\\\.'));
-
-                        var prev = angular.element('#' + that.$scope.currentTabName.replace(/\./gi, '\\.')).prev();
-                        var id = prev.attr('id').replace(/\./gi, '\\\\.');
-
-                        that.$scope.selectTab({ currentTarget: '#' + id}, prev.attr('id'));
-
-                        that.$scope.currentTabName = prev.attr('id');
-                    }
-                    else
-                    {
-                        if (that.focusedTarget.className.indexOf('plus') != -1)
+                        if(e.srcElement.id != 'search')
                         {
-                            // that.focus(that.focusedTarget.parentElement.previousElementSibling);
-                        }
-                        else if (that.focusedTarget.parentElement.parentElement.previousElementSibling)
-                        {
-                            that.focus(that.focusedTarget.parentElement.parentElement.previousElementSibling);
+                            //ENTER
+                            var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
+                            var dialog = that.focusedTarget.dialog;
+
+                            that.editor.open(parent ? parent.dialog : undefined, dialog);
+
+                            e.preventDefault();
                         }
                     }
-
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 38) // up
-                {
-                    if(e.ctrlKey || e.metaKey)
+                    else if(e.keyCode == 45)
                     {
-                        that.moveUpDialog(angular.element(that.focusedTarget.parentElement));
-                    }
-                    else
-                    {
-                        if(that.focusedTarget.className.indexOf('plus') != -1)
+                        //INSERT
+                        if(e.shiftKey)
                         {
-
-                            // that.focus(that.focusedTarget.previousElementSibling.children[0]);
-                        }
-                        else if(that.focusedTarget.parentElement.previousElementSibling)
-                        {
-                            that.focus(that.focusedTarget.parentElement.previousElementSibling.children[0]);
+                            var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
+                            that.editor.open(parent.dialog, null);
                         }
                         else
                         {
-                            if(that.focusedTarget.parentElement.parentElement.parentElement.previousElementSibling)
-                            {
-                                var parent = that.focusedTarget.parentElement.parentElement.parentElement;
-                                var target = undefined;
-                                do
-                                {
-                                    parent = parent.previousElementSibling;
-                                    if(parent.children.length <= 1)
-                                        return;
-
-                                    target = parent.children[1].children.length > 1 ? parent.children[1].children[parent.children[1].children.length-2] : undefined;
-
-                                } while(!target);
-
-                                that.focus(target.children[0]);
-                            }
+                            that.editor.open(that.focusedTarget.dialog, null);
                         }
                     }
-
-                    e.preventDefault();
-                }
-                else if(e.keyCode == 13)
-                {
-                    //ENTER
-                    var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
-                    var dialog = that.focusedTarget.dialog;
-
-                    that.editor.open(parent ? parent.dialog : undefined, dialog);
-                }
-                else if(e.keyCode == 45)
-                {
-                    //INSERT
-                    if(e.shiftKey)
+                    else if(e.keyCode == 46)
                     {
-                        var parent = that.focusedTarget.parentElement.parentElement.parentElement.children[0];
-                        that.editor.open(parent.dialog, null);
+                        //DEL
+                        that.deleteDialog(angular.element(that.focusedTarget.parentElement));
                     }
-                    else
+                    else if(e.keyCode == 32)
                     {
-                        that.editor.open(that.focusedTarget.dialog, null);
+                        var target = that.focusedTarget.nextElementSibling;
+                        that.toggleChild(target);
                     }
-                }
-                else if(e.keyCode == 46)
-                {
-                    //DEL
-                    that.deleteDialog(angular.element(that.focusedTarget.parentElement));
-                }
-                else if(e.keyCode == 32)
-                {
-                    var target = that.focusedTarget.nextElementSibling;
-                    that.toggleChild(target);
-                }
-                else if(e.keyCode == 83 && (e.metaKey || e.ctrlKey))
-                {
-                    that.$scope.save();
-
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                else if(e.keyCode == 90 && (e.metaKey || e.ctrlKey))
-                {
-                    if(e.shiftKey)
+                    else if(e.keyCode == 83 && (e.metaKey || e.ctrlKey))
                     {
-                        that.$scope.redo();
+                        that.$scope.save();
+
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
-                    else
+                    else if(e.keyCode == 90 && (e.metaKey || e.ctrlKey))
                     {
-                        that.$scope.undo();
+                        if(e.shiftKey)
+                        {
+                            that.$scope.redo();
+                        }
+                        else
+                        {
+                            that.$scope.undo();
+                        }
+
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
+                    else if(e.keyCode == 186 && e.shiftKey)
+                    {
+                        angular.element('#search').focus();
 
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                else if(e.keyCode == 186 && e.shiftKey)
-                {
-                    angular.element('#search').focus();
-
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                else
-                {
-                    console.log('키코드 : ', e.keyCode, e);
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    else if(e.keyCode == 9 || e.keyCode == 36 || e.keyCode == 35)
+                    {
+                        e.preventDefault();
+                    }
                 }
             });
+        };
+
+        DialogGraph.prototype.removeInitialDialog = function(dialogs)
+        {
+            for(var i=0; i<dialogs.length; i++)
+            {
+                if(dialogs[i].input.length == 1 && dialogs[i].input[0].text && !dialogs[i].input[0].text.raw.trim())
+                {
+                    dialogs.splice(i, 1);
+                    i--;
+                }
+
+                if(dialogs[i] && dialogs[i].children)
+                {
+                    this.removeInitialDialog(dialogs[i].children);
+                }
+            }
         };
 
         DialogGraph.prototype.loadFromFile = function(data, fileName)
@@ -670,43 +944,24 @@
 
             try
             {
-                data = data.trim();
+                this.commonDialogs = data.commonDialogs;
 
-                this.originalFileData = data;
-
-                var commandMatch = data.match(/var commonDialogs[^;]*;/gi);
-                if(commandMatch && commandMatch.length == 1)
+                var startDialog = this.commonDialogs[0];
+                if(!startDialog)
                 {
-                    var parsed = commandMatch[0].replace(/var commonDialogs[^\[]*/gi, '').replace(';', '');
-                    this.commonDialogs = JSON.parse(parsed);
-
-                    this.originalFileData = this.originalFileData.replace(commandMatch, '{{commonDialogs}}');
-
-                    var startDialog = this.commonDialogs[0];
-                    if(!startDialog)
-                        startDialog = { name: 'Default Start Dialog', input: [{ text: 'Default' }], output: { kind: 'Content', text: 'Hello World!' }};
-
-                    var match = data.match(/var dialogs[^;]*;/gi);
-                    if(match && match.length == 1)
-                    {
-                        parsed = match[0].replace(/var dialogs[^\[]*/gi, '').replace(';', '');
-
-                        startDialog.children = this.userDialogs = JSON.parse(parsed);
-                        this.graphData = startDialog;
-
-                        this.originalFileData = this.originalFileData.replace(match, '{{dialogs}}');
-
-                        this.refresh();
-
-                        this.onLoad();
-
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    startDialog = { name: 'Default Start Dialog', input: [{ text: 'Default' }], output: { kind: 'Content', text: 'Hello World!' }};
                 }
+
+                startDialog.children = this.userDialogs = data.dialogs;
+                this.graphData = startDialog;
+                this.startDialog = startDialog;
+
+                this.removeInitialDialog(this.userDialogs);
+
+                this.refresh();
+                this.onLoad();
+
+                return true;
             }
             catch(err)
             {
@@ -771,7 +1026,10 @@
             }
 
             //plus 버튼을 여기서 붙여주면..
-            this.addPlusButton(parent);
+            if(this.$scope.myBotAuth.edit)
+            {
+                this.addPlusButton(parent);
+            }
         };
 
         DialogGraph.prototype.addPlusButton = function(parent, style)
@@ -828,18 +1086,22 @@
                     }
                     else if(key == 'regexp')
                     {
-                        displayText = '/' + input[key] + '/';
-                    }
-                    else if(key == 'text')
-                    {
                         displayText = input[key];
+                    }
+                    else if(key == 'text' && input[key].raw.trim())
+                    {
+                        displayText = input[key].raw;
                     }
                     else if(key == 'if')
                     {
                         displayText = 'if(' + input[key].replace(/[\n\r]*/gi, '').trim() + ')';
                     }
 
-                    template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
+                    if(displayText)
+                    {
+                        template += '<span class="graph-dialog-input-span" data-content="' + input[key] + '">' + displayText + '</span>';
+                        break;
+                    }
                 }
             }
 
@@ -848,24 +1110,15 @@
 
         var makeOutputTemplate = function(output)
         {
-            if(typeof output == 'string')
+            if(output.text)
             {
-                return '<div><span>' + output + '</span></div>';
-            }
-            else if(typeof output.output == 'string')
-            {
-                return '<div><span>' + output.output + '</span></div>';
-            }
-            else if(typeof output.output == 'object')
-            {
-                return '<div><span>' + output.output.output ? output.output.output : output.output.text + '</span></div>';
-            }
-            else if(output.text)
-            {
-                var template = '<div><div><span>' + output.text + '</span></div>';
-                if(output.image)
+                var template = '<div>';
+
+                template += '<div>' + output.text.replace(/\n/gi, '<br/>') + '</div>';
+
+                if(output.kind == 'Action')
                 {
-                    // template += '<img src="' + output.image.url + '" style="max-width: 100%;">';
+                    template += '<div><span>[' + output.type + ']' + (output.dialogName ? ' ' + output.dialogName : '') + '</span></div>';
                 }
 
                 template += '</div>';
@@ -876,15 +1129,9 @@
             {
                 var template = '';
 
-                if(output.kind == 'Action' || output.callChild || output.call || output.returnCall || output.up || output.repeat || output.return)
+                if(output.kind == 'Action')
                 {
-                    for(var key in output)
-                    {
-                        if(key != 'kind' && key != 'options')
-                        {
-                            template = '<div><span>' + (output.return ? '[return]' : '[' + key + '] ' + output[key]) + '</span></div>';
-                        }
-                    }
+                    template = '<div><span>[' + output.type + ']' + (output.dialogName ? ' ' + output.dialogName : '') + '</span></div>';
                 }
 
                 if(output.options)
@@ -892,6 +1139,10 @@
                     if(typeof output.options == 'object')
                     {
                         template += '<div><span>' + JSON.stringify(output.options) + '</span></div>';
+                    }
+                    else if(typeof output.options == 'string')
+                    {
+                        template += '<div><span>[options] ' + output.options + '</span></div>';
                     }
                     else if(typeof output.options.output == 'string')
                     {
@@ -912,12 +1163,19 @@
 
         var makeButtonsTemplate = function(buttons)
         {
-            var template = ''
+            var template = '';
 
             for(var i=0; i<buttons.length; i++)
             {
-                template += '<div><a href="' + (buttons[i].url || '#') + '" class="default-button" target="_blank">' + buttons[i].text + '</a></div>';
-            }
+                if(buttons[i].url)
+                {
+                    template = '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600; height: 35px;"><a href="' + buttons[i].url + '" target="_blank" style="color: #038eda;">#' + buttons[i].text + '</a></div>' + template;
+                }
+                else
+                {
+                    template += '<div style="border-bottom:solid 1px #b1dbf4; text-align: center;color: #038eda;font-weight:600;">' + buttons[i].text + '</div>';
+                }
+            };
 
             return '<div class="graph-dialog-buttons"> ' + template + ' </div>';
         };
@@ -931,7 +1189,10 @@
             line.className = 'graph-dialog-line';
 
             var parent = undefined;
+            var target = undefined;
 
+            var startX = undefined;
+            var startY = undefined;
             var prevX = undefined;
             var prevY = undefined;
 
@@ -964,6 +1225,9 @@
                 clone.style.left = e.pageX - left - 50 + scrollLeft + 'px';
                 clone.style.top = e.pageY - top - 63 - 30 + scrollTop + 'px';
 
+                startX = e.pageX;
+                startY = e.pageY;
+
                 e.stopPropagation();
             });
 
@@ -972,18 +1236,13 @@
                 if(!dragStart)
                     return;
 
-                if(!clone.parentElement && prevX && prevY)
-                {
-                    if(Math.abs(prevX - e.clientX) < 10 && Math.abs(prevY - e.clientY) < 10)
-                    {
-                        prevX = e.clientX;
-                        prevY = e.clientY;
-                        return;
-                    }
-                }
-
                 prevX = e.clientX;
                 prevY = e.clientY;
+
+                if(Math.abs(startX - e.pageX) < 10 && Math.abs(startY - e.pageY) < 10)
+                {
+                    return;
+                }
 
                 if(!clone.parentElement)
                 {
@@ -993,12 +1252,24 @@
                 var left = angular.element('.playchat-background .gnb+div').get(0).offsetLeft;
                 var top = angular.element('.graph-body').get(0).offsetTop;
 
-                // var target = document.elementFromPoint(e.clientX, e.clientY);
-                //
-                // while(target && !target.dialog)
-                // {
-                //     target = target.parentElement;
-                // }
+                target = document.elementFromPoint(e.clientX, e.clientY);
+
+                while(target && !target.dialog)
+                {
+                    target = target.parentElement;
+                }
+
+                console.log('타겟 : ', target);
+
+                $('.drag-hover').removeClass('drag-hover');
+                if(target && target != item)
+                {
+                    $(target).addClass('drag-hover');
+                }
+                else
+                {
+                    target = undefined;
+                }
                 //
                 // if(target && target.parentElement.parentElement == parent)
                 // {
@@ -1008,51 +1279,51 @@
                 //     line.style.left = target.offsetLeft + 'px';
                 // }
 
-                var min = -1;
-                var minTarget = undefined;
-                var siblings = item.parentElement.parentElement.children;
-                for(var i=0; i<siblings.length; i++)
-                {
-                    if(!siblings[i].children[0])
-                        continue;
+                // var min = -1;
+                // var minTarget = undefined;
+                // var siblings = item.parentElement.parentElement.children;
+                // for(var i=0; i<siblings.length; i++)
+                // {
+                //     if(!siblings[i].children[0])
+                //         continue;
+                //
+                //     var compareTarget = angular.element(siblings[i]).find('.graph-dialog-item').get(0);
+                //
+                //     var rect = compareTarget.getBoundingClientRect();
+                //     var half = rect.top + (rect.bottom - rect.top) / 2;
+                //
+                //     if(!minTarget || min > Math.abs(half - e.clientY))
+                //     {
+                //         min = Math.abs(half - e.clientY);
+                //         minTarget = compareTarget;
+                //     }
+                // }
+                //
+                // minTarget.parentElement.insertBefore(line, minTarget);
 
-                    var compareTarget = angular.element(siblings[i]).find('.graph-dialog-item').get(0);
+                // if(angular.element(minTarget).parent().next().attr('class') == 'plus')
+                // {
+                //     var rect = minTarget.getBoundingClientRect();
+                //     var half = rect.top + (rect.bottom - rect.top) / 2;
+                //
+                //     if(half < e.clientY)
+                //     {
+                //         line.style.top = minTarget.offsetTop + minTarget.offsetHeight + 10 + 'px';
+                //         line.isLast = true;
+                //     }
+                //     else
+                //     {
+                //         line.style.top = minTarget.offsetTop - 10 + 'px';
+                //         line.isLast = false;
+                //     }
+                // }
+                // else
+                // {
+                //     line.style.top = minTarget.offsetTop - 10 + 'px';
+                //     line.isLast = false;
+                // }
 
-                    var rect = compareTarget.getBoundingClientRect();
-                    var half = rect.top + (rect.bottom - rect.top) / 2;
-
-                    if(!minTarget || min > Math.abs(half - e.clientY))
-                    {
-                        min = Math.abs(half - e.clientY);
-                        minTarget = compareTarget;
-                    }
-                }
-
-                minTarget.parentElement.insertBefore(line, minTarget);
-
-                if(angular.element(minTarget).parent().next().attr('class') == 'plus')
-                {
-                    var rect = minTarget.getBoundingClientRect();
-                    var half = rect.top + (rect.bottom - rect.top) / 2;
-
-                    if(half < e.clientY)
-                    {
-                        line.style.top = minTarget.offsetTop + minTarget.offsetHeight + 10 + 'px';
-                        line.isLast = true;
-                    }
-                    else
-                    {
-                        line.style.top = minTarget.offsetTop - 10 + 'px';
-                        line.isLast = false;
-                    }
-                }
-                else
-                {
-                    line.style.top = minTarget.offsetTop - 10 + 'px';
-                    line.isLast = false;
-                }
-
-                line.style.left = minTarget.offsetLeft + 'px';
+                // line.style.left = minTarget.offsetLeft + 'px';
 
                 var scrollTop = graphBody.scrollTop;
                 var scrollLeft = graphBody.scrollLeft;
@@ -1067,62 +1338,86 @@
             {
                 if(dragStart)
                 {
-                    if(clone.parentElement)
+                    if(target)
                     {
-                        var change = false;
-                        if(clone.origin.parentElement != line.parentElement)
+                        console.log(target.dialog);
+                        console.log(item.dialog);
+                        if($(item.parentElement).find(target.parentElement).length == 0)
                         {
-                            var children = line.parentElement.parentElement.previousElementSibling.dialog.children;
+                            var parentDialog = item.parentElement.parentElement.parentElement.children[0].dialog;
+                            var index = parentDialog.children.indexOf(item.dialog);
+                            parentDialog.children.splice(index, 1);
 
-                            //먼저 children에서 index를 빼고
-                            var index = children.indexOf(clone.origin.dialog);
+                            (target.dialog.children = (target.dialog.children || [])).push(item.dialog);
 
-                            var prev = clone.origin.parentElement.previousElementSibling;
-                            if(line.isLast)
-                            {
-                                line.parentElement.parentElement.appendChild(clone.origin.parentElement);
-                            }
-                            else
-                            {
-                                line.parentElement.parentElement.insertBefore(clone.origin.parentElement, line.parentElement);
-                            }
-
-                            change = prev != clone.origin.parentElement.previousElementSibling;
-
-                            if(change)
-                            {
-                                var source = children.splice(index, 1);
-
-                                var targetIndex = children.indexOf(line.nextElementSibling.dialog);
-
-                                if(line.isLast)
-                                {
-                                    children.push(source[0]);
-                                }
-                                else
-                                {
-                                    children.splice(targetIndex, 0, source[0]);
-                                }
-                            }
-                        }
-
-                        clone.parentElement.removeChild(clone);
-                        line.parentElement.removeChild(line);
-
-                        if(change)
-                        {
-                            var scrollTop = graphBody.scrollTop;
-                            instance.setDirty(true);
+                            var plus = $(target.parentElement).find('.plus');
+                            $(item.parentElement).insertBefore(plus);
                             instance.refresh();
 
-                            graphBody.scrollTop = scrollTop;
-
-                            if(instance.$scope.compactMode != 'Compact')
-                            {
-                                instance.$scope.compactMode = 'Compact';
-                                instance.$scope.toggleCompactMode();
-                            }
+                            instance.setDirty(true);
                         }
+                        else
+                        {
+                            alert('자식 카드에는 이동할 수 없습니다');
+                        }
+                    }
+
+                    if(clone.parentElement)
+                    {
+                        // var change = false;
+                        // if(clone.origin.parentElement != line.parentElement)
+                        // {
+                        //     var children = line.parentElement.parentElement.previousElementSibling.dialog.children;
+                        //
+                        //     //먼저 children에서 index를 빼고
+                        //     var index = children.indexOf(clone.origin.dialog);
+                        //
+                        //     var prev = clone.origin.parentElement.previousElementSibling;
+                        //     if(line.isLast)
+                        //     {
+                        //         line.parentElement.parentElement.appendChild(clone.origin.parentElement);
+                        //     }
+                        //     else
+                        //     {
+                        //         line.parentElement.parentElement.insertBefore(clone.origin.parentElement, line.parentElement);
+                        //     }
+                        //
+                        //     change = prev != clone.origin.parentElement.previousElementSibling;
+                        //
+                        //     if(change)
+                        //     {
+                        //         var source = children.splice(index, 1);
+                        //
+                        //         var targetIndex = children.indexOf(line.nextElementSibling.dialog);
+                        //
+                        //         if(line.isLast)
+                        //         {
+                        //             children.push(source[0]);
+                        //         }
+                        //         else
+                        //         {
+                        //             children.splice(targetIndex, 0, source[0]);
+                        //         }
+                        //     }
+                        // }
+
+                        clone.parentElement.removeChild(clone);
+                        // line.parentElement.removeChild(line);
+                        //
+                        // if(change)
+                        // {
+                        //     var scrollTop = graphBody.scrollTop;
+                        //     instance.setDirty(true);
+                        //     instance.refresh();
+                        //
+                        //     graphBody.scrollTop = scrollTop;
+                        //
+                        //     if(instance.$scope.compactMode != 'Compact')
+                        //     {
+                        //         instance.$scope.compactMode = 'Compact';
+                        //         instance.$scope.toggleCompactMode();
+                        //     }
+                        // }
                     }
 
                     dragStart = false;
@@ -1131,29 +1426,14 @@
             });
         };
 
-        //아이디가 없으면 생성하게끔 하려고 임시로 넣음.
-        var tempIdCount = new Date().getTime();
-        DialogGraph.prototype.drawDialog = function(parent, dialog)
+        DialogGraph.prototype.reloadDialog = function(dialog)
         {
-            if(!dialog.id)
-            {
-                dialog.id = 'default' + tempIdCount;
-            }
-
-            if(!dialog.name)
-            {
-                console.log(dialog);
-                dialog.name = '생성된 이름 ' + tempIdCount;
-            }
-
-            tempIdCount++;
-
-            var prefix = this.fileName.split('.')[0];
-            this.idList[dialog.id.replace(prefix, '')] = true;
             var t = this.template.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
 
             var inputTemplate = '';
+            var taskTemplate = '';
             var outputTemplate = '';
+            var imageTemplate = '';
             var buttonTemplate = '';
 
             if(typeof dialog.input == 'object' && dialog.input.length)
@@ -1169,6 +1449,11 @@
             {
                 // 예전 그래프에 input이 리스트가 아닌것도 있었다.
                 inputTemplate = '<div>' + makeInputTemplate(dialog.input) + '</div>';
+            }
+
+            if(dialog.task && dialog.task.name)
+            {
+                taskTemplate = '<div class="graph-dialog-input"><div style="font-weight: bold; font-style: italic; text-align: center;">' + dialog.task.name + '</div></div>';
             }
 
             if(typeof dialog.output == 'object')
@@ -1188,6 +1473,11 @@
                             outputTemplate += makeOutputTemplate(output);
                         }
 
+                        if(output.image)
+                        {
+                            imageTemplate += '<img src="' + output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                        }
+
                         if(dialog.output[i].buttons && dialog.output[i].buttons.length > 0)
                         {
                             buttonTemplate = makeButtonsTemplate(dialog.output[i].buttons);
@@ -1199,6 +1489,11 @@
                 else
                 {
                     outputTemplate = makeOutputTemplate(dialog.output);
+                    if(dialog.output.image)
+                    {
+                        imageTemplate += '<img src="' + dialog.output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                    }
+
                     if(dialog.output.buttons && dialog.output.buttons.length > 0)
                     {
                         buttonTemplate = makeButtonsTemplate(dialog.output.buttons);
@@ -1208,11 +1503,201 @@
             else
             {
                 outputTemplate = makeOutputTemplate(dialog.output);
+                if(dialog.output.image)
+                {
+                    imageTemplate += '<img src="' + dialog.output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                }
+            }
+
+            if(imageTemplate)
+            {
+                imageTemplate = '<div class="graph-dialog-image">' + imageTemplate + '</div>';
+            }
+
+            t = t.replace('{input}', inputTemplate).replace('{task}', taskTemplate).replace('{output}', outputTemplate).replace('{image}', imageTemplate).replace('{buttons}', buttonTemplate);
+            t = angular.element(this.$compile(t)(this.$scope));
+
+            var that = this;
+            t.find('.graph-dialog-image img').on('load', function()
+            {
+                that.refreshLine();
+            });
+
+            if(!dialog.children || dialog.children.length == 0)
+            {
+                t.find('.graph-fold').hide();
+            }
+
+            makeDialogDraggable(t.find('.graph-dialog-item').get(0));
+
+            var itemElement = t.find('.graph-dialog-item').get(0);
+
+            var parent = angular.element(this.canvas).find('#' + dialog.id).get(0);
+
+            for(var key in dialog)
+            {
+                parent.children[0].dialog[key] = dialog[key];
+            }
+
+            itemElement.dialog = parent.children[0].dialog;
+
+            parent.replaceChild(itemElement, parent.children[0]);
+
+            // var parentDialog = parent.parentElement.parentElement.children[0].dialog;
+            // if(parentDialog && parentDialog.children)
+            // {
+            //     for(var i=0; i<parentDialog.children.length; i++)
+            //     {
+            //         if(parentDialog.children[i].id == dialog.id)
+            //         {
+            //             for(var key in dialog)
+            //             {
+            //                 if(key != 'children')
+            //                 {
+            //                     parentDialog.children[i][key] = dialog[key];
+            //                 }
+            //             }
+            //
+            //             break;
+            //         }
+            //     }
+            // }
+            // else if(dialog.id == 'startDialog')
+            // {
+            //     for(var key in dialog)
+            //     {
+            //         if(key != 'id' && key != 'children')
+            //         {
+            //             this.startDialog[key] = dialog[key];
+            //         }
+            //     }
+            // }
+
+            this.bindDialogFunctions(angular.element(parent));
+
+            this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
+
+            this.focusById(dialog.id);
+        };
+
+        DialogGraph.prototype.createDialogId = function(dialog)
+        {
+            var prefix = this.fileName.split('.')[0];
+            var number = 0;
+            while(this.idList[number])
+            {
+                number++;
+            }
+
+            dialog.id = prefix + number;
+        };
+
+        DialogGraph.prototype.drawDialog = function(parent, dialog)
+        {
+            if(!dialog.id)
+            {
+                this.createDialogId(dialog);
+            }
+
+            var prefix = this.fileName.split('.')[0];
+            this.idList[dialog.id.replace(prefix, '')] = true;
+            var t = this.template.replace(/{id}/gi, dialog.id).replace('{name}', dialog.name);
+
+            var inputTemplate = '';
+            var taskTemplate = '';
+            var outputTemplate = '';
+            var imageTemplate = '';
+            var buttonTemplate = '';
+
+            if(typeof dialog.input == 'object' && dialog.input.length)
+            {
+                //or
+                for(var i=0; i<dialog.input.length; i++)
+                {
+                    var input = dialog.input[i];
+                    inputTemplate += '<div>' + makeInputTemplate(input) + '</div>';
+                }
+            }
+            else
+            {
+                // 예전 그래프에 input이 리스트가 아닌것도 있었다.
+                inputTemplate = '<div>' + makeInputTemplate(dialog.input) + '</div>';
+            }
+
+            if(dialog.task && dialog.task.name)
+            {
+                taskTemplate = '<div class="graph-dialog-input"><div style="font-weight: bold; font-style: italic; text-align: center;">' + dialog.task.name + '</div></div>';
+            }
+
+            if(typeof dialog.output == 'object')
+            {
+                if(dialog.output.length)
+                {
+                    for(var i=0; i<dialog.output.length; i++)
+                    {
+                        var output = dialog.output[i];
+
+                        if(output.kind == 'Text')
+                        {
+                            outputTemplate += '<div>' + output.text + '</div>';
+                        }
+                        else
+                        {
+                            outputTemplate += makeOutputTemplate(output);
+                        }
+
+                        if(output.image)
+                        {
+                            imageTemplate += '<img src="' + output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                        }
+
+                        if(dialog.output[i].buttons && dialog.output[i].buttons.length > 0)
+                        {
+                            buttonTemplate = makeButtonsTemplate(dialog.output[i].buttons);
+                        }
+
+                        break;
+                    }
+                }
+                else
+                {
+                    outputTemplate = makeOutputTemplate(dialog.output);
+
+                    if(dialog.output.image)
+                    {
+                        imageTemplate += '<img src="' + dialog.output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                    }
+
+                    if(dialog.output.buttons && dialog.output.buttons.length > 0)
+                    {
+                        buttonTemplate = makeButtonsTemplate(dialog.output.buttons);
+                    }
+                }
+            }
+            else
+            {
+                outputTemplate = makeOutputTemplate(dialog.output);
+
+                if(dialog.output.image)
+                {
+                    imageTemplate += '<img src="' + dialog.output.image.url + '" style="max-width: 100%; margin-top: 5px;">';
+                }
+            }
+
+            if(imageTemplate)
+            {
+                imageTemplate = '<div class="graph-dialog-image">' + imageTemplate + '</div>';
             }
 
 
-            t = t.replace('{input}', inputTemplate).replace('{output}', outputTemplate).replace('{buttons}', buttonTemplate);
+            t = t.replace('{input}', inputTemplate).replace('{task}', taskTemplate).replace('{output}', outputTemplate).replace('{image}', imageTemplate).replace('{buttons}', buttonTemplate);
             t = angular.element(this.$compile(t)(this.$scope));
+
+            var that = this;
+            t.find('.graph-dialog-image img').on('load', function()
+            {
+                that.refreshLine();
+            });
 
             t.find('.graph-dialog-item').get(0).dialog = dialog;
 
@@ -1220,7 +1705,29 @@
 
             makeDialogDraggable(t.find('.graph-dialog-item').get(0));
 
-            parent.append(t);
+            var plusButton = parent.children('.plus').get(0);
+            if(plusButton)
+            {
+                t.insertBefore(plusButton);
+
+                var target = t.get(0);
+                if(target)
+                {
+                    plusButton.style.top = '';
+                    plusButton.style.position = '';
+                    var diff = plusButton.offsetTop - target.children[0].offsetTop - target.children[0].offsetHeight - 10;
+                    if(diff > 50)
+                    {
+                        plusButton.style.top = -(plusButton.offsetTop - target.offsetTop) + (target.children[0].offsetHeight + plusButton.offsetHeight) + 'px';
+                        plusButton.style.position = 'relative';
+                        plusButton.setAttribute('data-diff', diff);
+                    }
+                }
+            }
+            else
+            {
+                parent.append(t);
+            }
 
             if(!dialog.children || dialog.children.length == 0)
             {
@@ -1228,7 +1735,10 @@
                 var target = t.find('.graph-dialog-item').get(0);
 
                 var half = Math.ceil(target.offsetHeight / 2) + 1.4;
-                this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: ' + (half > 90 ? 90 : half) + 'px"');
+                if(this.$scope.myBotAuth.edit)
+                {
+                    this.addPlusButton(t.find('.graph-dialog-children'), ' style="margin-left: 0; margin-top: 21.4px"');
+                }
             }
             else
             {
@@ -1240,10 +1750,7 @@
         {
             for(var i=0; i<list.length; i++)
             {
-                var target = list[i].previousElementSibling.parentElement;
-
-                var half = target.offsetHeight / 2;
-                list[i].style.top = ((half > 90 ? 90 : half) - 11) + 'px';
+                list[i].style.top = '55px';
             }
         };
 
@@ -1263,21 +1770,59 @@
         DialogGraph.prototype.bindDialogFunctions = function(dialog)
         {
             var that = this;
-            dialog.find('.graph-dialog-header').on('click', function(e)
+            dialog.find('.graph-dialog-header:first').on('click', function(e)
             {
                 that.focus(this.parentElement);
                 e.stopPropagation();
             });
 
-            dialog.find('.graph-dialog-item').on('dblclick', function(e)
-            {
-                var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
-                that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog);
+            // dialog.find('.graph-dialog-item').on('dblclick', function(e)
+            // {
+            //     if(that.$scope.myBotAuth.edit)
+            //     {
+            //         var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
+            //         that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog);
+            //
+            //         e.stopPropagation();
+            //     }
+            // });
 
-                e.stopPropagation();
+            //헤더, 인풋, 아웃풋 더블 클릭 별로 포커스 다르게
+            dialog.find('.graph-dialog-header:first').on('dblclick', function(e)
+            {
+                if(that.$scope.myBotAuth.edit)
+                {
+                    var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
+                    that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog, 'header');
+
+                    e.stopPropagation();
+                }
             });
 
-            dialog.find('.dialog-more').on('click', function(e)
+            dialog.find('.graph-dialog-input:first').on('dblclick', function(e)
+            {
+                if(that.$scope.myBotAuth.edit)
+                {
+                    var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
+                    that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog, 'input');
+
+                    e.stopPropagation();
+                }
+            });
+
+            dialog.find('.graph-dialog-output:first').on('dblclick', function(e)
+            {
+                if(that.$scope.myBotAuth.edit)
+                {
+                    var parent = e.currentTarget.parentElement.parentElement.previousElementSibling;
+                    that.editor.open(parent ? parent.dialog : undefined, dialog.get(0).children[0].dialog, 'output');
+
+                    e.stopPropagation();
+                }
+            });
+
+
+            dialog.find('.dialog-more:first').on('click', function(e)
             {
                 that.openMenu(e, dialog);
                 e.stopPropagation();
@@ -1313,7 +1858,7 @@
         {
             var half = src.offsetHeight / 2;
             var x1 = src.offsetLeft + src.offsetWidth;
-            var y1 = src.offsetTop + (half > 90 ? 90 : half);
+            var y1 = dest.offsetTop + dest.offsetHeight / 2;
 
             var x2 = dest.offsetLeft;
             var y2 = dest.offsetTop + dest.offsetHeight / 2;
@@ -1343,7 +1888,7 @@
             var srcHalf = (src.offsetHeight / 2);
 
             var x1 = src.offsetLeft + src.offsetWidth;
-            var y1 = src.offsetTop + (srcHalf > 90 ? 90 : srcHalf);
+            var y1 = src.offsetTop + 67;
 
             for(var i=0, l=children.length; i<l; i++)
             {
@@ -1392,7 +1937,7 @@
                 {
                     //일반 다이얼로그
                     x2 = dest.offsetLeft;
-                    y2 = dest.offsetTop + (srcHalf > 90 ? 90 : srcHalf);
+                    y2 = dest.offsetTop + 67;
 
                     if(i == 0)
                     {
@@ -1434,12 +1979,17 @@
 
         DialogGraph.prototype.toggleChild = function(child)
         {
+            var children = child.parentElement.parentElement.children;
             if(child.style.display == 'none')
             {
                 child.style.display = 'inline-block';
+                children[children.length-1].style.top = children[children.length-1].previousTop;
+                delete children[children.length-1].previousTop;
             }
             else
             {
+                children[children.length-1].previousTop = children[children.length-1].style.top;
+                children[children.length-1].style.top = '';
                 child.style.display = 'none';
             }
 
@@ -1458,6 +2008,23 @@
             });
 
             return check;
+        };
+
+        DialogGraph.prototype.testFocus = function(target)
+        {
+            if(target)
+            {
+                target = angular.element('#' + target).get(0);
+                if(target)
+                {
+                    angular.element('.test-selected').removeClass('test-selected');
+                    angular.element(target).children('.graph-dialog-item').addClass('test-selected');
+
+                    this.testFocusedTarget = target.id;
+
+                    this.moveScrollToTarget(target.children[0]);
+                }
+            }
         };
 
         DialogGraph.prototype.focus = function(target)
@@ -1489,9 +2056,9 @@
             this.focus(this.canvas.find('#' + id + ' > .graph-dialog-item').get(0));
         };
 
-        DialogGraph.prototype.openEditorForFocused = function()
+        DialogGraph.prototype.openEditorForFocused = function(text)
         {
-            this.editor.open(this.canvas.find('#' + this.focusedDialog + ' > .graph-dialog-item').get(0).dialog, null);
+            this.editor.open(this.canvas.find('#' + this.focusedDialog + ' > .graph-dialog-item').get(0).dialog, null, null, text);
         };
 
         DialogGraph.prototype.bindDataToEditor = function(data)
@@ -1599,6 +2166,8 @@
 
                 this.setFoldButtonPosition(this.canvas.find('.graph-dialog-item .graph-fold'));
             }
+
+            this.testFocus(this.testFocusedTarget || this.commonDialogs[0].id);
         };
 
         DialogGraph.prototype.refreshLine = function()
@@ -1614,15 +2183,6 @@
 
         DialogGraph.prototype.addChildDialog = function(parent, dialog, index)
         {
-            var prefix = this.fileName.split('.')[0];
-            var number = 0;
-            while(this.idList[number])
-            {
-                number++;
-            }
-
-            dialog.id = prefix + number;
-
             if(!parent.children)
                 parent.children = [];
 
@@ -1638,18 +2198,28 @@
 
         DialogGraph.prototype.getCompleteData = function()
         {
-            var temp = JSON.parse(JSON.stringify(this.commonDialogs));
-            delete temp[0].children;
+            var children = this.commonDialogs[0].children;
+            delete this.commonDialogs[0].children;
 
-            var data = this.originalFileData.replace('{{dialogs}}', 'var dialogs = ' + JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4) + ';\r\n').replace('{{commonDialogs}}', 'var commonDialogs = ' + JSON.stringify(JSON.parse(angular.toJson(temp)), null, 4) + ';\r\n');
+            var userDialogsString = JSON.stringify(JSON.parse(angular.toJson(this.userDialogs)), null, 4);
+            var commonDialogsString = JSON.stringify(JSON.parse(angular.toJson(this.commonDialogs)), null, 4);
+
+            this.commonDialogs[0].children = children;
+
+            var data = 'var dialogs = ' + userDialogsString + ';\r\n\r\n' + 'var commonDialogs = ' + commonDialogsString + ';\r\n\r\n' + 'module.exports = function(bot)\r\n{\r\n\tbot.setDialogs(dialogs);\r\n\tbot.setCommonDialogs(commonDialogs);\r\n}';
             return data;
         };
 
-        DialogGraph.prototype.setDirty = function(dirty)
+        DialogGraph.prototype.setDirty = function(dirty, saveFileName, saveHistory)
         {
             this.dirty = (dirty === undefined ? true : dirty);
             if(this.dirtyCallback)
                 this.dirtyCallback(this.dirty);
+
+            if(this.dirty == true)
+            {
+                this.$rootScope.$broadcast('saveDialogGraph', { saveFileName: saveFileName, saveHistory: saveHistory });
+            }
         };
 
         DialogGraph.prototype.isDirty = function()
@@ -1714,7 +2284,10 @@
                 }
                 else if(dialog.children)
                 {
-                    return checkDuplicateName(name, dialog.children);
+                    if(checkDuplicateName(name, dialog.children))
+                    {
+                        return true;
+                    }
                 }
             }
 

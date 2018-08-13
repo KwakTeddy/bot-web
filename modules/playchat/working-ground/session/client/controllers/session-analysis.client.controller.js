@@ -8,6 +8,20 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
 
     var chatbot = $cookies.getObject('chatbot');
 
+    var color = {
+        background:{
+            kakao: '#fbe600',
+            facebook: '#3b5998',
+            navertalk: '#00c73c',
+            socket: 'gray'
+        }, border:{
+            kakao: '#ede500',
+            facebook: '#29487d',
+            navertalk: '#00af35',
+            socket: 'gray'
+        }
+    };
+
     var excelData = undefined;
 
     //스코프 변수 선언
@@ -108,6 +122,9 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
             SessionAnalysisService.query({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
             {
                 console.log(result);
+
+                excelData = [];
+
                 var list = {};
 
                 var check = {};
@@ -129,7 +146,7 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
 
                         //만약 UserID에 대해 새로운 세션이라면.
                         // 여기는 세션수 체크
-                        list[year + '-' + month + '-' + dayOfMonth][result[i].channel]++;
+                        list[year + '-' + month + '-' + dayOfMonth][result[i].channel.name]++;
 
                         check[result[i].userId] = date;
                     }
@@ -139,7 +156,6 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                 }
 
                 console.log('세션 : ', list);
-
 
                 var labels = [];
                 var dataset = [{
@@ -190,7 +206,7 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                         dataset[2].data.push(list[key].navertalk);
                         dataset[3].data.push(list[key].socket);
 
-                        var avg = Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk + list[key].socket))
+                        var avg = Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk + list[key].socket));
                         averageDataset[0].data.push(avg);
 
                         excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: list[key].kakao, facebook: list[key].facebook, navertalk: list[key].navertalk, socket: list[key].socket, average: avg });
@@ -201,23 +217,26 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                         dataset[0].data.push(0);
                         dataset[1].data.push(0);
                         dataset[2].data.push(0);
+                        dataset[3].data.push(0);
 
                         averageDataset[0].data.push(0);
 
-                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: 0, facebook: 0, navertalk: 0, average: 0 });
+                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: 0, facebook: 0, navertalk: 0, socket : 0, average: 0 });
                         // datas.push({ date: key, kakao: 0, facebook: 0, navertalk: 0 });
                         // averageDatas.push({ date: key, count: 0 });
                     }
 
-                    dataset[0].backgroundColor.push('#fbe600');
-                    dataset[1].backgroundColor.push('#3b5998');
-                    dataset[2].backgroundColor.push('#00c73c');
+                    dataset[0].backgroundColor.push(color.background.kakao);
+                    dataset[1].backgroundColor.push(color.background.facebook);
+                    dataset[2].backgroundColor.push(color.background.navertalk);
+                    dataset[3].backgroundColor.push(color.background.socket);
 
                     averageDataset[0].backgroundColor.push('#00c73c');
 
-                    dataset[0].borderColor.push('#ede500');
-                    dataset[1].borderColor.push('#29487d');
-                    dataset[2].borderColor.push('#00af35');
+                    dataset[0].borderColor.push(color.border.kakao);
+                    dataset[1].borderColor.push(color.border.facebook);
+                    dataset[2].borderColor.push(color.border.navertalk);
+                    dataset[3].borderColor.push(color.border.socket);
 
                     averageDataset[0].borderColor.push('#00af35');
 
@@ -243,12 +262,12 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
         $scope.exelDownload = function()
         {
             var template = {
-                sheetName: "세션수량",
-                columnOrder: ["year", "month", "date", "kakao", "facebook", "navertalk", 'average'],
+                sheetName: LanguageService('Amount of Session'),
+                columnOrder: ["year", "month", "date", "kakao", "facebook", "navertalk", 'socket','average'],
                 orderedData: excelData
             };
 
-            ExcelDownloadService.download(chatbot.id, '세션수량', $scope.date, template);
+            ExcelDownloadService.download(chatbot.name, LanguageService('Amount of Session'), $scope.date, template);
         };
     })();
 

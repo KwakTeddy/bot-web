@@ -12,7 +12,7 @@ module.exports.find = function(req, res)
 
     var page = parseInt(req.query.page || 1);
     var countPerPage = parseInt(req.query.countPerPage || 50);
-    var sort = { created : 1 };
+    var sort = { created : -1 };
 
     if(req.query.sortDir && req.query.sortCol)
     {
@@ -35,7 +35,21 @@ module.exports.find = function(req, res)
         query = searchQuery;
     };
 
-    UserDialog.aggregate([ { $match: query }, { $group: { _id: { userKey: "$userId", channel: "$channel", botId: "$botId" }, count: { $sum: 1 }, maxDate: { $max: "$created" } } }, { $sort: sort }, { $skip: (page-1) * countPerPage }, { $limit: countPerPage }]).exec(function (err, data)
+    UserDialog.aggregate(
+        [
+            { $match: query },
+            { $group:
+                    {
+                        _id: { userKey: "$userId", channel: "$channel.name"},
+                        count: { $sum: 1 },
+                        maxDate: { $max: "$created" }
+                    }
+            },
+            { $sort: sort },
+            { $skip: (page-1) * countPerPage },
+            { $limit: countPerPage }
+        ]
+    ).exec(function (err, data)
     {
         if(err)
         {
@@ -43,7 +57,16 @@ module.exports.find = function(req, res)
         }
         else
         {
-            UserDialog.aggregate([ { $match: query }, { $group: { _id: { userKey: "$userId", channel: "$channel", botId: "$botId" } } } ]).exec(function (err, data2)
+            UserDialog.aggregate(
+                [
+                    { $match: query },
+                    { $group:
+                            {
+                                _id: { userKey: "$userId", channel: "$channel.name"}
+                            }
+                    }
+                ]
+            ).exec(function (err, data2)
             {
                 if(err)
                 {

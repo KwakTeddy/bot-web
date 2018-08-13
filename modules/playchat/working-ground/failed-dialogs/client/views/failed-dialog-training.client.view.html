@@ -1,11 +1,12 @@
 <div style="margin-top: 28px;">
     <div ng-if="list.length == 0">
-        <p style="text-align: center;">Empty</p>
+        <p style="text-align: center;">{{ lan('empty') }}</p>
     </div>
     <div class="failed-dialog-training-row" ng-click="focusByClick($event, item)" ng-repeat="item in list">
         <form ng-submit="save($event, item, list);">
             <div class="failed-dialog-training-input">
-                <input class="failed-dialog-question" type="text" ng-model="item._id.dialog" ng-click="focusQuestion($event);">
+                <input class="failed-dialog-question" type="text" ng-model="item._id.dialog" ng-click="focusQuestion($event);" disabled>
+
                 <!--<span class="failed-dialog-question">{{ item._id.dialog }}</span>-->
                 <input type="text" class="failed-dialog-input-raw input_type09" name="failed-dialog-input-raw" ng-click="focus($event, item);" ng-keyup="findSimiliarAnswer($event, item);" ng-required="true">
                 <span class="failed-dialog-count">
@@ -13,6 +14,7 @@
                     <span>{{ item.count }}</span>
                 </span>
             </div>
+
             <div class="failed-dialog-suggestion" ng-if="item.similiarQuestion && item.similiarQuestion.length > 0">
                 <p class="failed-dialog-suggestion-title">{{lan('Suggestion related by question.') }}</p>
                 <div ng-repeat="q in item.similiarQuestion">
@@ -21,6 +23,7 @@
                     <button type="button" class="failed-dialog-sugesstion-select" ng-click="selectSuggestion($event, q);">{{lan('Select') }}</button>
                 </div>
             </div>
+
             <div class="failed-dialog-suggestion" ng-if="item.similiarAnswer && item.similiarAnswer.length > 0">
                 <p class="failed-dialog-suggestion-title">{{lan('Suggestion related by answer.') }}</p>
                 <div ng-repeat="a in item.similiarAnswer">
@@ -29,6 +32,7 @@
                     <button type="button" class="failed-dialog-sugesstion-select" ng-click="selectSuggestion($event, a);">{{lan('Select') }}</button>
                 </div>
             </div>
+
             <div style="margin-top: 20px; text-align: right;">
                 <button class="blue-button" style="width: 110px;">{{lan('Save') }}</button>
                 <button type="button" class="default-button" style="width: 110px;" ng-click="ignore(item);">{{lan('Ignore') }}</button>

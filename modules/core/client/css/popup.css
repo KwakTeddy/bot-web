@@ -54,12 +54,10 @@
 	font-size: 16px;
 }
 .window_main_col {
-    float: left;
     margin: 0;
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
-    width: 550px;
     z-index: 0;
 }
 .card_detail_window .window_main_col {

@@ -13,7 +13,6 @@
                 location.href = $state.previous.href;
             else
                 location.href = '/playchat/chatbots';
-
             return;
         }
 
@@ -41,7 +40,7 @@
             {
                 if(err == 'not registration' || err.message.startsWith('E-mail 확인절차를'))
                 {
-                    alert(LanguageService('This e-mail is under screening process. Please wait for results.'));
+                    alert(LanguageService('This e-mail is under confirm process. Please confirm your email.'));
                 }
                 else if(err.message.startsWith('가입되지 않은'))
                 {
@@ -64,7 +63,7 @@
         if(err)
         {
             err = decodeURIComponent(err);
-            if(err.indexOf('email_1 up key'))
+            if(err.indexOf('email_1 up key')>=0)
             {
                 alert('이미 다른 방법으로 로그인이 되었습니다');
             }

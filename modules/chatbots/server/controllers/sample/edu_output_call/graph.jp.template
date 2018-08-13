@@ -1,0 +1,227 @@
+var dialogs = [
+    {
+        "name": "대화이동 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "기능",
+                    "nlp": "기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화 흐름은 기본적으로 부모 카드에서 자식 카드로 이동합니다.\n\n대화이동은 특정 대화카드에서 임의의 다른 대화카드로 이동하기 위한 기능입니다.\n\nA 대화카드에서 B 대화카드로 대화이동을 할 경우에, A 대화카드의 '챗봇답변'이 실행되고, B 대화카드로 커서(Cursor)가 이동합니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "대화이동 구현",
+        "input": [
+            {
+                "text": {
+                    "raw": "구현",
+                    "nlp": "구현"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "대화이동 실행을 위해서 아래의 버튼을 눌러주세요.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "대화이동 실행"
+                    }
+                ]
+            }
+        ],
+        "id": "default1",
+        "children": [
+            {
+                "name": "대화이동 실행 카드",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "대화 이동 실행",
+                            "nlp": "대화 이동 실행"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Action",
+                        "call": "대화이동된 카드",
+                        "options": {
+                            "output": "'대화이동 실행 카드'에서\n'대화이동된 카드'로\n 이동했습니다.\n\n현재 커서는 '대화이동된 카드'에 있습니다.\n\n테스트를 위해 '대화이동된 카드'의 자식 카드에 질문을 입력해보세요."
+                        }
+                    }
+                ],
+                "id": "default2"
+            }
+        ]
+    },
+    {
+        "name": "대화이동된 카드",
+        "input": [
+            {
+                "if": "false"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "'사용자 입력'이 if(true)이기 때문에 대화이동을 통해서만 본 카드에 접근 가능합니다.",
+                "buttons": [
+                    {
+                        "url": "",
+                        "text": "1"
+                    },
+                    {
+                        "url": "",
+                        "text": "2"
+                    }
+                ]
+            }
+        ],
+        "id": "default3",
+        "children": [
+            {
+                "name": "대화이동 테스트 카드1",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "1",
+                            "nlp": "1"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "1번 카드입니다."
+                    }
+                ],
+                "id": "default4",
+                "children": []
+            },
+            {
+                "name": "대화이동 테스트 카드2",
+                "input": [
+                    {
+                        "text": {
+                            "raw": "2",
+                            "nlp": "2"
+                        }
+                    }
+                ],
+                "output": [
+                    {
+                        "kind": "Content",
+                        "text": "2번 카드입니다."
+                    }
+                ],
+                "id": "default5"
+            }
+        ]
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "start",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "スタート",
+                    "nlp": "スタート"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "こんにちは、私は +bot.name+です。"
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "back",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "前",
+                    "nlp": "前"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "upper",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "親",
+                    "nlp": "親"
+                }
+            },
+            {
+                "text": {
+                    "raw": "アップ",
+                    "nlp": "アップ"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "noanswer",
+        "input": "",
+        "output": [
+            {
+                text: "知らない",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

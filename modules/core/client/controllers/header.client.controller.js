@@ -6,15 +6,17 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 {
     $scope.isLogin = $cookies.get('login') == 'true';
 
-    var UserLanguageService = $resource('/api/users/language');
+    var UserService = $resource('/api/users');
     var ReportingService = $resource('/api/reporting');
 
     var user = $scope.user = $cookies.getObject('user');
     
-    var userLang = navigator.language || navigator.userLanguage;
-    var code = user ? user.language : userLang || 'en';
+    // var userLang = navigator.language || navigator.userLanguage;
+    // var code = user ? user.language : userLang || 'en';
+    //
+    // code = code.split('-')[0];
 
-    code = code.split('-')[0];
+    var code = $cookies.get('language');
 
     $scope.language = code || 'en';
 
@@ -24,13 +26,15 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 
     $scope.languageChange = function()
     {
-        UserLanguageService.save({ language: $scope.language }, function(result)
-        {
-            if(!user)
-                user = {};
 
-            user.language = $scope.language;
-            $cookies.putObject('user', user);
+        UserService.save({ language: $scope.language }, function(result)
+        {
+            if(!user) user = {};
+
+            // user.language = $scope.language;
+            // $cookies.putObject('user', user);
+
+            $cookies.put('language', $scope.language);
 
             $rootScope.$broadcast('changeLanguage');
         },
@@ -41,6 +45,8 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
                 var user = {};
                 user.language = $scope.language;
                 $cookies.putObject('user', user);
+
+                $cookies.put('language', $scope.language);
 
                 $rootScope.$broadcast('changeLanguage');
             }
@@ -73,16 +79,29 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 
     $scope.signout = function()
     {
+        angular.forEach($cookies.getAll(), function (v, k) {
+            if(k != 'language') $cookies.remove(k);
+        });
         $window.location.href = '/api/auth/signout';
     };
 
     $scope.reporting = function()
     {
-        $scope.openReporting = true;
-        setTimeout(function()
+        if(confirm(LanguageService('Questions or error reports and suggestions for improvement are received as friends with KakaoTalk Plus. Move to the PlayChat Plus friend? if select the \'Cancel\', then you can send to our email.')))
         {
-            angular.element('.reporting-content').focus();
-        }, 100);
+            window.open(
+                'http://pf.kakao.com/_xoWVbC',
+                '_blank' // <- This is what makes it open in a new window.
+            );
+        }
+        else
+        {
+            $scope.openReporting = true;
+            setTimeout(function()
+            {
+                angular.element('.reporting-content').focus();
+            }, 100);
+        }
     };
 
     $scope.sendReporting = function()

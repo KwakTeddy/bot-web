@@ -1635,7 +1635,9 @@ p {
 
 .small,
 small {
-    font-size: 85%
+    font-size: 90%;
+    color: #7a7a7a;
+    margin-top: 6px;
 }
 
 .mark,
@@ -3019,12 +3021,19 @@ table th[class*=col-] {
 }
 
 @media screen and (max-width:767px) {
+
     .table-responsive {
         width: 100%;
         margin-bottom: 15px;
         overflow-y: hidden;
         -ms-overflow-style: -ms-autohiding-scrollbar;
         border: 1px solid #ddd
+    }
+    .social-btn{
+        display: block;
+    }
+    .inline-sm{
+        display: inline;
     }
     .table-responsive>.table {
         margin-bottom: 0
@@ -3362,8 +3371,9 @@ textarea.input-sm {
     height: 46px;
     padding: 10px 16px;
     font-size: 18px;
-    line-height: 1.3333333;
-    border-radius: 6px
+    border-radius: 2px;
+    border: 1px solid #000;
+    font-family: open sans;
 }
 
 select.input-lg {
@@ -3562,7 +3572,7 @@ textarea.input-lg {
 @media (min-width:768px) {
     .form-inline .form-group {
         display: inline-block;
-        margin-bottom: 0;
+        margin-bottom: 1%;
         vertical-align: middle
     }
     .form-inline .form-control {
@@ -3785,7 +3795,7 @@ fieldset[disabled] .btn-default:hover {
 
 .btn-primary {
     color: #fff;
-    background-color: #337ab7;
+    background-color: #288feb;
     border-color: #2e6da4
 }
 
@@ -4156,10 +4166,11 @@ fieldset[disabled] .btn-link:hover {
 
 .btn-group-sm>.btn,
 .btn-sm {
-    padding: 5px 10px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px
+    padding: 0px 8px;
+    font-size: 13px;
+    line-height: 3;
+    color: #288feb;
+    font-weight: bold;
 }
 
 .btn-group-xs>.btn,
@@ -5167,10 +5178,12 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .navbar-toggle {
     position: relative;
     float: right;
+    /*
     padding: 9px 10px;
     margin-top: 8px;
     margin-right: 15px;
     margin-bottom: 8px;
+    */
     background-color: transparent;
     background-image: none;
     border: 1px solid transparent;

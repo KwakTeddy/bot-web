@@ -3,20 +3,65 @@
     'use strict';
     angular.module('playchat').controller('SignupController', ['$scope', '$state', '$http', '$cookies', '$location', 'LanguageService', function ($scope, $state, $http, $cookies, $location, LanguageService)
     {
+        $scope.user = $cookies.getObject('user');
+
         $scope.$parent.loading = false;
+        $scope.isMatchCode = false;
 
         $scope.signupErrorMessage = '';
-        $scope.successSignup = false;
 
         $scope.credentials = {};
 
         $scope.completeMessageEmail = '';
 
+        $scope.successSignup = false;
+        $scope.invalid = $location.search().invalid ? true : false;
+        $scope.error = $location.search().error ? true : false;
+        $scope.verified = $location.search().verified ? true : false;
+
+
+
+        if($scope.invalid)
+        {
+            $scope.credentials.email = $location.search().email;
+        }
+
+        if($scope.error)
+        {
+            if($location.search().type == 'database')
+            {
+                $scope.errorMessage = LanguageService('There was a temporary error. Please try again in a few minutes.');
+            }
+            else
+            {
+                $scope.errorMessage = LanguageService('Your email is not signed up.');
+            }
+        }
+
+        $scope.onClickAuthBtn = function () {
+            var inputCode = $('.authentication-code-area .input_type09.sign-input').val();
+
+            var param = {
+                'email': $scope.credentials.email,
+                'veriCode': inputCode
+            };
+
+            $http.post('/api/auth/emailconfirm/code',param)
+                .success(function(res){
+                    $scope.successSignup = false;
+                    $scope.verified = true;
+                }).error(function(err){
+                    console.log(err);
+                    $scope.isMatchCode = true
+                });
+        };
+
+
         $scope.resend = function ()
         {
             $http.post('/api/auth/signin', { resendEmail: $scope.credentials.email }).success(function (response)
             {
-                console.log(response);
+                alert(response.message)
             }).error(function (response)
             {
                 console.log(response);
@@ -33,10 +78,8 @@
                 return false;
             }
 
-            var user = $cookies.getObject('user');
+            $scope.credentials.language = $cookies.get('language') || 'en';
 
-            if(user && user.language) $scope.credentials.language = user.language;
-            else $scope.credentials.language = 'en';
             $http.post('/api/auth/signup', $scope.credentials).success(function (response)
             {
                 $scope.successSignup = true;

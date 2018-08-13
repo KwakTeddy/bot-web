@@ -4,23 +4,23 @@
             <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
         </form>
     </div>
-    <div class="tab01">
+    <div class="tab01" style="margin-top: 10px;">
         <ul class="tabs1">
             <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
             <!--<li><a href="#">{{lan('Store') }}</a></li>-->
             <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
-        <div class="flR" style="position: relative; top: -40px;">
+        <div class="flR" style="position: relative; top: -40px;" ng-if="myBotAuth.edit">
             <div class="funtionbtn1" style="margin-right: 20px; position: relative; top: -2px;">
                 <a href="#">
                     <img src="modules/playchat/working-ground/common/client/imgs/import.png">
                     <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
-                    <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
+                    <!--<img src="modules/playchat/working-ground/common/client/imgs/Q.png">-->
                 </a>
             </div>
-            <div class="btn02" style="width: 110px; display: inline-block;">
-                <a href="/playchat/management/entity/add" class="">{{lan('Add New') }}</a>
-            </div>
+            <a href="/playchat/management/entity/add" class="btn02" style="width: 110px; display: inline-block;">
+                <span class="">{{lan('Add New') }}</span>
+            </a>
         </div>
     </div>
     <div class="downSide">

@@ -14,12 +14,14 @@
             <canvas id="dailyDialog" width="400" height="100"></canvas>
         </div>
     </div>
+
     <div>
         <h2 class="dialog-traffic-title">{{lan('Historical amount of dialog(Success/Fail)') }}</h2>
         <div>
             <canvas id="isFailDialog" width="400" height="100"></canvas>
         </div>
     </div>
+
     <div>
         <h2 class="dialog-traffic-title">{{lan('Ratio of dialog on channels') }}</h2>
         <div style="display: flex;">
@@ -28,35 +30,41 @@
                     <canvas id="dialogRatioByChannel" width="400" height="200"></canvas>
                 </div>
             </div>
+
             <div style="flex: 1">
                 <table class="tb02" style="height: 100%">
                     <thead>
                     <tr>
                         <th class="text-center">{{lan('Channel') }}</th>
                         <th class="text-center">{{lan('Ratio') }}</th>
-                        <th class="text-center">{{lan('User Count') }}</th>
+                        <th class="text-center">{{lan('Dialog Count') }}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td class="text-center">{{lan('Kakaotalk') }}</td>
-                        <td class="text-center">{{kakao*100/(kakao + facebook + navertalk)| number:1}}%</td>
+                        <td class="text-center">{{kakao*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
                         <td class="text-center">{{kakao}}</td>
                     </tr>
                     <tr>
                         <td class="text-center">{{lan('Facebook') }}</td>
-                        <td class="text-center">{{facebook*100/(kakao + facebook + navertalk)| number:1}}%</td>
+                        <td class="text-center">{{facebook*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
                         <td class="text-center">{{facebook}}</td>
                     </tr>
                     <tr>
                         <td class="text-center">{{lan('Naver talk talk') }}</td>
-                        <td class="text-center">{{navertalk*100/(kakao + facebook + navertalk)| number:1}}%</td>
+                        <td class="text-center">{{navertalk*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
                         <td class="text-center">{{navertalk}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{lan('Socket') }}</td>
+                        <td class="text-center">{{socket*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
+                        <td class="text-center">{{socket}}</td>
                     </tr>
                     <tr>
                         <td class="text-center">{{lan('Total') }}</td>
                         <td class="text-center">100%</td>
-                        <td class="text-center">{{kakao + facebook + navertalk}}</td>
+                        <td class="text-center">{{kakao + facebook + navertalk + socket}}</td>
                     </tr>
                     </tbody>
                 </table>

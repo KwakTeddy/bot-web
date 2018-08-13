@@ -1,24 +1,45 @@
+<style>
+input.disabled
+{
+    background-color: #f3f3f3;
+    cursor: default;
+}
+</style>
+
 <div class="chatbot-body">
-    <form ng-submit="save();" style="width: 600px; margin: 30px auto;text-align: center;" ng-if="templateId == 'blank' || templateId == 'sample'">
-        <h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;">Create Bot</h2>
-        <!--<div class="form-row">-->
-            <!--<label class="required">-->
-                <!--<span class="form-title">{{ lan('ID')}}</span>-->
-                <!--<input type="text" placeholder="" ng-model="bot.id" class="entity-title data-input" ng-required="true" pattern="^[a-zA-Z]+[a-zA-Z0-9_]*" autofocus="true">-->
-            <!--</label>-->
-        <!--</div>-->
+    <form ng-submit="save();" novalidate style="width: 650px; margin: 30px auto;text-align: center;">
+        <h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;">{{ lan('Create Bot') }}</h2>
+        <div class="form-row" style="display: none;">
+            <label class="required">
+                <span class="form-title">{{ lan('ID') }}</span>
+                <p style="font-size: 11px; color: #777; margin: 5px 2px; text-align: left;">{{ lan('BotIdPattern') }}</p>
+                <input type="text" placeholder="" ng-model="bot.id" class="entity-title data-input disabled" ng-required="true" pattern="^[a-zA-Z]+[a-zA-Z0-9_]*" ng-click="editBotId($event);">
+            </label>
+        </div>
         <div class="form-row">
             <label class="required">
                 <span class="form-title">{{ lan('Name') }}</span>
-                <input type="text" placeholder="" ng-model="bot.name" class="entity-title data-input" ng-required="true" autofocus="true">
+                <input type="text" placeholder="" ng-model="bot.name" class="entity-title data-input" maxlength="30" ng-required="true" autofocus="true">
             </label>
         </div>
         <div class="form-row">
             <label>
                 <span class="form-title">{{ lan('Description') }}</span>
-                <input type="text" placeholder="" ng-model="bot.description" class="entity-title data-input">
+                <input type="text" placeholder="" ng-model="bot.description" maxlength="100" class="entity-title data-input">
             </label>
         </div>
+
+        <div class="form-row" ng-if="templateId == 'sample'">
+            <label class="required" style="text-align: left;">
+                <span class="form-title">{{ lan('SampleBot Category') }}</span>
+                <div class="select-wrapper" style="width: 100%">
+                    <select style="width: 100%" class="jumbo-select" ng-model="bot.sampleCategory" ng-required="true">
+                        <option value={{category}} ng-repeat="category in sampleCategory">{{lan(category)}}</option>
+                    </select>
+                </div>
+            </label>
+        </div>
+
         <div class="form-row">
             <label class="required" style="text-align: left;">
                 <span class="form-title">{{ lan('Language') }}</span>
@@ -32,14 +53,49 @@
                 </div>
             </label>
         </div>
+
+        <div class="form-row">
+            <label style="text-align: left;">
+                <img src="{{ botImage }}" style="width: 100%; max-width: 500px;">
+            </label>
+        </div>
+
+        <div class="form-row">
+            <label style="text-align: left;">
+                <button type="button" class="default-button" ng-click="showUploadModal();" style="width: 150px;">{{lan('Click to upload image') }}</button>
+            </label>
+        </div>
+
         <div class="tab-footer" style="border-top: 0;">
             <button class="blue-button mr5">{{ lan('Create') }}</button>
             <button type="button" class="default-button" ng-click="cancel();" style="width: 110px; cursor: pointer;">{{ lan('Cancel') }}</button>
         </div>
     </form>
 
-    <div style="width: 600px; margin: 30px auto;" ng-if="templateId != 'blank' && templateId != 'sample'">
-        <h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;">{{ template.name }} - {{ lan('Basic Information') }}</h2>
-        <div id="templateCreateHtml"></div>
+    <div class="window_overlay" ng-show="openUploadModal" style="width: 100%; box-sizing: border-box;">
+        <div class="window" style="box-sizing: border-box; padding: 10px;">
+            <form style="width: 100%; box-sizing: border-box;">
+                <div class="window_header">
+                    <div>
+                        <h1 style="font-weight: 500; font-size: 17px;">{{ lan('Change chatbot image')}}</h1>
+                    </div>
+                </div>
+                <div class="window_main_col" style="width: 100%; text-align: center; padding: 5px;">
+                    <input tabindex="-1" type="file" nv-file-select uploader="uploader" style="display: none;">
+                    <button type="button" class="default-button" style="width: 200px; margin-right: 5px;" ng-click="uploadImage($event);">{{lan('Upload bot image') }}</button>
+                    <button type="button" class="default-button" style="width: 200px; margin-left: 5px;" ng-click="addExternalImage();">{{lan('Insert external image') }}</button>
+                </div>
+                <!--<div class="list2 mt20 clear">-->
+                <!--<li class="card_detail_item_content4">-->
+                <!--{{ lan("Flow chatbots are tree-based. The user is driven down a specific path") }}-->
+                <!--</li>-->
+                <!--</div>-->
+            </form>
+        </div>
     </div>
+
+    <!--<div style="width: 600px; margin: 30px auto;" ng-if="templateId != 'blank' && templateId != 'sample'">-->
+        <!--<h2 style="font-size: 20px; font-weight: bold; padding: 20px 0;">{{ template.name }} - {{ lan('Basic Information') }}</h2>-->
+        <!--<div id="templateCreateHtml"></div>-->
+    <!--</div>-->
 </div>

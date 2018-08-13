@@ -10,7 +10,7 @@
         <input type="text" class="intent-management-add-input" placeholder="Intent Name" ng-model="intent.name" ng-required="true" ng-keydown="checkNamePattern($event);">
         <p class="intent-management-add-subject">{{lan('Intent sentence') }}</p>
         <div class="intent-management-add-input-wrapper" ng-repeat="content in intent.intentContents">
-            <input type="text" class="intent-management-add-input" ng-keydown="keydown($event, $index);" ng-required="true" ng-model="content.content">
+            <input type="text" class="intent-management-add-input" ng-keydown="keydown($event, $index);" ng-model="content.content">
             <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteContent($index);">
         </div>
         <div style="text-align: center;">

@@ -1,7 +1,8 @@
 'use strict';
 var path = require('path');
+var fs = require('fs');
 var logger = require(path.resolve('./config/lib/logger'));
-var loadbalancer = require(path.resolve('engine/bot/engine/loadbalancer/loadbalancer'));
+// var loadbalancer = require(path.resolve('engine/bot/engine/loadbalancer/loadbalancer'));
 
 process.binding('http_parser').HTTPParser = require('http-parser-js').HTTPParser;
 
@@ -53,37 +54,40 @@ module.exports.init = function init(callback)
 
 module.exports.start = function start(callback)
 {
-    var fs = require('fs');
-    var list = fs.readdirSync(path.resolve('./engine/models'));
+    var redis = require('redis');
+
+    var client = redis.createClient(6379, config.redis.host);
+
+    console.log('[Load Engine Models START]');
+    var list = fs.readdirSync(path.resolve('./engine2/models'));
     for(var i=0; i<list.length; i++)
     {
-        require(path.resolve('./engine/models/' + list[i]));
+        require(path.resolve('./engine2/models/' + list[i]));
+        console.log(list[i]);
     }
+    console.log('[Load Engine Models END]');
+    console.log();
 
-    var globals = require(path.resolve('engine/bot/engine/common/globals'));
-    globals.initGlobals();
-    var autoCorrection = require(path.resolve('engine/bot/engine/nlp/autoCorrection'));
-    autoCorrection.loadWordCorrections();
+    var Engine = require(path.resolve('./engine2/core.js'));
 
     this.init(function (app, db, config)
     {
-        if(config.loadBalance.use)
+        client.on('connect', function()
         {
-            loadbalancer.init();
-        }
+            console.log(chalk.green('sdf redis connected!'));
+            console.log();
+        });
+
+        Engine.setRedisClient(client);
 
         app.server.listen(config.port, function ()
         {
-            app.io.on('connection', function (socket)
-            {
-                console.log('커넥션');
-                require(path.resolve('./engine/bot/server/sockets/bot.server.socket.config.js'))(app.io, socket);
-                require(path.resolve('./modules/demo/server/controllers/demo.server.controller.js'))(app.io, socket);
-            });
+            Engine.init(app.app, app.io);
 
-            // Logging initialization
             console.log();
             console.log(chalk.green('================= Server Started ==================='));
+
+            // Logging initialization
             console.log(chalk.green(config.app.title));
             console.log(chalk.green('Environment     : ' + process.env.NODE_ENV));
             console.log(chalk.green('Port            : ' + config.port));
@@ -104,67 +108,5 @@ module.exports.start = function start(callback)
             if(callback)
                 callback(app.server, db, config);
         });
-
-        // require(path.resolve('./bot-engine2/core.js')).initialize(app, function()
-        // {
-        //     app.server.listen(config.port, function ()
-        //     {
-        //         // Logging initialization
-        //         console.log();
-        //         console.log(chalk.green('================= Server Started ==================='));
-        //         console.log(chalk.green(config.app.title));
-        //         console.log(chalk.green('Environment     : ' + process.env.NODE_ENV));
-        //         console.log(chalk.green('Port            : ' + config.port));
-        //         console.log(chalk.green('Database        : ' + config.db.uri));
-        //         if (process.env.NODE_ENV === 'secure')
-        //         {
-        //             console.log(chalk.green('HTTPs           : on'));
-        //         }
-        //
-        //         console.log(chalk.green('App version     : ' + config.meanjs.version));
-        //
-        //         if (config.meanjs['meanjs-version'])
-        //             console.log(chalk.green('MEAN.JS version : ' + config.meanjs['meanjs-version']));
-        //
-        //         console.log(chalk.green('===================================================='));
-        //         console.log();
-        //
-        //         if(callback)
-        //             callback(app.server, db, config);
-        //     });
-        // });
-
-        // var io = app.io;
-        // app.server.listen(config.port, function ()
-        // {
-        //     // Add an event listener to the 'connection' event
-        //     io.on('connection', function (socket)
-        //     {
-        //         require(path.resolve('./bot-engine/core.js')).initialize(io, socket);
-        //     });
-        //
-        //     // Logging initialization
-        //     console.log();
-        //     console.log(chalk.green('================= Server Started ==================='));
-        //     console.log(chalk.green(config.app.title));
-        //     console.log(chalk.green('Environment     : ' + process.env.NODE_ENV));
-        //     console.log(chalk.green('Port            : ' + config.port));
-        //     console.log(chalk.green('Database        : ' + config.db.uri));
-        //     if (process.env.NODE_ENV === 'secure')
-        //     {
-        //         console.log(chalk.green('HTTPs           : on'));
-        //     }
-        //
-        //     console.log(chalk.green('App version     : ' + config.meanjs.version));
-        //
-        //     if (config.meanjs['meanjs-version'])
-        //         console.log(chalk.green('MEAN.JS version : ' + config.meanjs['meanjs-version']));
-        //
-        //     console.log(chalk.green('===================================================='));
-        //     console.log();
-        //
-        //     if(callback)
-        //         callback(app.server, db, config);
-        // });
     });
 };

@@ -6,12 +6,14 @@
   "dependencies": {
     "angular": "~1.5",
     "angular-resource": "~1.5",
+    "angular-cookies": "~1.6.1",
     "angular-ui-router": "~0.3",
     "angular-file-upload": "2.3.4",
     "codemirror": "^5.16.0",
     "angular-ui-codemirror": "^0.3.0",
     "angular-cookies": "1.6.1",
-    "bootstrap-daterangepicker": "^2.1.25"
+    "bootstrap-daterangepicker": "^2.1.25",
+    "chart.js": "^2.7.1"
   },
   "resolutions": {
     "angular": "1.5.11",

@@ -1,0 +1,146 @@
+var dialogs = [
+    {
+        "name": "인텐트 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "인 텐트 기능",
+                    "nlp": "인 텐트 기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "인텐트는 의도를 뜻합니다. \n\n'사용자 입력'을 인텐트로 입력하면 하나의 의도를 가진 여러가지 표현의 문장을 함께 처리할 수 있습니다.\n \n예를 들어,  '검색 인텐트'를 만들어 '검색해줘', '찾아줘' 등을 포함시키면 여러 문장을 하나의 인텐트로 처리할 수 있습니다.\n\n'사용자 입력'에 #을 입력하면 인텐트 가이드가 실행됩니다.\n\n인텐트 관리는 왼쪽 네비게이션 바의 관리 -> 인텐트 에서 할 수 있습니다."
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "인텐트 구현 _ 검색",
+        "input": [
+            {
+                "intent": "검색"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "#검색 인텐트가 실행됐습니다.\n\n검색 인텐트에는 '찾아줘', '검색해줘' 등이 포함되어 있습니다.\n\n사용자가 '찾아줘', '검색해줘' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+            }
+        ],
+        "id": "default1"
+    },
+    {
+        "name": "인텐트 구현 _ 정지",
+        "input": [
+            {
+                "intent": "정지"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "#정지 인텐트가 실행됐습니다.\n\n정지 인텐트에는 '멈춰줘', '그만해' 등이 포함되어 있습니다.\n\n사용자가 '멈춰줘', '그만해' 등을 입력했을 시에 해당 대화 카드가 실행됩니다."
+            }
+        ],
+        "id": "default2"
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "开始",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "开始",
+                    "nlp": "开始"
+                }
+            },
+            {
+                "text": {
+                    "raw": "初始画面",
+                    "nlp": "初始画面"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "您好, 我是+bot.name+。"
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "返回",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "返回",
+                    "nlp": "返回"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "上一页",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "上一页",
+                    "nlp": "上一页"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "没有回答",
+        "input": "",
+        "output": [
+            {
+                text: "我不是很明白您的意思。",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

@@ -11,34 +11,70 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
 
     $scope.currentTab = 'logcontent';
 
+    $scope.taskLogs = [];
     $scope.$on('onlog', function(context, data)
     {
-        var selector = '#logcontent';
-
-        if(data.message.indexOf('entities: ') != -1)
+        if(expandMode == -1)
         {
-            selector = '#entitycontent';
-        }
-        else if(data.message.indexOf('intent: ') != -1)
-        {
-            selector = '#intentcontent';
+            $scope.toggleExpand();
         }
 
-        angular.element(selector).append('<div>' + data.message.replace(':log ', '').replace(/</gi, '&lt;').replace(/>/gi, '&gt;') + '</div>');
-
-        if(scrollTimer)
+        if(data.type == 'input')
         {
-            clearTimeout(scrollTimer);
-        }
+            var intents = data.log.intents;
 
-        scrollTimer = setTimeout(function()
-        {
-            var logContent = angular.element('.logcontent > div').get(0);
-            if(logContent)
+            var check = {};
+            var result = [];
+            for(var i=0; i<intents.length; i++)
             {
-                logContent.parentElement.scrollTop = logContent.offsetHeight;
+                if(!check[intents[i].intentName])
+                {
+                    intents[i].matchRateText = Math.round(intents[i].matchRate * 100);
+                    result.push(intents[i]);
+                    check[intents[i].intentName] = true;
+                }
             }
-        }, 300);
+
+            data.log.intents = result;
+
+            $scope.userInput = data.log;
+        }
+        else if(data.type == 'answer')
+        {
+            $scope.target = data.log.target;
+
+            if(data.log.target)
+            {
+                if(data.log.target.matchRate)
+                {
+                    $scope.target.matchRateText = Math.round(data.log.target.matchRate * 100);
+                }
+
+                if(data.log.target.requiredMatchRate)
+                {
+                    $scope.target.requiredMatchRate = Math.round(data.log.target.requiredMatchRate * 100);
+                }
+            }
+
+            $scope.output = data.log.output;
+        }
+        else if(data.type == 'task')
+        {
+            if(typeof data.log.logs == 'string')
+            {
+                $scope.taskLogs.push(data.log.logs);
+            }
+            else
+            {
+                var lines = '';
+                for(var key in data.log.logs)
+                {
+                    lines += data.log.logs[key] + ' ';
+                }
+
+                $scope.taskLogs.push(lines);
+            }
+        }
     });
 
     $scope.selectTab = function(e, selector)
@@ -69,7 +105,6 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         else if(expandMode == 500)
         {
             expandMode = -1;
-
             angular.element('.log-analysis').css('height', '').css('top', '0').css('height', 'auto');
         }
         else if(expandMode == -1)
@@ -80,16 +115,38 @@ angular.module('playchat').controller('LogAnalysisController', ['$window', '$sco
         }
     };
 
-    $scope.close = function()
+    $scope.close = function(e)
     {
         angular.element('.log-analysis').css('height', '39px').css('overflow', 'hidden').css('top', '');
         angular.element('.working-ground').css('bottom', '39px');
         expandMode = -1;
+
+        if(e)
+        {
+            e.preventDefault();
+            e.stopPropagation();
+        }
     };
 
     $(document).ready(function()
     {
+        angular.element('.log-analysis').css('height', expandMode + 'px');
         $scope.close();
+
+        angular.element('#logroom > table > thead th').on('click', function(e)
+        {
+            if(e.originalEvent.srcElement.nodeName == 'th' && expandMode == -1)
+            {
+                expandMode = 0;
+                angular.element('.working-ground').css('bottom', '211px');
+                angular.element('.log-analysis').css('height', '').css('top', '');
+            }
+        });
+
+        setTimeout(function()
+        {
+            angular.element('.log-analysis').css('transition', 'all 0.2s');
+        }, 500);
     });
 
     $scope.lan=LanguageService;

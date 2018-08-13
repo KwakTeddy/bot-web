@@ -4,17 +4,20 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Development') + ' > ' + LanguageService('Dialog Learning'), '/modules/playchat/gnb/client/imgs/speech.png');
 
+    var chatbot = $cookies.getObject('chatbot');
+
     var DialogsetsFindService = $resource('/api/:botId/dialogsets/findbytitle', { botId: '@botId' });
     var DialogSetsService = $resource('/api/:botId/dialogsets/:dialogsetId', { botId: '@botId', dialogsetId: '@dialogsetId' }, { update: { method: 'PUT' } });
-    var DialogsService = $resource('/api/dialogsets/:dialogsetId/dialogs/:dialogsId', { dialogsetId: '@dialogset', dialogsId: '@dialogsId' }, { update: { method: 'PUT' } });
+    var DialogsService = $resource('/api/dialogsets/:dialogsetId/dialogs/:dialogsId', { dialogsetId: '@dialogset', dialogsId: '@dialogsId', language: chatbot.language }, { update: { method: 'PUT' } });
 
     //UI Data
     $scope.topicOpened = false;
 
-    var chatbot = $cookies.getObject('chatbot');
     var user = $cookies.getObject('user');
     var openDialogsets = $cookies.getObject('openDialogsets');
     var currentPage = 1;
+
+    $scope.myBotAuth = chatbot.myBotAuth;
 
     $scope.openModal = {
         isOpened: false,
@@ -25,6 +28,9 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         isOpened: false,
         data: {}
     };
+
+    $scope.newAnswerInputCount = 1;
+    $scope.newQuestionInputCount = 1;
 
     //UI Handling
     (function()
@@ -60,6 +66,15 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             // 현재 페이지에 해당하는 데이터 가져오기.
             DialogsService.query({ dialogsetId: dialogsetId, page: currentPage, countPerPage: countPerPage, rawText: rawText, botId: chatbot.id }, function(list)
             {
+                for(var i=0; i<list.length; i++)
+                {
+                    if(list[i].category)
+                    {
+                        list[i].category = list[i].category.split('@@@');
+                        $scope.topicOpened = true;
+                    }
+                }
+
                 $scope.dialogs = list;
 
                 angular.element('textarea:first').focus();
@@ -81,6 +96,11 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     currentPage++;
                     for(var i=0, l=list.length; i<l; i++)
                     {
+                        if(list[i].category)
+                        {
+                            list[i].category = list[i].category.split('@@@');
+                        }
+
                         $scope.dialogs.push(list[i]);
                     }
                 }
@@ -89,6 +109,11 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
         $scope.save = function(data, callback)
         {
+            if(!$scope.myBotAuth.edit)
+            {
+                return alert(LanguageService('You do not have permission to edit this bot'));
+            }
+
             data.dialogset = $scope.currentDialogsetId;
             data.botId = chatbot.id;
 
@@ -108,6 +133,22 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                         callback(result);
                 });
             }
+
+            angular.element('.new-dialog-title+form .question-area').find('textarea').each(function(index)
+            {
+                if(index > 0)
+                {
+                    $(this).remove();
+                }
+            });
+
+            angular.element('.new-dialog-title+form .answer-area').find('textarea').each(function(index)
+            {
+                if(index > 0)
+                {
+                    $(this).remove();
+                }
+            });
 
             // $rootScope.$broadcast('simulator-build');
         };
@@ -149,10 +190,10 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             });
         };
 
-        $scope.addInputElement = function(e)
+        $scope.addInputElement = function(e, type)
         {
             var check = false;
-            angular.element(e.currentTarget.parentElement).find('textarea').each(function()
+            angular.element(e.currentTarget.parentElement).find('.textarea-wrapper > textarea').each(function()
             {
                 if(!this.value)
                 {
@@ -163,9 +204,18 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             if(!check)
             {
+                if(type == 'answer')
+                {
+                    $scope.newAnswerInputCount++;
+                }
+                else if(type == 'question')
+                {
+                    $scope.newQuestionInputCount++;
+                }
+
                 // 현재 element의 clone을 만들고 현재 element 이전으로 집어넣으면 완성.
-                var target = angular.element(e.currentTarget.parentElement).find('textarea:last').get(0);
-                angular.element($compile(target.outerHTML)($scope)).insertAfter(target).val('').focus();
+                var target = angular.element(e.currentTarget.parentElement).find('.textarea-wrapper:last').get(0);
+                angular.element($compile(target.outerHTML)($scope)).insertAfter(target).find('textarea').val('').focus().removeAttr('required');
             }
         };
 
@@ -216,7 +266,16 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     if(event.shiftKey)
                     {
                         //multi
-                        angular.element($compile(e.currentTarget.outerHTML)($scope)).insertAfter(e.currentTarget).val('').focus();
+                        angular.element($compile(e.currentTarget.parentElement.outerHTML)($scope)).insertAfter(e.currentTarget.parentElement).find('textarea').val('').focus();
+
+                        if(type == 'inputRaw')
+                        {
+                            $scope.newQuestionInputCount++;
+                        }
+                        else if(type == 'output')
+                        {
+                            $scope.newAnswerInputCount++;
+                        }
 
                         e.preventDefault();
                         e.stopPropagation();
@@ -256,6 +315,15 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
                 if(!check)
                 {
+                    if(type == 'inputRaw')
+                    {
+                        $scope.newQuestionInputCount++;
+                    }
+                    else if(type == 'output')
+                    {
+                        $scope.newAnswerInputCount++;
+                    }
+
                     // 현재 element의 clone을 만들고 현재 element 이전으로 집어넣으면 완성.
                     var target = angular.element(e.currentTarget.parentElement).find('textarea:last').get(0);
                     angular.element($compile(target.outerHTML)($scope)).insertAfter(target).val('').focus();
@@ -265,20 +333,25 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             {
                 if(e.shiftKey)
                 {
-                    angular.element(e.currentTarget).prev().focus();
-                    angular.element(e.currentTarget).remove();
+                    angular.element(e.currentTarget).parent().prev().find('textarea').focus();
+                    angular.element(e.currentTarget).parent().remove();
+
+                    if(type == 'inputRaw')
+                    {
+                        $scope.newQuestionInputCount--;
+                    }
+                    else if(type == 'output')
+                    {
+                        $scope.newAnswerInputCount--;
+                    }
                 }
-            }
-            else
-            {
-                console.log(e.keyCode);
             }
         };
 
         $scope.inputKeydown = function(e, dialog, type, current)
         {
             var event = e.originalEvent;
-            if(e.keyCode == 13)
+            if(e.keyCode == 13) //Enter
             {
                 var check = false;
                 angular.element(e.currentTarget.parentElement).find('textarea').each(function()
@@ -325,7 +398,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     }
                 }
             }
-            else if(e.keyCode == 38)
+            else if(e.keyCode == 38)//윗 방향키
             {
                 var target = angular.element(e.currentTarget).parent().parent().parent().parent().prev().get(0);
                 if(target)
@@ -340,7 +413,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     }
                 }
             }
-            else if(e.keyCode == 40)
+            else if(e.keyCode == 40) //아래 방향키
             {
                 var target = angular.element(e.currentTarget).parent().parent().parent().parent().next().get(0);
                 if(target)
@@ -355,7 +428,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                     }
                 }
             }
-            else if(e.keyCode == 46)
+            else if(e.keyCode == 46) //Delete
             {
                 if(e.shiftKey)
                 {
@@ -370,17 +443,20 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                             $scope.saveModified(type, e, form);
                         }, 100);
                     }
-                }
-                else if(confirm($scope.lan('Are you sure you want to delete this item?')))
-                {
-                    DialogsService.delete({ dialogsetId: dialog.dialogset, dialogsId: dialog._id, botId: chatbot.id }, function(err, result)
+                    else if(dialog.inputRaw.length == 1)
                     {
-                        var index = $scope.dialogs.indexOf(dialog);
-                        $scope.dialogs.splice(index, 1);
-                    });
+                        if(confirm($scope.lan('Are you sure you want to delete this item?')))
+                        {
+                            DialogsService.delete({ dialogsetId: dialog.dialogset, dialogsId: dialog._id, botId: chatbot.id }, function(err, result)
+                            {
+                                var index = $scope.dialogs.indexOf(dialog);
+                                $scope.dialogs.splice(index, 1);
+                            });
+                        }
+                    }
                 }
             }
-            else if(e.keyCode == 45)
+            else if(e.keyCode == 45) //Insert
             {
                 var check = false;
                 angular.element(e.currentTarget.parentElement).find('textarea').each(function()
@@ -421,6 +497,19 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
             dialogs.splice(index, 1);
         };
 
+        $scope.deleteNewInput = function(e, type)
+        {
+            angular.element(e.currentTarget.parentElement).remove();
+            if(type == 'answer')
+            {
+                $scope.newAnswerInputCount--;
+            }
+            else if(type == 'question')
+            {
+                $scope.newQuestionInputCount--;
+            }
+        };
+
         $scope.deleteDialog = function(dialog, e)
         {
             if(confirm($scope.lan('Are you sure you want to delete this item?')))
@@ -429,6 +518,9 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 {
                     var target = e.currentTarget.parentElement.parentElement.parentElement;
                     target.parentElement.removeChild(target);
+
+                    var index = $scope.dialogs.indexOf(dialog);
+                    $scope.dialogs.splice(index, 1);
 
                     // $rootScope.$broadcast('simulator-build');
                 });
@@ -482,6 +574,7 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
                 e.currentTarget.watchTimeout = setTimeout(function()
                 {
+                    console.log('머야');
                     // 타이핑을 멈추고 1초가 지나면 저장.
                     // printSavingImage(element); 너무 빨라서 의미가 없다.
                     $scope.saveModified(type, e);
@@ -548,106 +641,61 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 angular.element('.slide').css('background', '');
             }
         });
-
-        $scope.selectTab = function(id, title)
+        
+        $scope.selectTab = function(dialogset)
         {
-            angular.element('.tabs1 .select_tab').removeClass('select_tab');
-            angular.element('.tabs1 li[data-id="' + id + '"]').addClass('select_tab');
-            $scope.getDialogs(id);
-            angular.element('.dialog-learning-development-content input:first').focus();
-
-            $scope.currentDialogsetId = id;
-
-            $location.search('dialogsetId', id);
-            $location.search('dialogsetTitle', title);
-        };
-
-        $scope.createTab = function(id, title)
-        {
-            var template = '<li ng-click="selectTab(\'' + id + '\', \'' + title + '\');" data-id="' + id + '"><a href="#">' + title + '</a></li>';
-            angular.element($compile(template)($scope)).insertBefore(angular.element('.tabs1 > li:last'));
-        };
-
-        $scope.loadTabs = function(list)
-        {
-            for(var key in list)
-            {
-                $scope.createTab(list[key], key);
-            }
+            $scope.currentDialogsetId = dialogset._id;
+            $scope.currentDialogsetTitle = dialogset.title;
+            $scope.getDialogs($scope.currentDialogsetId);
         };
 
         $scope.initialize = function()
         {
             //탭 불러오기.
-            $scope.loadTabs(openDialogsets[chatbot.id]);
+            // $scope.loadTabs(openDialogsets[chatbot.id]);
 
             $scope.currentDialogsetId = $location.search().dialogsetId || 'default';
             $scope.currentDialogsetTitle = $location.search().dialogsetTitle || 'default';
 
-            // 만약 다이얼로그셋 id가 default라면..
-            if($scope.currentDialogsetId == 'default')
-                $scope.currentDialogsetId = openDialogsets[chatbot.id]['default'];
-
-            // dialogsetId가 현재 열리지 않았다면.
-            if(!openDialogsets[chatbot.id].hasOwnProperty($scope.currentDialogsetTitle))
+            DialogSetsService.query({ botId: chatbot._id }, function(list)
             {
-                //저장하고
-                openDialogsets[chatbot.id][$scope.currentDialogsetTitle] = $scope.currentDialogsetId;
-                //쿠기는 string밖에 저장이 안되서 부득이하게
-                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
+                console.log('리스트 : ', list);
+                $scope.dialogsetList = list;
 
-                //해당 다이얼로그셋 탭 생성.
-                $scope.createTab($scope.currentDialogsetId, $scope.currentDialogsetTitle);
-            }
+                $scope.$parent.loaded('working-ground');
 
-            var title = '';
-            for(var key in openDialogsets[chatbot.id])
-            {
-                if(openDialogsets[chatbot.id][key] == $scope.currentDialogsetId)
+                if($scope.currentDialogsetId == 'default')
                 {
-                    title = key;
-                    break;
+                    for(var i=0; i<list.length; i++)
+                    {
+                        if(list[i].title == 'default')
+                        {
+                            $scope.currentDialogsetId = list[i]._id;
+                            $scope.getDialogs($scope.currentDialogsetId);
+                            break;
+                        }
+                    }
                 }
-            }
-            // 탭 셀렉트
-            $scope.selectTab($scope.currentDialogsetId, title);
+                else
+                {
+                    $scope.getDialogs($scope.currentDialogsetId);
+                }
+            },
+            function(err)
+            {
+                alert(err);
+            });
         };
     })();
-
-    // 현재 사용자가 열어둔 다이얼로그셋을 가져온다.
-    if(!openDialogsets)
-    {
-        openDialogsets = {};
-    }
-    else
-    {
-        openDialogsets = JSON.parse(openDialogsets);
-    }
-
-    if(!openDialogsets[chatbot.id])
-    {
-        openDialogsets[chatbot.id] = {};
-    }
 
     DialogsetsFindService.get({ botId: chatbot._id, title: 'default' }, function(dialogset)
     {
         if(!dialogset.title)
         {
-            DialogSetsService.save({ botId: chatbot._id, title: 'default', usable: true }, function(dialogset)
+            DialogSetsService.save({ botId: chatbot._id, title: 'default', language: chatbot.language, usable: true }, function(dialogset)
             {
-                if(!openDialogsets[chatbot.id].hasOwnProperty('default'))
-                {
-                    openDialogsets[chatbot.id]['default'] = dialogset._id;
-
-                    //쿠기는 string밖에 저장이 안되서 부득이하게
-                    $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
-                    $scope.initialize();
-                }
-                else
-                {
-                    $scope.initialize();
-                }
+                $rootScope.$broadcast('simulator-build');
+                $scope.initialize();
             },
             function(err)
             {
@@ -663,109 +711,9 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
         }
         else
         {
-            openDialogsets[chatbot.id]['default'] = dialogset._id;
-
-            //쿠기는 string밖에 저장이 안되서 부득이하게
-            $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
             $scope.initialize();
         }
     });
-
-
-    (function()
-    {
-        $scope.openModal.selectedDialogset = '';
-
-        $scope.openDialogset = function()
-        {
-            $scope.openModal.isOpened = true;
-
-            DialogSetsService.query({ botId: chatbot._id }, function(list)
-            {
-                $scope.openModal.dialogsetList = [];
-
-                for(var key in openDialogsets[chatbot.id])
-                {
-                    console.log(key);
-                    for(var i=0; i<list.length; i++)
-                    {
-                        if(list[i].title == key)
-                        {
-                            list[i].isOpened = true;
-                        }
-                    }
-                }
-
-                for(var i=0; i<list.length; i++)
-                {
-                    if(!list[i].isOpened)
-                    {
-                        $scope.openModal.dialogsetList.push(list[i]);
-                    }
-                }
-            },
-            function(err)
-            {
-                alert(err);
-            });
-        };
-
-        $scope.closeOpenModal = function()
-        {
-            $scope.openModal.isOpened = false;
-            $scope.openModal.isCreate = false;
-        };
-
-        $scope.createNewDialogset = function(e)
-        {
-            if($scope.openModal.selectedDialogset == 'create-new')
-            {
-                $scope.openModal.isCreate = true;
-            }
-            else
-            {
-                $scope.openModal.isCreate = false;
-
-                var text = angular.element('.open-modal option[value="' + $scope.openModal.selectedDialogset + '"]').text();
-                var selected = angular.element('li[data-id="' + $scope.openModal.selectedDialogset + '"]').get(0);
-
-                if(!selected)
-                {
-                    openDialogsets[chatbot.id][text] = $scope.openModal.selectedDialogset;
-                    $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
-                    $scope.createTab($scope.openModal.selectedDialogset, text);
-                }
-
-                $scope.selectTab($scope.openModal.selectedDialogset, text);
-
-                $scope.closeOpenModal();
-
-                $scope.openModal.selectedDialogset = '';
-            }
-        };
-
-        $scope.saveNewDialogset = function()
-        {
-
-            var params = {};
-            params.botId = chatbot._id;
-            params.title = $scope.openModal.data.title;
-            params.content = $scope.openModal.data.content;
-            DialogSetsService.save(params, function(result)
-            {
-                openDialogsets[chatbot.id][result.title] = result._id;
-                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
-                $scope.currentDialogsetId = result._id;
-
-                $scope.createTab(result._id, result.title);
-                $scope.selectTab(result._id, result.title);
-                $scope.closeOpenModal();
-            });
-        };
-    })();
 
     (function()
     {
@@ -777,54 +725,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
                 angular.element('.dialogset-title').focus();
             }, 100);
         });
-
-        $scope.saveImport = function(modal)
-        {
-            var params = {};
-            params.botId = chatbot._id;
-            params.title = modal.data.title;
-            params.content = modal.data.content;
-            params.type = modal.data.type;
-            params.path = modal.data.path;
-            params.filename = modal.data.filename;
-            params.user = user._id;
-
-            DialogSetsService.save(params, function(result)
-            {
-                openDialogsets[chatbot.id][result.title] = result._id;
-                $cookies.putObject('openDialogsets', JSON.stringify(openDialogsets));
-
-                $scope.createTab(result._id, result.title);
-                $scope.selectTab(result._id, result.title);
-                modal.close();
-            });
-        };
-
-        $scope.uploader = new FileUploader({
-            url: '/api/dialogsets/uploadfile',
-            alias: 'uploadFile',
-            autoUpload: true
-        });
-
-        $scope.uploader.onErrorItem = function(item, response, status, headers)
-        {
-            $scope.modalForm.fileUploadError = response.message;
-            console.log($scope.modalForm.fileUploadError);
-        };
-
-        $scope.uploader.onSuccessItem = function(item, response, status, headers)
-        {
-            importModal.data.path = response.path;
-            importModal.data.filename = response.filename;
-
-            console.log(importModal);
-        };
-
-        $scope.uploader.onProgressItem = function(fileItem, progress)
-        {
-            angular.element('.form-box-progress').css('width', progress + '%');
-        };
-
 
         $scope.openVideo = function(e)
         {

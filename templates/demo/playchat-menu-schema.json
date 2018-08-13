@@ -7,6 +7,6 @@
             { "name" : "주문관리", "url" : "/templates/demo/contents/order", "icon" : "" },
             { "name" : "이벤트정보", "url" : "/templates/demo/contents/event", "icon" : "" }
         ] },
-        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech.png" }
+        { "name" : "대화관리", "url": "/development/dialog-set", "icon": "speech_1.png" }
     ]
 }

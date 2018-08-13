@@ -21,11 +21,14 @@
             </tr>
         </thead>
         <tbody>
+            <tr ng-if="list.length == 0">
+                <td colspan="3">{{lan('empty') }}</td>
+            </tr>
             <tr ng-repeat="item in list">
                 <td>{{ item.input }}</td>
                 <td>
                     <div ng-repeat="userInput in item.userInput">
-                        {{ userInput.name }} : {{ userInput.count }}회
+                        {{ userInput.raw }} : {{ userInput.count }}회
                     </div>
                 </td>
                 <td>

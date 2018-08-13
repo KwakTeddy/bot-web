@@ -13,9 +13,10 @@ module.exports.dailyDialogUsage = function (req, res)
     var endDay =   parseInt(req.body.date.end.split('/')[2]);
     cond['created'] = {$gte: moment.utc([startYear, startMonth - 1, startDay]).subtract(9*60*60, "seconds").toDate(), $lte: moment.utc([endYear, endMonth - 1, endDay,  23, 59, 59, 999]).subtract(9*60*60, "seconds").toDate()};
     switch (req.body.channel){
-        case "facebook": cond.channel = "facebook"; break;
-        case "kakao": cond.channel = "kakao"; break;
-        case "navertalk": cond.channel = "navertalk"; break;
+        case "facebook": cond.channel = {name: "facebook"}; break;
+        case "kakao": cond.channel = {name: "kakao"}; break;
+        case "navertalk": cond.channel = {name:"navertalk"}; break;
+        case "socket": cond.channel = {name:"socket"}; break;
         // default : cond.channel = {$ne: "socket"}; break;
     }
 
@@ -26,10 +27,11 @@ module.exports.dailyDialogUsage = function (req, res)
                 {
                     _id: 0,
                     created: {$add:["$created", 9*60*60*1000]},
-                    fail: {$cond:[{$eq: ["$fail", true]}, 1,0]},
-                    kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
-                    facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
-                    navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]}
+                    fail: {$cond:[{$eq: ["$isFail", true]}, 1,0]},
+                    kakao: {$cond:[{$eq: ["$channel.name", "kakao"]}, 1,0]},
+                    facebook: {$cond:[{$eq: ["$channel.name", "facebook"]}, 1,0]},
+                    navertalk: {$cond:[{$eq: ["$channel.name", "navertalk"]}, 1,0]},
+                    socket: {$cond:[{$eq: ["$channel.name", "socket"]}, 1,0]}
                 }
             },
             {$group:
@@ -39,7 +41,8 @@ module.exports.dailyDialogUsage = function (req, res)
                     fail: {$sum: "$fail"},
                     kakao: {$sum: "$kakao"},
                     facebook: {$sum: "$facebook"},
-                    navertalk: {$sum: "$navertalk"}
+                    navertalk: {$sum: "$navertalk"},
+                    socket: {$sum: "$socket"}
                 }
             },
             {$sort: {_id:-1,  day: -1}}

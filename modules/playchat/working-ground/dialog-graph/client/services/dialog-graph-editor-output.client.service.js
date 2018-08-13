@@ -3,13 +3,10 @@
 {
     'use strict';
 
-    angular.module('playchat').factory('DialogGraphEditorOutput', function ($window, $timeout, $rootScope, FileUploader)
+    angular.module('playchat').factory('DialogGraphEditorOutput', function ($window, $timeout, $rootScope, FileUploader, LanguageService)
     {
-        var make = function($scope)
+        var make = function($scope, DialogGraphEditor)
         {
-            $scope.isUseOutput = true;
-            $scope.actionTypeCheck = false;
-
             $scope.outputTypeChanged = function($event)
             {
             };
@@ -71,20 +68,19 @@
 
             $scope.addOutput = function(e)
             {
-                if(!$scope.useOutput)
-                    return;
+                DialogGraphEditor.isDirty = true;
 
                 var output = { kind: 'Content', text: '' };
-                $scope.dialog.output.unshift(output);
-                $scope.setOutputImageUploader(0);
+                $scope.dialog.output.push(output);
+                $scope.setOutputImageUploader($scope.dialog.output.length - 1);
 
-                $scope.isUseOutput = true;
-
-                angular.element('.dialog-editor-subject input:first').prop('checked', true);
+                // angular.element('.dialog-editor-subject input:first').prop('checked', true);
             };
 
             $scope.deleteOutput = function(output, index)
             {
+                DialogGraphEditor.isDirty = true;
+
                 if(output.length == 1)
                 {
                     alert('마지막 Output은 삭제할 수 없습니다');
@@ -94,15 +90,39 @@
                 output.splice(index, 1);
             };
 
-            $scope.changeOutputType = function(e)
+            $scope.isAddExternalImage = false;
+            $scope.addExternalImage = function(output)
             {
+                if(output.image && output.image.displayname)
+                {
+                    if(confirm(LanguageService('There are already added images. Do you want to change it?')))
+                    {
+                        delete output.image.url;
+                        delete output.image.displayname;
+                        output.uploader.item = 'none';
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
 
+                $scope.isAddExternalImage = true;
             };
 
-            $scope.addOutputImage = function(e, output)
+            $scope.deleteExternalImage = function(output)
             {
-                if(!$scope.isUseOutput)
-                    return;
+                $scope.isAddExternalImage = false;
+                if(output.image)
+                {
+                    delete output.image.url;
+                    delete output.image.displayname;
+                }
+            };
+
+            $scope.addOutputImage = function(e)
+            {
+                DialogGraphEditor.isDirty = true;
 
                 $timeout(function()
                 {
@@ -113,18 +133,17 @@
 
             $scope.deleteOutputImage = function(e, index)
             {
+                DialogGraphEditor.isDirty = true;
+
                 delete $scope.dialog.output[index].image;
                 $scope.dialog.output[index].uploader.item = 'none';
-
-                // $scope.setOutputImageUploader(index);
 
                 e.stopPropagation();
             };
 
-            $scope.clickToImageFile = function(e, direction)
+            $scope.clickToImageFile = function(e)
             {
                 var imageFile = angular.element(e.currentTarget).find('input[type="file"]');
-                console.log(imageFile);
                 $timeout(function()
                 {
                     imageFile.click();
@@ -133,8 +152,9 @@
 
             $scope.addOutputButton = function(e, output)
             {
-                if(!$scope.isUseOutput)
-                    return;
+                DialogGraphEditor.isDirty = true;
+
+                if(!output.buttons) output.buttons = [];
 
                 output.buttons.push({ url : '', text: ''});
 
@@ -144,45 +164,159 @@
                 });
             };
 
-            $scope.useOutput = function (e)
+            $scope.moveButtonToUp = function(output, button)
             {
-                $scope.isUseOutput = true;
+                var index = output.buttons.indexOf(button);
+                if(index > 0)
+                {
+                    var target = output.buttons[index-1];
+                    output.buttons[index-1] = button;
+                    output.buttons[index] = target;
+                }
             };
 
-            $scope.useAction = function(e)
+            $scope.moveButtonToDown = function(output, button)
             {
-                $scope.isUseOutput = false;
+                var index = output.buttons.indexOf(button);
+                if(index != -1 && index < output.buttons.length - 1)
+                {
+                    var target = output.buttons[index+1];
+                    output.buttons[index+1] = button;
+                    output.buttons[index] = target;
+                }
+            };
+
+            $scope.addActionButton = function(dialog, output)
+            {
+                DialogGraphEditor.isDirty = true;
+                output.kind = 'Action';
+            };
+
+            $scope.onActionFocus = function(e)
+            {
+                angular.element(e.currentTarget).next().find('.selected').removeClass('selected');
+                angular.element(e.currentTarget).next().find('li:first').addClass('selected');
+            };
+
+            $scope.onActionKeyDown = function(e, output)
+            {
+                if(e.keyCode == 38)  //up
+                {
+                    var prev = angular.element(e.currentTarget).next().find('.selected').prev();
+                    if(prev.get(0))
+                    {
+                        angular.element(e.currentTarget).next().find('.selected').removeClass('selected');
+                        prev.addClass('selected');
+
+                        var top = prev.get(0).offsetTop;
+                        var scrollTop = prev.parent().get(0).scrollTop;
+
+                        if(scrollTop > top)
+                        {
+                            var diff = top - scrollTop;
+                            prev.parent().get(0).scrollTop += diff - 5;
+                        }
+                    }
+
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }
+                else if(e.keyCode == 40) //down
+                {
+                    var next = angular.element(e.currentTarget).next().find('.selected').next();
+                    if(next.get(0))
+                    {
+                        angular.element(e.currentTarget).next().find('.selected').removeClass('selected');
+                        next.addClass('selected');
+
+                        var bottom = next.get(0).offsetTop + next.get(0).offsetHeight;
+                        var scrollTop = next.parent().get(0).scrollTop;
+                        var scrollHeight = next.parent().get(0).offsetHeight;
+
+                        if(scrollTop + scrollHeight < bottom)
+                        {
+                            var diff = bottom - (scrollTop + scrollHeight);
+                            next.parent().get(0).scrollTop += diff + 5;
+                        }
+                    }
+
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }
+                else if(e.keyCode == 13) //enter
+                {
+                    var selected = angular.element(e.currentTarget).next().find('.selected');
+                    var id = selected.attr('data-id');
+                    var name = selected.text();
+                    output.dialogId = id;
+                    output.dialogName = name;
+                    output.kind = 'Action';
+
+                    e.currentTarget.blur();
+                }
+            };
+
+            $scope.onActionKeyUp = function(e)
+            {
+                if(e.keyCode == 38 || e.keyCode == 40)
+                {
+                    return;
+                }
+
+                var value = e.currentTarget.value;
+                angular.element(e.currentTarget).next().find('li').each(function()
+                {
+                    if(value)
+                    {
+                        if($(this).text().indexOf(value) != -1)
+                        {
+                            $(this).show();
+                        }
+                        else
+                        {
+                            $(this).hide();
+                        }
+                    }
+                    else
+                    {
+                        $(this).show();
+                    }
+                });
+
+                angular.element(e.currentTarget).next().find('.selected').removeClass('selected');
+                angular.element(e.currentTarget).next().find('li:first').addClass('selected');
             };
 
             $scope.selectActionDialog = function(e, dialog, output)
             {
-                if($scope.isAdvancedMode)
-                {
-                    output.dialog = dialog.name;
-                    // $scope.dialog.output[index].dialog = dialog.name;
-                }
-                else
-                {
-                    $scope.dialog.actionOutput.dialog = dialog.name;
-                }
-            }
+                output.kind = 'Action';
+                output.dialogId = dialog.id;
+                output.dialogName = dialog.name;
+            };
 
-            $scope.actionValueChanged = function(dialog)
+            $scope.deleteActionButton = function(output)
             {
-                var type = dialog.type;
-                if(type == 'up' || type == 'repeat' || type == 'return')
-                {
-                    $scope.actionTypeCheck = true;
-                    dialog.dialog = 1;
+                delete output.dialog;
 
-                    if(type == 'return')
-                    {
-                        dialog.dialog = '';
-                    }
+                for(var i=0; i<$scope.actionList.length; i++)
+                {
+                    delete output[$scope.actionList[i].key];
+                }
+
+                output.kind = 'Content';
+            };
+
+            $scope.actionValueChanged = function(output)
+            {
+                output.kind = 'Action';
+
+                if(output.type == 'call' || output.type == 'callChild' || output.type == 'returnCall')
+                {
+
                 }
                 else
                 {
-                    $scope.actionTypeCheck = false;
+                    delete output.dialogName;
                 }
             };
 

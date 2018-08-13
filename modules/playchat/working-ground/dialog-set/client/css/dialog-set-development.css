@@ -43,7 +43,8 @@
 
 .topic-area > div > div .select-wrapper::after
 {
-    right: 10px;
+    right: 7px;
+    top: 11px;
 }
 
 .topic-area > div > div select
@@ -169,8 +170,20 @@
 .dialog-learning-development-content div
 {
     font-size: 12px;
-    padding: 0 5px;
+    padding: 0 3px;
     box-sizing: border-box;
+}
+
+.dialog-learning-development-content > .dialog-learning-development-content-row .category
+{
+    display: inline-block;
+    padding: 10px;
+    margin: 0 auto;
+    background: white;
+    width: 95%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 6px;
 }
 
 .dialog-learning-development-content > .dialog-learning-development-content-row

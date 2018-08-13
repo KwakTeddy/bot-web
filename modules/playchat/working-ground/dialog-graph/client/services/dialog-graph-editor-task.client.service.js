@@ -11,7 +11,7 @@
 
         var chatbot = $cookies.getObject('chatbot');
 
-        var make = function($scope)
+        var make = function($scope, DialogGraphEditor)
         {
             TaskService.query({ botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : '') }, function(list)
             {
@@ -26,7 +26,7 @@
 
             $scope.taskKeydown = function(e)
             {
-                if(e.keyCode == 38)
+                if(e.keyCode == 38) //윗 방향키
                 {
                     if(selectedTask && selectedTask.previousElementSibling)
                     {
@@ -34,9 +34,18 @@
                         selectedTask.className = '';
 
                         selectedTask = selectedTask.previousElementSibling;
+
+                        var top = selectedTask.offsetTop;
+                        var scrollTop = selectedTask.parentElement.scrollTop;
+
+                        if(scrollTop > top)
+                        {
+                            var diff = top - scrollTop;
+                            selectedTask.parentElement.scrollTop += diff - 5;
+                        }
                     }
                 }
-                else if(e.keyCode == 40)
+                else if(e.keyCode == 40) //아래 방향키
                 {
                     if(selectedTask)
                     {
@@ -46,37 +55,109 @@
                             selectedTask.className = '';
 
                             selectedTask = selectedTask.nextElementSibling;
+
+                            var bottom = selectedTask.offsetTop + selectedTask.offsetHeight;
+                            var scrollTop = selectedTask.parentElement.scrollTop;
+                            var scrollHeight = selectedTask.parentElement.offsetHeight;
+
+                            if(scrollTop + scrollHeight < bottom)
+                            {
+                                var diff = bottom - (scrollTop + scrollHeight);
+                                selectedTask.parentElement.scrollTop += diff + 5;
+                            }
                         }
                     }
                     else
                     {
                         var ul = e.currentTarget.nextElementSibling;
-                        ul.children[0].className = 'selected';
 
-                        selectedTask = ul.children[0];
+                        for(var i=0; i<ul.children.length; i++)
+                        {
+                            if(ul.children[i].style.display != 'none')
+                            {
+                                ul.children[i].className = 'selected';
+                                selectedTask = ul.children[i];
+                                break;
+                            }
+                        }
                     }
                 }
-                else if(e.keyCode == 13)
+                else if(e.keyCode == 13) //Enter
                 {
                     if(selectedTask)
                     {
-                        if(!$scope.dialog.task)
-                            $scope.dialog.task = {};
+                        DialogGraphEditor.isDirty = true;
 
-                        $scope.dialog.task.name = selectedTask.children[0].innerText;
+                        if(selectedTask.children[0])
+                        {
+                            if(!$scope.dialog.task)
+                                $scope.dialog.task = {};
 
-                        selectedTask = undefined;
+                            $scope.dialog.task.name = selectedTask.children[0].innerText;
 
-                        e.currentTarget.blur();
+                            selectedTask.className = '';
+                            selectedTask = undefined;
 
-                        e.stopPropagation();
-                        e.preventDefault();
+                            e.currentTarget.blur();
+                            angular.element('.dialog-editor-output-text > textarea').focus();
+
+
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }
+                        else
+                        {
+                            selectedTask.className = '';
+                            selectedTask = undefined;
+                            var taskName = e.currentTarget.value;
+                            $scope.createTask(taskName);
+                        }
                     }
                 }
             };
 
+            $scope.taskKeyUp = function(e)
+            {
+                DialogGraphEditor.isDirty = true;
+
+                var value = e.currentTarget.value;
+
+                if(value)
+                {
+                    angular.element('.dialog-editor-select-options span[data-filename]').each(function()
+                    {
+                        if(angular.element(this).text().indexOf(value) == -1)
+                        {
+                            angular.element(this).parent().hide();
+                        }
+                        else
+                        {
+                            angular.element(this).parent().show();
+                        }
+                    });
+                }
+                else
+                {
+                    angular.element('.dialog-editor-select-options span[data-filename]').parent().show();
+                }
+            };
+
+            $scope.taskFocus = function(e)
+            {
+                TaskService.query({ botId: chatbot.id, templateId: (chatbot.templateId ? chatbot.templateId.id : '') }, function(list)
+                {
+                    $scope.tasks = list;
+                },
+                function(err)
+                {
+                    alert(err.data.message);
+                });
+                $scope.taskKeyUp(e);
+            };
+
             $scope.selectTask = function(e, task)
             {
+                DialogGraphEditor.isDirty = true;
                 $scope.dialog.task = { name: task.name };
             };
 
@@ -84,17 +165,23 @@
             {
                 e.stopPropagation();
 
-                $rootScope.$broadcast('moveToTask', { fileName: task.fileName, name: task.name});
+                $rootScope.$broadcast('moveToTask', { fileName: task.fileName, name: task.name });
             };
 
             $scope.createTask = function(taskName)
             {
+                DialogGraphEditor.isDirty = true;
+
                 if(!taskName)
                 {
-                    return alert(LanguageService('Please enter Task name'));
+                    alert(LanguageService('Please enter Task name'));
+                    setTimeout(function () {
+                        angular.element('div.dialog-editor-row.ng-scope > div > input').focus();
+                    },1);
+                    return;
                 }
 
-                $rootScope.$broadcast('makeNewTask', taskName);
+                $rootScope.$broadcast('makeNewTask', taskName, angular.element('.graph-background .select_tab').attr('id'));
 
                 // //열어야 함.
                 // var target = angular.element('.dialog-editor-creation-panel[data-type="task"]');

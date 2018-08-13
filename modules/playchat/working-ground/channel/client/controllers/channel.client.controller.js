@@ -6,23 +6,39 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
     $scope.$parent.loaded('working-ground');
 
-
     var FacebookPageService = $resource('/auth/facebook/page');
+    var TelegramService = $resource('/api/:botId/channel/telegram', { botId: '@botId' });
+    var WeChatService = $resource('/api/:botId/channel/wechat', { botId: '@botId' });
+    var LineAccessTokenService = $resource('/api/:botId/channel/line', { botId: '@botId' });
 
     $scope.host = $location.host() + ($location.port() && $location.port() != 443 ? ':' + $location.port() : '');
-    if($location.host() == 'localhost')
+    if($location.host() == 'localhost' || $location.port() == 8443)
         $scope.host = 'http://' + $scope.host;
     else
         $scope.host = 'https://' + $scope.host;
 
-    $scope.chatbot = $cookies.getObject('chatbot');
+    var chatbot = $scope.chatbot = $cookies.getObject('chatbot');
+
+    $scope.myBotAuth = chatbot.myBotAuth;
+    if(!$scope.myBotAuth.edit)
+    {
+        alert(LanguageService('You do not have permission to edit this bot'));
+        location.href='/playchat/';
+        return;
+    }
 
     $scope.help = {
         kakao: false,
         naver: false,
         line: false,
-        facebook: false
+        facebook: false,
+        telegram: false
     };
+
+    $scope.lineAccessToken = '';
+    $scope.lineChannelId = '';
+    $scope.lineChannelSecret = '';
+    $scope.telegramToken = '';
 
     var user = $cookies.getObject('user');
 
@@ -37,6 +53,34 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                 $scope.connectFacebook();
             }
         });
+
+        LineAccessTokenService.get({ botId: chatbot.id }, function(result)
+        {
+            $scope.lineAccessToken = result.accessToken;
+            $scope.lineChannelSecret = result.secret;
+            $scope.lineChannelId = result.channelId;
+        });
+
+        TelegramService.get({ botId: chatbot.id }, function(result)
+        {
+            $scope.telegramToken = result.token || '';
+        });
+
+        WeChatService.get({ botId: chatbot.id }, function(result)
+        {
+            console.log('리절트 : ', result);
+
+            $scope.wechatAppId = result.appId;
+            $scope.wechatKey = result.encodingAESKey;
+        });
+
+        $scope.saveLineInfo = function()
+        {
+            LineAccessTokenService.save({ botId: chatbot.id, accessToken: $scope.lineAccessToken, channelId: $scope.lineChannelId, secret: $scope.lineChannelSecret }, function()
+            {
+                alert(LanguageService('Saved.'));
+            });
+        };
 
         $scope.getAccessToken = function(callback)
         {
@@ -84,7 +128,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
                     $http.post('/api/auth/facebook/pageInfo', info).then(function (response)
                     { //페이지 연결정보 데이터 변경
-                        FB.api('me/messenger_profile?access_token=' + page.access_token, 'post', { //페이지 시작 화면 설정
+                        FB.api('me/messenger_profile?access_token=' + page.access_token, 'post', {
                             "persistent_menu": [
                                 {
                                     "locale": "default",
@@ -101,7 +145,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                             "get_started": {
                                 "payload": "시작"
                             }
-                        },
+                        } ,
                         function (response)
                         {
                             console.log(response)
@@ -158,7 +202,6 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
 
                 FB.api('/me/accounts?fields=picture,name,link,access_token,perms&access_token=' + accessToken, function(response)
                 {
-                    console.log(response);
                     if(response.error)
                     {
                         console.log(response.error);
@@ -201,6 +244,7 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                         {
                             $http.post('/api/auth/facebook/pageInfo', {user: user._id, list: true, pageInfo: response.data}).then(function (res)
                             { // 페이지 연결정보 불러오기
+
                                 for (var j = 0; j < response.data.length; j++)
                                 {
                                     for (var i = 0; i < res.data.length; i++)
@@ -226,6 +270,45 @@ angular.module('playchat').controller('ChannelController', ['$window', '$scope',
                         }
                     }
                 });
+            });
+        };
+
+        $scope.saveWeChatToken = function(e)
+        {
+            var encodingAESKey = $('#encodingAESKey').val();
+            var appId = $('#wechatAppId').val();
+
+            if(!encodingAESKey || !appId)
+            {
+                return alert('AppId와 encodingAESKey를 입력해주세요');
+            }
+
+            WeChatService.save({ botId: chatbot.id, appId: appId, encodingAESKey: encodingAESKey }, function()
+            {
+                alert(LanguageService('Connected'));
+                $scope.help.wechat = false;
+            },
+            function(err)
+            {
+                console.error(err);
+                alert('Error');
+            });
+        };
+
+        $scope.connectTelegram = function(e)
+        {
+            var prev = e.currentTarget.previousElementSibling;
+            var token = prev.value;
+
+            TelegramService.save({ botId: chatbot.id, token: token }, function()
+            {
+                alert(LanguageService('Connected'));
+                $scope.help.telegram = false;
+            },
+            function(err)
+            {
+                console.error(err);
+                alert('Error');
             });
         };
 

@@ -19,6 +19,8 @@ app/tests/coverage/
 coverage/
 custom_modules/
 custom_modules/*
+tmp/
+bot-server
 
 # MEAN.js app and assets
 # ======================
@@ -26,7 +28,8 @@ public/dist/
 uploads
 modules/users/client/img/profile/uploads
 config/env/local.js
-*.pem
+
+aws-s3-credentials.json
 
 # Ignoring MEAN.JS's gh-pages branch for documenation
 _site/
@@ -88,3 +91,5 @@ public/videos
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+quibble_test.js

@@ -34,7 +34,6 @@ angular.module('playchat').controller('FailedDialogIntentController', ['$window'
                 }
 
                 $scope.list = result;
-
                 console.log(result)
             },
             function(err)
@@ -43,11 +42,11 @@ angular.module('playchat').controller('FailedDialogIntentController', ['$window'
             });
         };
 
-        $scope.addToIntent = function(id, dialog, intentId, index)
+        $scope.addToIntent = function(item, intentId, index)
         {
-            FailedIntentService.save({ botId: chatbot.id, intentId: intentId, name: dialog, language: chatbot.language}, function(r)
+            FailedIntentService.save({ botId: chatbot.id, intentId: intentId, name: item.dialog, language: chatbot.language}, function(r)
             {
-                FailedDialogService.update({ botId: chatbot._id, _id: id }, function(result)
+                FailedDialogService.update({ botId: chatbot.id, _id: item.id , clear: (item.clear ? item.clear + '|intent' : 'intent') , dialog: item.dialog}, function(result)
                 {
                     $scope.list.splice(index, 1);
                 },
@@ -58,14 +57,14 @@ angular.module('playchat').controller('FailedDialogIntentController', ['$window'
             },
             function(err)
             {
-                alert(err.data.error || err.data.message);
+                alert(JSON.stringify(err.data.error || err.data.message));
             });
         };
 
         $scope.ignore = function(item)
         {
             console.log(item);
-            FailedDialogService.update({ botId: chatbot._id, _id: item.id, clear: (item.clear ? item.clear + '|intent' : 'intent') }, function()
+            FailedDialogService.update({ botId: chatbot.id, _id: item.id, clear: (item.clear ? item.clear + '|intent' : 'intent'), dialog: item._id}, function()
             {
                 var index = $scope.list.indexOf(item);
                 $scope.list.splice(index, 1);

@@ -1,4 +1,4 @@
-<script type="text/template" id="inputListModalTemplate">
+'<script type="text/template" id="inputListModalTemplate">
 <ul class="dialog-editor-input-list-modal">
     <li>{{lan('새로만들기') }}</li>
 </ul>
@@ -16,175 +16,177 @@
         <form ng-submit="save($event);">
             <div class="dialog-editor-body">
                 <div class="dialog-editor-row">
-                    <p class="dialog-editor-subject">{{lan('Dialog name') }}</p>
+                    <p class="dialog-editor-subject">{{lan('Card Name')}}</p>
                     <div class="dialog-editor-input-box">
-                        <input type="text" class="dialog-editor-input" placeholder="Dialog name" ng-model="dialog.name" ng-required="true">
+                        <input type="text" class="dialog-editor-input" placeholder="Dialog name" ng-model="dialog.name" ng-required="true" maxlength="50">
                     </div>
                 </div>
-                <div class="dialog-editor-row" ng-if="isAdvancedMode === false">
-                    <p class="dialog-editor-subject">Input</p>
-                    <div class="dialog-editor-input-box">
-                        <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input" data-nlu="{{nlpedTextPrefix[$index]}} {{ nlpedText[$index] }}">
-                            <input type="text" class="dialog-editor-input" ng-model="input.text" ng-keydown="inputOnKeyDown($event, $index);" ng-keyup="inputOnKeyUp($event, $index)" ng-blur="inputOnBlur($event, $index);" ng-required="true">
-                            <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);">
-                        </div>
-                        <div style="position: relative;">
-                            <a href="#" class="dialog-editor-plus-wrapper" ng-click="addInput($event);" tabindex="-1"><span class="dialog-editor-plus"></span></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
-                    <p class="dialog-editor-subject">Input</p>
-                    <div class="dialog-editor-input-box" style="margin-bottom: 30px;">
-                        <p class="dialog-editor-advanced-input-placeholder">{{lan('Keyword, #Intent, @Entity, $Type, /RegExp/, if(Condition)') }}</p>
-                        <div ng-repeat="input in dialog.input">
-                            <div class="dialog-editor-input-textarea" data-nlu="{{ nlpedTextPrefix[$index] + nlpedText[$index] }}" ng-click="focusToInputArea($event);">
-                                <span ng-repeat="(key, val) in input" ng-show="getInputKeyLength(input, key) > 0">
-                                    <span class="dialog-editor-input-item" ng-class="key" ng-click="inputKeyOnClick($event);">
-                                        <span class="dialog-editor-input-key" contenteditable="true" data-key="{{ key }}" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input, $parent.$index);" ng-keyup="inputKeyOnKeyUp($event, input, $parent.$index);">{{ getValueName(val); }}</span>
-                                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/close.png" class="delete-img" ng-click="deleteInputKey(input, key);">
-                                    </span>
-                                    <span class="and" ng-if="getLength(input);">and</span>
-                                </span>
 
-                                <span class="dialog-editor-input-item">
-                                    <input type="text" class="dialog-editor-input-key target-input" ng-class="isRequired(input) ? '' : ''" style="width: 80px; padding:0 4px;" ng-click="inputKeyOnClick($event);" ng-focus="inputKeyOnFocus($event, input);" ng-blur="inputKeyOnBlur($event, input, true);" ng-keydown="inputKeyOnKeyDown($event, input);" ng-keyup="inputKeyOnKeyUp($event, input, $index, true);">
-                                </span>
-                                <img ng-if="$index > 0" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($index);" style="position: absolute; top: 7px; right: 12px;">
-                            </div>
-                            <div class="or" ng-if="dialog.input.length > 1 && $index < dialog.input.length-1">
-                                <span>or</span>
+
+
+                <div class="dialog-editor-row">
+                    <p class="dialog-editor-subject">{{lan('User Input')}}</p>
+                    <div class="dialog-editor-input-box">
+
+                        <div class="dialog-editor-input-wrapper" ng-repeat="input in dialog.input">
+                            <input type="text" class="dialog-editor-input" placeholder="{{getInputPlaceHolder($index);}}" required="true" style="color: white;" tabindex="-1" ng-click="moveFocusToEditable($event);" ng-focus="moveFocusToEditable($event);">
+
+                            <div
+                                class="editable"
+                                contenteditable="true"
+                                ng-focus="focusGuideBox($event);"
+                                ng-blur="onBlur($event, $index);"
+                                ng-keydown="onKeyDown($event);"
+                                ng-keyup="onKeyUp($event)"
+                                ng-mouseup="onFocus($event);"
+                                data-index="{{$index}}"
+                            ></div>
+
+                            <img ng-if="dialog.input.length > 1" src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteInput($event, $index);">
+
+                            <span ng-if="$index == dialog.input.length-1" class="dialog-editor-input-plus" ng-click="addInput($event);">+</span>
+                        </div>
+
+                        <div class="dialog-editor-input-guide-box">
+                            <div class="dialog-editor-input-description"></div>
+                            <div class="dialog-editor-input-list-box" ng-show="showInputList">
+                                <div class="dialog-editor-input-list-box-title">↓ ↑ to navigate&nbsp;&nbsp;&nbsp; enter to select &nbsp;&nbsp;&nbsp;esc to dismiss</div>
+                                <ul style="position: relative;"></ul>
                             </div>
                         </div>
-                        <div style="position: relative;">
-                            <a href="#" class="dialog-editor-plus-wrapper" ng-click="addInput($event);" tabindex="-1"><span class="dialog-editor-plus"></span></a>
-                        </div>
+
                     </div>
                 </div>
+
+
+
+
+
                 <div class="dialog-editor-row" ng-if="isAdvancedMode === true">
-                    <p class="dialog-editor-subject">Task</p>
+                    <p class="dialog-editor-subject">{{lan('Function before Answer')}}</p>
                     <div class="dialog-editor-select-input" style="margin: 0 auto; display: block; width: 93%;">
-                        <input type="text" ng-model="dialog.task.name" ng-keydown="taskKeydown($event);">
+
+                        <input
+                            type="text"
+                            ng-model="dialog.task.name"
+                            placeholder="함수를 선택하세요"
+                            ng-focus="taskFocus($event);"
+                            ng-keydown="taskKeydown($event);"
+                            ng-keyup="taskKeyUp($event);"
+                        >
+
                         <ul class="dialog-editor-select-options">
-                            <li ng-mousedown="createTask(dialog.task.name);">{{lan('Add New') }}</li>
                             <li ng-repeat="task in tasks track by $index" ng-mousedown="selectTask($event, task)">
                                 <span data-filename="{{ task.fileName }}">{{ task.name }}</span>
                                 <span style="float: right;" ng-mousedown="moveCodeEditor($event, task);">view</span>
                             </li>
+                            <li ng-mousedown="createTask(dialog.task.name);">{{lan('Add New') }}</li>
                         </ul>
                     </div>
                 </div>
+
+
+
+
+
                 <div class="dialog-editor-row">
-                    <p class="dialog-editor-subject"> <input type="radio" tabindex="-1" name="output" ng-checked="isAdvancedMode || dialog.output.length > 1 || dialog.output[0].kind != 'Action' || isUseOutput === true" ng-click="useOutput($event, dialog);" tabindex="-1"> Output</p>
+                    <p class="dialog-editor-subject">{{lan('Chatbot Answer')}}</p>
+
                     <a href="#" tabindex="-1" class="dialog-editor-output-add" ng-click="addOutput($event);" tabindex="-1"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/add.png"></a>
-                    <div class="dialog-editor-output-box" ng-repeat="output in dialog.output" ng-disabled="isUseOutput === false">
+
+                    <div class="dialog-editor-output-box" ng-repeat="output in dialog.output">
                         <div class="dialog-editor-output-functions">
-                            <a href="#" tabindex="-1" style="position: relative;" ng-if="isAdvancedMode === true">
-                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png" class="image-button">
-                                <select tabindex="-1" style="position: absolute; left: 0; top: 0px; width: 28px; opacity:0;" ng-model="output.kind" ng-change="outputTypeChanged($event);">
-                                    <option value="Content">Content</option>
-                                    <option value="Action">Action</option>
-                                </select>
+                            <a href="#" tabindex="-1">
+                                <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteOutput(dialog.output, $index);">
                             </a>
-                            <a href="#" tabindex="-1"><img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteOutput(dialog.output, $index);" style="margin-right: 5px;"></a>
                         </div>
-                        <div ng-if="output.kind == 'Text' || output.kind == 'Content'">
-                            <div class="dialog-editor-output-if" ng-if="isAdvancedMode === true">
+
+                        <div ng-if="output.kind == 'Text' || output.kind == 'Content' || output.kind == 'Action'">
+                            <div class="dialog-editor-output-if" ng-if="dialog.output.length > 1 && isAdvancedMode === true">
                                 <span>IF</span>
                                 <input type="text" class="dialog-editor-output-input if" ng-model="output.if">
                             </div>
-                            <div class="dialog-editor-output-text">
-                                <textarea placeholder="{{ lan('Edit here.') }}" ng-keydown="onKeyDownTextArea($event);" ng-required="isUseOutput === true" ng-model="output.text" ng-disabled="isUseOutput === false"></textarea>
+
+                            <div class="dialog-editor-output-text" style="font-size: 0px;">
+                                <textarea placeholder="{{ lan('Edit here.') }}" ng-keydown="onKeyDownTextArea($event);" ng-required="output.kind != 'Action'" ng-model="output.text"></textarea>
                             </div>
+
                             <div class="dialog-editor-output-box-row button" ng-click="clickToImageFile($event);">
                                 <div ng-show="output.uploader.item == 'none'">
                                     <span class="blue-label">{{lan('Add image') }}</span>
                                     <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                                 </div>
-                                <input tabindex="-1" type="file" class="dialog-editor-output-file" nv-file-select uploader="output.uploader" data-index="{{ $index }}" ng-disabled="isUseOutput === false">
+                                <input tabindex="-1" type="file" class="dialog-editor-output-file" nv-file-select uploader="output.uploader" data-index="{{ $index }}">
                                 <div class="dialog-editor-output-image-box" ng-show="output.uploader.item != 'none'">
                                     <img style="width: 100%;" ng-src="{{ output.uploader.item }}">
                                     <div>
                                         <p>{{lan('Click to change image') }}</p>
-                                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/delete-white.png" ng-click="deleteOutputImage($event, $index);">
+                                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/delete-white.png" ng-click="deleteOutputImage($event, $index);" style="cursor: pointer;">
                                     </div>
                                 </div>
                             </div>
-                            <div class="dialog-editor-output-box-row" ng-repeat="button in output.buttons">
-                                <input tabindex="-1" type="text" class="output-button-name" placeholder="{{ lan('Create a button name.') }}" ng-model="button.text" ng-required="true" ng-disabled="isUseOutput === false">
-                                <input tabindex="-1" type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="button.url" ng-disabled="isUseOutput === false">
-                                <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteOutputButton(output.buttons, $index);">
+
+                            <div class="dialog-editor-output-box-row button" ng-click="addExternalImage(output)">
+                                <div>
+                                    <span class="blue-label">{{lan('Insert external image') }}</span>
+                                    <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
+                                </div>
                             </div>
+
+                            <div class="dialog-editor-output-box-row" ng-show="isAddExternalImage && !output.image.displayname">
+                                <div class="dialog-editor-output-image-box" ng-show="output.image.url && !output.image.displayname">
+                                    <img style="width: 100%;" ng-src="{{ output.image.url }}">
+                                    <div>
+                                        <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/delete-white.png" ng-click="deleteOutputImage($event, $index);" style="cursor: pointer;">
+                                    </div>
+                                </div>
+                                <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" ng-click="deleteExternalImage();" style="cursor: pointer; position: absolute; top: 5px; right: 5px;">
+                                <input type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="output.image.url">
+                            </div>
+
                             <div class="dialog-editor-output-box-row button" ng-click="addOutputButton($event, output);">
                                 <span class="blue-label">{{lan('Add button') }}</span>
                                 <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
                             </div>
-                        </div>
-                        <div ng-if="output.kind == 'Action' && isAdvancedMode">
-                            <div class="dialog-editor-output-action-row">
-                                <p class="dialog-editor-output-label">Action</p>
-                                <span>IF</span>
-                                <input type="text" class="dialog-editor-output-input if" ng-model="output.if">
+
+                            <div class="dialog-editor-output-box-row button-group" ng-repeat="button in output.buttons">
+                                <input type="text" class="output-button-name" placeholder="{{ lan('Create a button name.') }}" ng-model="button.text" ng-required="true">
+                                <input type="text" class="output-button-url" placeholder="{{ lan('Write URL address here.') }}" ng-model="button.url">
+                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/default_select_arrow.png" class="dialog-editor-output-buttons-arrow" style="top: 5px; transform: rotate(-180deg);" ng-click="moveButtonToUp(output, button);">
+                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/default_select_arrow.png" class="dialog-editor-output-buttons-arrow" style="top: 20px;" ng-click="moveButtonToDown(output, button);">
+                                <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 5px; right: 5px;" ng-click="deleteOutputButton(output.buttons, $index);">
                             </div>
-                            <div class="dialog-editor-output-action-row">
-                                <p class="dialog-editor-output-label">Action Type</p>
-                                <div class="select-wrapper">
-                                    <select class="jumbo-select dialog-editor-action-type" style="width: 100%; margin: 0 auto; display: block;" ng-model="output.type" ng-required="true" ng-change="actionValueChanged(output);">
-                                        <option value="">none</option>
-                                        <option value="call">Call</option>
-                                        <option value="callChild">Call Child</option>
-                                        <option value="returnCall">Return Call</option>
-                                        <option value="up">Up</option>
-                                        <option value="repeat">Repeat</option>
-                                        <option value="return">Return</option>
-                                    </select>
+
+                            <div class="dialog-editor-output-box-row button" ng-click="addActionButton(dialog, output);" ng-if="output.kind != 'Action'">
+                                <span class="blue-label">{{lan('Add action') }}</span>
+                                <img src="/modules/playchat/working-ground/dialog-graph/client/imgs/blue-arrow.png">
+                            </div>
+
+                            <div class="dialog-editor-output-box-row" ng-if="output.kind == 'Action'">
+                                <div style="font-size: 0; text-align: left;">
+                                    <div class="select-wrapper">
+                                        <select class="jumbo-select dialog-editor-action-type" style="width: 100%; display: block;" ng-model="output.type" ng-change="actionValueChanged(output);">
+                                            <option value="">Select dialog flow</option>
+                                            <option ng-repeat="action in actionList" value="{{action.key}}">{{action.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="dialog-editor-select-input" ng-class="(output.type == 'call' || output.type == 'callChild' || output.type == 'returnCall') ? '' : 'disabled'">
+                                        <input type="text" ng-model="output.dialogName" ng-required="(output.type == 'call' || output.type == 'callChild' || output.type == 'returnCall') ? true : false" placeholder="{{lan('Dialog Input') }}" ng-focus="onActionFocus($event);" ng-keydown="onActionKeyDown($event, output);" ng-keyup="onActionKeyUp($event);">
+                                        <ul class="dialog-editor-select-options">
+                                            <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, output)" data-id="{{ dialog.id }}">{{ dialog.name }}</li>
+                                            <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, output)" data-id="{{ dialog.id }}">{{ dialog.name }}</li>
+                                        </ul>
+                                    </div>
+                                    <img src="/modules/playchat/working-ground/common/client/imgs/delete.png" class="image-button" style="position: absolute; top: 9px; right: 12px;" ng-click="deleteActionButton(output);">
                                 </div>
                             </div>
-                            <div class="dialog-editor-output-action-row">
-                                <p class="dialog-editor-output-label">{{lan('Dialog Select') }}</p>
-                                <div class="dialog-editor-select-input" style="width: 100%; margin: 0 auto; display: block;" ng-disabled="actionTypeCheck === true">
-                                    <input type="text" ng-model="output.dialog" ng-required="true" ng-disabled="actionTypeCheck === true">
-                                    <ul class="dialog-editor-select-options">
-                                        <li ng-repeat="dialog in userDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
-                                        <li ng-repeat="dialog in commonDialogs" ng-mousedown="selectActionDialog($event, dialog, output)">{{ dialog.name }}</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="dialog-editor-output-action-row">
-                                <p class="dialog-editor-output-label">Option</p>
-                                <textarea class="dialog-editor-output-input options" ng-model="output.options.output"></textarea>
-                                <!--<input type="text" class="dialog-editor-output-input" style="width: 100%;" ng-model="output.options.output">-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="dialog-editor-row" ng-if="isAdvancedMode === false">
-                    <p class="dialog-editor-subject"> <input type="radio" name="output" ng-checked="(dialog.output.length == 1 && dialog.output[0].kind == 'Action') || isUseOutput === false" ng-click="useAction($event);" tabindex="-1"> Action</p>
-                    <div style="padding: 8px 12px;">
-                        <div class="select-wrapper" ng-class="isUseOutput === true ? 'disabled': ''">
-                            <select class="jumbo-select dialog-editor-action-type" ng-required="isUseOutput === false" ng-disabled="isUseOutput === true" ng-model="dialog.actionOutput.type" ng-change="actionValueChanged(dialog.actionOutput);">
-                                <option value="">none</option>
-                                <option value="call">Call</option>
-                                <option value="callChild">Call Child</option>
-                                <option value="returnCall">Return Call</option>
-                                <option value="up">Up</option>
-                                <option value="repeat">Repeat</option>
-                                <option value="return">Return</option>
-                            </select>
-                        </div>
-                        <div class="dialog-editor-select-input" ng-disabled="isUseOutput === true || actionTypeCheck === true">
-                            <input type="text" ng-model="dialog.actionOutput.dialog" ng-required="isUseOutput === false" ng-disabled="(isUseOutput === true || actionTypeCheck === true) ? true : false" ng-keyup="findActionDialogs($event);">
-                            <ul class="dialog-editor-select-options">
-                                <li ng-repeat="dialog in userDialogs" data-name="{{dialog.name}}" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
-                                <li ng-repeat="dialog in commonDialogs" data-name="{{dialog.name}}" ng-mousedown="selectActionDialog($event, dialog)">{{ dialog.name }}</li>
-                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="dialog-editor-footer">
                 <button class="blue-button">{{lan('Save') }}</button>
-                <button type="button" class="default-button" ng-click="close();">{{lan('Cancel') }}</button>
+                <button type="button" class="default-button" ng-click="close();" ng-keydown="saveKeydown($event);">{{lan('Cancel') }}</button>
             </div>
         </form>
     </div>

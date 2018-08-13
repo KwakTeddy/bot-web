@@ -19,10 +19,12 @@ angular.module('playchat').controller('FailedDialogsAnalysisController', ['$scop
         {
             FailedDialogsService.query({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result)
             {
+                console.log(result)
+
                 $scope.$parent.loaded('working-ground');
                 $scope.list = result;
 
-                excelData = angular.copy(result.list);
+                excelData = angular.copy(result);
             },
             function(err)
             {
@@ -32,13 +34,18 @@ angular.module('playchat').controller('FailedDialogsAnalysisController', ['$scop
 
         $scope.exelDownload = function()
         {
+            for(var i = 0; i < excelData.length; i++)
+            {
+                excelData[i].dialog = excelData[i]._id.dialog;
+            }
+
             var template = {
                 sheetName: LanguageService('Failed Dialog'),
                 columnOrder: ["dialog", "count"],
                 orderedData: excelData
             };
 
-            ExcelDownloadService.download(chatbot.id, LanguageService('Failed Dialog'), $scope.date, template);
+            ExcelDownloadService.download(chatbot.name, LanguageService('Failed Dialog'), $scope.date, template);
         };
     })();
 

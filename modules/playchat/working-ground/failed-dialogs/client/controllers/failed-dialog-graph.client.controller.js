@@ -34,7 +34,7 @@ angular.module('playchat').controller('FailedDialogGraphController', ['$window',
 
         $scope.ignore = function(item)
         {
-            FailedDialogService.update({ botId: chatbot._id, _id: item.id, clear: (item.clear ? item.clear + '|graph' : 'graph') }, function()
+            FailedDialogService.update({ botId: chatbot.id, _id: item.id, clear: (item.clear ? item.clear + '|graph' : 'graph') , dialog: item._id.dialog, preDialogId: item._id.preDialogId}, function()
             {
                 var index = $scope.list.indexOf(item);
                 $scope.list.splice(index, 1);

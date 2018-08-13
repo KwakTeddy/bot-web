@@ -6,8 +6,7 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 {
     $scope.$parent.loaded('top-bar');
 
-    var UserLanguageService = $resource('/api/users/language');
-    var ReportingService = $resource('/api/reporting');
+    var UserService = $resource('/api/users');
 
     angular.element('.user-menu a').on('click', function()
     {
@@ -16,23 +15,28 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 
     var user = $scope.user = $cookies.getObject('user');
 
-    var userLang = navigator.language || navigator.userLanguage;
-    var code = user ? user.language : userLang || 'en';
+    // var userLang = navigator.language || navigator.userLanguage;
+    // var code = user ? user.language : userLang || 'en';
 
-    code = code.split('-')[0];
+    // code = code.split('-')[0];
+
+    var code = $cookies.get('language');
+
+
 
     $scope.language = code || 'ko';
 
-    $scope.openReporting = false;
-
     $scope.reportContent = '';
+
+    $scope.isTopBarOpen = false;
 
     $scope.languageChange = function()
     {
-        UserLanguageService.save({ language: $scope.language }, function(result)
+        UserService.save({ language: $scope.language }, function(result)
         {
             user.language = $scope.language;
             $cookies.putObject('user', user);
+            $cookies.put('language', $scope.language);
 
             $rootScope.$broadcast('changeLanguage');
         },
@@ -57,35 +61,33 @@ angular.module('playchat').controller('TopBarController', ['$window', '$scope', 
 
     $scope.signout = function()
     {
+        angular.forEach($cookies.getAll(), function (v, k) {
+            if(k != 'language') $cookies.remove(k);
+        });
+
         $window.location.href = '/api/auth/signout';
     };
 
-    $scope.reporting = function()
-    {
-        $scope.openReporting = true;
-        setTimeout(function()
-        {
-            angular.element('.reporting-content').focus();
-        }, 100);
-    };
+    $scope.toggleTopBar = function (open) {
+        if(open){
+            $scope.isTopBarOpen = true;
+            var topBarContainer = angular.element("#top-bar-container");
+            topBarContainer.css("position", "static");
+            topBarContainer.css("top", "0px");
 
-    $scope.sendReporting = function()
-    {
-        ReportingService.save({ content: $scope.reportContent }, function(result)
-        {
-            alert(LanguageService('Successfully transferred!'));
-            $scope.reportContent = '';
-            $scope.closeReporting();
-        },
-        function(err)
-        {
-            console.log('에러 : ', err);
-        });
-    };
+            var middleContainer = angular.element('#middle-container');
+            middleContainer.css("top", "64px")
 
-    $scope.closeReporting = function()
-    {
-        $scope.openReporting = false;
+        }else {
+            $scope.isTopBarOpen = false;
+            var topBarContainer = angular.element("#top-bar-container");
+            topBarContainer.css("position", "relative");
+            topBarContainer.css("top", "-63px");
+
+            var middleContainer = angular.element('#middle-container');
+            middleContainer.css("top", "0px")
+
+        }
     };
 
     $scope.$on('update-topbar-title', function(scope, data)

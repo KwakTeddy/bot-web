@@ -4,12 +4,14 @@
     width: 100px;
     height: 12px;
 
+    padding: 10px;
+
     vertical-align: middle;
 
     border: 1px solid transparent;
-    border-radius: 6px;
-
     transition: border-color 0.5s;
+
+    resize: none;
 }
 
 #entityList .entity-content-name+img
@@ -19,6 +21,7 @@
 
 #entityList .entity-content-name:focus
 {
+    outline: 0;
     border-color: #ddd;
 }
 

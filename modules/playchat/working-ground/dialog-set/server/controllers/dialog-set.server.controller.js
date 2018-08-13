@@ -14,7 +14,9 @@ var Dialogset = mongoose.model('Dialogset');
 var DialogsetDialog = mongoose.model('DialogsetDialog');
 var Bot = mongoose.model('Bot');
 
-var uploadModule = require('./uploader/dialogset-uploader');
+// var uploadModule = require('./uploader/dialogset-uploader');
+
+var dialogsetUploader = require('./dialog-set-uploader.js');
 
 exports.findTotalPage = function(req, res)
 {
@@ -93,11 +95,42 @@ exports.findDialogsetByTitle = function(req, res)
     });
 };
 
+exports.checkUploadEnd = function(req, res)
+{
+    Dialogset.findOne({ _id: req.params.dialogsetId }).exec(function(err, dialogset)
+    {
+        if(err)
+        {
+            console.error(err);
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            if(dialogset)
+            {
+                if(!dialogset.importState)
+                {
+                    res.send({ result: 'ok' });
+                }
+                else
+                {
+                    res.send({ result: 'no' });
+                }
+            }
+            else
+            {
+                res.send({ result: 'nothing' });
+            }
+        }
+    });
+};
+
 exports.create = function(req, res)
 {
     var dialogset = new Dialogset(req.body);
     dialogset.bot = req.params.botId;
     dialogset.user = req.user;
+    dialogset.language = req.body.language || 'ko';
     if(dialogset.filename && dialogset.path)
         dialogset.importState = 'start';
 
@@ -126,7 +159,6 @@ exports.create = function(req, res)
 
                     bot.dialogsets = list;
 
-                    logger.systemLog('리스트 : ', JSON.stringify(bot.dialogsets));
                     bot.save(function(err)
                     {
                         if(err)
@@ -143,10 +175,19 @@ exports.create = function(req, res)
                 // 파일업로드 하면 바로 db에 저장하는 코드임.
                 if(dialogset.filename && dialogset.path)
                 {
-                    uploadModule.importFile(req.body.language, dialogset, function()
+                    // uploadModule.importFile(req.body.language, dialogset, function()
+                    // {
+                    //     dialogset.importState = '';
+                    //     dialogset.save(function(){});
+                    // });
+
+                    dialogsetUploader.upload(req.params.botId, req.body.language || 'ko', dialogset._id, dialogset.filename, function(err)
                     {
-                        dialogset.importState = '';
-                        dialogset.save(function(){});
+                        dialogset.importState = err || '';
+                        dialogset.save(function()
+                        {
+
+                        });
                     });
 
                     res.jsonp(dialogset);
@@ -318,6 +359,7 @@ exports.uploadFile = function (req, res)
     {
         if(uploadError)
         {
+            console.error(uploadError);
             return res.status(400).send({ message: 'Error occurred while uploading file' });
         }
         else

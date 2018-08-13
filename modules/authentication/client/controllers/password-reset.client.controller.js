@@ -28,7 +28,15 @@
                 },
                 function(error)
                 {
-                    alert(error.message);
+                    if(error.data.message == 'expired')
+                    {
+                        alert(LanguageService('Your verification URL has expired.'));
+                        location.href = '/password/forgot';
+                    }
+                    else
+                    {
+                        alert(error.message);
+                    }
                 });
             }
         };

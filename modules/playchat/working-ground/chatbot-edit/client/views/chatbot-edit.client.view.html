@@ -1,15 +1,32 @@
+<style>
+.chatbot-profile-title
+{
+    font-size: 17px;
+    font-weight: bold;
+    margin: 40px 0 20px 0;
+}
+</style>
+
 <div ng-controller="ChatbotEditController">
     <form ng-submit="save();">
+        <h3 class="chatbot-profile-title" style="margin: 0;">{{ lan('Chatbot Basic Information') }}</h3>
         <div class="dashboard-bot-profile" >
             <div class="dashboard-bot-profile-image">
                 <div class="dashboard-bot-profile-image-wrapper">
-                    <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
+                    <img src="{{ chatbot.imageFile }}">
                     <span></span>
                 </div>
+                <div style="text-align: center; padding: 5px;"><button type="button" class="default-button" ng-click="showUploadModal();">{{lan('Click to change image') }}</button></div>
             </div>
             <div class="dashboard-bot-profile-content">
+                <div style="margin: 10px 0;">
+                    <span>{{ lan('Bot Id') }} : </span> <span style="font-weight: bold;">{{ chatbot.id }}</span>
+                </div>
+                <div style="margin: 10px 0;">
+                    <span>{{ lan('Mobile Web Url') }} : </span> <span style="font-weight: bold;">{{ host }}/mobile/chatbot/{{ chatbot.id }}</span>
+                </div>
                 <div style="display: inline-block;">
-                    <span>Bot Name</span>
+                    <span>{{ lan('Bot Name') }}</span>
                     <input type="text" ng-model="chatbot.name">
                 </div>
                 <div style="display: inline-block;margin-left: 30px;">
@@ -24,18 +41,52 @@
                     </div>
                 </div>
                 <div>
-                    <p>Description</p>
+                    <p>{{ lan('Description') }}</p>
                     <textarea ng-model="chatbot.description">{{ chatbot.description }}</textarea>
-
-                        <button type="button" class="blue-button" ng-click="saveChatbot();" style="margin-top: auto;margin-bottom: 30px;margin-left: 62px;">Save</button>
-
+                    <button type="button" class="blue-button" ng-click="saveChatbot();" style="margin-top: auto;margin-bottom: 30px;margin-left: 62px;">{{ lan('Save') }}</button>
                 </div>
             </div>
-
         </div>
     </form>
+
     <form>
-        <table class="tb02" style="margin-top: 0px;">
+        <h3 class="chatbot-profile-title">{{ lan('Chatbot Options') }}</h3>
+        <table class="tb02">
+            <thead>
+                <tr>
+                    <th>{{ lan('Option Name') }}</th>
+                    <th>{{ lan('Option Value') }}</th>
+                    <th>{{ lan('Description') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ lan('Chatbot Usable') }}</td>
+                    <td>
+                        <select ng-model="botOptions.use" ng-change="changeBotOptions();" class="jumbo-select">
+                            <option value="true">true</option>
+                            <option value="false">false</option>
+                        </select>
+                    </td>
+                    <td>{{ lan('Chatbot Usable Description') }}</td>
+                </tr>
+                <tr>
+                    <td>{{ lan('Auto Correction Usable') }}</td>
+                    <td>
+                        <select ng-model="botOptions.useAutoCorrection" ng-change="changeBotOptions();" class="jumbo-select">
+                            <option value="true">true</option>
+                            <option value="false">false</option>
+                        </select>
+                    </td>
+                    <td>{{ lan('Auto Correction Usable Description') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <form>
+        <h3 class="chatbot-profile-title">{{ lan('Chatbot Sharing') }}</h3>
+        <table class="tb02">
             <colgroup>
                 <col style="width: 25%;">
                 <col style="width: 20%;">
@@ -45,33 +96,33 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>Email</th>
-                    <th>Username</th>
-                    <th>Name</th>
-                    <th>Authority</th>
+                    <th>{{ lan('Email') }}</th>
+                    <th>{{ lan('Username') }}</th>
+                    <th>{{ lan('Name') }}</th>
+                    <th>{{ lan('Authority') }}</th>
                     <th>
-                        <button type="button" class="default-button" ng-click="addNewMember();">Add New Member</button>
+                        <button type="button" class="default-button" ng-click="addNewMember();">{{ lan('Add Member') }}</button>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-if="list.length == 0">
-                    <td colspan="5">Empty</td>
+                    <td colspan="5">{{ lan('empty') }}</td>
                 </tr>
                 <tr ng-repeat="item in list">
                     <td>{{ item.user.email }}</td>
                     <td>{{ item.user.username }}</td>
                     <td>{{ item.user.displayName }}</td>
                     <td>
-                        <label style="margin: 5px;">
+                        <label style="margin: 5px;" ng-if="user.email != item.user.email">
                             <input type="checkbox" ng-model="item.read" ng-change="saveAuth(item);"><span>Read</span>
                         </label>
-                        <label style="margin: 5px;">
+                        <label style="margin: 5px;" ng-if="user.email != item.user.email">
                             <input type="checkbox" ng-model="item.edit" ng-change="saveAuth(item);"><span>Edit</span>
                         </label>
                     </td>
                     <td>
-                        <a href="#" class="flR" ng-click="deleteAuth(item, list);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
+                        <a ng-if="user.email != item.user.email" href="#" class="flR" ng-click="deleteAuth(item, list);"><img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img"></a>
                     </td>
                 </tr>
             </tbody>
@@ -123,6 +174,34 @@
                 <div class="popbtnarea">
                     <button type="button" class="default-button" ng-click="closeShareModal();">{{ lan('Cancel') }}</button>
                     <button class="blue-button" style="margin-left: 20px;">{{ lan('Share') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="window_overlay" ng-show="openUploadModal" style="width: 100%; box-sizing: border-box;">
+        <div class="window" style="box-sizing: border-box; padding: 10px;">
+            <form style="width: 100%; box-sizing: border-box;">
+                <div class="window_header">
+                    <div>
+                        <h1 style="font-weight: 500; font-size: 17px;">{{ lan('Change chatbot image')}}</h1>
+                    </div>
+                </div>
+                <div style="text-align: center; padding: 10px 0;">
+                    <img src="{{ botImage }}" style="width: 100%; max-width: 500px;">
+                </div>
+                <div class="window_main_col" style="width: 100%; text-align: center; padding: 5px;">
+                    <input tabindex="-1" type="file" nv-file-select uploader="uploader" style="display: none;">
+                    <button type="button" class="default-button" style="width: 200px; margin-right: 5px;" ng-click="uploadImage($event);">{{lan('Upload bot image') }}</button>
+                    <button type="button" class="default-button" style="width: 200px; margin-left: 5px;" ng-click="addExternalImage();">{{lan('Insert external image') }}</button>
+                </div>
+                <!--<div class="list2 mt20 clear">-->
+                <!--<li class="card_detail_item_content4">-->
+                <!--{{ lan("Flow chatbots are tree-based. The user is driven down a specific path") }}-->
+                <!--</li>-->
+                <!--</div>-->
+                <div style="text-align: center; padding: 10px;">
+                    <button type="button" class="default-button" ng-click="saveUpload();">{{ lan('Save') }}</button>
                 </div>
             </form>
         </div>

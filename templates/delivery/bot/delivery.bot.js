@@ -10,6 +10,12 @@ var delivery = {
     naver: {
         clientId: 'Aqi_RlMlLRlJnmJptMhD',
         clientSecret: '0AKq2NoNgn'
+    },
+
+    kakao: {
+        keyboard: {
+            type:"buttons",buttons:["Start"]
+        }
     }
 };
 

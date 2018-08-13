@@ -1,0 +1,153 @@
+var dialogs = [
+    {
+        "name": "정규식 기능",
+        "input": [
+            {
+                "text": {
+                    "raw": "정규식 기능",
+                    "nlp": "정규식 기능"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "정규식은 특정한 규칙을 가진 문자열을 표현하는 데 사용하는 형식을 뜻합니다. \n\n'사용자 입력'을 정규식으로 입력하면 특정한 패턴을 가진 사용자의 입력을 처리할 수 있습니다.\n \n예를 들어,  핸드폰 번호처럼 그 값이 정해져 있는 것이 아니라 특정한 패턴의 문자열을 입력 받을 때 이용할 수 있습니다.\n\n'사용자 입력'에 /을 입력하면 정규식 가이드가 실행됩니다.\n\n정규식에 대한 연습은 아래의 사이트에서 해볼 수 있습니다.",
+                "buttons": [
+                    {
+                        "url": "https://regexr.com",
+                        "text": "정규식 연습"
+                    }
+                ]
+            }
+        ],
+        "id": "default0"
+    },
+    {
+        "name": "정규식 구현_핸드폰번호",
+        "input": [
+            {
+                "regexp": "\\d{2,3}-\\d{3,4}-\\d{4}"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 핸드폰 번호 패턴을 입력 받습니다.\n\n사용자가 '010-3030-2811', '017-123-1234' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+            }
+        ],
+        "id": "default1",
+        "children": []
+    },
+    {
+        "name": "정규식 구현 _ 이메일",
+        "input": [
+            {
+                "regexp": "[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z]*[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z]*\\.[a-zA-Z]{2,3}"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "/정규식/이 실행됐습니다.\n\n위의 정규식은 이메일 패턴을 입력 받습니다.\n\n사용자가 '5709psy@gmail.com', 'info@moneybrain.ai' 등을 입력했을 시 해당 대화 카드가 실행됩니다."
+            }
+        ],
+        "id": "default2"
+    }
+];
+
+var commonDialogs = [
+    {
+        "id": "startDialog",
+        "name": "시작",
+        "input": [
+            {
+                "text": {
+                    "raw": "start",
+                    "nlp": "start"
+                }
+            },
+            {
+                "text": {
+                    "raw": "시작",
+                    "nlp": "시작"
+                }
+            },
+            {
+                "text": {
+                    "raw": "처음",
+                    "nlp": "처음"
+                }
+            }
+        ],
+        "output": [{
+            "kind": "Content",
+            "text": "안녕하세요, +bot.name+ 입니다."
+        }]
+    },
+    {
+        "id": "backDialog",
+        "name": "이전",
+        "input": [
+            {
+                "text": {
+                    "raw": "back",
+                    "nlp": "back"
+                }
+            },
+            {
+                "text": {
+                    "raw": "이전",
+                    "nlp": "이전"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "back"
+            }
+        ]
+    },
+    {
+        "id": "upDialog",
+        "name": "상위",
+        "input": [
+            {
+                "text": {
+                    "raw": "up",
+                    "nlp": "up"
+                }
+            },
+            {
+                "text": {
+                    "raw": "상위",
+                    "nlp": "상위"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "type": "up"
+            }
+        ]
+    },
+    {
+        "id": "noanswer",
+        "name": "답변없음",
+        "input": "",
+        "output": [
+            {
+                text: "알아듣지 못했습니다.",
+                kind: 'Content'
+            }
+        ]
+    }
+];
+
+module.exports = function(bot)
+{
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
+};

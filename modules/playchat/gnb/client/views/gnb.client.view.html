@@ -1,56 +1,68 @@
-<div ng-controller="GnbController">
+<div ng-controller="GnbController" style="height: 100%" ng-mouseover="openGnb($event)" ng-mouseleave="closeGnb($event)">
     <div class="gnb-header">
         <a href="/playchat/chatbots" class="logo-min"><img src="/modules/playchat/gnb/client/imgs/logo.png" style="padding-top: 4px;"></a>
         <a href="#" class="gnb-close" ng-click="toggleGnb($event);"></a>
     </div>
 
-    <div class="gnb-bot-name">
-        <img src="/modules/playchat/gnb/client/imgs/bot_icon.png" style="vertical-align: middle; border-radius: 50%; margin-right: 7px;">
-        <span>{{ botName }}</span>
-        <a href="/playchat/chatbot-edit" class="gnb-bot-name-modify">
-            <img src="/modules/playchat/gnb/client/imgs/modify.png" class="modify-img">
-        </a>
+    <div>
+        <div class="gnb-bot-name">
+            <img src="/modules/playchat/gnb/client/imgs/bot_icon.png" style="vertical-align: middle; border-radius: 50%; margin-right: 7px;">
+            <span id="gnb-bot-name">{{ botName }}</span>
+            <a ng-if="botAuth.edit" href="/playchat/chatbot-edit" class="gnb-bot-name-modify">
+                <img src="/modules/playchat/gnb/client/imgs/modify.png" class="modify-img">
+            </a>
 
+        </div>
+
+        <ul class="menu-item-list">
+            <li class="menu-item-group" ng-repeat="menu in menus">
+                <div class="menu-item" ng-class="checkUrl(menu);">
+                    <a ng-href="{{ menu.url && (!menu.childMenus || menu.childMenus.length <= 0)? '/playchat' + menu.url : '' }}" ng-click="toggleMenuItem($event);">
+                        <img ng-src="/modules/playchat/gnb/client/imgs/{{ menu.icon }}">
+                        <span>{{ menu.name }} </span>
+                    </a>
+                    <a href="#" class="close" ng-click="toggleMenuItem($event);" ng-if="menu.childMenus"></a>
+                </div>
+                <ul class="sub-menu-item-group" ng-if="menu.childMenus">
+                    <li class="sub-menu-item" ng-repeat="child in menu.childMenus" ng-class="'{{ path }}'.startsWith('/playchat{{ child.url }}') ? 'selected' : ''">
+                        <a href="/playchat{{ child.url }}">
+                            <img ng-src="/modules/playchat/gnb/client/imgs/{{ child.icon }}">
+                            <span>{{ child.name }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
 
-    <ul class="menu-item-list">
-        <li class="menu-item-group" ng-repeat="menu in menus">
-            <div class="menu-item" ng-class="checkUrl(menu);">
-                <a ng-href="{{ menu.url && (!menu.childMenus || menu.childMenus.length <= 0)? '/playchat' + menu.url : '' }}" ng-click="toggleMenuItem($event);">
-                    <img ng-src="/modules/playchat/gnb/client/imgs/{{ menu.icon }}">
-                    <span>{{ menu.name }} </span>
-                </a>
-                <a href="#" class="close" ng-click="toggleMenuItem($event);" ng-if="menu.childMenus"></a>
-            </div>
-            <ul class="sub-menu-item-group" ng-if="menu.childMenus">
-                <li class="sub-menu-item" ng-repeat="child in menu.childMenus" ng-class="'{{ path }}'.startsWith('/playchat{{ child.url }}') ? 'selected' : ''">
-                    <a href="/playchat{{ child.url }}">
-                        <img ng-src="/modules/playchat/gnb/client/imgs/{{ child.icon }}">
-                        <span>{{ child.name }}</span>
-                    </a>
-                </li>
-            </ul>
+
+    <ul class="bottom-list">
+        <li>
+            <a href="/docs/{{language}}/5minutes-{{language}}.html" target="_blank">
+                <img src="/modules/playchat/gnb/client/imgs/docs.png">
+                <span>{{ lan('Docs') }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" ng-click="reporting();">
+                <img src="/modules/playchat/gnb/client/imgs/support.png">
+                <span>{{ lan('Support') }}</span>
+            </a>
         </li>
     </ul>
 
-    <!--<ul class="bottom-list">-->
-        <!--<li>-->
-            <!--<a href="#">-->
-                <!--<img src="/modules/playchat/gnb/client/imgs/docs.png">-->
-                <!--<span>{{ lan('Docs') }}</span>-->
-            <!--</a>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a href="#">-->
-                <!--<img src="/modules/playchat/gnb/client/imgs/forum.png">-->
-                <!--<span>{{ lan('Forum') }}</span>-->
-            <!--</a>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a href="#">-->
-                <!--<img src="/modules/playchat/gnb/client/imgs/support.png">-->
-                <!--<span>{{ lan('Support') }}</span>-->
-            <!--</a>-->
-        <!--</li>-->
-    <!--</ul>-->
+    <div class="modal-background import-modal" ng-show="openReporting">
+        <div class="modal">
+            <form ng-submit="sendReporting();">
+                <div class="modal-header">{{ lan('Error reporting and suggestions for improvement') }}</div>
+                <div>
+                    <textarea class="reporting-content" required="true" ng-model="reportContent"></textarea>
+                </div>
+                <div class="tab-footer">
+                    <button class="blue-button">{{ lan('Send') }}</button>
+                    <button type="button" class="default-button" ng-click="closeReporting();">{{ lan('Close') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

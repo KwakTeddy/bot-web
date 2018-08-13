@@ -1,12 +1,10 @@
 var path = require('path');
 
-var bot = require(path.resolve('./engine/bot/server/controllers/bot.server.controller.js'));
-
-var PROTO_PATH = __dirname + '/chatbotservice.proto';
+// var PROTO_PATH = __dirname + '/chatbotservice.proto';
 //
-var grpc = require('grpc');
-var ChatbotService = grpc.load(PROTO_PATH, 'proto').ChatbotService;
-var client = new ChatbotService.ChatbotService('52.38.34.39:50051', grpc.credentials.createInsecure());
+// var grpc = require('grpc');
+// var ChatbotService = grpc.load(PROTO_PATH, 'proto').ChatbotService;
+// var client = new ChatbotService.ChatbotService('52.38.34.39:50051', grpc.credentials.createInsecure());
 
 var LanguageDetect = require('languagedetect');
 var lngDetector = new LanguageDetect();
@@ -27,35 +25,49 @@ module.exports = function (io, socket)
 
     socket.on('analytics', function(msg)
     {
-        bot.botProc(msg.bot, 'socket', msg.user, msg.msg, msg, function(_out, _task)
+        var Engine = require(path.resolve('./engine2/core.js'));
+        Engine.process(msg.bot, 'socket', msg.user, msg.msg, {}, function(context, result)
         {
-            var nlp = '';
-            var context = '';
-            var suggestion = [];
+            var nlp = context.userInput.nlp;
+            var suggestion = context.demo;
+            var turnTaking = context.userInput.turnTaking;
+            var entities = context.userInput.entities;
+            var intents = context.userInput.intents;
+            var language = lngDetector.detect(msg.msg);
+            var context = context.session.currentCategory;
 
-            var entities = global._botusers[msg.bot + '_' + msg.user].entities;
-            var nlu = global._botusers[msg.bot + '_' + msg.user].nlu;
-            var turnTaking = global._botusers[msg.bot + '_' + msg.user].nlu.turnTaking;
+            socket.emit('response-analytics', { nlp: nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, entities: entities, intents: intents, language: language  });
 
-            if(_task)
-            {
-                nlp = _task.inNLP;
-                var typeDoc = _task.typeDoc;
-                context = '';
-
-                if(typeDoc && typeDoc.length > 1 && typeDoc[0].context)
-                {
-                    context = typeDoc[0].context.name;
-                }
-
-                suggestion = global._botusers[msg.bot + '_' + msg.user].nlu.matchInfo.qa;
-            }
-
-            console.log(msg.msg);
-
-            socket.emit('response-analytics', { nlp : nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, entities: entities, nlu: nlu, language: lngDetector.detect(msg.msg) });
-
-        }, { dev: true, language: 'ko' });
+        });
+        // bot.botProc(msg.bot, 'socket', msg.user, msg.msg, msg, function(_out, _task)
+        // {
+        //     var nlp = '';
+        //     var context = '';
+        //     var suggestion = [];
+        //
+        //     var entities = global._botusers[msg.bot + '_' + msg.user].entities;
+        //     var nlu = global._botusers[msg.bot + '_' + msg.user].nlu;
+        //     var turnTaking = global._botusers[msg.bot + '_' + msg.user].nlu.turnTaking;
+        //
+        //     if(_task)
+        //     {
+        //         nlp = _task.inNLP;
+        //         var typeDoc = _task.typeDoc;
+        //         context = '';
+        //
+        //         if(typeDoc && typeDoc.length > 1 && typeDoc[0].context)
+        //         {
+        //             context = typeDoc[0].context.name;
+        //         }
+        //
+        //         suggestion = global._botusers[msg.bot + '_' + msg.user].nlu.matchInfo.qa;
+        //     }
+        //
+        //     console.log(msg.msg);
+        //
+        //     socket.emit('response-analytics', { nlp : nlp, context: context, suggestion: suggestion, turnTaking: turnTaking, entities: entities, nlu: nlu, language: lngDetector.detect(msg.msg) });
+        //
+        // }, { dev: true, language: 'ko' });
     })
 };
 

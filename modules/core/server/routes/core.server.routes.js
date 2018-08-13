@@ -5,8 +5,14 @@ module.exports = function (app)
     // Root routing
     var core = require('../controllers/core.server.controller');
 
+    app.get('/web/chatbot/:botId', core.renderWebChatBot);
+    app.get('/mobile/chatbot/:botId', core.renderMobileChatBot);
+
     // Define error pages
     app.route('/server-error').get(core.renderServerError);
+
+    // To Log User Activity
+    app.route('/logging').post(core.logging);
 
     // To Get Config
     app.route('/config').get(core.getConfig);

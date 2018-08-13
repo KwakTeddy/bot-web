@@ -4,18 +4,18 @@
             <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
         </form>
     </div>
-    <div class="tab01">
+    <div class="tab01" style="margin-top: 10px;">
         <ul class="tabs1">
             <li class="select_tab"><a href="#">{{lan('Default') }}</a></li>
             <!--<li><a href="#">{{lan('Store') }}</a></li>-->
             <!--<li><a href="#">{{lan('Shared') }}</a></li>-->
         </ul>
-        <div class="flR" style="position: relative; top: -40px;">
+        <div class="flR" style="position: relative; top: -40px;" ng-if="myBotAuth.edit">
             <div class="funtionbtn1" style="margin-right: 20px; position: relative; top: -2px;">
                 <a href="#">
                     <img src="modules/playchat/working-ground/common/client/imgs/import.png">
                     <span ng-click="modal.importModal.open();">{{lan('Import') }}</span>
-                    <img src="modules/playchat/working-ground/common/client/imgs/Q.png">
+                    <!--<img src="modules/playchat/working-ground/common/client/imgs/Q.png">-->
                 </a>
             </div>
             <div class="btn02" ng-click="modal.mgmtModal.open();" style="width: 110px; display: inline-block;">
@@ -66,7 +66,8 @@
                 <div class="form-row">
                     <label class="required" style="width: 100%;">
                         <span class="form-title">{{lan('File Name') }}</span>
-                        <input type="text" style="height: 35px; width: 85%;" placeholder="{{ lan('Type name of the file.') }}" name="title" ng-model="modal.mgmtModal.data.fileName" class="dialoggraph-title data-input" pattern="^[a-zA-Z0-9-]*$" ng-required="true" style="width: 85%;"> {{ modal.mgmtModal.data.fileType }}
+                        <p style="margin: 0; padding-left: 3px; padding-bottom: 5px; margin-bottom: 5px;">{{ lan('DialogGraphManagementCreateDescription') }}</p>
+                        <input type="text" style="height: 35px; width: 85%;" placeholder="{{ lan('Type name of the file.') }}" name="title" ng-model="modal.mgmtModal.data.fileName" class="dialoggraph-title data-input" pattern="^[a-zA-Z]*[a-zA-Z0-9-]*$" ng-required="true" style="width: 85%;"> {{ modal.mgmtModal.data.fileType }}
                     </label>
                     <p style="color: red; font-size: 12px; padding-left: 20px;">{{ modal.mgmtModal.data.error }}</p>
                 </div>

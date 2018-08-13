@@ -128,7 +128,7 @@ angular.module("playchat").controller("DialogGraphPathAnalysisController", ['$sc
                 orderedData: excelData
             };
 
-            ExcelDownloadService.download(chatbot.id, LanguageService('Dialog Graph Path'), $scope.date, template);
+            ExcelDownloadService.download(chatbot.name, LanguageService('Dialog Graph Path'), $scope.date, template);
         };
     })();
 

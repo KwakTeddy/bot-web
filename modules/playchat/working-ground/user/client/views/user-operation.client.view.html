@@ -8,11 +8,13 @@
             <label for="advancedMode"></label>
         </div>
     </div>
+
     <div class="upSide operation-search-area" ng-show="!isAdvancedMode" style="padding-bottom: 0px;">
         <form class="inline-block">
             <input name="search" type="search" class="search" ng-keydown="searchKeyDown($event);" id="operationSearchInput">
         </form>
     </div>
+
     <div class="operation-search-area advanced" ng-show="isAdvancedMode">
         <table>
             <colgroup>
@@ -23,24 +25,24 @@
             </colgroup>
             <tbody>
                 <tr>
-                    <th>Channel</th>
+                    <th>{{ lan('Channel') }}</th>
                     <td>
                         <input type="text" class="input_type09" ng-model="searchValues.channel" style="padding: 7px 10px;">
                     </td>
-                    <th>User Key</th>
+                    <th>{{ lan('User Key') }}</th>
                     <td>
                         <input type="text" class="input_type09" ng-model="searchValues.userKey">
                     </td>
                 </tr>
                 <tr>
-                    <th>Last update</th>
+                    <th>{{ lan('Last conversation date') }}</th>
                     <td>
                         <div id="lastUpdateRange" class="pull-right range-input" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                             <span></span> <b class="caret"></b>
                         </div>
                     </td>
-                    <th>Dialog Count</th>
+                    <th>{{ lan('Dialog Count') }}</th>
                     <td>
                         <input type="number" class="input_type09" ng-model="searchValues.dialogCountStart">
                         <span> ~ </span>
@@ -48,14 +50,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Created</th>
+                    <th>{{ lan('Date of first conversation') }}</th>
                     <td>
                         <div id="createdRange" class="pull-right range-input" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                             <span></span> <b class="caret"></b>
                         </div>
                     </td>
-                    <th>Mobile</th>
+                    <th>{{ lan('Mobile') }}</th>
                     <td>
                         <input type="number" class="input_type09" ng-model="searchValues.mobile">
                     </td>
@@ -65,6 +67,8 @@
         <button type="button" class="blue-button search" ng-click="search();">{{lan('Search') }}</button>
         <button type="button" class="default-button clear" ng-click="clear();">{{lan('Clear') }}</button>
     </div>
+
+
     <div class="operation-content">
         <table class="tb02">
             <colgroup>
@@ -78,13 +82,13 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>Channel</th>
-                    <th>User Key</th>
-                    <th>Mobile</th>
-                    <th>Last Update</th>
-                    <th>Created</th>
-                    <th>Dialog Count</th>
-                    <th>Dialog</th>
+                    <th>{{ lan('Channel') }}</th>
+                    <th>{{ lan('User Key') }}</th>
+                    <th>{{ lan('Mobile') }}</th>
+                    <th>{{ lan('Last conversation date') }}</th>
+                    <th>{{ lan('Date of first conversation') }}</th>
+                    <th>{{ lan('Dialog Count') }}</th>
+                    <th>{{ lan('Dialog') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -99,7 +103,7 @@
                     <td>{{ dateFormat(item.created) }}</td>
                     <td>{{ item.dialogCount }}</td>
                     <td>
-                        <a href="/playchat/operation/user/detail?_id={{ item._id }}" class="operation-user-dialog-button">Dialog</a>
+                        <a href="/playchat/operation/user/detail?_id={{ item._id }}" class="operation-user-dialog-button">{{ lan('Dialog') }}</a>
                     </td>
                     <!--<td>-->
                     <!--<div class="slide on">-->
@@ -110,13 +114,14 @@
                 </tr>
             </tbody>
         </table>
+
         <div class="tablePaging">
             <div class="tablePagingC">
-                <a href="/playchat/management/entity?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
+                <a href="/playchat/operation/user?page={{ pageOptions.prev }}" ng-click="toPage(pageOptions.prev);" class="direction">
                     <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
                 </a>
-                <a ng-repeat="page in pageOptions.pages" href="/playchat/management/entity?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
-                <a href="/playchat/management/entity?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/operation/user?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/operation/user?page={{ pageOptions.next }}" ng-click="toPage(pageOptions.next);" class="direction">
                     <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
                 </a>
             </div>

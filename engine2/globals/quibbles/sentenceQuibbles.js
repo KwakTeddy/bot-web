@@ -1,0 +1,170 @@
+module.exports = function(globals)
+{
+    var sentenceQuibbles = [
+        { condition: {tenseType: 2, questionWord: '누구'},
+            sentences: [
+                "누구였는지 몰라",
+                "그 때 그 사람...",
+                "누구?",
+                "누가?",
+                "누구였더라..."
+            ]},
+        { condition: {tenseType: 2, questionWord: '언제'},
+            sentences: [
+                "언제 ~했어?",
+                "언제더라",
+                "기억이 나지 않습니다",
+                "시도때도 없이",
+                "언제?",
+                "오래 전에",
+            ]},
+        { condition: {tenseType: 2, questionWord: '어디'},
+            sentences: [
+                "어디서 ~했어?",
+                "어디였지?",
+                "어디였더라...",
+                "여기 저기",
+                "어디?",
+            ]},
+        { condition: {tenseType: 2, questionWord: '어떻게'},
+            sentences: [
+                "어떻게 ~했어?",
+                "어떻게?",
+                "어떻게 됐더라...",
+                "잘...",
+            ]},
+        { condition: {tenseType: 2, questionWord: '무엇'},
+            sentences: [
+                "무엇을 ~했어?",
+                "뭐?",
+                "아무것도",
+                "뭐를?",
+            ]},
+        { condition: {tenseType: 2, questionWord: '왜'},
+            sentences: [
+                "왜 ~했어?",
+                "이유가 있나?",
+                "그냥 그랬어.",
+                "왜그랬는지는 나도 몰라",
+            ]},
+        { condition: {tenseType: 1, questionWord: '누'},
+            sentences: [
+                "누가 ~해?",
+                "아무도 몰라",
+                "누군지 몰라",
+                "누구?",
+                "누가?",
+            ]},
+        { condition: {tenseType: 1, questionWord: '언제'},
+            sentences: [
+                "언제 ~해?",
+                "그 때 그 시절...",
+                "지금",
+                "아무때나",
+                "언제?",
+            ]},
+        { condition: {tenseType: 1, questionWord: '어디'},
+            sentences: [
+                "어디서 ~해?",
+                "마음 속에",
+                "어디?",
+                "여기!",
+                "그 때 그 곳...",
+            ]},
+        { condition: {tenseType: 1, questionWord: '어떻게'},
+            sentences: [
+                "어떻게 ~해?",
+                "어떻게? ",
+                "잘~ 열심히~",
+                "잘...",
+            ]},
+        { condition: {tenseType: 1, questionWord: '무엇'},
+            sentences: [
+                "뭘 ~해?",
+                "뭐?",
+                "응?",
+            ]},
+        { condition: {tenseType: 1, questionWord: '왜'},
+            sentences: [
+                "왜 ~해?",
+                "그냥 그래",
+            ]},
+        { condition: {tenseType: 3, questionWord: '누구'},
+            sentences: [
+                "누가 ~할 거야?",
+                "누군가가...",
+                "누구든지",
+                "사람 일은 모르는 거야.",
+                "누구도 미래를 알 수 없어",
+            ]},
+        { condition: {tenseType: 3, questionWord: '언제'},
+            sentences: [
+                "언제 ~할 거야?",
+                "언제든...",
+                "100년 뒤에...",
+            ]},
+        { condition: {tenseType: 3, questionWord: '어디'},
+            sentences: [
+                "어디서 ~할 거야?",
+                "거기...",
+            ]},
+        { condition: {tenseType: 3, questionWord: '어떻게'},
+            sentences: [
+                "어떻게 ~할 거야?",
+                "어떻게든",
+                "잘",
+                "어떻게? ",
+                "잘~ 열심히~",
+            ]},
+        { condition: {tenseType: 3, questionWord: '무엇'},
+            sentences: [
+                "무엇을 ~할 거야?",
+                "무엇이든 다!",
+                "전부 다",
+                "뭐든지...",
+            ]},
+        { condition: {tenseType: 3, questionWord: '왜'},
+            sentences: [
+                "왜 ~할 거야?",
+                "그냥 그럴 거 같아",
+                "왜?",
+            ]},
+        { condition: {tenseType: 2, sentenceType: 1},
+            sentences: [
+                "~했어?",
+                "아마도?",
+            ]},
+        { condition: {tenseType: 1, sentenceType: 1},
+            sentences: [
+                "~해?",
+                "아마도?",
+            ]},
+        { condition: {tenseType: 3, sentenceType: 1},
+            sentences: [
+                "~할 거야?",
+                "아마도?",
+            ]},
+        { condition: {sentenceType: 1, questionWord:'' },
+            sentences: [
+                "~하자/~할래?/~해줘",
+                "알았어",
+            ]},
+        { condition: {tenseType: 2, sentenceType: 1},
+            sentences: [
+                "~했다",
+                "그랬구나",
+            ]},
+        { condition: {tenseType: 1, sentenceType: 1},
+            sentences: [
+                "~한다/~하고 있다",
+                "그래?",
+            ]},
+        { condition: {tenseType: 3, sentenceType: 1},
+            sentences: [
+                "~할 거다",
+                "그렇구나.",
+            ]},
+    ];
+
+    globals.setQuibbles('sentenceQuibbles', sentenceQuibbles);
+};

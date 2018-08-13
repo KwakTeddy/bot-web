@@ -11,6 +11,7 @@ var DialogsetDialogSchema = new Schema(
     tag: [String],
     parent: Schema.Types.Mixed,
     context: { type: Schema.ObjectId, ref: 'CustomContext' },
+    category: String,
     depth: { type: Number, default: 0 },
     groupId: { type: String },
     randomGroupId: { type: String }

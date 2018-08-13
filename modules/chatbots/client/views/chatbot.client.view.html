@@ -1,7 +1,8 @@
 <div class="chatbot-body" ng-controlelr="ChatbotListController" ng-click="closeMenu();">
+
     <div class="tab">
         <ul class="tab-body">
-            <li class="select_tab" ng-click="moveTab($event, 'botContent');">
+            <li class="select_tab" ng-click="moveTab($event, 'botContent');" ng-if="restrictService!='sam@moneybrain.ai'">
                 <a>{{ lan('My chatbot') }}</a>
             </li>
             <li ng-click="moveTab($event, 'sharedBotContent');">
@@ -9,35 +10,46 @@
             </li>
         </ul>
     </div>
+
     <div id="botContent">
         <div class="chatbot-new" ng-click="moveToCreate();">
             <img src="/modules/chatbots/client/imgs/plus_white.png">
             <a href="/playchat/chatbots/create">{{ lan('New chatbot') }}</a>
         </div>
+
         <div class="chatbots">
-            <div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectBot(chatbot);">
-                <ul class="hei50">
-                    <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
-                    <li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</li>
-                    <li>
-                        <div class="flR mt10">
-                            <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
-                        </div>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="sub2">{{ chatbot.description }}</li>
-                </ul>
+            <div ng-repeat="chatbot in list" ng-click="selectChatbot(chatbot);" class="bot_unselect">
+                <div class="chatbot-language">{{ lan(chatbot.language) }}</div>
+                <div class="chatbots-name">
+                    <img src="/modules/chatbots/client/imgs/user2.png" style="border-radius: 50%;">
+                    <span data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</span>
+                </div>
+                <div class="chatbots-row">{{ chatbot.description }}</div>
+                <div>
+                    <a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>
+                </div>
             </div>
         </div>
+
+        <!--<div class="chatbots">-->
+            <!--<div class="bot_unselect" ng-repeat="chatbot in list" ng-click="selectChatbot(chatbot);">-->
+                <!--<ul class="hei50">-->
+                    <!--<li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>-->
+                    <!--<li class="sub3" data-id="{{ chatbot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.name }}</li>-->
+                    <!--<li>-->
+                        <!--<div class="flR mt10">-->
+                            <!--<a href="#" class="chatbot-menu-button" ng-click="openMenu($event, chatbot);"></a>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
+
     <div id="sharedBotContent" style="display: none;">
-        <div class="chatbot-new" ng-click="moveToCreate();">
-            <img src="/modules/chatbots/client/imgs/plus_white.png">
-            <a href="/playchat/chatbots/create">{{ lan('New chatbot') }}</a>
-        </div>
-        <div class="chatbots">
-            <div class="bot_unselect" ng-repeat="chatbot in sharedList" ng-click="selectBot(chatbot.bot);">
+        <div class="chatbots" style="margin-top: 5%;">
+            <div class="bot_unselect" ng-repeat="chatbot in sharedList" ng-click="selectChatbot(chatbot.bot);">
+                <div class="chatbot-language"></div>
                 <ul class="hei50">
                     <li class="sub1"><img src="/modules/chatbots/client/imgs/user2.png"></li>
                     <li class="sub3" data-id="{{ chatbot.bot.id }}" ng-keydown="chatbotNameKeyDown($event);" ng-blur="chatbotNameBlur($event);" ng-click="chatbotNameClick($event);">{{ chatbot.bot.name }}</li>
@@ -50,7 +62,7 @@
     </div>
 
     <ul class="chatbot-menu" style="display: none;">
-        <li class="chatbot-menu-item" ng-click="executeMenu('Rename');"><a>{{ lan('Rename') }}</a></li>
+        <li class="chatbot-menu-item" ng-click="executeMenu('Rename');"><a>{{ lan('Changing information') }}</a></li>
         <li class="chatbot-menu-item" ng-click="executeMenu('Share');"><a>{{ lan('Share') }}</a></li>
         <li class="chatbot-menu-item" ng-click="executeMenu('Duplicate');"><a>{{ lan('Duplicate') }}</a></li>
         <li class="chatbot-menu-item" ng-click="executeMenu('Delete');"><a>{{ lan('Delete') }}</a></li>
@@ -73,7 +85,7 @@
                             <li class="card_detail_item_header">{{ lan('Chatbot') }}</li>
                         </ul>
                         <ul class="list mt20">
-                            <li class="card_detail_item_content1">{{ selectedBot.id }}</li>
+                            <li class="card_detail_item_content1">{{ selectedBot.name }}</li>
                         </ul>
                         <ul class="list clear">
                             <li class="card_detail_item_header">{{ lan('Share') }}</li>
@@ -83,11 +95,11 @@
                             <li class="ml8 mt23">{{ lan('Authorization')}} :</li>
                         </ul>
                         <ul class="list4 mt4">
-                            <li><input type="text" class="input_pop" placeholder="username or username@moneybrain.ai" ng-model="share.email" ng-required="true"></li>
+                            <li><input type="text" class="input_pop" placeholder="username or E-mail" ng-model="share.email" ng-required="true"></li>
                             <li class="ml10 mt10">
                                 <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="share.read">
                                 <label for="checkBox1" class="label">{{ lan('Read') }}</label>
-                                <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox" ng-model="share.edit">
+                                <input id="checkBox2" type="checkbox" value="Edit" class="styled-checkbox" ng-model="share.write" ng-click="share.read = true">
                                 <label for="checkBox2" class="label">{{ lan('Write') }}</label>
                             </li>
                         </ul>
@@ -105,4 +117,5 @@
             </form>
         </div>
     </div>
+
 </div>
