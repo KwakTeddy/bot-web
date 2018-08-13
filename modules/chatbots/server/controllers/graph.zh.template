@@ -1,0 +1,54 @@
+var dialogs = [];
+
+var commonDialogs = [
+    {
+        "id": "defaultcommon0",
+        "filename": "defaultcommon",
+        "name": "시작",
+        "input": [
+            {
+                "text": "start"
+            },
+            {
+                "text": "开始"
+            },
+            {
+                "text": "最开始"
+            }
+        ],
+        "output": "您好, 我是{name}。\n需要什么帮助？"
+    },
+    {
+        "id": "defaultcommon1",
+        "filename": "defaultcommon",
+        "name": "상위",
+        "input": [
+            {
+                "text": "up"
+            },
+            {
+                "text": "back"
+            },
+            {
+                "text": "上一页"
+            },
+            {
+                "text": "返回"
+            }
+        ],
+        "output": {
+            "up": 1
+        }
+    },
+    {
+        "id": "defaultcommon2",
+        "filename": "defaultcommon",
+        "name": "답변없음",
+        "input": "",
+        "output": "我听不懂您说的话。"
+    }
+];
+
+var _bot = require(require('path').resolve("./engine/bot.js")).getBot('{id}');
+_bot.setDialogs(dialogs);
+_bot.setCommonDialogs(commonDialogs);

@@ -1,6 +1,6 @@
 var path = require('path');
-var botlib = require(path.resolve('config/lib/bot'));
-var typelib = require(path.resolve('modules/bot/action/common/type'));
+var botlib = require(path.resolve('./bot-engine/bot'));
+var typelib = require(path.resolve('./bot-engine/action/common/type'));
 
 var sampleBot = {
   use: true
@@ -43,4 +43,4 @@ var dbListPattern =
   ]
 };
 
-botlib.getBot('sample').setDialogPattern('dbListPattern', dbListPattern);
+// botlib.getBot('sample').setDialogPattern('dbListPattern', dbListPattern);

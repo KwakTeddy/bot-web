@@ -1,0 +1,929 @@
+/* reset styling (prevent conflicts with bootstrap, materialize.css, etc.) */
+
+div.JSONEditor2 .JSONEditor2-search input {
+  height: auto;
+  border: inherit;
+}
+
+div.JSONEditor2 .JSONEditor2-search input:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+div.JSONEditor2 table {
+  border-collapse: collapse;
+  width: auto;
+}
+
+div.JSONEditor2 td,
+div.JSONEditor2 th {
+  padding: 0;
+  display: table-cell;
+  text-align: left;
+  vertical-align: inherit;
+  border-radius: inherit;
+}
+
+
+div.JSONEditor2-field,
+div.JSONEditor2-value,
+div.JSONEditor2-readonly {
+  border: 1px solid transparent;
+  min-height: 16px;
+  min-width: 32px;
+  padding: 2px;
+  margin: 1px;
+  word-wrap: break-word;
+  float: left;
+}
+
+/* adjust margin of p elements inside editable divs, needed for Opera, IE */
+
+div.JSONEditor2-field p,
+div.JSONEditor2-value p {
+  margin: 0;
+}
+
+div.JSONEditor2-value {
+  word-break: break-word;
+}
+
+div.JSONEditor2-readonly {
+  min-width: 16px;
+  color: gray;
+}
+
+div.JSONEditor2-empty {
+  border-color: lightgray;
+  border-style: dashed;
+  border-radius: 2px;
+}
+
+div.JSONEditor2-field.JSONEditor2-empty::after,
+div.JSONEditor2-value.JSONEditor2-empty::after {
+  pointer-events: none;
+  color: lightgray;
+  font-size: 8pt;
+}
+
+div.JSONEditor2-field.JSONEditor2-empty::after {
+  content: "field";
+}
+
+div.JSONEditor2-value.JSONEditor2-empty::after {
+  content: "value";
+}
+
+div.JSONEditor2-value.JSONEditor2-url,
+a.JSONEditor2-value.JSONEditor2-url {
+  color: green;
+  text-decoration: underline;
+}
+
+a.JSONEditor2-value.JSONEditor2-url {
+  display: inline-block;
+  padding: 2px;
+  margin: 2px;
+}
+
+a.JSONEditor2-value.JSONEditor2-url:hover,
+a.JSONEditor2-value.JSONEditor2-url:focus {
+  color: #ee422e;
+}
+
+div.JSONEditor2 td.JSONEditor2-separator {
+  padding: 3px 0;
+  vertical-align: top;
+  color: gray;
+}
+
+div.JSONEditor2-field[contenteditable=true]:focus,
+div.JSONEditor2-field[contenteditable=true]:hover,
+div.JSONEditor2-value[contenteditable=true]:focus,
+div.JSONEditor2-value[contenteditable=true]:hover,
+div.JSONEditor2-field.JSONEditor2-highlight,
+div.JSONEditor2-value.JSONEditor2-highlight {
+  background-color: #FFFFAB;
+  border: 1px solid yellow;
+  border-radius: 2px;
+}
+
+div.JSONEditor2-field.JSONEditor2-highlight-active,
+div.JSONEditor2-field.JSONEditor2-highlight-active:focus,
+div.JSONEditor2-field.JSONEditor2-highlight-active:hover,
+div.JSONEditor2-value.JSONEditor2-highlight-active,
+div.JSONEditor2-value.JSONEditor2-highlight-active:focus,
+div.JSONEditor2-value.JSONEditor2-highlight-active:hover {
+  background-color: #ffee00;
+  border: 1px solid #ffc700;
+  border-radius: 2px;
+}
+
+div.JSONEditor2-value.JSONEditor2-string {
+  color: #008000;
+}
+
+div.JSONEditor2-value.JSONEditor2-object,
+div.JSONEditor2-value.JSONEditor2-array {
+  min-width: 16px;
+  color: #808080;
+}
+
+div.JSONEditor2-value.JSONEditor2-number {
+  color: #ee422e;
+}
+
+div.JSONEditor2-value.JSONEditor2-boolean {
+  color: #ff8c00;
+}
+
+div.JSONEditor2-value.JSONEditor2-null {
+  color: #004ED0;
+}
+
+div.JSONEditor2-value.JSONEditor2-invalid {
+  color: #000000;
+}
+
+div.JSONEditor2-tree button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  background: transparent url("img/jsoneditor-icons.svg");
+}
+
+div.JSONEditor2-mode-view tr.JSONEditor2-expandable td.JSONEditor2-tree,
+div.JSONEditor2-mode-form tr.JSONEditor2-expandable td.JSONEditor2-tree {
+  cursor: pointer;
+}
+
+div.JSONEditor2-tree button.JSONEditor2-collapsed {
+  background-position: 0 -48px;
+}
+
+div.JSONEditor2-tree button.JSONEditor2-expanded {
+  background-position: 0 -72px;
+}
+
+div.JSONEditor2-tree button.JSONEditor2-contextmenu {
+  background-position: -48px -72px;
+}
+
+div.JSONEditor2-tree button.JSONEditor2-contextmenu:hover,
+div.JSONEditor2-tree button.JSONEditor2-contextmenu:focus,
+div.JSONEditor2-tree button.JSONEditor2-contextmenu.JSONEditor2-selected,
+tr.JSONEditor2-selected.JSONEditor2-first button.JSONEditor2-contextmenu {
+  background-position: -48px -48px;
+}
+
+div.JSONEditor2-tree *:focus {
+  outline: none;
+}
+
+div.JSONEditor2-tree button:focus {
+  /* TODO: nice outline for buttons with focus
+  outline: #97B0F8 solid 2px;
+  box-shadow: 0 0 8px #97B0F8;
+  */
+  background-color: #f5f5f5;
+  outline: #e5e5e5 solid 1px;
+}
+
+div.JSONEditor2-tree button.JSONEditor2-invisible {
+  visibility: hidden;
+  background: none;
+}
+
+div.JSONEditor2 {
+  color: #1A1A1A;
+  border: 1px solid #3883fa;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 0;
+  line-height: 100%;
+}
+
+div.JSONEditor2-tree table.JSONEditor2-tree {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 0;
+}
+
+div.JSONEditor2-outer {
+  position: static;
+  width: 100%;
+  height: 100%;
+  margin: -35px 0 0 0;
+  padding: 35px 0 0 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+textarea.JSONEditor2-text,
+.ace-JSONEditor2 {
+  min-height: 150px;
+}
+
+div.JSONEditor2-tree {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+textarea.JSONEditor2-text {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  outline-width: 0;
+  border: none;
+  background-color: white;
+  resize: none;
+}
+
+tr.JSONEditor2-highlight,
+tr.JSONEditor2-selected {
+  background-color: #e6e6e6;
+}
+
+tr.JSONEditor2-selected button.JSONEditor2-dragarea,
+tr.JSONEditor2-selected button.JSONEditor2-contextmenu {
+  visibility: hidden;
+}
+
+tr.JSONEditor2-selected.JSONEditor2-first button.JSONEditor2-dragarea,
+tr.JSONEditor2-selected.JSONEditor2-first button.JSONEditor2-contextmenu {
+  visibility: visible;
+}
+
+div.JSONEditor2-tree button.JSONEditor2-dragarea {
+  background: url("img/jsoneditor-icons.svg") -72px -72px;
+  cursor: move;
+}
+
+div.JSONEditor2-tree button.JSONEditor2-dragarea:hover,
+div.JSONEditor2-tree button.JSONEditor2-dragarea:focus,
+tr.JSONEditor2-selected.JSONEditor2-first button.JSONEditor2-dragarea {
+  background-position: -72px -48px;
+}
+
+div.JSONEditor2 tr,
+div.JSONEditor2 th,
+div.JSONEditor2 td {
+  padding: 0;
+  margin: 0;
+}
+
+div.JSONEditor2 td {
+  vertical-align: top;
+}
+
+div.JSONEditor2 td.JSONEditor2-tree {
+  vertical-align: top;
+}
+
+div.JSONEditor2-field,
+div.JSONEditor2-value,
+div.JSONEditor2 td,
+div.JSONEditor2 th,
+div.JSONEditor2 textarea,
+.JSONEditor2-schema-error {
+  font-family: droid sans mono, consolas, monospace, courier new, courier, sans-serif;
+  font-size: 10pt;
+  color: #1A1A1A;
+}
+
+/* popover */
+
+.JSONEditor2-schema-error {
+  cursor: default;
+  display: inline-block;
+  /*font-family: arial, sans-serif;*/
+  height: 24px;
+  line-height: 24px;
+  position: relative;
+  text-align: center;
+  width: 24px;
+}
+
+div.JSONEditor2-tree .JSONEditor2-schema-error {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0 4px 0 0;
+  background: url("img/jsoneditor-icons.svg")  -168px -48px;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover {
+  background-color: #4c4c4c;
+  border-radius: 3px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  color: #fff;
+  display: none;
+  padding: 7px 10px;
+  position: absolute;
+  width: 200px;
+  z-index: 4;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover.JSONEditor2-above {
+  bottom: 32px;
+  left: -98px;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover.JSONEditor2-below {
+  top: 32px;
+  left: -98px;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover.JSONEditor2-left {
+  top: -7px;
+  right: 32px;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover.JSONEditor2-right {
+  top: -7px;
+  left: 32px;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover:before {
+  border-right: 7px solid transparent;
+  border-left: 7px solid transparent;
+  content: '';
+  display: block;
+  left: 50%;
+  margin-left: -7px;
+  position: absolute;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover.JSONEditor2-above:before {
+  border-top: 7px solid #4c4c4c;
+  bottom: -7px;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover.JSONEditor2-below:before {
+  border-bottom: 7px solid #4c4c4c;
+  top: -7px;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover.JSONEditor2-left:before {
+  border-left: 7px solid #4c4c4c;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  content: '';
+  top: 19px;
+  right: -14px;
+  left: inherit;
+  margin-left: inherit;
+  margin-top: -7px;
+  position: absolute;
+}
+
+.JSONEditor2-schema-error .JSONEditor2-popover.JSONEditor2-right:before {
+  border-right: 7px solid #4c4c4c;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  content: '';
+  top: 19px;
+  left: -14px;
+  margin-left: inherit;
+  margin-top: -7px;
+  position: absolute;
+}
+
+.JSONEditor2-schema-error:hover .JSONEditor2-popover,
+.JSONEditor2-schema-error:focus .JSONEditor2-popover {
+  display: block;
+  -webkit-animation: fade-in .3s linear 1, move-up .3s linear 1;
+  -moz-animation: fade-in .3s linear 1, move-up .3s linear 1;
+  -ms-animation: fade-in .3s linear 1, move-up .3s linear 1;
+}
+
+@-webkit-keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/*@-webkit-keyframes move-up {*/
+
+/*from   { bottom: 24px; }*/
+
+/*to { bottom: 32px; }*/
+
+/*}*/
+
+/*@-moz-keyframes move-up {*/
+
+/*from   { bottom: 24px; }*/
+
+/*to { bottom: 32px; }*/
+
+/*}*/
+
+/*@-ms-keyframes move-up {*/
+
+/*from   { bottom: 24px; }*/
+
+/*to { bottom: 32px; }*/
+
+/*}*/
+
+/* JSON schema errors displayed at the bottom of the editor in mode text and code */
+
+.JSONEditor2 .JSONEditor2-text-errors {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffef8b;
+  border-top: 1px solid #ffd700;
+}
+
+.JSONEditor2 .JSONEditor2-text-errors td {
+  padding: 3px 6px;
+  vertical-align: middle;
+}
+
+.JSONEditor2-text-errors .JSONEditor2-schema-error {
+  border: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0 4px 0 0;
+  background: url("img/jsoneditor-icons.svg")  -168px -48px;
+}
+/* ContextMenu - main menu */
+
+div.JSONEditor2-contextmenu-root {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+div.JSONEditor2-contextmenu {
+  position: absolute;
+  box-sizing: content-box;
+  z-index: 99999;
+}
+
+div.JSONEditor2-contextmenu ul,
+div.JSONEditor2-contextmenu li {
+  box-sizing: content-box;
+}
+
+div.JSONEditor2-contextmenu ul {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 124px;
+  background: white;
+  border: 1px solid #d3d3d3;
+  box-shadow: 2px 2px 12px rgba(128, 128, 128, 0.3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+div.JSONEditor2-contextmenu ul li button {
+  padding: 0;
+  margin: 0;
+  width: 124px;
+  height: 24px;
+  border: none;
+  cursor: pointer;
+  color: #4d4d4d;
+  background: transparent;
+  font-size: 10pt;
+  font-family: arial, sans-serif;
+  box-sizing: border-box;
+  line-height: 26px;
+  text-align: left;
+}
+
+/* Fix button padding in firefox */
+
+div.JSONEditor2-contextmenu ul li button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+div.JSONEditor2-contextmenu ul li button:hover,
+div.JSONEditor2-contextmenu ul li button:focus {
+  color: #1a1a1a;
+  background-color: #f5f5f5;
+  outline: none;
+}
+
+div.JSONEditor2-contextmenu ul li button.JSONEditor2-default {
+  width: 92px;
+}
+
+div.JSONEditor2-contextmenu ul li button.JSONEditor2-expand {
+  float: right;
+  width: 32px;
+  height: 24px;
+  border-left: 1px solid #e5e5e5;
+}
+
+div.JSONEditor2-contextmenu div.JSONEditor2-icon {
+  float: left;
+  width: 24px;
+  height: 24px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-image: url("img/jsoneditor-icons.svg");
+}
+
+div.JSONEditor2-contextmenu ul li button div.JSONEditor2-expand {
+  float: right;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0 4px 0 0;
+  background: url("img/jsoneditor-icons.svg") 0 -72px;
+  opacity: 0.4;
+}
+
+div.JSONEditor2-contextmenu ul li button:hover div.JSONEditor2-expand,
+div.JSONEditor2-contextmenu ul li button:focus div.JSONEditor2-expand,
+div.JSONEditor2-contextmenu ul li.JSONEditor2-selected div.JSONEditor2-expand,
+div.JSONEditor2-contextmenu ul li button.JSONEditor2-expand:hover div.JSONEditor2-expand,
+div.JSONEditor2-contextmenu ul li button.JSONEditor2-expand:focus div.JSONEditor2-expand {
+  opacity: 1;
+}
+
+div.JSONEditor2-contextmenu div.JSONEditor2-separator {
+  height: 0;
+  border-top: 1px solid #e5e5e5;
+  padding-top: 5px;
+  margin-top: 5px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-remove > div.JSONEditor2-icon {
+  background-position: -24px -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-remove:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-remove:focus > div.JSONEditor2-icon {
+  background-position: -24px 0;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-append > div.JSONEditor2-icon {
+  background-position: 0 -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-append:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-append:focus > div.JSONEditor2-icon {
+  background-position: 0 0;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-insert > div.JSONEditor2-icon {
+  background-position: 0 -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-insert:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-insert:focus > div.JSONEditor2-icon {
+  background-position: 0 0;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-duplicate > div.JSONEditor2-icon {
+  background-position: -48px -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-duplicate:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-duplicate:focus > div.JSONEditor2-icon {
+  background-position: -48px 0;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-sort-asc > div.JSONEditor2-icon {
+  background-position: -168px -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-sort-asc:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-sort-asc:focus > div.JSONEditor2-icon {
+  background-position: -168px 0;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-sort-desc > div.JSONEditor2-icon {
+  background-position: -192px -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-sort-desc:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-sort-desc:focus > div.JSONEditor2-icon {
+  background-position: -192px 0;
+}
+
+/* ContextMenu - sub menu */
+
+div.JSONEditor2-contextmenu ul li button.JSONEditor2-selected,
+div.JSONEditor2-contextmenu ul li button.JSONEditor2-selected:hover,
+div.JSONEditor2-contextmenu ul li button.JSONEditor2-selected:focus {
+  color: white;
+  background-color: #ee422e;
+}
+
+div.JSONEditor2-contextmenu ul li {
+  overflow: hidden;
+}
+
+div.JSONEditor2-contextmenu ul li ul {
+  display: none;
+  position: relative;
+  left: -10px;
+  top: 0;
+  border: none;
+  box-shadow: inset 0 0 10px rgba(128, 128, 128, 0.5);
+  padding: 0 10px;
+  /* TODO: transition is not supported on IE8-9 */
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+}
+
+
+
+div.JSONEditor2-contextmenu ul li ul li button {
+  padding-left: 24px;
+  animation: all ease-in-out 1s;
+}
+
+div.JSONEditor2-contextmenu ul li ul li button:hover,
+div.JSONEditor2-contextmenu ul li ul li button:focus {
+  background-color: #f5f5f5;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-type-string > div.JSONEditor2-icon {
+  background-position: -144px -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-type-string:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-type-string:focus > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-type-string.JSONEditor2-selected > div.JSONEditor2-icon {
+  background-position: -144px 0;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-type-auto > div.JSONEditor2-icon {
+  background-position: -120px -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-type-auto:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-type-auto:focus > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-type-auto.JSONEditor2-selected > div.JSONEditor2-icon {
+  background-position: -120px 0;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-type-object > div.JSONEditor2-icon {
+  background-position: -72px -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-type-object:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-type-object:focus > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-type-object.JSONEditor2-selected > div.JSONEditor2-icon {
+  background-position: -72px 0;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-type-array > div.JSONEditor2-icon {
+  background-position: -96px -24px;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-type-array:hover > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-type-array:focus > div.JSONEditor2-icon,
+div.JSONEditor2-contextmenu button.JSONEditor2-type-array.JSONEditor2-selected > div.JSONEditor2-icon {
+  background-position: -96px 0;
+}
+
+div.JSONEditor2-contextmenu button.JSONEditor2-type-modes > div.JSONEditor2-icon {
+  background-image: none;
+  width: 6px;
+}
+div.JSONEditor2-menu {
+  width: 100%;
+  height: 35px;
+  padding: 2px;
+  margin: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: white;
+  background-color: #3883fa;
+  border-bottom: 1px solid #3883fa;
+}
+
+div.JSONEditor2-menu > button,
+div.JSONEditor2-menu > div.JSONEditor2-modes > button {
+  width: 26px;
+  height: 26px;
+  margin: 2px;
+  padding: 0;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  background: transparent url("img/jsoneditor-icons.svg");
+  color: white;
+  opacity: 0.8;
+  font-family: arial, sans-serif;
+  font-size: 10pt;
+  float: left;
+}
+
+div.JSONEditor2-menu > button:hover,
+div.JSONEditor2-menu > div.JSONEditor2-modes > button:hover {
+  background-color: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+div.JSONEditor2-menu > button:focus,
+div.JSONEditor2-menu > button:active,
+div.JSONEditor2-menu > div.JSONEditor2-modes > button:focus,
+div.JSONEditor2-menu > div.JSONEditor2-modes > button:active {
+  background-color: rgba(255,255,255,0.3);
+}
+
+div.JSONEditor2-menu > button:disabled,
+div.JSONEditor2-menu > div.JSONEditor2-modes > button:disabled {
+  opacity: 0.5;
+}
+
+div.JSONEditor2-menu > button.JSONEditor2-collapse-all {
+  background-position: 0 -96px;
+}
+
+div.JSONEditor2-menu > button.JSONEditor2-expand-all {
+  background-position: 0 -120px;
+}
+
+div.JSONEditor2-menu > button.JSONEditor2-undo {
+  background-position: -24px -96px;
+}
+
+div.JSONEditor2-menu > button.JSONEditor2-undo:disabled {
+  background-position: -24px -120px;
+}
+
+div.JSONEditor2-menu > button.JSONEditor2-redo {
+  background-position: -48px -96px;
+}
+
+div.JSONEditor2-menu > button.JSONEditor2-redo:disabled {
+  background-position: -48px -120px;
+}
+
+div.JSONEditor2-menu > button.JSONEditor2-compact {
+  background-position: -72px -96px;
+}
+
+div.JSONEditor2-menu > button.JSONEditor2-format {
+  background-position: -72px -120px;
+}
+
+div.JSONEditor2-menu > div.JSONEditor2-modes {
+  display: inline-block;
+  float: left;
+}
+
+div.JSONEditor2-menu > div.JSONEditor2-modes > button {
+  background-image: none;
+  width: auto;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+div.JSONEditor2-menu > button.JSONEditor2-separator,
+div.JSONEditor2-menu > div.JSONEditor2-modes > button.JSONEditor2-separator {
+  margin-left: 10px;
+}
+
+div.JSONEditor2-menu a {
+  font-family: arial, sans-serif;
+  font-size: 10pt;
+  color: white;
+  opacity: 0.8;
+  vertical-align: middle;
+}
+
+div.JSONEditor2-menu a:hover {
+  opacity: 1;
+}
+
+div.JSONEditor2-menu a.JSONEditor2-poweredBy {
+  font-size: 8pt;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 10px;
+}
+table.JSONEditor2-search input,
+table.JSONEditor2-search div.JSONEditor2-results {
+  font-family: arial, sans-serif;
+  font-size: 10pt;
+  color: #1A1A1A;
+  background: transparent;
+  /* For Firefox */
+}
+
+table.JSONEditor2-search div.JSONEditor2-results {
+  color: white;
+  padding-right: 5px;
+  line-height: 24px;
+}
+
+table.JSONEditor2-search {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+table.JSONEditor2-search div.JSONEditor2-frame {
+  border: 1px solid transparent;
+  background-color: white;
+  padding: 0 2px;
+  margin: 0;
+}
+
+table.JSONEditor2-search div.JSONEditor2-frame table {
+  border-collapse: collapse;
+}
+
+table.JSONEditor2-search input {
+  width: 120px;
+  border: none;
+  outline: none;
+  margin: 1px;
+  line-height: 20px;
+}
+
+table.JSONEditor2-search button {
+  width: 16px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: url("img/jsoneditor-icons.svg");
+  vertical-align: top;
+}
+
+table.JSONEditor2-search button:hover {
+  background-color: transparent;
+}
+
+table.JSONEditor2-search button.JSONEditor2-refresh {
+  width: 18px;
+  background-position: -99px -73px;
+}
+
+table.JSONEditor2-search button.JSONEditor2-next {
+  cursor: pointer;
+  background-position: -124px -73px;
+}
+
+table.JSONEditor2-search button.JSONEditor2-next:hover {
+  background-position: -124px -49px;
+}
+
+table.JSONEditor2-search button.JSONEditor2-previous {
+  cursor: pointer;
+  background-position: -148px -73px;
+  margin-right: 2px;
+}
+
+table.JSONEditor2-search button.JSONEditor2-previous:hover {
+  background-position: -148px -49px;
+}

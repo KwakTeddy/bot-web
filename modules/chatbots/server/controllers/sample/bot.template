@@ -1,0 +1,8 @@
+var path = require('path');
+var botlib = require(path.resolve('./engine/bot.js'));
+
+var {id} = {
+    use: true
+};
+
+botlib.makeBot('{id}', {id});

@@ -1,5 +1,5 @@
 var path = require('path');
-var bot = require(path.resolve('config/lib/bot')).getBot('sample');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('sample');
 
 var otherTask =
 {

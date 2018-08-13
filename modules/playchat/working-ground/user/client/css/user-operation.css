@@ -1,0 +1,74 @@
+.operation-search-area td span
+{
+    font-size: 14px;
+    color: #343434;
+}
+
+.user-operation-memo-area
+{
+    background-color: white;
+    border-radius: 4px;
+    padding: 10px;
+    position: relative;
+}
+
+.user-operation-memo-area textarea
+{
+    border: 0;
+    width: 100%;
+    min-height: 150px;
+}
+
+.user-operation-memo-area textarea:focus
+{
+    outline: 0;
+}
+
+.user-operation-history-area
+{
+    margin-top: 12px;
+}
+
+.operation-history-title
+{
+    padding-left: 20px;
+
+    font-size: 15px;
+    font-weight: 600;
+    color: #424242;
+}
+
+.operation-history-card
+{
+    position: relative;
+    padding: 17px;
+    margin: 4px;
+
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+
+    display: inline-block;
+    width: 49.2%;
+
+    box-sizing: border-box;
+}
+
+.operation-history-card-date
+{
+    position: absolute;
+    top: 10px;
+    right: 15px;
+
+    font-size: 12px;
+    font-weight: 100;
+    color: #c7c7c7;
+}
+
+.user-operation-memo-area > div
+{
+    text-align: right;
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    right: 16px;
+}

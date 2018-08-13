@@ -5640,7 +5640,7 @@ ion-tabs.tabs-color-active-dark .tab-item {
   z-index: 2;
   display: block;
   margin: -1px;
-  padding: 16px;
+  padding: 0 16px 0 16px;
   border-width: 1px;
   border-style: solid;
   font-size: 16px; }
@@ -10012,7 +10012,9 @@ html [segment], html segment {
 
 .chat-bubble .friend .bubble .content {
   background: #def5f8;
-  color: #000; }
+  color: #000;
+  white-space: pre-wrap !important;
+}
 
 .chat-bubble .friend .icon-tail {
   border-top: 7px solid #def5f8; }

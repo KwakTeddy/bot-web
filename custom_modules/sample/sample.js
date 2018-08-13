@@ -1,6 +1,5 @@
 var path = require('path');
-var type = require(path.resolve('modules/bot/action/common/type'));
-var bot = require(path.resolve('config/lib/bot')).getBot('sample');
+var bot = require(path.resolve('./bot-engine/bot')).getBot('sample');
 
 var helloworldTask =
 {

@@ -1,0 +1,108 @@
+<style>
+    .template-title
+    {
+        font-size: 20px;
+        font-weight: 600;
+        padding-left: 30px;
+    }
+
+    .template-body
+    {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .template-body input
+    {
+        border: 1px solid #ddd;
+        padding: 10px 20px;
+    }
+</style>
+
+<!--<h1 class="template-title">예약정보관리</h1>-->
+<div ng-controller="hotelReservationController" class="template-body">
+    <form ng-submit="save($event);">
+        <table class="tb02" style="table-layout:fixed;">
+            <colgroup>
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>예약자 성함</th>
+                <th>예약자 연락처</th>
+                <th>객실 이름</th>
+                <th>객실 종료</th>
+                <th>객실 가격</th>
+                <th>총 가격</th>
+                <th>예약 날짜</th>
+                <th>입금 날짜</th>
+                <th>예약날수</th>
+                <th>예약 기간</th>
+                <th>예약 인원</th>
+                <th>예약 상테</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="data in datas">
+                <td>
+                    <input type="text" ng-model="data.order_user">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.order_phone">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.order_category">
+                </td>
+                <td>
+                    <input type="number" ng-model="data.order_oneprice">
+                </td>
+                <td>
+                    <input type="number" ng-model="data.order_price">
+                </td>
+
+                <td>
+                    <input type="text" ng-model="data.order_date">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.order_paydate">
+                </td>
+                <td>
+                    <input type="number" ng-model="data.order_daynumbers">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.order_period">
+                </td>
+                <td>
+                    <input type="number" ng-model="data.order_peoplenumber">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.order_status">
+                </td>
+                <td>
+                    <button type="button" class="default-button" ng-click="delete($index)">삭제</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <button type="button" class="default-button" ng-click="add();">예약 추가</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,65 @@
+<div ng-controller="UserStatisticsController" data-ng-init="init();">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button type="button" class="default-button excel-download-button" ng-click="exelDownload('dailyUser')">{{lan('Excel Download') }}</button>
+        <div id="createdRange" class="pull-right" style="width: 40%;">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+        </div>
+    </div>
+
+    <div>
+        <h2 class="dialog-traffic-title">{{lan('Daily users') }}</h2>
+        <div>
+            <canvas id="dailyUser" width="400" height="150"></canvas>
+        </div>
+    </div>
+
+    <div>
+        <h2 class="dialog-traffic-title">{{lan('Channel users') }}</h2>
+        <div style="display: flex;">
+            <div style="flex: 1">
+                <div>
+                    <canvas id="userRatioByChannel" width="400" height="200"></canvas>
+                </div>
+            </div >
+            <div style="flex: 1">
+                <table class="tb02" style="height:100%">
+                    <thead>
+                    <tr>
+                        <th class="text-center">{{lan('Channel') }}</th>
+                        <th class="text-center">{{lan('Ratio') }}</th>
+                        <th class="text-center">{{lan('User Count') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">{{lan('Kakaotalk') }}</td>
+                        <td class="text-center">{{kakao*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
+                        <td class="text-center">{{kakao}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{lan('Facebook') }}</td>
+                        <td class="text-center">{{facebook*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
+                        <td class="text-center">{{facebook}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{lan('Naver talk talk') }}</td>
+                        <td class="text-center">{{navertalk*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
+                        <td class="text-center">{{navertalk}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{lan('Socket') }}</td>
+                        <td class="text-center">{{socket*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
+                        <td class="text-center">{{socket}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{lan('Total') }}</td>
+                        <td class="text-center">100%</td>
+                        <td class="text-center">{{kakao + facebook + navertalk + socket}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

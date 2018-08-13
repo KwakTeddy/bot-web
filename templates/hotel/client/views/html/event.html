@@ -1,0 +1,80 @@
+<style>
+    .template-title
+    {
+        font-size: 20px;
+        font-weight: 600;
+        padding-left: 30px;
+    }
+
+    .template-body
+    {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .template-body input
+    {
+        border: 1px solid #ddd;
+        text-overflow: ellipsis;
+        padding: 7px;
+        border-radius: 6px;
+        margin: 1px 4px;
+        width: 90%;
+    }
+</style>
+
+<!--<h1 class="template-title">이벤트정보관리</h1>-->
+<div ng-controller="hotelEventController" class="template-body">
+    <form ng-submit="save($event);">
+        <table class="tb02" style="table-layout:fixed;">
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+                <col style="width: 5%;">
+                <col style="width: 10%;">
+                <col style="width: 5%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>이벤트명</th>
+                <th>설명</th>
+                <th>장소</th>
+                <th>시간</th>
+                <th>기간</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="data in datas">
+                <td>
+                    <input type="text" ng-model="data.category_name">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.event_introduction">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.event_location">
+                </td>
+                <td>
+                    <input type="text" ng-model="data.event_opentime" style="width: 80%;">
+                </td>
+                <td>
+                    <input type="text"  ng-model="data.event_date">
+                </td>
+                <td>
+                    <button type="button" class="default-button" ng-click="delete($index)" style="width: 70px;" >삭제</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <button type="button" class="default-button" ng-click="add();">이벤트 추가</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tab-footer" style="border-top: 0;float: right;">
+            <button class="blue-button">Save</button>
+        </div>
+    </form>
+</div>

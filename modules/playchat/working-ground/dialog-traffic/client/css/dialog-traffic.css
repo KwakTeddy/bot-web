@@ -1,0 +1,12 @@
+.dialog-traffic-title
+{
+    color: #33353F;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 20px;
+    padding: 0;
+    text-transform: none;
+
+    text-align: center;
+    margin: 30px 0;
+}

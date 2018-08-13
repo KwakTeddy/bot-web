@@ -1,0 +1,256 @@
+<style>
+.answer .default-button
+{
+    box-sizing: border-box;
+}
+</style>
+
+<script type="text/template" id="botAnswerTemplate">
+<div class="answer">
+    <img src="modules/playchat/simulator/client/imgs/bot.png">
+    <div class="system-text">
+        <span class="name">{botName}</span>
+        <span class="time">{time}</span>
+    </div>
+    <div class="bubble">
+        <em class="tail"></em>
+        <div class="speech">
+            <div class="speech-text">{text}</div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/template" id="userAnswerTemplate">
+<div class="question">
+    <div class="system-text">
+        <span class="time">{time}</span>
+    </div>
+    <div class="bubble">
+        <em class="tail"></em>
+        <div>
+            <div class="speech">
+                <div class="speech-text">{text}</div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<div ng-controller="SimulatorController" style="height: 100%;">
+    <div class="simulator-background">
+        <div class="simulator-header">
+            <p>{{ chatbotName }}</p>
+            <a href="#" class="simulator-refresh" ng-click="refresh($event);"><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reset.png"></a>
+            <a href="#" class="simulator-close" ng-click="toggle($event);"></a>
+        </div>
+        <div class="chatContents" id="simulatorBody" ng-click="focusToInput();"></div>
+        <div class="input-box">
+            <input id="simulatorInput" type="text" placeholder="Enter something to test your bot." ng-keydown="sendMessage($event);" style="padding: 10px 7px 10px 1px;">
+            <button type="button">
+                <img src="modules/playchat/simulator/client/imgs/mic.png">
+            </button>
+        </div>
+    </div>
+    <div class="simulator-btn" ng-show="isClosed" ng-click="toggle($event);">
+        <a href="#" class="" style="color: #fff;font-weight: 700;">Chat</a>
+        <img src="modules/playchat/simulator/client/imgs/speech.png">
+    </div>
+
+
+    <div class="modal-background" ng-show="shortCutHelp">
+        <div class="modal">
+            <div class="modal-body">
+                <table class="tb02">
+                    <caption>Common</caption>
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>{{lan('Short cut')}}</th>
+                        <th>{{lan('Description')}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Alt ← →</td>
+                        <td>{{lan('Move to next or previous editor')}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="tb02">
+                    <caption>{{lan('Move to Dialog Graph')}}</caption>
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>{{lan('Short cut')}}</th>
+                        <th>{{lan('Description')}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>← ↓ ↑ →</td>
+                        <td>{{lan('Navigate Dialog')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Ctrl + ↑ ↓</td>
+                        <td>{{lan('Move Dialog Up/Down')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Enter</td>
+                        <td>{{lan('Open Edit Dialog')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Esc</td>
+                        <td>{{lan('Cancel Edit')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Insert</td>
+                        <td>{{lan('Add Child dialog')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Shift+Insert</td>
+                        <td>{{lan('Add Sibling dialog')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Del</td>
+                        <td>{{lan('Delete Dialog')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Space</td>
+                        <td>{{lan('Expand/Collapse Child Dialog')}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="tb02">
+                    <caption>{{lan('Dialog Graph Editor ShortCut')}}</caption>
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>{{lan('Short cut')}}</th>
+                        <th>{{lan('Description')}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Tab</td>
+                        <td>{{lan('Move focus to next input')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Insert</td>
+                        <td>{{lan('Add input or output')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Ctrl + Enter</td>
+                        <td>{{llan('Save')}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="tb02">
+                    <caption>{{lan('Dialog Graph Code Editor Shortcut')}}</caption>
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>{{lan('Short cut')}}</th>
+                            <th>{{lan('Description')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Alt + ← →</td>
+                            <td>{{lan('Move to previous or next tab')}}</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl or Meta + S</td>
+                            <td>{{lan('Save')}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="tb02">
+                    <caption>{{lan('Dialog Set Shortcut')}}/caption>
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>{{lan('Short cut')}}</th>
+                            <th>{{lan('Description')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Enter</td>
+                            <td>{{lan('Save')}}</td>
+                        </tr>
+                        <tr>
+                            <td>Shift + Enter</td>
+                            <td>{{lan('Add Multi Input or Output')}}</td>
+                        </tr>
+                        <tr>
+                            <td>↑ ↓</td>
+                            <td>{{lan('Move focus to upper or lower input')}}</td>
+                        </tr>
+                        <tr>
+                            <td>Del</td>
+                            <td>{{lan('Delete')}}</td>
+                        </tr>
+                        <tr>
+                            <td>Shift + Del</td>
+                            <td>{{lan('Delete multi Input or Output')}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="tb02">
+                    <caption>{{lan('Dialog Set Shortcut')}}</caption>
+                    <colgroup>
+                        <col style="width: 30%;">
+                        <col style="width: 70%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>{{lan('Short cut')}}</th>
+                            <th>{{lan('Description')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>F10</td>
+                            <td>{{lan('Move focus to simulator input')}}</td>
+                        </tr>
+                        <tr>
+                            <td>ESC</td>
+                            <td>{{lan('Move focus to dialog graph or dialog set')}}</td>
+                        </tr>
+                        <tr>
+                            <td>F5</td>
+                            <td>{{lan('Reset simulator')}}</td>
+                        </tr>
+                        <tr>
+                            <td>F7</td>
+                            <td>{{lan('Save & Reset simulator')}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-footer">
+                <button type="button" class="default-button" ng-click="closeShortCutHelp('naver')">{{ lan('Close') }}</button>
+            </div>
+        </div>
+    </div>
+</div>

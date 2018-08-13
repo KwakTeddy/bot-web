@@ -1,0 +1,236 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosanssc.css);
+
+.signin-background
+{
+    position: relative;
+    top: 65px;
+    width: 66%;
+    margin: 0 auto;
+}
+
+.signin-title
+{
+    text-align: center;
+    margin-top: 60px;
+}
+
+.signin-body
+{
+    display: flex;
+    margin-top: 86px;
+    align-items: center;
+    justify-content: center;
+}
+
+.social, .email
+{
+    /*padding: 0 40px 0 100px;*/
+}
+
+#logincontents
+{
+    text-align:center;
+    padding-top: 70px;
+}
+
+.p1{
+    font-size: 24px;
+}
+.p2{
+    font-size: 14px;
+    color: #7e7e7e;
+}
+
+.social p{
+    font-size: 13px;
+    color: #7e7e7e;
+}
+.fbbtn{
+    background: #3b589d url(../imgs/facebook.png) no-repeat 14px 8px;
+    padding:10px;
+    border-radius: 6px;
+    /*width: 230px;*/
+    margin: 10px auto;
+}
+.fbbtn a{
+    color: #fff !important;
+    margin-left: 45px;
+    letter-spacing: 0.1px;
+    margin-right: 10px;
+}
+.gbtn{
+    background: #d84d32 url(../imgs/google.png) no-repeat 16px 8px;
+    padding:10px;
+    border-radius: 6px;
+    /*width: 230px;*/
+    margin: 10px auto;
+}
+.gbtn a{
+    color: #fff !important;
+    letter-spacing: 0.1px;
+    margin-left: 45px;
+}
+.kbtn{
+    background: #ffeb00 url(../imgs/kakao.png) no-repeat 16px 8px;
+    padding:10px;
+    border-radius: 6px;
+    /*width: 230px;*/
+    margin: 10px auto;
+}
+.kbtn a{
+    color: #3b1e1e !important;
+    letter-spacing: 0px;
+    margin-left: 45px;
+}
+.input_type09{
+    width: 240px;
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    background: #fff;
+    margin: 3px auto 0px;
+    position: relative;
+    padding: 8px 18px 0px 8px;
+}
+.login p{
+    font-size: 13px;
+    color: #7e7e7e;
+    text-align: left;
+    text-indent: 5px;
+}
+.login span{
+    font-size: 13px;
+    color: #7e7e7e;
+    text-align: left;
+    text-indent: 5px;
+}
+.loginbtn{
+    background: #038eda;
+    padding:12px 0px;
+    border-radius: 6px;
+    width: 268px;
+    margin: 7px auto;
+    color: #fff;
+}
+.register{
+    width: 272px;
+    margin: 30px auto 0;
+}
+.register p{
+    font-size: 13px;
+    color: #7e7e7e;
+    text-align: left;
+    text-indent: 5px;
+}
+.register span{
+    font-size: 13px;
+    color: #7e7e7e;
+    text-align: left;
+    text-indent: 5px;
+}
+p.find{
+    color: #038eda;
+    text-align: right;
+    margin-top: 12px;
+}
+.agree{
+    text-align: left;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #7e7e7e;
+}
+#bottoms{
+    position: fixed;
+    bottom: 90px;
+    text-align: center;
+    clear: both;
+    width: 66%;
+}
+#bottoms span{
+    font-size: 13px;
+}
+a.create{
+    color:#038eda !important;
+    padding-left: 4px;
+    font-size: 15px;
+}
+a.create:hover{
+    text-decoration: underline;
+}
+a.policy{
+    font-size: 12px;
+    text-decoration: underline !important;
+    margin-top: 10px;
+    display: block;
+}
+.exclamation{
+    color: #f43e30;
+    font-weight: 600;
+    line-height: 25px;
+}
+
+
+.flL {
+    float: left;
+}
+
+
+.username
+{
+    font-size: 13px;
+    height: 25px;
+}
+
+.password
+{
+    font-size: 12px;
+    height: 25px;
+}
+
+.signup-complete-message
+{
+    padding-top: 120px;
+    width: 41%;
+    margin: 0 auto;
+}
+
+.signup-complete-message p
+{
+    margin: 5px 0;
+}
+
+.signup-complete-message div
+{
+    margin-top: 20px;
+}
+.noticebox{
+    font-family: 'Noto Sans SC', sans-serif;
+    border-radius: 6px;
+    width: 560px;
+    margin: 0 auto;
+    padding: 18px;
+    text-align: left;
+    line-height: 20px;
+    font-weight: 700;
+    background: #2f6587;
+    color: #fff;
+}
+.leftbox{
+    display: inline-block;
+    margin-right: 60px;
+    vertical-align: top;
+}
+.leftboxinput{
+    width: 270px;
+    margin: 0 auto;
+}
+@media only screen and (max-width: 925px) {
+    .leftbox{
+        margin: 0 auto;
+        display: block;
+    }
+    .noticebox{
+        width: 97%;
+        margin: 0 auto;
+        min-width: 230px;
+    }
+}

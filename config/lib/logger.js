@@ -1,21 +1,32 @@
-var path = require('path');
-var config = require(path.resolve('./config/config'));
-var winston = require('winston');
+var chalk = require('chalk');
 
-// var logger = new (winston.Logger)({
-//   transports: [
-//     new (winston.transports.Console)({ level: config.log.level, colorize: false})
-//   ]
-// });
-//
-// logger.level = config.log.level;
-// logger.info('Log Level: ' + logger.level);
-
-var logger = {
-verbose: function(text) {console.log(text);},
-info: function(text) {console.log(text);},
-debug: function(text) {console.log(text);},
-error: function(text) {console.error(text);}
+var logger =
+{
+    verbose: function(text) {console.log(text);},
+    info: function(text) {console.log(text);},
+    debug: function(text) {console.log(text);},
+    error: function(text) {console.error(text);},
+    systemInfo: function()
+    {
+        if(process.env.NODE_ENV == 'development')
+        {
+            console.log(chalk.blue.apply(null, arguments));
+        }
+    },
+    systemLog: function()
+    {
+        if(process.env.NODE_ENV == 'development')
+        {
+            console.log(chalk.magenta.apply(null, arguments));
+        }
+    },
+    systemError: function()
+    {
+        if(process.env.NODE_ENV == 'development')
+        {
+            console.log(chalk.red.apply(null, arguments));
+        }
+    }
 };
 
 module.exports = logger;

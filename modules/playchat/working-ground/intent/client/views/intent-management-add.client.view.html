@@ -1,0 +1,112 @@
+<style>
+.intent-management-add-form > div
+{
+    margin: 30px 0;
+}
+
+.intent-management-add-form label.required > span::after
+{
+    content: '*';
+
+    color: #038eda;
+    font-size: 12px;
+    position: relative;
+    top: -5px;
+    left: 2px;
+}
+
+.intent-management-add-form label > span
+{
+    font-size: 15px;
+    font-weight: 600;
+    width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.intent-management-add-form input
+{
+    border-bottom: 1px solid #a0a0a0;
+    width: 494px;
+    margin: 0 4px;
+    padding: 5px;
+}
+
+.intent-management-add-form input:focus
+{
+    border-bottom: 2px solid #038eda;
+}
+
+.intent-management-add-form .intent-management-add-button
+{
+    border: 1px solid #038eda;
+    border-radius: 4px;
+    padding: 7px 15px;
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #038eda;
+}
+
+.intent-management-add-form table thead th
+{
+    text-align: left;
+    padding-left: 40px;
+}
+</style>
+
+<div ng-controller="IntentManagementAddController" class="fixed-width">
+    <div style="width: 90%; margin-left: 2%;">
+        <form class="intent-management-add-form" ng-submit="save();">
+            <div>
+                <label class="required">
+                    <span>{{lan('Name') }}</span>
+                    <input type="text" ng-model="name" required="true" autofocus="true">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>{{lan('Contents') }}</span>
+                    <input type="text" ng-keydown="contentInputKeydown($event);">
+                    <button type="button" class="intent-management-add-button" ng-click="addIntentContentClick($event);">+ Add</button>
+                </label>
+            </div>
+            <div>
+                <label class="required" style="width: 100%;">
+                    <span style="vertical-align: top;">{{lan('List') }}</span>
+                    <div style="display: inline-block; vertical-align: top; width: 85%;">
+                        <table class="tb02" style="width: 100%;margin-top: 0px;">
+                            <colgroup>
+                                <col style="width: 90%;">
+                                <col style="width: 10%;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>{{lan('Contents') }}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="intentList">
+                                <tr ng-if="intents.length == 0">
+                                    <td colspan="2">Empty</td>
+                                </tr>
+                                <tr ng-repeat="item in intents">
+                                    <td style="text-align: left;"> <textarea class="intent-content-name" ng-model="item.name" style="width: 100%;"></textarea></td>
+                                    <td>
+                                        <img src="modules/playchat/working-ground/common/client/imgs/delete.png" class="delete-img" ng-click="deleteContent(intents, $index);">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </label>
+            </div>
+            <div style="text-align: right; padding-right: 12px;">
+                <button class="blue-button">{{lan('Save') }}</button>
+                <button type="button" class="default-button" ng-click="cancel();">{{lan('Cancel') }}</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+/node_modules/*
+/external_modules/*
+/public/*
+/views/*
+/client/*
+/.git/*
+/.gitignore
+/package.json
+/Profile
+/README.md
+*.dialog.js
+*.dlg

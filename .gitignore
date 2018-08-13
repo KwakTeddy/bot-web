@@ -1,9 +1,11 @@
 # OS
 # ===========
 .DS_Store
+modules/chatbots/client/views/chatbot-create.client.view.html
 ehthumbs.db
 Icon?
 Thumbs.db
+package-lock.json
 
 # Node and related ecosystem
 # ==========================
@@ -15,6 +17,8 @@ app/tests/coverage/
 .bower-*/
 .idea/
 coverage/
+custom_modules/
+custom_modules/*
 
 # MEAN.js app and assets
 # ======================
@@ -73,4 +77,14 @@ mongod
 *.njsproj
 *.sln
 
+# ETC
 config/sslcerts/
+*.dialog.js
+public/js/dialog.json
+public/files
+public/videos
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

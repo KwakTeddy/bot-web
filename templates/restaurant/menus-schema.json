@@ -1,0 +1,8 @@
+{
+    "category" : "String",
+    "name" : "String",
+    "hotmenus" : "Boolean",
+    "price" : "Number",
+    "image" : "String",
+    "description" : "String"
+}

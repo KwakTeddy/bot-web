@@ -1,0 +1,70 @@
+<div style="margin-top: 28px;">
+    <div ng-if="list.length == 0">
+        <p style="text-align: center;">Empty</p>
+    </div>
+    <div class="failed-dialog-training-row" ng-click="focusByClick($event, item)" ng-repeat="item in list">
+        <form ng-submit="save($event, item, list);">
+            <div class="failed-dialog-training-input">
+                <input class="failed-dialog-question" type="text" ng-model="item._id.dialog" ng-click="focusQuestion($event);">
+                <!--<span class="failed-dialog-question">{{ item._id.dialog }}</span>-->
+                <input type="text" class="failed-dialog-input-raw input_type09" name="failed-dialog-input-raw" ng-click="focus($event, item);" ng-keyup="findSimiliarAnswer($event, item);" ng-required="true">
+                <span class="failed-dialog-count">
+                    <span>{{lan('Count') }}</span><br/>
+                    <span>{{ item.count }}</span>
+                </span>
+            </div>
+            <div class="failed-dialog-suggestion" ng-if="item.similiarQuestion && item.similiarQuestion.length > 0">
+                <p class="failed-dialog-suggestion-title">{{lan('Suggestion related by question.') }}</p>
+                <div ng-repeat="q in item.similiarQuestion">
+                    <span class="failed-dialog-suggestion-question">{{ q.inputRaw }}</span>
+                    <span class="failed-dialog-suggestion-answer">{{ q.output }}</span>
+                    <button type="button" class="failed-dialog-sugesstion-select" ng-click="selectSuggestion($event, q);">{{lan('Select') }}</button>
+                </div>
+            </div>
+            <div class="failed-dialog-suggestion" ng-if="item.similiarAnswer && item.similiarAnswer.length > 0">
+                <p class="failed-dialog-suggestion-title">{{lan('Suggestion related by answer.') }}</p>
+                <div ng-repeat="a in item.similiarAnswer">
+                    <span class="failed-dialog-suggestion-question">{{ a.inputRaw }}</span>
+                    <span class="failed-dialog-suggestion-answer">{{ a.output }}</span>
+                    <button type="button" class="failed-dialog-sugesstion-select" ng-click="selectSuggestion($event, a);">{{lan('Select') }}</button>
+                </div>
+            </div>
+            <div style="margin-top: 20px; text-align: right;">
+                <button class="blue-button" style="width: 110px;">{{lan('Save') }}</button>
+                <button type="button" class="default-button" style="width: 110px;" ng-click="ignore(item);">{{lan('Ignore') }}</button>
+            </div>
+        </form>
+    </div>
+    <!--<div class="failed-dialog-training-row" ng-click="focusByClick($event)">-->
+        <!--<form ng-submit="save($event);">-->
+            <!--<div class="failed-dialog-training-input">-->
+                <!--<span class="failed-dialog-question">Hello, how are you?</span>-->
+                <!--<input type="text" class="failed-dialog-input-raw input_type09" name="failed-dialog-input-raw" value="i am fine, thank you. and you?" ng-focus="focus($event);" ng-required="true">-->
+                <!--<span class="failed-dialog-count">-->
+                    <!--<span>Count</span><br/>-->
+                    <!--<span>11</span>-->
+                <!--</span>-->
+            <!--</div>-->
+            <!--<div class="failed-dialog-suggestion">-->
+                <!--<p class="failed-dialog-suggestion-title">Suggestion related by question.</p>-->
+                <!--<div>-->
+                    <!--<span class="failed-dialog-suggestion-question">Hello, how are you?</span>-->
+                    <!--<span class="failed-dialog-suggestion-answer">I am fine, thank you. and you?</span>-->
+                    <!--<button type="button" class="failed-dialog-sugesstion-select">Select</button>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="failed-dialog-suggestion">-->
+                <!--<p class="failed-dialog-suggestion-title">Suggestion related by answer.</p>-->
+                <!--<div>-->
+                    <!--<span class="failed-dialog-suggestion-question">Hello, how are you?</span>-->
+                    <!--<span class="failed-dialog-suggestion-answer">I am fine, thank you. and you?</span>-->
+                    <!--<button type="button" class="failed-dialog-sugesstion-select">Select</button>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div style="margin-top: 20px; text-align: right;">-->
+                <!--<button type="button" class="blue-button" style="width: 100px;">Save</button>-->
+                <!--<button type="button" class="default-button" style="width: 100px;">Ignore</button>-->
+            <!--</div>-->
+        <!--</form>-->
+    <!--</div>-->
+</div>

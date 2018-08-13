@@ -84,7 +84,7 @@ module.exports = {
         firstName: 'User',
         lastName: 'Local',
         displayName: 'User Local',
-        roles: ['user']
+        roles: ['enterprise', 'user']
       },
       seedAdmin: {
         username: process.env.MONGO_SEED_ADMIN_USERNAME || 'admin',
@@ -93,7 +93,7 @@ module.exports = {
         firstName: 'Admin',
         lastName: 'Local',
         displayName: 'Admin Local',
-        roles: ['user', 'admin']
+        roles: ['user', 'enterprise', 'admin']
       }
     }
   }

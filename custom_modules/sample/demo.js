@@ -1,14 +1,14 @@
 var path = require('path');
-var http = require(path.resolve('modules/bot/action/common/http'));
-var task = require(path.resolve('modules/bot/action/common/task'));
-var bot = require(path.resolve('config/lib/bot')).getBot('sample');
+var http = require(path.resolve('./bot-engine/action/common/http'));
+var task = require(path.resolve('./bot-engine/action/common/task'));
+var bot = require(path.resolve('./bot-engine/bot')).getBot('sample');
 var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
 var tough = require('tough-cookie');
 
 var async = require('async');
 var webdriverio = require('webdriverio');
-var utils = require(path.resolve('modules/bot/action/common/utils'));
+var utils = require(path.resolve('./bot-engine/action/common/utils'));
 var config = require(path.resolve('./config/config'));
 
 var options = {
@@ -217,7 +217,7 @@ function shinhan(task, context, callback) {
         .init()
         .then(function() {
             // client.end();
-            client.url('https://www.shinhancard.com')
+            client.url('https://www.Shinhancard.com')
                 .pause(1000)
                 .click('#shcGnb > li:nth-child(2) > a')
                 .pause(1000)

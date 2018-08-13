@@ -1,0 +1,153 @@
+<style>
+    .dashboard-dialog-develop.basic > div
+    {
+
+    }
+
+    .dashboard-dialog-develop.menu > div
+    {
+        width: 30%;
+    }
+
+    .dashboard-dialog-develop.cupon > div
+    {
+        width: 47%;
+    }
+
+    .dashboard-dialog-develop.order > div
+    {
+        width: 47%;
+    }
+</style>
+
+<div ng-controller="deliveryDashboardController">
+    <div ng-if="isFirst">
+        <h1 style="font-size: 26px;font-weight: 600;margin: 20px 0px 70px;line-height: 45px;text-align: center;">챗봇이 만들어졌습니다!<br> 지금 채널에 연결하면 바로 자동응답이 시작됩니다.</h1>
+        <div class="dashboard-dialog-develop" style="margin-top: 20px;">
+            <div class="dashboard-dialog-learning">
+                <img src="/modules/playchat/working-ground/dashboard/client/imgs/sns_img.png" style="height: 138px;">
+                <div>
+                    <p>채널 연결하기</p>
+                    <p>전화 카카오톡 페이스북에 연결해서 챗봇을 서비스합니다.</p>
+                    <div style="display: flex;">
+                        <a href="/playchat/channel" class="blue-button" style="width: 120px;height: 34px;line-height: 34px;">연결시작</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-dialog-learning">
+                <img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_learning.png" style="height: 138px;">
+                <div>
+                    <p>대화 학습 시키기</p>
+                    <p>고객이 물어본 질문에 어떻게 답변하지 학습시킬 수 있습니다.</p>
+                    <div style="display: flex;">
+                        <a href="/playchat/development/dialog-set" class="blue-button" style="width: 120px;height: 34px;line-height: 34px;">학습 시작</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-dialog-develop basic" style="margin-top: 70px;opacity: 0.5;">
+            <div class="dashboard-dialog-management-card-first">
+                <a href="/playchat/templates/contents/basic" class="dashboard-dialog-cover"></a>
+                <div>
+                    <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/basic_b.png"></a>기본정보수정</div>
+                    <p>레스토랑이름, 전화번호, 주소 등 자동 안내되는 정보를 수정하세요.</p>
+                </div>
+            </div>
+            <div class="dashboard-dialog-management-card-first">
+                <a href="/playchat/templates/contents/menu" class="dashboard-dialog-cover"></a>
+                <div>
+                    <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/info_b.png"></a>시술정보관리</div>
+                    <p>진료 시술 정보, 금액 등을 추가하고 수정할 수 있습니다. </p>
+                </div>
+            </div>
+            <div class="dashboard-dialog-management-card-first">
+                <a href="/playchat/templates/contents/order" class="dashboard-dialog-cover"></a>
+                <div>
+                    <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/clock.png"></a> 예약관리</div>
+                    <p>환자의 진료예약 현황 확인, 접수, 취소가 가능합니다.</p>
+                </div>
+            </div>
+            <div class="dashboard-dialog-management-card-first">
+                <a href="/playchat/analysis/summary" class="dashboard-dialog-cover"></a>
+                <div>
+                    <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ana.png"></a> 사용통계</div>
+                    <p>기간별 접속자 수, 대화 수 등 사용량을 조회할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="!isFirst">
+        <div class="dashboard-summary-title">Bot Profile</div>
+        <div class="dashboard-bot-profile">
+            <div class="dashboard-bot-profile-image">
+                <div class="dashboard-bot-profile-image-wrapper">
+                    <img src="/modules/playchat/working-ground/dashboard/client/imgs/bigsumnail.png">
+                    <span></span>
+                </div>
+            </div>
+            <div class="dashboard-bot-profile-content">
+                <div>
+                    <span>Bot Name</span>
+                    <input type="text" value="{{ chatbot.name }}" disabled="true">
+                </div>
+                <div>
+                    <p>Description</p>
+                    <textarea disabled="true" style="resize: none;">{{ chatbot.description }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-dialog-develop" style="margin-top: 20px;">
+            <div class="dashboard-dialog-learning">
+                <img src="/modules/playchat/working-ground/dashboard/client/imgs/sns_img.png" style="height: 138px;">
+                <div>
+                    <p>채널 연결하기</p>
+                    <p>전화 카카오톡 페이스북에 연결해서 챗봇을 서비스합니다.</p>
+                    <div style="display: flex;">
+                        <a href="/playchat/channel" class="blue-button" style="width: 120px;height: 34px;line-height: 34px;">연결시작</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-dialog-learning">
+                <img src="/modules/playchat/working-ground/dashboard/client/imgs/dialog_learning.png" style="height: 138px;">
+                <div>
+                    <p>대화 학습 시키기</p>
+                    <p>고객이 물어본 질문에 어떻게 답변하지 학습시킬 수 있습니다.</p>
+                    <div style="display: flex;">
+                        <a href="/playchat/development/dialog-set" class="blue-button" style="width: 120px;height: 34px;line-height: 34px;">학습 시작</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-dialog-develop basic" style="margin-top: 70px;">
+            <div class="dashboard-dialog-management-card">
+                <a href="/playchat/templates/contents/basic" class="dashboard-dialog-cover"></a>
+                <div>
+                    <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/basic_b.png"></a>기본정보수정</div>
+                    <p>레스토랑이름, 전화번호, 주소 등 자동 안내되는 정보를 수정하세요.</p>
+                </div>
+            </div>
+            <div class="dashboard-dialog-management-card">
+                <a href="/playchat/templates/contents/menu" class="dashboard-dialog-cover"></a>
+                <div>
+                    <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/info_b.png"></a>메뉴정보관리</div>
+                    <p>메뉴 정보, 금액 등을 추가하고 수정할 수 있습니다. </p>
+                </div>
+            </div>
+            <div class="dashboard-dialog-management-card">
+                <a href="/playchat/templates/contents/order" class="dashboard-dialog-cover"></a>
+                <div>
+                    <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/clock.png"></a> 예약관리</div>
+                    <p>예약 현황 확인, 접수, 취소가 가능합니다.</p>
+                </div>
+            </div>
+            <div class="dashboard-dialog-management-card">
+                <a href="/playchat/analysis/summary" class="dashboard-dialog-cover"></a>
+                <div>
+                    <div><a href="#"><img src="/modules/playchat/working-ground/dashboard/client/imgs/ana.png"></a> 사용통계</div>
+                    <p>기간별 접속자 수, 대화 수 등 사용량을 조회할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

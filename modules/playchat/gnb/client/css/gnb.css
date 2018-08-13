@@ -1,0 +1,240 @@
+.playchat-background .gnb ul li a
+{
+    display:inline-block;
+    cursor: pointer;
+    line-height: 24px;
+    height: 100%;
+    width: 100%;
+}
+
+.playchat-background .gnb li
+{
+    position: relative;
+}
+
+.playchat-background .gnb li .selected
+{
+    background: #038eda;
+    padding: 2px 42px;
+    font-size: 14px;
+    font-weight: 400;
+    height: 48px;
+    line-height: 48px;
+}
+
+.playchat-background .gnb li .selected a img{
+    opacity: 1 !important;
+}
+
+
+
+.playchat-background .gnb .gnb-header
+{
+    height: 44px;
+    background: #363636;
+    padding: 10px 23px;
+    position: relative;
+}
+
+.playchat-background .gnb .gnb-header .gnb-open
+{
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 23px;
+    width: 28px;
+    height: 26px;
+}
+
+.playchat-background .gnb .gnb-header .gnb-close
+{
+    position: absolute;
+    right: 25px;
+    top: 19px;
+    width: 28px;
+    height: 26px;
+    background: url(../imgs/hamburger.png) no-repeat center center;
+    background-size: 23px 17px;
+}
+
+
+
+
+.playchat-background .gnb .gnb-bot-name
+{
+    background: #424242;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    padding: 0px 30px 0 11px;
+    height: 48px;
+    line-height: 46px;
+
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal !important;
+}
+
+.playchat-background .gnb .gnb-bot-name .gnb-bot-name-modify
+{
+    padding-top: 16px;
+    position: absolute;
+    right: 6px;
+}
+
+.playchat-background .gnb .gnb-bot-name .gnb-bot-name-detail
+{
+    padding-top: 22px;
+    position: absolute;
+    right: 16px;
+}
+
+.playchat-background .gnb .gnb-bot-name .gnb-bot-name-modify img, .playchat-background .gnb .gnb-bot-name .gnb-bot-name-detail img
+{
+    padding-right: 11px;
+}
+
+
+
+
+.playchat-background .gnb .menu-item-list
+{
+    padding: 0;
+    margin-bottom: 30px;
+    position: relative;
+    white-space: nowrap;
+}
+
+.playchat-background .gnb .menu-item-list li
+{
+    display: block;
+    vertical-align: top;
+    letter-spacing: 0.3px;
+    font-weight: 400;
+}
+
+.playchat-background .gnb .menu-item-list li img
+{
+    padding-right: 8px;
+    opacity: 0.6;
+}
+
+.playchat-background .gnb .menu-item-list li.menu-item-group
+{
+    overflow: hidden;
+}
+
+.playchat-background .gnb .menu-item-list li.menu-item-group .menu-item
+{
+    padding: 3px 30px;
+    font-size: 13px;
+    font-weight:400;
+    height: 38px;
+    line-height: 38px;
+}
+
+.playchat-background .gnb .menu-item-list li.menu-item-group a
+{
+    color: #fff;
+}
+
+.playchat-background .gnb .menu-item-group .close
+{
+    position: absolute;
+    top: 10px;
+    right: 25px;
+
+    display: inline-block;
+    cursor: pointer;
+    line-height: 24px;
+    width: 14px;
+    height: 24px;
+
+    background: url('../imgs/down.png') no-repeat center center;
+}
+
+.playchat-background .gnb .menu-item-group .open .close
+{
+    background: url('../imgs/up.png') no-repeat center center;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group
+{
+    height: 0;
+    padding: 0;
+}
+.playchat-background .gnb .menu-item-list .open+.sub-menu-item-group
+{
+    height: 100%;
+    padding: 0;
+    background: #424242;
+    overflow: hidden;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.sub-menu-item
+{
+    padding: 0 40px;
+    font-size: 13px;
+    font-weight:400;
+    height: 40px;
+    line-height: 40px;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.sub-menu-item a
+{
+    color: #b7bbc4;
+}
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.sub-menu-item a img
+{
+    opacity: 1;
+}
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li
+{
+    cursor: pointer;
+}
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected
+{
+    background: #038eda;
+    padding: 0px 42px;
+    font-size: 13px;
+    font-weight:600;
+    height: 48px;
+    line-height: 48px;
+}
+
+playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected a img{
+    opacity: 1 !important;
+}
+
+.playchat-background .gnb .menu-item-list .sub-menu-item-group li.selected a
+{
+    color: #fff;
+}
+
+.playchat-background .gnb .bottom-list
+{
+    width: 100%;
+}
+
+.playchat-background .gnb .bottom-list > li
+{
+    padding: 0px 30px;
+    font-size: 13px;
+    font-weight:400;
+    height: 40px;
+    line-height: 40px;
+}
+
+.playchat-background .gnb .bottom-list > li a
+{
+    color: #fff;
+}
+
+.playchat-background .gnb .bottom-list img
+{
+    padding-top: 5px;
+    padding-right: 8px;
+}

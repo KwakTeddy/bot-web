@@ -11,8 +11,22 @@ var validFormats = ['combined', 'common', 'dev', 'short', 'tiny'];
 
 // build logger service
 var logger = {
-  getFormat: getLogFormat, // log format to use
-  getOptions: getLogOptions // log options to use
+    getFormat: getLogFormat, // log format to use
+    getOptions: getLogOptions, // log options to use
+    systemInfo: function()
+    {
+        if(process.env.NODE_ENV == 'development')
+        {
+            console.log(chalk.blue.apply(null, arguments));
+        }
+    },
+    systemLog: function()
+    {
+        if(process.env.NODE_ENV == 'development')
+        {
+            console.log(chalk.magenta.apply(null, arguments));
+        }
+    }
 };
 
 // export the logger service

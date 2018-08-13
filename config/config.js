@@ -9,6 +9,8 @@ var _ = require('lodash'),
   fs = require('fs'),
   path = require('path');
 
+var logger = require('./lib/logger.js');
+
 /**
  * Get files by glob patterns
  */
@@ -91,11 +93,9 @@ var validateSecureMode = function (config) {
  * Validate Session Secret parameter is not set to default in production
  */
 var validateSessionSecret = function (config, testing) {
-
   if (process.env.NODE_ENV !== 'production') {
     return true;
   }
-
   if (config.sessionSecret === 'MEAN') {
     if (!testing) {
       console.log(chalk.red('+ WARNING: It is strongly recommended that you change sessionSecret config while running in production!'));
@@ -116,12 +116,20 @@ var initGlobalConfigFolders = function (config, assets) {
   // Appending files
   config.folders = {
     server: {},
-    client: {},
-    mobile: {}
+    client: {}
   };
 
   // Setting globbed client paths
-  config.folders.client = getGlobbedPaths(path.join(process.cwd(), 'modules/*/client/'), process.cwd().replace(new RegExp(/\\/g), '/'));
+    var cwd = process.cwd();
+    var replacedCwd = cwd.replace(new RegExp(/\\/g), '/');
+
+    config.folders.client = _.union(
+        getGlobbedPaths(path.join(cwd, 'modules/*/client/'), replacedCwd),
+        getGlobbedPaths(path.join(cwd, 'modules/*/*/client/'), replacedCwd),
+        getGlobbedPaths(path.join(cwd, 'modules/*/*/*/client/'), replacedCwd),
+        getGlobbedPaths(path.join(cwd, 'templates/*/client/'), replacedCwd),
+        config.folders.client
+    );
 };
 
 /**
@@ -131,8 +139,7 @@ var initGlobalConfigFiles = function (config, assets) {
   // Appending files
   config.files = {
     server: {},
-    client: {},
-    mobile: {}
+    client: {}
   };
 
   // Setting Globbed model files
@@ -151,16 +158,10 @@ var initGlobalConfigFiles = function (config, assets) {
   config.files.server.policies = getGlobbedPaths(assets.server.policies);
 
   // Setting Globbed js files
-  config.files.client.js = getGlobbedPaths(assets.client.lib.js, 'public/').concat(getGlobbedPaths(assets.client.js, ['public/']));
+  config.files.client.js = getGlobbedPaths(assets.client.js, ['public/']);
 
   // Setting Globbed css files
-  config.files.client.css = getGlobbedPaths(assets.client.lib.css, 'public/').concat(getGlobbedPaths(assets.client.css, ['public/']));
-
-  // Setting Globbed js files
-  config.files.mobile.js = getGlobbedPaths(assets.mobile.lib.js, 'public/').concat(getGlobbedPaths(assets.mobile.js, ['public/']));
-
-  // Setting Globbed css files
-  config.files.mobile.css = getGlobbedPaths(assets.mobile.lib.css, 'public/').concat(getGlobbedPaths(assets.mobile.css, ['public/']));
+  config.files.client.css = getGlobbedPaths(assets.client.css, ['public/']);
 
   // Setting Globbed test files
   config.files.client.tests = getGlobbedPaths(assets.client.tests);
@@ -173,66 +174,64 @@ var initGlobalConfigFiles = function (config, assets) {
 /**
  * Initialize global configuration
  */
-var initGlobalConfig = function () {
-  // Validate NODE_ENV existence
-  validateEnvironmentVariable();
+var initGlobalConfig = function ()
+{
+    // Validate NODE_ENV existence
+    validateEnvironmentVariable();
 
-  // Get the default assets
-  var defaultAssets = require(path.join(process.cwd(), 'config/assets/default'));
+    // Get the default assets
+    var defaultAssets = require(path.join(process.cwd(), 'config/assets/default'));
 
-  // Get the current assets
-  var environmentAssets = require(path.join(process.cwd(), 'config/assets/', process.env.NODE_ENV)) || {};
+    // Get the current assets
+    var environmentAssets = require(path.join(process.cwd(), 'config/assets/', process.env.NODE_ENV)) || {};
 
-  // Merge assets
-  var assets = _.merge(defaultAssets, environmentAssets);
+    // Merge assets
+    var assets = _.merge(defaultAssets, environmentAssets);
 
-  // Get the default config
-  var defaultConfig = require(path.join(process.cwd(), 'config/env/default'));
+    // Get the default config
+    var defaultConfig = require(path.join(process.cwd(), 'config/env/default'));
 
-  // Get the current config
-  var environmentConfig = require(path.join(process.cwd(), 'config/env/', process.env.NODE_ENV)) || {};
+    // Get the current config
+    var environmentConfig = require(path.join(process.cwd(), 'config/env/', process.env.NODE_ENV)) || {};
 
-  // Merge config files
-  var config = _.merge(defaultConfig, environmentConfig);
+    // Merge config files
+    var config = _.merge(defaultConfig, environmentConfig);
 
-  // read package.json for MEAN.JS project information
-  var pkg = require(path.resolve('./package.json'));
-  config.meanjs = pkg;
+    // read package.json for MEAN.JS project information
+    var pkg = require(path.resolve('./package.json'));
+    config.meanjs = pkg;
 
-  // We only extend the config object with the local.js custom/local environment if we are on
-  // production or development environment. If test environment is used we don't merge it with local.js
-  // to avoid running test suites on a prod/dev environment (which delete records and make modifications)
-  if (process.env.NODE_ENV !== 'test') {
-    config = _.merge(config, (fs.existsSync(path.join(process.cwd(), 'config/env/local.js')) && require(path.join(process.cwd(), 'config/env/local.js'))) || {});
-  }
+    // We only extend the config object with the local.js custom/local environment if we are on
+    // production or development environment. If test environment is used we don't merge it with local.js
+    // to avoid running test suites on a prod/dev environment (which delete records and make modifications)
+    if (process.env.NODE_ENV !== 'test') {
+        config = _.merge(config, (fs.existsSync(path.join(process.cwd(), 'config/env/local.js')) && require(path.join(process.cwd(), 'config/env/local.js'))) || {});
+    }
 
-  // Initialize global globbed files
-  initGlobalConfigFiles(config, assets);
+    // Initialize global globbed files
+    initGlobalConfigFiles(config, assets);
 
-  // Initialize global globbed folders
-  initGlobalConfigFolders(config, assets);
+    // Initialize global globbed folders
+    initGlobalConfigFolders(config, assets);
 
-  // Validate Secure SSL mode can be used
-  validateSecureMode(config);
+    // Validate Secure SSL mode can be used
+    validateSecureMode(config);
 
-  // Validate session secret
-  validateSessionSecret(config);
+    // Validate session secret
+    validateSessionSecret(config);
 
-  console.log('chatServer: ' + config.chatServer);
-  if(process.env && process.env.CHAT_SERVER) {
-    console.log('CHAT_SERVER: ' + process.env.CHAT_SERVER);
-    config.chatServer = process.env.CHAT_SERVER;
-  } else {
-    console.log('process.env does not exist');
-  }
-  console.log('chatServer: ' + config.chatServer);
-  // Expose configuration utilities
-  config.utils = {
-    getGlobbedPaths: getGlobbedPaths,
-    validateSessionSecret: validateSessionSecret
-  };
+    if(process.env && process.env.CHAT_SERVER)
+    {
+        config.chatServer = process.env.CHAT_SERVER;
+    }
 
-  return config;
+    logger.systemInfo('======== Engine Name: ' + config.ENGINE_NAME);
+
+    logger.systemInfo('======== ChatServer Configuration: ' + config.chatServer);
+    // Expose configuration utilities
+    config.utils = { getGlobbedPaths: getGlobbedPaths, validateSessionSecret: validateSessionSecret };
+
+    return config;
 };
 
 /**

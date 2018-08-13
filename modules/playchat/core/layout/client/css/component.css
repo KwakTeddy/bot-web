@@ -1,0 +1,401 @@
+.default-button
+{
+    outline: 0;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 13px;
+    color: #919191;
+    width: 110px;
+}
+
+.default-button:hover, .default-button:focus
+{
+    background: #efefef;
+}
+
+.blue-button
+{
+    outline: 0;
+    text-align: center;
+    background: #038eda;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-weight: 600;
+    padding: 10px;
+    font-size: 13px;
+    color: white;
+    width: 110px;
+}
+
+.red-button
+{
+    outline: 0;
+    text-align: center;
+    background: #d9534f;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    border: 1px solid #d43f3a;
+
+    padding: 10px 12px;
+
+    font-size: 14px;
+
+    color: white;
+}
+
+.red-button:hover
+{
+    background-color: #c9302c;
+    border-color: #ac2925;
+}
+
+.blue-button span, .red-button. span
+{
+    color: #fff;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+
+    cursor: pointer;
+}
+
+.blue-button:hover, .blue-button:focus
+{
+    background: #007dc2;
+}
+
+.blue-button img
+{
+    padding-top: 4px;
+    padding-right: 4px;
+}
+
+
+.funtionbtn1
+{
+    display: inline-block;
+    margin-left: 20px
+}
+
+.funtionbtn1 a>span
+{
+    color: #038eda;
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+.funtionbtn1 a>img
+{
+    margin: 2px 2px 0;
+    vertical-align: middle;
+}
+
+
+.modal-background
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1000000;
+}
+
+.modal-background .modal
+{
+    padding: 30px;
+    border: 1px solid white;
+    border-radius: 5px;
+    background-color: white;
+    width: 590px;
+}
+
+.modal-background .modal-header
+{
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.data-input, .form-box
+{
+    position: relative;
+    outline: 0;
+    border: solid 1px #e8ebf0;
+    border-radius: 5px;
+    padding: 8px 12px 8px 8px!important;
+
+    transition: border 0.5s;
+}
+
+/*.data-input.ng-invalid*/
+/*{*/
+    /*border-color: red;*/
+/*}*/
+
+.data-input:focus, .form-box.focused
+{
+    border-color: #038eda;
+}
+
+.form-box-progress
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 0;
+
+    background: #038eda;
+    opacity: 0.4;
+    border-radius: 5px;
+
+    transition: width 1s;
+}
+
+.tab-content
+{
+    padding: 10px 0;
+}
+
+.tab-footer
+{
+    padding-top: 15px;
+    text-align: center;
+}
+
+.form-row
+{
+    margin: 10px 0;
+}
+
+.form-row label
+{
+    width: 50%;
+}
+
+.form-row label > .form-title
+{
+    display: block;
+}
+
+.form-row label > span
+{
+    display: inline-block;
+    font-size: 13px;
+    padding-left: 3px;
+    padding-bottom: 5px;
+    text-align: left;
+}
+
+.form-row label.required > .form-title:after
+{
+    content: '*';
+    color: #d2322d;
+    font-size: 12px;
+    margin-left: 3px;
+}
+
+.form-row input[type="text"], .form-row textarea
+{
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.form-row input[type="radio"]
+{
+    margin-left: 5px;
+}
+
+.data-table
+{
+    border-top: 1px solid #ddd;
+    width: 100%;
+}
+
+.data-table th
+{
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 0;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.data-table td
+{
+    padding: 10px;
+}
+
+.image-button, .delete-img, .modify-img
+{
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+.image-button:hover, .delete-img:hover, .modify-img:hover
+{
+    opacity: 0.7;
+}
+
+.select-wrapper
+{
+    display: inline-block;
+    position: relative;
+}
+
+.select-wrapper::after
+{
+    content: url(/modules/core/client/imgs/default_select_arrow.png);
+    width: 20px;
+    height: 30px;
+    position: absolute;
+    right: 5px;
+    background-color: white;
+    top: 1px;
+}
+
+.jumbo-select
+{
+    border-radius: 6px;
+    border:1px solid #e8ebf0;
+    width: 100px;
+    height: 35px;
+    outline: 0;
+}
+
+.codebtn
+{
+    background: #038eda url(/modules/playchat/working-ground/dialog-graph/client/imgs/codebtn.png) no-repeat 50%;
+    border-radius: 3px;
+    padding: 0px 13px;
+    display: inline;
+    margin: 0 10px;
+}
+
+.excel-download-button
+{
+    width: 150px;
+    padding: 11px;
+}
+
+.inputfile {
+     width: 0.1px;
+     height: 0.1px;
+     opacity: 0;
+     overflow: hidden;
+     position: absolute;
+     z-index: -1;
+ }
+
+.inputfile + label {
+    outline: 0;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 7px 10px;
+    font-size: 13px;
+    color: #919191;
+    width: 325px;
+}
+
+.inputfile:focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label:hover {
+    background-color: GhostWhite;
+}
+
+
+
+
+.inputfiles {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfiles + label {
+    outline: 0;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 7px 10px;
+    font-size: 13px;
+    color: #919191;
+    width: 150px;
+}
+
+.inputfiles:focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfiles + label:hover {
+    background-color: GhostWhite;
+}
+
+.video-popup
+{
+    position: fixed;
+    bottom: 45px;
+    left: 255px;
+
+    width: 200px;
+}
+
+.video-controller
+{
+    height: 15px;
+    text-align: right;
+}
+
+.video-controller img
+{
+    cursor: pointer;
+}
+
+.video-wrapper
+{
+    height: 200px;
+}
+
+.video-popup iframe
+{
+    width: 100%;
+    height: 100%;
+}
+
+.video-cover
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
