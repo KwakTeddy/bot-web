@@ -19,12 +19,10 @@ exports.message = function (req, res)
         {
             if(channel=='unity'&&out.originalDialogId == 'noanswer')
             {
-                console.log('no response')
                 return res.end();
             }
 
             if(channel=='unity'){
-                console.log(out);
                 res.send(out);
             }else{
                 res.send(out.output);
@@ -51,6 +49,9 @@ exports.dialog = function(req, res)
     data.inputRaw = JSON.parse(data.inputRaw);
     data.output = JSON.parse(data.output);
     req.body = data;
+
+    // output이나 input이 없을경우 무시하도록 프로세스 개선해야함
+    //console.log(data.output);
 
     var dialog = new DialogsetDialog(req.body);
 
