@@ -668,8 +668,14 @@ div.slide>input[type=checkbox]{
 	letter-spacing: 0.1px;
     vertical-align: middle;
 }
-.tb02 tr:hover{
-    /*background: #f4fcff;*/
+.tb02 tr.sae:hover{
+    background: #f4fcff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.tb02 tr.sae td:hover{
+    color:#038eda;
+    transition: all 0.3s;
 }
 .tb02 tbody td{
     text-align: center;
@@ -1084,7 +1090,7 @@ div.slide>input[type=checkbox]{
 .tablePaging {
     position: relative;
     margin-top: 5px;
-    padding: 10px 0 5px 0;
+    padding: 30px 0 5px 0;
     text-align: center;
     clear: both;
 }

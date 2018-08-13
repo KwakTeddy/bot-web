@@ -60,6 +60,12 @@
 .edit-windo li.five:last-child{
     margin-bottom: 20px;
 }
+.six{
+    font-size: 14px;
+    letter-spacing: -1px;
+    display: inline-block;
+    font-weight: 600;
+}
 /*셀렉박스*/
 .select01{
     position: relative;

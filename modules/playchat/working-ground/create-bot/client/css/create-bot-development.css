@@ -472,23 +472,7 @@ label{
     height: 10px;
     border-radius: 50%;
 }
-.btn-style06 {
-    padding: 9px 50px;
-    margin-top: 6px;
-    text-align: center;
-    background: #038eda;
-    color: #fff !important;
-    display: inline-block;
-    cursor: pointer;
-}
-.btn-style07 {
-    border: 1px solid #d8d8d8;
-    padding: 8px 49px;
-    margin-top: 6px;
-    text-align: center;
-    display: inline-block;
-    cursor: pointer;
-}
+
 
 .pic-area {
     width: 120px;
