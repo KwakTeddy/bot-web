@@ -78,7 +78,7 @@ var Logger = require('./logger.js');
                 ];
                 transaction.qa.similarDialogs.forEach((e,i)=>{
                     console.log(e)
-                    var str = (i+1) + '. '+ e.input[0] + '\n';
+                    var str = (i+1) + '. '+ e.inputRaw[0] + '\n';
                     strset.push(str)
                 });
 
