@@ -66,8 +66,33 @@ var Logger = require('./logger.js');
 
             var dialog = bot.dialogMap['noanswer'];
             var output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+
             Logger.analysisLog('answer', { target: target, output: { text : output } }, context.user.userKey);
             Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, userInput.text, userInput.nlpText, output.text, dialog.id, dialog.name, previousDialog.card.id, previousDialog.card.name, true, 'dialog');
+
+            ////for recommend questions
+            //
+            if(bot.options.similarQuestionSearch&&transaction.qa){
+                var strset = [
+                    '\n\n문의해주신 내용과 유사한 질문을 검색해보았습니다.\n아래 내용 중 요청하신 내용과 유사한 질문이 있으신가요?\n'
+                ];
+                transaction.qa.similarDialogs.forEach((e,i)=>{
+                    var str = (i+1) + '. '+ e.input[0] + '\n';
+                    strset.push(str)
+                });
+
+                output.text = output.text.split('\n\n')[0] + strset.join("");
+            };
+
+            //var cbp = { type: 'dialog', dialogId: context.session.dialogCursor, originalDialogId: dialog.id, output: output };
+            //
+            //if(bot.options.similarQuestionSearch&&transaction.qa){
+            //    cbp.similarDialogs = [];
+            //    transaction.qa.similarDialogs.forEach((e)=>{
+            //        cbp.similarDialogs.push(e.input[0]);
+            //    })
+            //}
+
             callback({ type: 'dialog', dialogId: context.session.dialogCursor, originalDialogId: dialog.id, output: output });
         }
     };
@@ -212,7 +237,6 @@ var Logger = require('./logger.js');
         console.log();
         console.log(chalk.yellow('[[[ Q&A ]]]'));
         console.log(transaction.qa.matchedDialog);
-        console.log(text);
 
         Logger.analysisLog('answer', { target: transaction.qa.matchedDialog, output: { text : text } }, context.user.userKey);
         Logger.logUserDialog(bot.id, context.user.userKey, context.channel.name, userInput.text, userInput.nlpText, text, transaction.qa.matchedDialog._id, transaction.qa.matchedDialog.inputRaw[0], '', '', false, 'qna');
@@ -262,6 +286,23 @@ var Logger = require('./logger.js');
             }
         });
     };
+
+    //AnswerManager.prototype.dmNoaAswer = function(transaction, bot, context, userInput, error, callback)
+    //{
+    //    QNAManager.find(bot, context, inputRaw, synonyms, nlp, nlpText, function(err, matchedList)
+    //    {
+    //        if(matchedList.length > 0)
+    //        {
+    //            if(bot.options.similarQuestionSearch){
+    //                transaction.qa.similarDialogs = matchedList? matchedList.splice(0,3) : [];
+    //            }
+    //        }
+    //        var dialog = bot.dialogMap['upgardeNoanswer'];
+    //        var output = dialog.output[Math.floor(Math.random() * dialog.output.length)];
+    //
+    //        callback({ type: 'dialog', dialogId: context.session.dialogCursor, output: output });
+    //    });
+    //};
 
     AnswerManager.prototype.answer = function(bot, context, userInput, error, callback)
     {
@@ -316,6 +357,10 @@ var Logger = require('./logger.js');
                         //만약 matchRate가 똑같은게 여러개 있다면 물어봐야함.
                         context.demo = { qa: matchedList  };
                         transaction.qa = { type: 'qa', matchedDialog: matchedList[0] };
+
+                        if(bot.options.similarQuestionSearch){
+                            transaction.qa.similarDialogs = matchedList? matchedList.splice(0,3) : [];
+                        }
                     }
 
                     done();

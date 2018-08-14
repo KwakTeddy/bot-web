@@ -1946,7 +1946,10 @@ var commonDialogs = [
                 "text": "흠흠 무슨 말인지 잘 모르겠군.",
                 "kind": "Content"
             }
-        ]
+        ],
+        "task": {
+            "name": "defaultTask"
+        }
     }
 ];
 

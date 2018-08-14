@@ -457,6 +457,7 @@ module.exports = function(bot)
         {
             action: function (dialog, context, callback)
             {
+              	console.log('comes addbutton')
                 add_bfBtn(dialog, context);
                 callback();
             }

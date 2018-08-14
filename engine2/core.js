@@ -290,6 +290,9 @@ var s3 = new AWS.S3();
                                             var demo = context.demo;
 
                                             delete context.demo;
+                                            //if(bot.options.similarQuestionSearch){
+                                            //    delete dialog.output
+                                            //}
 
                                             that.redis.set(contextKey, JSON.stringify(context), function(err)
                                             {

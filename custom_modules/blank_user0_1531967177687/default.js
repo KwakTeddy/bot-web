@@ -1,5 +1,6 @@
 var request = require('request');
-var session = require('express-session');
+var async = require('async');
+var path = require('path');
 
 module.exports = function(bot)
 {
@@ -11,4 +12,15 @@ module.exports = function(bot)
             callback();
         }
     });
+
+      bot.setTask('noanswerTask', 
+        {
+            action: function (dialog, context, callback)
+            {
+              console.log('noanswerTask')
+              console.log(dialog)
+                callback();
+
+            }
+        });
 };

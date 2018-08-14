@@ -89,9 +89,15 @@ var commonDialogs = [
         "output": [
             {
                 "text": "알아듣지 못했습니다.",
-                "kind": "Content"
+                "kind": "Content",
+                "type": "call",
+                "dialogId": "noanswerNew",
+                "dialogName": "upgrade답변없음"
             }
-        ]
+        ],
+        "task": {
+            "name": ""
+        }
     }
 ];
 
