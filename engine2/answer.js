@@ -77,6 +77,7 @@ var Logger = require('./logger.js');
                     '\n\n문의해주신 내용과 유사한 질문을 검색해보았습니다.\n아래 내용 중 요청하신 내용과 유사한 질문이 있으신가요?\n'
                 ];
                 transaction.qa.similarDialogs.forEach((e,i)=>{
+                    console.log(e.input)
                     var str = (i+1) + '. '+ e.input[0] + '\n';
                     strset.push(str)
                 });
