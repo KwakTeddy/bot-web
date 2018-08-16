@@ -34,28 +34,33 @@
                     <tbody>
                     <tr>
                         <td class="text-center">{{lan('Kakaotalk') }}</td>
-                        <td class="text-center">{{kakao*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
+                        <td class="text-center">{{kakao*100/(kakao + facebook + navertalk + socket + etc)| number:1}}%</td>
                         <td class="text-center">{{kakao}}</td>
                     </tr>
                     <tr>
                         <td class="text-center">{{lan('Facebook') }}</td>
-                        <td class="text-center">{{facebook*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
+                        <td class="text-center">{{facebook*100/(kakao + facebook + navertalk + socket + etc)| number:1}}%</td>
                         <td class="text-center">{{facebook}}</td>
                     </tr>
                     <tr>
                         <td class="text-center">{{lan('Naver talk talk') }}</td>
-                        <td class="text-center">{{navertalk*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
+                        <td class="text-center">{{navertalk*100/(kakao + facebook + navertalk + socket + etc)| number:1}}%</td>
                         <td class="text-center">{{navertalk}}</td>
                     </tr>
                     <tr>
                         <td class="text-center">{{lan('Socket') }}</td>
-                        <td class="text-center">{{socket*100/(kakao + facebook + navertalk + socket)| number:1}}%</td>
+                        <td class="text-center">{{socket*100/(kakao + facebook + navertalk + socket + etc)| number:1}}%</td>
                         <td class="text-center">{{socket}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">ETC</td>
+                        <td class="text-center">{{etc*100/(kakao + facebook + navertalk + socket + etc)| number:1}}%</td>
+                        <td class="text-center">{{etc}}</td>
                     </tr>
                     <tr>
                         <td class="text-center">{{lan('Total') }}</td>
                         <td class="text-center">100%</td>
-                        <td class="text-center">{{kakao + facebook + navertalk + socket}}</td>
+                        <td class="text-center">{{kakao + facebook + navertalk + socket + etc}}</td>
                     </tr>
                     </tbody>
                 </table>
