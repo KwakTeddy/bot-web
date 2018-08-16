@@ -1,26 +1,27 @@
-var request = require('request');
-var async = require('async');
-var path = require('path');
-
 module.exports = function(bot)
 {
     bot.setTask("defaultTask",
     {
         action: function(dialog, context, callback)
         {
-          
             callback();
         }
     });
-
-      bot.setTask('noanswerTask', 
+  
+  	bot.setTask("resultTask",
+    {
+        action: function(dialog, context, callback)
         {
-            action: function (dialog, context, callback)
-            {
-              console.log('noanswerTask')
-              console.log(dialog)
-                callback();
+            console.log();
+          	var list = context.session.history.slice(0,3);
+          	var tpl = [];
+          	list.forEach((e)=>{
+              	var s = e.card.name+ ' : ' + e.userInput.text + '\n';
+            	tpl.unshift(s);	
+            });
 
-            }
-        });
+          	dialog.result = tpl.join("")
+            callback();
+        }
+    });
 };
