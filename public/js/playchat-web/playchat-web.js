@@ -82,12 +82,12 @@
 
                 var style = document.createElement('link');
                 style.setAttribute('rel', 'stylesheet');
-                style.setAttribute('href', 'http://' + this.host + '/js/playchat-web/playchat-web.css');
+                style.setAttribute('href', 'https://' + this.host + '/js/playchat-web/playchat-web.css');
 
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
 
-                script.src = 'http://' + this.host + '/js/playchat-web/playchat-web-core.js';
+                script.src = 'https://' + this.host + '/js/playchat-web/playchat-web-core.js';
 
                 body.appendChild(style);
                 body.appendChild(this.container);
