@@ -46,7 +46,7 @@
         var output = data.output;
 
         var template = '<div class="answer">\n' +
-                       '    <img src="' + this.host + '/modules/playchat/simulator/client/imgs/bot.png">\n' +
+                       '    <img src="http://' +  this.host + '/modules/playchat/simulator/client/imgs/bot.png">\n' +
                        '    <div class="system-text">\n' +
                        '        <span class="name">{botName}</span>\n' +
                        '        <span class="time">{time}</span>\n' +
@@ -82,7 +82,7 @@
             {
                 if(output.buttons[i].url)
                 {
-                    html = '<a href="' + output.buttons[i].url + '" style="color: #038eda; border: 0;" target="_blank">' + output.buttons[i].text + '</a>' + html;
+                    html = '<a href="http://' + output.buttons[i].url + '" style="color: #038eda; border: 0;" target="_blank">' + output.buttons[i].text + '</a>' + html;
                 }
                 else
                 {
@@ -152,10 +152,10 @@
 
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = this.host + '/socket.io/socket.io.js';
+        script.src = 'http://' + this.host + '/socket.io/socket.io.js';
         script.onload = function()
         {
-            var socket = io(that.host);
+            var socket = io('http://'+that.host);
             socket.on('connect', function()
             {
                 that.socket = socket;
