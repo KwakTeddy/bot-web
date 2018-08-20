@@ -9,6 +9,7 @@
         var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
 
         var instance = undefined;
+        var user = $cookies.getObject('user');
 
         var Menu = function()
         {
@@ -60,6 +61,8 @@
                 { name: LanguageService('Failed Chat log'), url: '/operation/failed-dialogs', icon: 'failed_select.png' }
             ] };
 
+
+
             this.analysis = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
                 { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
 
@@ -87,6 +90,28 @@
                 // { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
                 // { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
             ] };
+
+            if(user.email=='sam@moneybrain.ai'){
+                this.analysis = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
+                    { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
+
+                    { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+
+                    { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' },
+
+                    // { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
+                    // { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
+                    // { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
+                    // { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
+                    // { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
+                    // { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
+                    // { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
+                    // { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
+                    // { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+                    // { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
+                    // { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
+                ] };
+            }
 
             this.docs = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
                     { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
@@ -146,8 +171,15 @@
                 //menus.push(that.development_global);
 
                 menus.push(that.management);
+
+                // for samchully dependency
+                //if(user.email!='sam@moneybrain.ai'){
+                //    menus.push(that.development);
+                //    menus.push(that.management);
+                //    menus.push(that.channel);
+                //}
                 // menus.push(this.contents);
-                menus.push(that.channel);
+
                 if(chatbot.myBotAuth.edit)
                 {
                     menus.push(that.operation);

@@ -45,7 +45,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                                 list[i].added += 0.2;
                             }
                         }
-
                         list = list.sort(function(a, b)
                         {
                             return (b.matchRate + b.added) - (a.matchRate + a.added);
@@ -194,6 +193,7 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                     }
                 }
 
+
                 for(var i=0; i<matchedList.length; i++)
                 {
                     matchedList[i].added = 0;
@@ -307,19 +307,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                         var matchRate = (maxCount / targetInput.split(' ').length);
                         matchedList[i].matchRate = (matchRate >= 100 ? 100 : matchRate);
                         matchedList[i].added += point;
-
-                        // if(context.session.currentCategory && matchedList[i].category)
-                        // {
-                        //     var targetCategories = matchedList[i].category.split('@@@');
-                        //     var categories = context.session.currentCategory.split('@@@');
-                        //     for(var j=0; j<categories.length && j < targetCategories.length; j++)
-                        //     {
-                        //         if(categories[j] == targetCategories[j])
-                        //         {
-                        //             matchedList[i].added += 0.1;
-                        //         }
-                        //     }
-                        // }
                     }
 
                     var categories = matchedList[i].category ? matchedList[i].category.split('@@@') : [];
@@ -346,7 +333,6 @@ var DialogsetDialog = mongoose.model('DialogsetDialog');
                 {
                     return (b.matchRate + b.added) - (a.matchRate + a.added);
                 });
-
                 callback(null, matchedList);
             });
         });

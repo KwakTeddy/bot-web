@@ -13,12 +13,14 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
             kakao: '#fbe600',
             facebook: '#3b5998',
             navertalk: '#00c73c',
-            socket: 'gray'
+            socket: 'gray',
+            etc: '#903cff'
         }, border:{
             kakao: '#ede500',
             facebook: '#29487d',
             navertalk: '#00af35',
-            socket: 'gray'
+            socket: 'gray',
+            etc: '#722dce'
         }
     };
 
@@ -61,6 +63,12 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                 borderWidth: 1
             }, {
                 label: LanguageService('Socket'),
+                data: [],
+                backgroundColor: [],
+                borderColor: [],
+                borderWidth: 1
+            }, {
+                label: 'ETC',
                 data: [],
                 backgroundColor: [],
                 borderColor: [],
@@ -139,12 +147,15 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                     {
                         if(!list[year + '-' + month + '-' + dayOfMonth])
                         {
-                            list[year + '-' + month + '-' + dayOfMonth] = { kakao: 0, facebook: 0, navertalk: 0, dialogCount: 0, socket: 0};
+                            list[year + '-' + month + '-' + dayOfMonth] = { kakao: 0, facebook: 0, navertalk: 0, dialogCount: 0, socket: 0, etc: 0};
                         }
 
                         //만약 UserID에 대해 새로운 세션이라면.
                         // 여기는 세션수 체크
-                        list[year + '-' + month + '-' + dayOfMonth][result[i].channel.name]++;
+
+                        var channelName = result[i].channel.name? result[i].channel.name : 'etc';
+
+                        list[year + '-' + month + '-' + dayOfMonth][channelName]++;
 
                         check[result[i].userId] = date;
                     }
@@ -178,6 +189,12 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                     backgroundColor: [],
                     borderColor: [],
                     borderWidth: 1
+                }, {
+                    label: 'ETC',
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 1
                 }];
 
                 var averageDataset = [{
@@ -201,11 +218,12 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                         dataset[1].data.push(list[key].facebook);
                         dataset[2].data.push(list[key].navertalk);
                         dataset[3].data.push(list[key].socket);
+                        dataset[4].data.push(list[key].etc);
 
-                        var avg = Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk + list[key].socket));
+                        var avg = Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk + list[key].socket + list[key].etc));
                         averageDataset[0].data.push(avg);
 
-                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: list[key].kakao, facebook: list[key].facebook, navertalk: list[key].navertalk, socket: list[key].socket, average: avg });
+                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: list[key].kakao, facebook: list[key].facebook, navertalk: list[key].navertalk, socket: list[key].socket, etc: list[key].etc, average: avg });
                         // averageDatas.push({ date: key, count: Math.round(list[key].dialogCount / (list[key].kakao + list[key].facebook + list[key].navertalk)) });
                     }
                     else
@@ -214,10 +232,11 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                         dataset[1].data.push(0);
                         dataset[2].data.push(0);
                         dataset[3].data.push(0);
+                        dataset[4].data.push(0);
 
                         averageDataset[0].data.push(0);
 
-                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: 0, facebook: 0, navertalk: 0, socket : 0, average: 0 });
+                        excelData.push({ year: startDate.getFullYear(), month: startDate.getMonth() + 1, date : startDate.getDate(), kakao: 0, facebook: 0, navertalk: 0, socket : 0, etc : 0, average: 0 });
                         // datas.push({ date: key, kakao: 0, facebook: 0, navertalk: 0 });
                         // averageDatas.push({ date: key, count: 0 });
                     }
@@ -226,6 +245,7 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                     dataset[1].backgroundColor.push(color.background.facebook);
                     dataset[2].backgroundColor.push(color.background.navertalk);
                     dataset[3].backgroundColor.push(color.background.socket);
+                    dataset[4].backgroundColor.push(color.background.etc);
 
                     averageDataset[0].backgroundColor.push('#00c73c');
 
@@ -233,6 +253,7 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
                     dataset[1].borderColor.push(color.border.facebook);
                     dataset[2].borderColor.push(color.border.navertalk);
                     dataset[3].borderColor.push(color.border.socket);
+                    dataset[4].borderColor.push(color.border.etc);
 
                     averageDataset[0].borderColor.push('#00af35');
 
@@ -259,7 +280,7 @@ angular.module('playchat').controller('SessionAnalysisController', ['$scope', '$
         {
             var template = {
                 sheetName: LanguageService('Amount of Session'),
-                columnOrder: ["year", "month", "date", "kakao", "facebook", "navertalk", 'socket','average'],
+                columnOrder: ["year", "month", "date", "kakao", "facebook", "navertalk", 'socket', 'etc', 'average'],
                 orderedData: excelData
             };
 

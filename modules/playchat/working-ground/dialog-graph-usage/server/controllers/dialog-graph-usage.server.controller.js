@@ -22,10 +22,10 @@ exports.dialogGraphUsage = function (req, res)
                 _id: 0,
                 channel: 1,
                 dialogName:1,
-                kakao: {$cond:[{$eq: ["$channel.name", "kakao"]}, 1,0]},
-                facebook: {$cond:[{$eq: ["$channel.name", "facebook"]}, 1,0]},
-                navertalk: {$cond:[{$eq: ["$channel.name", "navertalk"]}, 1,0]},
-                socket: {$cond:[{$eq: ["$channel.name", "socket"]}, 1,0]}
+                kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
+                facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
+                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]},
+                socket: {$cond:[{$eq: ["$channel", "socket"]}, 1,0]}
             }
         },
         {$group:
