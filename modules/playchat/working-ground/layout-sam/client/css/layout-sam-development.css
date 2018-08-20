@@ -90,11 +90,17 @@
 .list-line{
     display: block;
     padding: 10px;
+    text-align: left;
 }
 .list-line:hover{
     color: #038eda;
     background: #eff9fe;
     transition: all .2s;
+}
+.list-line2{
+    display: block;
+    padding: 10px;
+    text-align: left;
 }
 .box-list .list1{
     border-right:1px solid #d1d1d1;
@@ -123,7 +129,6 @@
     padding: 0 40px;
 }
 .download{
-    float: right;
     color: #038eda !important;
     margin: 33px 16px 0;
     border-bottom: 1px solid;
@@ -222,4 +227,24 @@ select.select03:required:invalid {
 }
 select.select03 option[disabled] {
     display: none;
+}
+.tb-left{
+    width: 48%;
+    display: inline-block;
+    margin-right: 3.5%;
+}
+.tb-right{
+    width: 48%;
+    display: inline-block;
+}
+.group-detail{
+    display: inline-block;
+    background: #f4fcff;
+    padding: 1% 2%;
+    margin: 15px 0 3px;
+    border: 1px solid #038eda;
+}
+.group-detail .detail1{
+    display: inline-block;
+    padding-right: 10px;
 }
