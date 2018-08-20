@@ -40,7 +40,7 @@ module.exports.find = function(req, res)
             { $match: query },
             { $group:
                     {
-                        _id: { userKey: "$userId", channel: "$channel.name"},
+                        _id: { userKey: "$userId", channel: "$channel"},
                         count: { $sum: 1 },
                         maxDate: { $max: "$created" }
                     }
@@ -62,7 +62,7 @@ module.exports.find = function(req, res)
                     { $match: query },
                     { $group:
                             {
-                                _id: { userKey: "$userId", channel: "$channel.name"}
+                                _id: { userKey: "$userId", channel: "$channel"}
                             }
                     }
                 ]

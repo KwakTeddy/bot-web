@@ -52,7 +52,7 @@ module.exports.totalUserCount = function (req, res)
         { $group:
             {
                 _id: { userId: '$userId'},
-                channel: {$first: '$channel.name'}
+                channel: {$first: '$channel'}
             }
         }
         // { $group:
@@ -140,10 +140,10 @@ module.exports.dailyDialogUsage = function (req, res)
                 _id: 0,
                 created: {$add:["$created", 9*60*60*1000]},
                 fail: {$cond:[{$eq: ["$isFail", true]}, 1,0]},
-                kakao: {$cond:[{$eq: ["$channel.name", "kakao"]}, 1,0]},
-                facebook: {$cond:[{$eq: ["$channel.name", "facebook"]}, 1,0]},
-                navertalk: {$cond:[{$eq: ["$channel.name", "navertalk"]}, 1,0]},
-                socket: {$cond:[{$eq: ["$channel.name", "socket"]}, 1,0]}
+                kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
+                facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
+                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]},
+                socket: {$cond:[{$eq: ["$channel", "socket"]}, 1,0]}
             }
         },
         { $group:
@@ -214,7 +214,7 @@ exports.failDailogs = function (req, res)
                     inOut: true,
                     isFail: true,
                     created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) },
-                    "channel.name" : { $ne: 'channel' }
+                    "channel" : { $ne: 'channel' }
 
                 }
         },
@@ -257,10 +257,10 @@ exports.scenarioUsage = function (req, res)
                 _id: 0,
                 channel: 1,
                 dialogName:1,
-                kakao: {$cond:[{$eq: ["$channel.name", "kakao"]}, 1,0]},
-                facebook: {$cond:[{$eq: ["$channel.name", "facebook"]}, 1,0]},
-                navertalk: {$cond:[{$eq: ["$channel.name", "navertalk"]}, 1,0]},
-                socket: {$cond:[{$eq: ["$channel.name", "socket"]}, 1,0]}
+                kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
+                facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
+                navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]},
+                socket: {$cond:[{$eq: ["$channel", "socket"]}, 1,0]}
             }
         },
         {$group:
