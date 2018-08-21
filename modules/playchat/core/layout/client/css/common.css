@@ -21,7 +21,7 @@ code, kbd, samp { font-family:dotum,'돋움', courier new, courier, monospace; }
 header, hgroup, article, nav, footer, figure, figcaption, canvas, section , menu { display: block; margin:0; padding:0; }
 img{box-sizing: content-box;}
 img,fieldset,iframe{border:0 none;}
-img { border: 0px; vertical-align:top; }
+img { border: 0px; vertical-align:middle; }
 table{/* table-layout:fixed; */border-collapse:collapse;border-spacing:0}
 a:link { text-decoration: none; color:#363636; }
 a:visited { text-decoration: none; color:#363636; }
