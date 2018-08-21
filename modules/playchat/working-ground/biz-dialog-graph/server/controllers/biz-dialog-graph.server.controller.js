@@ -326,9 +326,11 @@ exports.getSentences = function(req, res){
                 return res.status(400).send({ message: err.stack || err });
             }else{
                 var result = {};
-                result.common = sentences.filter((e)=>{return e.templateId == 'common'});
-                result.defaultSentences = sentences.filter((e) => {return e.templateId == templateId && e.type == 'global'});
+                result.common = sentences.filter((e)=>{return e.templateId == 'common' && e.type=='global'});
+                result.defaultSentences = sentences.filter((e) => {return e.templateId == 'common' && e.type=='custom'});
                 result.sentences = sentences.filter((e) => {return e.templateId == templateId && e.type == 'custom'});
+                result.basicSentences = sentences.filter((e) => {return e.templateId == templateId && e.type == 'global'});
+
                 res.jsonp({data:result});
             }
         })

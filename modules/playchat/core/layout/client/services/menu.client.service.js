@@ -163,7 +163,7 @@
                 var menus = [];
                 menus.push(that.dashboard);
 
-                if(chatbot.type && chatbot.type === 'survey'){
+                if(chatbot.type && (chatbot.type === 'survey'||chatbot.type === 'consult')){
                     menus.push(that.development_test);
                 }else{
                     menus.push(that.development);

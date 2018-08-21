@@ -16,7 +16,6 @@ var dialogs = [
                 "text": "고객님의 이름을 입력해주세요."
             }
         ],
-        "parent": true,
         "children": [
             {
                 "id": "dialog_2",
@@ -168,12 +167,6 @@ var dialogs = [
                 ],
                 "id": "call_4"
             }
-        ],
-        "index": 1,
-        "fnInput": [
-            {
-                "types": "name"
-            }
         ]
     },
     {
@@ -189,9 +182,7 @@ var dialogs = [
                 "kind": "Content",
                 "text": "상담 신청 예약이 완료 되었습니다.\n오늘도 좋은 하루 되시기 바랍니다.\n+bot.name+"
             }
-        ],
-        "parent": true,
-        "index": 5
+        ]
     },
     {
         "id": "dialog_5",
@@ -209,9 +200,7 @@ var dialogs = [
                 "kind": "Content",
                 "text": "거부 처리 완료되었습니다.\n오늘도 좋은 하루 되시기 바랍니다.\n+bot.name+"
             }
-        ],
-        "parent": true,
-        "index": 5
+        ]
     }
 ];
 
@@ -247,9 +236,6 @@ var commonDialogs = [
         ]
     },
     {
-        "_id": "5b4dea1d55611f9addf74b6f",
-        "templateId": "common",
-        "type": "global",
         "id": "backDialog",
         "name": "이전",
         "input": [
@@ -271,15 +257,10 @@ var commonDialogs = [
                 "type": "back",
                 "kind": "Action"
             }
-        ],
-        "created": "2018-08-20T09:42:35.694Z",
-        "useYN": 1
+        ]
     },
     {
-        "_id": "5b4dea2555611f9addf74b70",
         "id": "upDialog",
-        "templateId": "common",
-        "type": "global",
         "name": "상위",
         "input": [
             {
@@ -300,15 +281,10 @@ var commonDialogs = [
                 "type": "up",
                 "kind": "Action"
             }
-        ],
-        "created": "2018-08-20T09:42:35.694Z",
-        "useYN": 1
+        ]
     },
     {
-        "_id": "5b4dea3455611f9addf74b71",
         "id": "noanswer",
-        "templateId": "common",
-        "type": "global",
         "name": "답변없음",
         "input": "",
         "output": [
@@ -316,14 +292,12 @@ var commonDialogs = [
                 "kind": "Content",
                 "text": "알아듣지 못했습니다."
             }
-        ],
-        "created": "2018-08-20T09:42:35.694Z",
-        "useYN": 1
+        ]
     }
 ];
 
 module.exports = function(bot)
 {
-	bot.setDialogs(dialogs);
-	bot.setCommonDialogs(commonDialogs);
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
 }

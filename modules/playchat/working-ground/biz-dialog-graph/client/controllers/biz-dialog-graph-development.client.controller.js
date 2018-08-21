@@ -222,8 +222,8 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             typeNm = $scope.getCardType(card.type).name
         }else{
             card.name = typeNm;
-        }
-        console.log(card)
+        };
+
         if(card.input && card.input.length > 0){card.input.forEach((e)=>{delete e.target});}
         switch(typeNm){
             case '단답형' :
@@ -277,9 +277,9 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             alert('봇이 선택되지 않았습니다.\n봇을 선택한 후 진행해 주세요.');
             $location.url('/playchat/development/my-bot');
         }
+        BizChatService.bizchatId = BizChatService.chatbot.type;
         BizChatService.onReady(function(bizchat){
             $scope.Data = bizchat;
-            bizchat_s = bizchat;
             $scope.addCardSentence = {};
             angular.copy($scope.Data.defaultSentences[2], $scope.addCardSentence);
             $scope.addCardSentence.type = bizchat.defaultSentences[2]._id;

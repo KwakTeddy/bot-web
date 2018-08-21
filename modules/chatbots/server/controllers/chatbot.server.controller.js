@@ -25,6 +25,7 @@ var Entity = mongoose.model('Entity');
 var EntityContent = mongoose.model('EntityContent');
 
 var BizMsgs = mongoose.model('BizMsgs');
+var Sentences = mongoose.model('Sentences');
 
 var IntentController = require(path.resolve('./modules/playchat/working-ground/intent/server/controllers/intent.server.controller.js'));
 var EntityController = require(path.resolve('./modules/playchat/working-ground/entity/server/controllers/entity.server.controller.js'));
@@ -63,7 +64,7 @@ exports.find = function (req, res)
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
     if(req.query.type)
-        query.type = { $in: ['survey'] };
+        query.type = { $in: ['survey','consult'] };
 
     ChatBot.find(query).sort('-created').populate('templateId').populate('user').skip(countPerPage*(page-1)).limit(countPerPage).exec(function (err, bots)
     {
@@ -154,7 +155,7 @@ exports.create = function(req, res)
             }
 
             var chatbot = new ChatBot(req.body);
-            if(!req.body.type.startsWith('sample') && req.body.type != 'blank' && req.body.type != 'survey')
+            if(!req.body.type.startsWith('sample') && req.body.type != 'blank' && req.body.type != 'survey' && req.body.type != 'consult')
             {
                 chatbot.templateId = req.body.type;
             }
@@ -305,10 +306,11 @@ exports.create = function(req, res)
                                 S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
                                 S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
                             }
-                        }else if (type == 'survey'){
-                            var graphfilepath = __dirname + '/sample/survey/graph.' + language + '.js';
-                            var botjs = fs.readFileSync(__dirname + '/sample/survey/bot.js');
-                            var defaultjs = fs.readFileSync(__dirname + '/sample/survey/default.js');
+                        }else if (type == 'survey'||type == 'consult'){
+
+                            var graphfilepath = __dirname + '/sample/' + type + '/graph.js';
+                            var botjs = fs.readFileSync(__dirname + '/sample/' + type + '/bot.js');
+                            var defaultjs = fs.readFileSync(__dirname + '/sample/' + type + '/default.js');
                             var graphjs = fs.readFileSync(graphfilepath);
 
 
@@ -326,7 +328,6 @@ exports.create = function(req, res)
                                 fs.writeFileSync(dir + '/default.graph.js', graphData);
                                 fs.writeFileSync(dir + '/default.js', defaultData);
                                 fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
-
 
                                 if (process.env.NODE_ENV == 'production') {
                                     S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
@@ -349,19 +350,44 @@ exports.create = function(req, res)
                                 try
                                 {
                                     utils.requireNoCache(graphfilepath, true)(bot);
-                                    var startCard = bot.commonDialogs.find((e)=>{return e.id === 'startDialog'});
-                                    var index = 0;
-                                    var bizMsg = new BizMsgs({
-                                        botId: chatbot.id,
-                                        index: index,
-                                        id : startCard.id,
-                                        name :startCard.name,
-                                        message: startCard.output[0].text
-                                    });
+                                    if(type=='survey'){
+                                        var startCard = bot.commonDialogs.find((e)=>{return e.id === 'startDialog'});
+                                        var index = 0;
+                                        var bizMsg = new BizMsgs({
+                                            botId: chatbot.id,
+                                            index: index,
+                                            id : startCard.id,
+                                            name :startCard.name,
+                                            message: startCard.output[0].text
+                                        });
 
-                                    bizMsg.save((err) => {
-                                        if(err) console.error(err);
-                                    });
+                                        bizMsg.save((err) => {
+                                            if(err) console.error(err);
+                                        });
+                                    }else if(type=='consult'){
+                                        var arr = [];
+                                        Sentences.find({templateId:type}).sort({index:1}).exec((err,list)=>{
+                                            list.forEach((e)=>{
+                                                var it = {
+                                                    botId: chatbot.id,
+                                                    index: e.index,
+                                                    id : e.id,
+                                                    name :e.name,
+                                                    type : e.msg_type,
+                                                    message: e.message
+                                                };
+                                                e.input ? it.input = e.input : null;
+                                                e.connect ? it.connect = e.connect : null;
+                                                arr.push(it);
+                                            });
+
+                                            BizMsgs.collection.insertMany(arr,(err,dt)=>{
+                                                if(err) console.error(err);
+                                            });
+                                        })
+                                    }
+
+
                                 }
                                 catch(err)
                                 {
@@ -544,7 +570,6 @@ var duplicateIntent = function(srcBotId, destBotId, callback)
         });
     });
 };
-
 var duplicateEntity = function(srcBotId, destBotId, callback)
 {
     Entity.find({ botId: srcBotId }).exec(function(err, list)

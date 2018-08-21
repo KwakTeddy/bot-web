@@ -4,6 +4,10 @@ var Schema = mongoose.Schema;
 var SentencesSchema = new Schema(
     {
         templateId : {type : String},
+        id: { type: String },
+        msg_type: { type: String },
+        index : { type: Number },
+        connect : { type: Boolean },
         type : {type: String},
         parentType: { type: String },
         name: { type: String },

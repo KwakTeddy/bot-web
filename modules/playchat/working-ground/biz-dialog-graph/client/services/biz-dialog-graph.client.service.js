@@ -5,7 +5,6 @@
 
     angular.module('playchat').factory('BizChatService', function($window, $resource, $cookies, $rootScope, FileUploader)
     {
-        var bizchatId = 'survey';
         // load api list
         var DialogGraphsService = $resource('/api/:botId/biz-dialog-graphs/:fileName', { botId: '@botId', fileName: '@fileName' });
 
@@ -16,8 +15,10 @@
         var TaskService = $resource('/api/:botId/tasks', { botId: '@botId' }, { update: { method: 'PUT' } });
         var TypeService = $resource('/api/:botId/types', { botId: '@botId' }, { update: { method: 'PUT' } });
 
-        var BizMsgsService = $resource('/api/:botId/biz-msg/:id', { botId: '@botId', id:'@id', data:'@data' });
         var CustomTypeService = $resource('/api/script/:type/:name', { type: '@type', name: '@name' }, { update: { method: 'PUT' } });
+        var BizMsgsService = $resource('/api/:botId/biz-msg/:id', { botId: '@botId', id:'@id', data:'@data' });
+
+        // bizchatId will change templateId
         var SentencesService = $resource('/api/:bizchatId/biz-sentences', { bizchatId: '@bizchatId' });
 
 
@@ -228,7 +229,7 @@
 
         //Initailize BizChatService
         var BizChat = {
-            bot : null,
+            chatbot : null,
             type : 'bizchat',
             bizchatId : '',
             dialogFileName : 'default.graph.js',
@@ -382,7 +383,10 @@
         };
 
         BizChat.getCustomSentence = function(bizchatId, type, ck){
-            SentencesService.get({type:type, bizchatId:bizchatId},(res) => {
+            SentencesService.get({
+                type:type,
+                bizchatId:bizchatId
+            },(res) => {
                 if(typeof ck ==='function')ck(res.data)
             },(err) => {
                 console.log(err)
@@ -444,8 +448,6 @@
         };
 
         BizChat.onReady = (cb) => {
-            BizChat.bizchatId = BizChat.bizchatId ? BizChat.bizchatId : bizchatId;
-
             // custom type list load
             // 아직 사용되지 않음
             //ScriptService._customTaskLoad();
@@ -458,9 +460,10 @@
                 BizChat.sentences = res.data.sentences;
                 // message list load
                 BizMsgsService.get({botId:BizChat.chatbot.id},(res) => {
-                    console.log(res)
                     BizChat.cardArr = res.data;
-                    BizChat.cardArr[0].type = BizChat.defaultSentences.find((e) => {return e.name == '일반형'})._id;
+                    if(!BizChat.cardArr[0].type){
+                        BizChat.cardArr[0].type = BizChat.defaultSentences.find((e) => {return e.name == '일반형'})._id;
+                    }
                     cb(BizChat);
                 },BizChat.error)
             },BizChat.error);
@@ -494,7 +497,7 @@
         };
 
         BizChat.refresh = (bizchatId) => {
-            bizchatId = bizchatId ? bizchatId : BizChat.bizchatId;
+            bizchatId = BizChat.bizchatId;
             BizChat.onReady(bizchatId);
 
 

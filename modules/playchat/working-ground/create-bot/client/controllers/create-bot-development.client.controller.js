@@ -20,7 +20,10 @@ angular.module('playchat').controller('CreateBotDevelopmentController', ['$windo
         $scope.isPopupOpen = true;
     };
 
-    $scope.onPopup = () => {
+    $scope.onPopup = (tplId) => {
+        if(tplId){
+            angular.element('#templateId').val(tplId);
+        }
         angular.element('#createBotPopup').fadeIn();
     };
 

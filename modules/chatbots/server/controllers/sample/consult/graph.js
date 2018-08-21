@@ -1,7 +1,7 @@
 var dialogs = [
     {
         "id": "dialog_1",
-        "name": "이름수집",
+        "name": "일반형_1",
         "input": [
             {
                 "text": {
@@ -20,7 +20,7 @@ var dialogs = [
         "children": [
             {
                 "id": "dialog_2",
-                "name": "연락처수집",
+                "name": "일반형_2",
                 "input": [
                     {
                         "types": [
@@ -37,7 +37,7 @@ var dialogs = [
                 "children": [
                     {
                         "id": "dialog_6",
-                        "name": "날짜수집",
+                        "name": "일반형_6",
                         "input": [
                             {
                                 "types": [
@@ -54,7 +54,7 @@ var dialogs = [
                         "children": [
                             {
                                 "id": "dialog_3",
-                                "name": "입력확인",
+                                "name": "일반형_3",
                                 "input": [
                                     {
                                         "types": [
@@ -178,7 +178,7 @@ var dialogs = [
     },
     {
         "id": "dialog_4",
-        "name": "신청완료",
+        "name": "일반형_4",
         "input": [
             {
                 "if": "true"
@@ -195,7 +195,7 @@ var dialogs = [
     },
     {
         "id": "dialog_5",
-        "name": "신청거부",
+        "name": "일반형_5",
         "input": [
             {
                 "text": {
@@ -324,6 +324,6 @@ var commonDialogs = [
 
 module.exports = function(bot)
 {
-	bot.setDialogs(dialogs);
-	bot.setCommonDialogs(commonDialogs);
+    bot.setDialogs(dialogs);
+    bot.setCommonDialogs(commonDialogs);
 }

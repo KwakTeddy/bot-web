@@ -96,11 +96,10 @@ angular.module('playchat').controller('CreateBotPopupController', ['$window', '$
             !profile.rejectCall){
             return alert('필수정보가 누락되었습니다\n내용을 채워주세요.')
         }
-        profile.type = 'survey';
+
+        profile.type = angular.element('#templateId').val();
         profile.id = profile.type + '_' + user.username.replace(/\s/gi, '') + '_' + new Date().getTime();
         profile.language = 'ko';
-
-        //profile.sampleCategory = '';
 
 
         ChatbotService.save(profile, function(chatbot)
