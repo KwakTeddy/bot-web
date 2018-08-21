@@ -353,7 +353,6 @@
 
         BizChat.saveGraph = (arr, cb) => {
             BizChat.cardArr = arr.sort((a,b)=>{return a.index - b.index});
-            console.log(BizChat.cardArr);
             var newArr = [], oldArr = [];
             angular.copy(BizChat.cardArr,newArr);
             angular.copy(BizChat.cardArr,oldArr);

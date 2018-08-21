@@ -242,7 +242,7 @@ var commonDialogs = [
         "output": [
             {
                 "kind": "Content",
-                "text": "(광고) +bot.name+ / +bot.companyCall+\n+bot.description+\n\n개인 정보 수집 및 상담 예약 진행에 동의하시겠습니까?\n\n#동의 시 1 또는 동의를 입력해 주세요.\n#거부 시 2 또는 거부를 입력해 주세요.\n\n무료 수신 거부 : 080-111-1111"
+                "text": "(광고) +bot.name+ / +bot.companyCall+\n+bot.description+\n\n개인 정보 수집 및 상담 예약 진행에 동의하시겠습니까?\n\n#동의 시 1을 입력해 주세요.\n#거부 시 2를 입력해 주세요.\n\n무료 수신 거부 : 080-111-1111"
             }
         ]
     },

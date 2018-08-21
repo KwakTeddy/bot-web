@@ -210,9 +210,6 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         });
 
         BizChatService.deleteCard($scope.Data.cardArr,(rtn) => {
-            if(!rtn){
-                console.log(rtn);
-            }
             _isUpdated = true;
         });
     };

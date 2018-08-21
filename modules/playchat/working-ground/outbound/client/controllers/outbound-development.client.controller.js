@@ -229,7 +229,10 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
     var _send_process = (paramset) => {
         var bot = $scope.botList.find((e)=>{return e.id==paramset.botId});
         BizMsgsService.get({botId:paramset.botId},(res) => {
-            paramset.firstString = res.data[0].message.replace('+bot.name+',bot.name);
+            paramset.firstString = res.data[0].message.
+                replace('+bot.name+',bot.name).
+                replace('+bot.companyCall+',bot.companyCall).
+                replace('+bot.description+',bot.description);
 
             OutboundService.save(paramset,(res) => {
                 if(!res.status){
