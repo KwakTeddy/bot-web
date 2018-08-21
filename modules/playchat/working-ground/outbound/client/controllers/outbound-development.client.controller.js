@@ -194,12 +194,15 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
                 case 1 :
                     paramset.startTime = moment().format(dtFormat);
                     paramset.endTime = moment(new Date(range[0])).format(dtFormat);
+                    paramset.exec = 'now';
                     break;
                 case 2 :
+
                     // 임시코드
                     supported = false;
                     paramset.startTime = moment(new Date(range[0])).format(dtFormat);
                     paramset.endTime = moment(new Date(range[1])).format(dtFormat);
+                    paramset.exec = 'wait';
                     break;
             }
             paramset.tag = $scope.inputMethod == 1 ? 'numberSet' : 'telebookSet';
