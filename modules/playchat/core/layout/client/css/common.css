@@ -1657,3 +1657,15 @@ input::-webkit-input-placeholder { color:#cacaca; font-size: 15px;}
 input::-moz-input-placeholder { color:#cacaca; font-size: 15px;}
 
 textarea:disabled{background: #f2f2f2;border: 1px solid #f2f2f2;}
+
+.row{
+    margin-left: -12px;
+    margin-right: -12px;
+}
+.box{
+    background-color: #fff;
+    position: relative;
+    margin-bottom: 1.5rem;
+    padding: 1rem !important;
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.15);
+}

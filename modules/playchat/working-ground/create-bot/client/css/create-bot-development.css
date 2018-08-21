@@ -192,15 +192,6 @@ a.new-bot-right{
 .mybot-list .content .list{
     display: block;
 }
-.mybot-list .content .list .bot{
-    background: #f6f7f9;
-    padding: 26px 0;
-    display: inline-block;
-    width: 31%;
-    margin: 7px 5px;
-    border: 1px solid #d0d2d3;
-    position: relative;
-}
 .mybot-list .content .list .detail2{
     text-align: center;
     font-size: 15px;
