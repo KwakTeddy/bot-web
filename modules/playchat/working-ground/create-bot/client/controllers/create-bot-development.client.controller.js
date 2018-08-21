@@ -2,7 +2,7 @@ angular.module('playchat').controller('CreateBotDevelopmentController', ['$windo
 {
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
     var SharedChatBotService = $resource('/api/chatbots/shared');
-
+    
     var page = 1;
     var countPerPage = $location.search().countPerPage || 50;
 

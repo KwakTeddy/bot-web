@@ -73,6 +73,7 @@
         }
 
         // Then init the app
-        angular.bootstrap(document, [app.applicationModuleName]);
+        if(!angular.element(document).scope())
+            angular.bootstrap(document, [app.applicationModuleName]);
     }
 }(ApplicationConfiguration));

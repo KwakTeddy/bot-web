@@ -135,6 +135,7 @@
         {
             this.initialize();
             var that = this;
+
             if(typeof templateId == 'string' && callback)
             {
                 TemplateGnbService.get({ templateId : templateId }, function(menu)
@@ -161,16 +162,26 @@
             {
                 var chatbot = $cookies.getObject('chatbot');
                 var menus = [];
-                menus.push(that.dashboard);
 
-                if(chatbot.type && (chatbot.type === 'survey'||chatbot.type === 'consult')){
+
+                if(!chatbot || (chatbot.type && (chatbot.type === 'survey'||chatbot.type === 'consult'))){
+
                     menus.push(that.development_test);
                 }else{
+                    menus.push(that.dashboard);
                     menus.push(that.development);
+
+                    menus.push(that.management);
+
+                    if(chatbot && chatbot.myBotAuth.edit)
+                    {
+                        menus.push(that.operation);
+                    }
+                    menus.push(that.analysis);
                 }
                 //menus.push(that.development_global);
 
-                menus.push(that.management);
+
 
                 // for samchully dependency
                 //if(user.email!='sam@moneybrain.ai'){
@@ -179,12 +190,6 @@
                 //    menus.push(that.channel);
                 //}
                 // menus.push(this.contents);
-
-                if(chatbot.myBotAuth.edit)
-                {
-                    menus.push(that.operation);
-                }
-                menus.push(that.analysis);
                 // menus.push(this.setting);
 
                 templateId(menus);

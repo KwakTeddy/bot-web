@@ -49,15 +49,22 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
     };
 
     $scope.$watch('selectedBot',(n,o)=>{
-        if(n){
-            var bot = $scope.botList.find((e) => {return e.id ==n})
+        _setBot(n,()=>{
+            $rootScope.$broadcast('editChatbotInfo');
+        });
+    });
+
+    var _setBot = (id,cb) => {
+        if(id){
+            var bot = $scope.botList.find((e) => {return e.id ==id})
 
             bot.myBotAuth = { read: true, edit: true };
             $cookies.putObject('chatbot', bot);
-            $rootScope.$broadcast('editChatbotInfo');
+            if(cb && typeof cb =='function'){
+                cb()
+            }
         }
-    });
-
+    };
     $scope.pickerSetting = (e) => {
         $('#createdRange').daterangepicker({
             timePicker: true,
@@ -271,6 +278,11 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
         angular.element('.main-logo-background').css('opacity', 0);
         $timeout(function()
         {
+            var bot = $cookies.getObject('chatbot');
+            if(bot && bot.id){
+                $scope.selectedBot = bot.id;
+                _setBot(bot.id);
+            }
             angular.element('.main-logo-background').css('display', 'none');
         }, 1200);
 
