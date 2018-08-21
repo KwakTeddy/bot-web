@@ -321,23 +321,3 @@
     -o-text-overflow: ellipsis;
     word-wrap: normal;
 }
-.tb02 tbody td{
-    text-align: center;
-    font-size: 13px;
-    letter-spacing: 0;
-    border-bottom: 1px solid #e9e9e9;
-    vertical-align: middle;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 6px 8px;
-}
-.tb02 tbody td.text{
-    width:60%;
-    border-right: #dbdbdb solid 1px;
-}
-.tb02 tbody td.text >input{
-    padding: 0;
-}
-.tb02 tbody td.info{
-    width: 20%;
-}

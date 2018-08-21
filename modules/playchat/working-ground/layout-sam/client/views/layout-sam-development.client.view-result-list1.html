@@ -1,0 +1,123 @@
+
+<div ng-controller="LayoutSamDevelopmentController" class="graph-background">
+
+    <div class="working-ground-bizchat">
+        <ul>
+            <li class="title02 inline mr30">기간</li>
+            <li class="inline">
+                <select ng-model="selectedBot" class="select01">
+                    <option  selected value="null">2018/06/13 – 2018/06/19</option>
+                    <option ng-repeat="bot in botList" value="{{bot.id}}"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> {{bot.name}}</option>
+                </select>
+            </li>
+        </ul>
+
+        <h3 class="title02 mt30">사용자</h3>
+        <table class="tb03">
+            <colgroup>
+                <col width="5%">
+                <col width="20%">
+                <col width="">
+                <col width="">
+                <col width="">
+                <col width="">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>사용자명</th>
+                    <th>최근 발송</th>
+                    <th>발송 수</th>
+                    <th>성공</th>
+                    <th>발송 비용<span class="sm-title">(단위:코인)</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>머니브레인</td>
+                    <td>2018.07.18.0600</td>
+                    <td>21545786</td>
+                    <td>1545678</td>
+                    <td>10,000,000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="title02 mt30">봇</h3>
+        <table class="tb03">
+            <colgroup>
+                <col width="4%">
+                <col width="20%">
+                <col width="">
+                <col width="">
+                <col width="">
+                <col width="">
+                <col width="">
+            </colgroup>
+            <thead>
+            <tr>
+                <th></th>
+                <th>봇 이름</th>
+                <th>최근 발송<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 수<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>성공<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 비용<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>분석 단가<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇</td>
+                <td>2018.07.18.0600</td>
+                <td>유효 기간 이후 갱신</td>
+                <td class="grap">21545786<div class="tb-b" style="width: 50%;">50%</div></td>
+                <td>유효 기간 이후 갱신</td>
+                <td>유효 기간 이후 갱신</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇</td>
+                <td>2018.07.18.0600</td>
+                <td>유효 기간 이후 갱신</td>
+                <td class="grap">21545786<div class="tb-b" style="width: 30%;">30%</div></td>
+                <td>유효 기간 이후 갱신</td>
+                <td>유효 기간 이후 갱신</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇</td>
+                <td>2018.07.18.0600</td>
+                <td>유효 기간 이후 갱신</td>
+                <td class="grap">21545786<div class="tb-b" style="width: 70%;">70%</div></td>
+                <td>유효 기간 이후 갱신</td>
+                <td>유효 기간 이후 갱신</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇</td>
+                <td>2018.07.18.0600</td>
+                <td>유효 기간 이후 갱신</td>
+                <td>21545786</td>
+                <td>유효 기간 이후 갱신</td>
+                <td>유효 기간 이후 갱신</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="tablePaging">
+            <div class="tablePagingC">
+                <a href="" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                </a>
+                <a href="">1</a>
+                <a href="" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
