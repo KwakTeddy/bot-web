@@ -1,6 +1,5 @@
 .working-ground-bizchat{
-    /*margin: 2% auto 0;*/
-    margin: 2% auto 10px;
+    margin: 1% auto 10px;
     height: 100%;
     width: 1010px;
     position: relative;
@@ -285,6 +284,20 @@ select.message-inselect option:checked, select.message-inselect option:hover{
 .btn-style09:hover{
     border: 1px solid #038eda;
     transition: all 0.3s;
+}
+.btn-style10 {
+    padding: 1.5% 8%;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    display: block;
+    width: 80px;
+    margin: 3% auto;
 }
 .bot-messages-list .add-menu{
     padding:3% 10% 3% 5%;
