@@ -3,7 +3,7 @@
 
     <div class="working-ground-bizchat">
         <ul class="inline">
-            <li class="title02 inline mr10">봇 이름</li>
+            <li class="title02 inline mr10">{{Bot.name}}</li>
             <li class="inline">
                 <form class="inline-block">
                     <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
@@ -14,10 +14,10 @@
         <ul class="inline ml20">
             <li class="title02 inline mr10">기간</li>
             <li class="inline mr20">
-                <select ng-model="selectedBot" class="select01">
-                    <option  selected value="null">2018/06/13 – 2018/06/19</option>
-                    <option ng-repeat="bot in botList" value="{{bot.id}}"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> {{bot.name}}</option>
-                </select>
+                <div id="createdRange" class="select01" style="width: 80%;">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                    <span></span> <b class="caret"></b>
+                </div>
             </li>
         </ul>
 
@@ -45,54 +45,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
+            <tr ng-repeat="Message in Messages">
+                <td>{{Message.index}}</td>
                 <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
-                <td>2018.07.18.0600</td>
-                <td>21545786</td>
-                <td>유효 기간 이후 갱신</td>
-                <td>유효 기간 이후 갱신</td>
-                <td>유효 기간 이후 갱신</td>
-                <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
-                <td>2018.07.18.0600</td>
-                <td>21545786</td>
-                <td class="grap">21545786<div class="tb-b" style="width: 70%;">70%</div></td>
-                <td>2,000,000</td>
-                <td>유효 기간 이후 갱신</td>
-                <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
-                <td>2018.07.18.0600</td>
-                <td>21545786</td>
-                <td class="grap">21545786<div class="tb-b" style="width: 70%;">70%</div></td>
-                <td>2,000,000</td>
-                <td>유효 기간 이후 갱신</td>
-                <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
-                <td>2018.07.18.0600</td>
-                <td>21545786</td>
-                <td class="grap">21545786<div class="tb-b" style="width: 70%;">70%</div></td>
-                <td>2,000,000</td>
-                <td>유효 기간 이후 갱신</td>
-                <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
-                <td>2018.07.18.0600</td>
-                <td>21545786</td>
-                <td class="grap">21545786<div class="tb-b" style="width: 70%;">70%</div></td>
-                <td>2,000,000</td>
-                <td>유효 기간 이후 갱신</td>
+                <td>{{Message.sendDate}}</td>
+                <td>{{Message.sendNum}}</td>
+                <td class="grap">{{Message.sendSuccNum}}<div class="tb-b" style="width: {{Message.sendSuccRate}}%;">{{Message.sendSuccRate}}%</div></td>
+                <td>{{Message.sendFee}}</td>
+                <td>{{Message.sendFeeForOne}}</td>
                 <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
             </tr>
             </tbody>
