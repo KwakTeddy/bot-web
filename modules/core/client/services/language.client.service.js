@@ -61,6 +61,12 @@
                 "jp": "カカオトークのアカウントでログインすること",
                 "zh": "Kakaotalk账号登录"
             },
+            "Sign in with Playchat": {
+                "ko": "플레이챗으로 로그인",
+                "en": "Sign in with Playchat",
+                "jp": "Playchatのアカウントでログインすること",
+                "zh": "Playchat账号登录"
+            },
             "Email ID": {
                 "ko": "이메일 주소",
                 "en": "Email ID",
@@ -98,7 +104,7 @@
                 "zh": "使用条款和隐私政策"
             },
             "Create your account": {
-                "ko": "가입하기",
+                "ko": "플레이챗에 가입하는 것을 환영합니다.",
                 "en": "Create your account",
                 "jp": "加入すること",
                 "zh": "注册"
@@ -108,6 +114,12 @@
                 "en": "Please create your account.",
                 "jp": "加入してみてください。",
                 "zh": "注册您的新账号。"
+            },
+            "Complete join your membership.": {
+                "ko": "회원 가입이 완료되었습니다.",
+                "en": "Complete join your membership.",
+                "jp": "Complete join your membership.",
+                "zh": "Complete join your membership."
             },
             "Username": {
                 "ko": "사용자 이름",
