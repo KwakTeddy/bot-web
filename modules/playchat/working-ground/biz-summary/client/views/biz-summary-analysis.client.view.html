@@ -36,10 +36,10 @@
             <tr>
                 <td>1</td>
                 <td>{{User.name}}</td>
-                <td>2018.07.18.0600</td>
-                <td>21545786</td>
-                <td class="grap">1545678<div class="tb-b" style="width: 40%;">40%</div></td>
-                <td>10,000,000</td>
+                <td>{{User.lastSendDate}}</td>
+                <td>{{User.sendNum}}</td>
+                <td class="grap">{{User.sendSuccNum}}<div class="tb-b" style="width: {{User.sendSuccRate}}%;">{{User.sendSuccRate}}%</div></td>
+                <td>0</td>
             </tr>
             </tbody>
         </table>
@@ -84,12 +84,12 @@
 
         <div class="tablePaging">
             <div class="tablePagingC">
-                <a href="" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                <a href="/playchat/analysis/biz-summary?page={{ pageOptions.prev }}" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
                 </a>
-                <a href="">1</a>
-                <a href="" class="direction">
-                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/analysis/biz-summary?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/analysis/biz-summary?page={{ pageOptions.next }}" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
                 </a>
             </div>
         </div>
