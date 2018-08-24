@@ -1,44 +1,242 @@
-<div class="signin-background">
 
-    <div class="signin-title">
-        <span class="p1">가입을 진심으로 축하 드립니다.</span>
-        <p class="p3 mt30">
-            이메일 인증이 완료되었습니다.<br>
-            대화형 SMS 챗봇을 지금 바로 경험해보세요.
-        </p>
-    </div>
+<div ng-controller="LayoutSamDevelopmentController" class="graph-background">
 
-    <div style="clear: both;margin: 30px 0 0px;text-align: center;">
-        <p class="p3 mb10">
-            추가 정보 입력 (선택)
-        </p>
-        <div class="user-singup">
-            <div class="leftboxinput">
-                <p class="left">업종</p>
-                <select class="jumbo-select"></select>
-            </div>
-            <div class="leftboxinput">
-                <p class="left">회사명</p>
-                <input type="text" class="input_type09 mb10 sign-input">
-            </div>
-            <div class="leftboxinput">
-                <p class="left">담당자명/직책</p>
-                <input type="text" class="input_type09 mb10 sign-input">
-            </div>
-            <div class="leftboxinput">
-                <p class="left">담당 연락처</p>
-                <input type="text" class="input_type09 mb10 sign-input">
-            </div>
-            <div class="leftboxinput">
-                <p class="left">담당 이메일</p>
-                <input type="text" class="input_type09 mb10 sign-input">
-            </div>
+    <div class="working-ground-bizchat">
+        <div class="inline-block">
+            <div>
+                <div class="bot-messages-list mt20 mb50" style="width: 39%;">
+                    <span class="subject02">보낸 메세지 리스트</span>
+                    <ul>
+                        <li class="select mt14 mb0" style="border: 1px solid #d0d2d3;border-bottom: none;">
+                            <div>
+                                <span class="message-title01">01.</span>
+                                <span class="message-title03">메세지</span>
+                                <span  ng-click="cardUiSet(card)" class="open-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
+                            </div>
+                            <div class="detail-select pt10">
+                                <div class="connection-data pl5">
+                                    1.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
+                                    <span class="message-title01 select05">06</span>
+                                </div>
+                                <div class="connection-data pl5 pt4">
+                                    2.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
+                                    <span class="message-title01 select04">03</span>
+                                </div>
+                            </div>
+                        </li>
 
+                        <li class="unsel mt0 mb0 sbox-01" style="border-bottom: none;">
+                            <div>
+                                <span class="message-title01">06.</span>
+                                <span class="message-title03">메세지</span>
+                            </div>
+                        </li>
+                        <li class="unsel mt0 mb0 sbox-01" style="border-bottom: none;">
+                            <div>
+                                <span class="message-title01">04.</span>
+                                <span class="message-title03">메세지</span>
+                            </div>
+                        </li>
+                        <li class="unsel mt0 mb0 sbox-02" style="border-bottom: none;">
+                            <div>
+                                <span class="message-title01">03.</span>
+                                <span class="message-title03">메세지</span>
+                            </div>
+                        </li>
+                        <li class="unsel mt0 mb0 sbox-02">
+                            <div>
+                                <span class="message-title01">05.</span>
+                                <span class="message-title03">메세지</span>
+                            </div>
+                        </li>
+
+                        <li class="select mt0 mb0" style="border: 1px solid #d0d2d3;border-bottom: none;border-top: none;">
+                            <div>
+                                <span class="message-title01">07.</span>
+                                <span class="message-title03">메세지</span>
+                                <span  ng-click="cardUiSet(card)" class="open-btn">
+                                    <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png">
+                                </span>
+                            </div>
+                            <div class="detail-select pt10">
+                                <div class="connection-data pl5">
+                                    1.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled>
+                                    <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
+                                    <span class="message-title01 select05">08</span>
+                                </div>
+                                <div class="connection-data pl5 pt4">
+                                    2.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled>
+                                    <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
+                                    <span class="message-title01 select05">09</span>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="unsel mt0 mb0 sbox-01" style="border-bottom: none;">
+                            <div>
+                                <span class="message-title01">08.</span>
+                                <span class="message-title03">메세지</span>
+                            </div>
+                        </li>
+                        <li class="unsel mt0 mb0 sbox-01">
+                            <div>
+                                <span class="message-title01">09.</span>
+                                <span class="message-title03">메세지</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div style="float: right;width:58%;">
+                <table class="tb02">
+                    <colgroup>
+                        <col width="">
+                        <col width="">
+                        <col width="">
+                        <col width="">
+                        <col width="">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>발송</th>
+                        <th>응답</th>
+                        <th>이탈</th>
+                        <th>응답률</th>
+                        <th>이탈률</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>100000</td>
+                        <td><a href="">50000</a></td>
+                        <td><a href="">50000</a></td>
+                        <td>50%</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td style="border: none;"></td>
+                        <td style="border: none;"><a href="">40000</a></td>
+                        <td style="border: none;"></td>
+                        <td style="border: none;">50%</td>
+                        <td style="border: none;"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><a href="">10000</a></td>
+                        <td></td>
+                        <td>50%</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>100000</td>
+                        <td><a href="">50000</a></td>
+                        <td><a href="">50000</a></td>
+                        <td>50%</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>100000</td>
+                        <td><a href="">50000</a></td>
+                        <td><a href="">50000</a></td>
+                        <td>50%</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>100000</td>
+                        <td><a href="">50000</a></td>
+                        <td><a href="">50000</a></td>
+                        <td>50%</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>100000</td>
+                        <td><a href="">50000</a></td>
+                        <td><a href="">50000</a></td>
+                        <td>50%</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>100000</td>
+                        <td><a href="">50000</a></td>
+                        <td><a href="">50000</a></td>
+                        <td>50%</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td style="border: none;"></td>
+                        <td style="border: none;"><a href="">40000</a></td>
+                        <td style="border: none;"></td>
+                        <td style="border: none;">50%</td>
+                        <td style="border: none;"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><a href="">40000</a></td>
+                        <td></td>
+                        <td>50%</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>100000</td>
+                        <td><a href="">50000</a></td>
+                        <td><a href="">50000</a></td>
+                        <td>50%</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>100000</td>
+                        <td><a href="">50000</a></td>
+                        <td><a href="">50000</a></td>
+                        <td>50%</td>
+                        <td>50%</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class="bottom-btn-area">
-        <button class="btn-style01 mr5" style="width: 49%;height: 42px;">다음에</button>
-        <button class="btn-style03" style="width: 48%;height: 42px;">입력 확인</button>
+
+
+
+        <div style="text-align: center;" >
+            <div class="leftbox">
+                <div class="leftboxinput">
+                    <p class="left">상담 신청 건</p>
+                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
+                </div>
+                <div class="leftboxinput">
+                    <p class="left">대화 최고 이탈</p>
+                    <input type="text" class="input_type09 mb10 sign-input" minlength="8" style="background: #f6f6f6;" disabled>
+                </div>
+                <div class="leftboxinput">
+                    <p class="left">대화 최고 응답</p>
+                    <input type="text" class="input_type09 mb20 sign-input" minlength="8" style="background: #f6f6f6;" disabled>
+                </div>
+            </div>
+            <div class="user-singup">
+                <div class="leftboxinput">
+                    <p class="left">상담 신청률</p>
+                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
+                </div>
+                <div class="leftboxinput">
+                    <p class="left">대화 최고 이탈률</p>
+                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
+                </div>
+                <div class="leftboxinput">
+                    <p class="left">대화 최고 응답률</p>
+                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
+                </div>
+            </div>
+        </div>
+
+        <a href="" class="btn-style03 mb80 mt20" style="width: 100px;display: block;margin: 0 auto;">Excel 다운로드</a>
     </div>
 
+<!--
+    <div class="graph-body" ng-class="isFocused() ? 'focused' : ''" ng-click="toFocus();">
+
+        <!--init here the selected card
+        <div id="graphDialogCanvas"></div>
+    </div>
+-->
 </div>
+
