@@ -184,7 +184,7 @@ a.new-bot-right{
     height: 100%;
     z-index: 300;
 }
-나의봇
+/*나의봇*/
 .mybot-list{}
 .mybot-list .content{
     margin-top: 10px;
@@ -247,8 +247,7 @@ a.new-bot-right{
     transform: rotate(-45deg);
 }
 
-@charset "utf-8";
-/* CSS Document */
+/*popup*/
 .biz-window_overlay {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
@@ -277,6 +276,18 @@ a.new-bot-right{
     z-index: 25;
     display: block;
     margin-top: 76px;
+}
+
+.biz-window2 {
+    background-color: #fff;
+    border-radius: 6px;
+    position: relative;
+    width: 65%;
+    z-index: 25;
+    display: block;
+    margin-top: 2%;
+    max-height: 860px;
+    overflow: auto;
 }
 .biz-card_detail_window{
     padding: 30px 20px;

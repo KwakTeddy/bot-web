@@ -73,7 +73,7 @@ select.custom-select option{
     margin-bottom: 80px;
 }
 .bot-messages-list li.unsel{
-    padding:3.2%;
+    padding:3.4%;
     background: #f6f6f6;
     border: 1px solid #d0d2d3;
     margin: 12px 0;
@@ -302,6 +302,16 @@ select.message-inselect option:checked, select.message-inselect option:hover{
     display: block;
     width: 80px;
     margin: 3% auto;
+}
+.btn-style11{
+    width: 130px;
+    display: block;
+    margin: 0 auto;
+    line-height: 32px;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    padding: 9px 26px;
 }
 .bot-messages-list .add-menu{
     padding:3% 10% 3% 5%;
