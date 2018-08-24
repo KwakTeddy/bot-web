@@ -21,9 +21,9 @@
         <div class="email">
             <form class="login" ng-submit="signin();">
                 <p>{{ lan('Email ID') }}</p>
-                <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.email" ng-required="true">
+                <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.email" ng-required="true" style="width: 278px;">
                 <p>{{ lan('Password') }}</p>
-                <input type="password" class="input_type09 sign-input" ng-model="credentials.password" ng-required="true">
+                <input type="password" class="input_type09 sign-input" ng-model="credentials.password" ng-required="true" style="width: 278px;">
                 <a href="#" ng-click="forgotPassword();"><p class="find">{{ lan('Forget your password?') }}</p></a>
                 <a href="#">
                     <input type="submit" class="loginbtn" value="{{ lan('Sign in') }}" ng-click="signin();">

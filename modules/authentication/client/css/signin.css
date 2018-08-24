@@ -53,6 +53,22 @@
     margin: 0 auto;
     line-height: 22px;
 }
+.p5{
+    font-size: 15px;
+    line-height: 22px;
+    text-align: left;
+    font-weight: 500;
+}
+.p6{
+    font-size: 13px;
+    line-height: 32px;
+     /*text-align: left;*/
+    color: #038eda !important;
+    float: left;
+}
+.p6:hover{
+    text-decoration: underline;
+}
 .social p{
     font-size: 13px;
     color: #7e7e7e;

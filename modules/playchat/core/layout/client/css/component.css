@@ -3,14 +3,9 @@
     outline: 0;
     background: white;
     cursor: pointer;
-<<<<<<< HEAD
-    font-weight: 600;
-    border: 1px solid #d0d2d3;
-=======
     /*font-weight: 600;*/
     border: 1px solid #ddd;
     border-radius: 3px;
->>>>>>> remaster
     padding: 10px 15px;
     font-size: 13px;
     color: #000;
@@ -179,15 +174,9 @@
 {
     position: relative;
     outline: 0;
-<<<<<<< HEAD
-    border: solid 1px #d0d2d3;
-    padding: 8px 12px 8px 8px!important;
-
-=======
     border: solid 1px #e8ebf0;
     border-radius: 2px;
     padding: 11px 12px 11px 8px!important;
->>>>>>> remaster
     transition: border 0.5s;
 }
 
@@ -235,7 +224,7 @@
 
 .form-row label
 {
-    width: 50%;
+    /*width: 50%;*/
 }
 
 .form-row label > .form-title
@@ -318,29 +307,19 @@
     /*cursor: pointer;*/
 /*}*/
 
-.jumbo-select
-{
-<<<<<<< HEAD
-    border: 1px solid #d0d2d3;
+.jumbo-select {
     outline: 0;
     cursor: pointer;
     background: #fff url(/modules/playchat/working-ground/biz-dialog-graph/client/imgs/select-down.png) no-repeat 90% 49%;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    padding: 0 28px 0 8px;
-    /*width: 83px;*/
     height: 34px;
     text-align: left;
-=======
     border-radius: 2px;
     border:1px solid #ddd;
-    /*width: 100px;
-    height: 35px;*/
-    outline: 0;
-    cursor:pointer;
     padding: 6px 4px;
->>>>>>> remaster
+    min-width: 80px;
 }
 
 .codebtn
