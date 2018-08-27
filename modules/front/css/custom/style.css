@@ -4197,10 +4197,7 @@ header .topInfo li.clientAreaLi span,
 	text-transform: uppercase;
 	padding: 0 18px;
 	color: #fff;
-<<<<<<< HEAD
-=======
 	border-radius: 2px;
->>>>>>> remaster
 	text-align: center;
 	float: right;
 	background: #288feb;
@@ -4289,7 +4286,6 @@ header .topInfo li.clientAreaLi span,
 		float: right;
 	}
 	.startBtn{
-
 		min-width: 132px;
 		float: right;
 	}
@@ -4351,7 +4347,6 @@ header .topInfo li.clientAreaLi span,
 }
 .mainArea .img {
 	/*max-width: 960px;*/
-	background-image: url(../../../front/img/home-dsk-3.png);
 	background-size: 100%;
 	background-repeat: no-repeat;
 	margin: auto;

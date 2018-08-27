@@ -1,8 +1,7 @@
 .working-ground-bizchat{
-    /*margin: 2% auto 0;*/
-    margin: 2% auto 10px;
+    margin: 1% auto 30px;
     height: 100%;
-    width: 1010px;
+    width: 1040px;
     position: relative;
 }
 .custom-select{
@@ -74,7 +73,7 @@ select.custom-select option{
     margin-bottom: 80px;
 }
 .bot-messages-list li.unsel{
-    padding:3%;
+    padding:3.4%;
     background: #f6f6f6;
     border: 1px solid #d0d2d3;
     margin: 12px 0;
@@ -88,7 +87,7 @@ select.custom-select option{
     border: 1px solid #038eda;
     background: #fff;
     margin: 12px 0;
-    padding: 5% 3% 3%;
+    padding: 2.6%;
 }
 .bot-messages-list li.new-select{
     border: 1px dashed #d0d2d3;
@@ -182,6 +181,10 @@ select.message-inselect option:checked, select.message-inselect option:hover{
     font-size: 16px;
     font-weight: 600;
     color:#038eda;
+}
+.bot-messages-list .message-title03{
+    font-size: 15px;
+    font-weight: 500;
 }
 /*btn style*/
 .btn-style01{
@@ -286,6 +289,30 @@ select.message-inselect option:checked, select.message-inselect option:hover{
     border: 1px solid #038eda;
     transition: all 0.3s;
 }
+.btn-style10 {
+    padding: 1.5% 8%;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    display: block;
+    width: 80px;
+    margin: 3% auto;
+}
+.btn-style11{
+    width: 130px;
+    display: block;
+    margin: 0 auto;
+    line-height: 32px;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    padding: 9px 26px;
+}
 .bot-messages-list .add-menu{
     padding:3% 10% 3% 5%;
     margin: 0 auto;
@@ -310,12 +337,10 @@ select.add-menu option{
 }
 .bot-messages-list span.open-btn{
     float: right;
-    margin-top: 3px;
     cursor: pointer;
 }
 .bot-messages-list span.close-btn{
     float: right;
-    margin-top: 3px;
     cursor: pointer;
 }
 .message-view{
@@ -587,7 +612,39 @@ ul.menu-right{
     width: 50%;
     vertical-align: top;
 }
-
+.subject02{
+    font-size: 16px;
+    margin-left: 5px;
+    font-weight: 500;
+}
+.select04{
+    color: #3eb6d3;
+    background: #c7ebf4;
+    padding: 2px 5px;
+    border-radius: 12%;
+    vertical-align: middle;
+}
+.select05{
+    color: #5496db;
+    background:#cde5fe;
+    padding: 2px 5px;
+    border-radius: 12%;
+    vertical-align: middle;
+}
+.bot-messages-list li.sbox-01{
+    background: #cde5fe;
+    border-color: #a5c6e9;
+}
+.bot-messages-list li.sbox-01 span{
+    color:#5c89b8;
+}
+.bot-messages-list li.sbox-02{
+    background:#c7ebf4;
+    border-color: #b4dae3;
+}
+.bot-messages-list li.sbox-02 span{
+    color: #6b8d9c;
+}
 @media screen and (max-width: 1450px)
 {
     .graph-controller

@@ -1,0 +1,156 @@
+
+<div ng-controller="LayoutSamDevelopmentController" class="graph-background">
+
+    <div class="working-ground-bizchat">
+        <ul class="inline">
+            <li class="title02 inline mr10">봇 이름</li>
+            <li class="inline">
+                <form class="inline-block">
+                    <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
+                </form>
+            </li>
+        </ul>
+
+        <ul class="inline ml20">
+            <li class="title02 inline mr10">기간</li>
+            <li class="inline mr20">
+                <select ng-model="selectedBot" class="select01">
+                    <option  selected value="null">2018/06/13 – 2018/06/19</option>
+                    <option ng-repeat="bot in botList" value="{{bot.id}}"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> {{bot.name}}</option>
+                </select>
+            </li>
+        </ul>
+
+        <table class="tb03 mt30">
+            <colgroup>
+                <col width="5%">
+                <col width="5%">
+                <col width="20%">
+                <col width="10%">
+                <col width="">
+                <col width="">
+                <col width="">
+                <col width="">
+            </colgroup>
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>발송 시각<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 수<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>성공<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 비용<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>단가<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/down.png"></a></th>
+                <th>보고서</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
+                <td>2018.07.18.0600</td>
+                <td>21545786</td>
+                <td>유효 기간 이후 갱신</td>
+                <td>유효 기간 이후 갱신</td>
+                <td>유효 기간 이후 갱신</td>
+                <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
+                <td>2018.07.18.0600</td>
+                <td>21545786</td>
+                <td class="grap">21545786<div class="tb-b" style="width: 70%;">70%</div></td>
+                <td>2,000,000</td>
+                <td>유효 기간 이후 갱신</td>
+                <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
+                <td>2018.07.18.0600</td>
+                <td>21545786</td>
+                <td class="grap">21545786<div class="tb-b" style="width: 70%;">70%</div></td>
+                <td>2,000,000</td>
+                <td>유효 기간 이후 갱신</td>
+                <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
+                <td>2018.07.18.0600</td>
+                <td>21545786</td>
+                <td class="grap">21545786<div class="tb-b" style="width: 70%;">70%</div></td>
+                <td>2,000,000</td>
+                <td>유효 기간 이후 갱신</td>
+                <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
+                <td>2018.07.18.0600</td>
+                <td>21545786</td>
+                <td class="grap">21545786<div class="tb-b" style="width: 70%;">70%</div></td>
+                <td>2,000,000</td>
+                <td>유효 기간 이후 갱신</td>
+                <td><a href=""><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="tablePaging">
+            <div class="tablePagingC">
+                <a href="" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                </a>
+                <a href="">1</a>
+                <a href="" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--팝업화면--
+        <div class="biz-window_overlay">
+            <div class="biz-window">
+                <div class="biz-card_detail_window">
+                    <div class="biz-window_header">
+                        <div class="biz-window_title">
+                            <h1>중복 삭제</h1>
+                        </div>
+                        <p class="detail">아래 연락처가 중복 입력되었습니다.<br>확인 후 삭제 바랍니다.</p>
+                        <div class="box-list">
+                            <a class="list-line2" style="text-align: center;">
+                                <div class="list1">010-222-2233</div>
+                                <div href="" class="list3">2개</div>
+                            </a>
+                            <a class="list-line2" style="text-align: center;">
+                                <div class="list1">010-222-2233</div>
+                                <div href="" class="list3">2개</div>
+                            </a>
+                            <a class="list-line2" style="text-align: center;">
+                                <div class="list1">010-222-2233</div>
+                                <div href="" class="list3">2개</div>
+                            </a>
+                            <a class="list-line2" style="text-align: center;">
+                                <div class="list1">010-222-2233</div>
+                                <div href="" class="list3">2개</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="btnarea-bizpop mt20">
+                        <div class="btn-style07">취소</div>
+                        <div class="btn-style06 ml15">삭제</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--
+    <div class="graph-body" ng-class="isFocused() ? 'focused' : ''" ng-click="toFocus();">
+
+        <!--init here the selected card
+        <div id="graphDialogCanvas"></div>
+    </div>
+-->
+</div>
+

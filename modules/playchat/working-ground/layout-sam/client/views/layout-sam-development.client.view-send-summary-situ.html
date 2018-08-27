@@ -1,0 +1,145 @@
+
+<div ng-controller="LayoutSamDevelopmentController" class="graph-background">
+
+    <div class="working-ground-bizchat">
+        <ul class="inline">
+            <li class="title02 inline mr10">봇 이름</li>
+            <li class="inline">
+                <form class="inline-block">
+                    <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
+                </form>
+            </li>
+        </ul>
+
+        <ul class="inline ml20">
+            <li class="title02 inline mr10">발송 이력</li>
+            <li class="inline mr20">
+                <select ng-model="selectedBot" class="select01">
+                    <option  selected value="null">2018/06/13 – 2018/06/19</option>
+                    <option ng-repeat="bot in botList" value="{{bot.id}}"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> {{bot.name}}</option>
+                </select>
+            </li>
+        </ul>
+
+        <!--<div class="alr_red">-->
+            <!--<span>발송에 실패한 항목입니다.</span><span style="float: right;">200건</span>-->
+        <!--</div>-->
+        <!--<div class="alr">-->
+            <!--<span>정상적으로 발송된 항목입니다.</span><span style="float: right;">2000건</span>-->
+        <!--</div>-->
+        <div class="alr">
+            <span>발송 예약시각 : 2018년 07월 18일 15:55 </span><span style="float: right;">발송 예약 건수 : 2000건</span>
+        </div>
+
+        <div class="tab01 mt30">
+            <ul class="tabs1">
+                <li class="select_tab">
+                    <a href="">발송 성공</a>
+                </li>
+                <li>
+                    <a href="">발송 실패</a>
+                </li>
+                <li>
+                    <a href="">발송 예약</a>
+                </li>
+            </ul>
+        </div>
+
+        <table class="tb02 mt20">
+            <colgroup>
+                <col width="5%">
+                <col width="40%">
+                <col width="55%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th></th>
+                <th>전화 번호</th>
+                <th>발송 시각</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>010-1245-4567</td>
+                <td>2018.07.18. 15:28</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>010-1245-4567</td>
+                <td>2018.07.18. 15:28</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>010-1245-4567</td>
+                <td>2018.07.18. 15:28</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>010-1245-4567</td>
+                <td>2018.07.18. 15:28</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>010-1245-4567</td>
+                <td>2018.07.18. 15:28</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="tablePaging">
+            <div class="tablePagingC">
+                <a href="" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                </a>
+                <a href="">1</a>
+                <a href="" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--팝업화면--
+        <div class="biz-window_overlay">
+            <div class="biz-window">
+                <div class="biz-card_detail_window">
+                    <div class="biz-window_header">
+                        <div class="biz-window_title">
+                            <h1>중복 삭제</h1>
+                        </div>
+                        <p class="detail">아래 연락처가 중복 입력되었습니다.<br>확인 후 삭제 바랍니다.</p>
+                        <div class="box-list">
+                            <a class="list-line2" style="text-align: center;">
+                                <div class="list1">010-222-2233</div>
+                                <div href="" class="list3">2개</div>
+                            </a>
+                            <a class="list-line2" style="text-align: center;">
+                                <div class="list1">010-222-2233</div>
+                                <div href="" class="list3">2개</div>
+                            </a>
+                            <a class="list-line2" style="text-align: center;">
+                                <div class="list1">010-222-2233</div>
+                                <div href="" class="list3">2개</div>
+                            </a>
+                            <a class="list-line2" style="text-align: center;">
+                                <div class="list1">010-222-2233</div>
+                                <div href="" class="list3">2개</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="btnarea-bizpop mt20">
+                        <div class="btn-style07">취소</div>
+                        <div class="btn-style06 ml15">삭제</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--
+    <div class="graph-body" ng-class="isFocused() ? 'focused' : ''" ng-click="toFocus();">
+
+        <!--init here the selected card
+        <div id="graphDialogCanvas"></div>
+    </div>
+-->
+</div>
+

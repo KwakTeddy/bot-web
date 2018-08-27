@@ -1,0 +1,80 @@
+
+<div ng-controller="BizSummaryChatbotAnalysisController" class="graph-background">
+
+    <div class="working-ground-bizchat">
+        <ul class="inline">
+            <li class="title02 inline mr10">봇 이름</li>
+            <li class="inline">
+                <form class="inline-block">
+                    <input id="search" name="search" type="search" class="search" ng-keydown="search($event);">
+                </form>
+            </li>
+        </ul>
+
+        <ul class="inline ml20">
+            <li class="title02 inline mr10">기간</li>
+            <li class="inline mr20">
+                <div id="createdRange" class="select01" style="width: 80%;">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                    <span></span> <b class="caret"></b>
+                </div>
+            </li>
+        </ul>
+
+        <table class="tb03 mt30">
+            <colgroup>
+                <col width="5%">
+                <col width="5%">
+                <col width="20%">
+                <col width="10%">
+                <col width="">
+                <col width="">
+                <col width="">
+                <col width="">
+            </colgroup>
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>발송 시각<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 수<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>성공<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 비용<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>단가<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/down.png"></a></th>
+                <th>보고서</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="Message in Messages">
+                <td>{{Message.index}}</td>
+                <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
+                <td>{{Message.sendDate}}</td>
+                <td>{{Message.sendNum}}</td>
+                <td class="grap">{{Message.sendSuccNum}}<div class="tb-b" style="width: {{Message.sendSuccRate}}%;">{{Message.sendSuccRate}}%</div></td>
+                <td>{{Message.sendFee}}</td>
+                <td>{{Message.sendFeeForOne}}</td>
+                <td><a href="/playchat/analysis/biz-summary-chatbot-report"><img src="modules/playchat/working-ground/common/client/imgs/search.png"></a></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="tablePaging">
+            <div class="tablePagingC">
+                <a href="/playchat/analysis/biz-summary-chatbot?page={{ pageOptions.prev }}" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
+                </a>
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/analysis/biz-summary-chatbot?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/analysis/biz-summary-chatbot?page={{ pageOptions.next }}" class="direction">
+                    <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <canvas id="sendSuccRateChart" width="400" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+

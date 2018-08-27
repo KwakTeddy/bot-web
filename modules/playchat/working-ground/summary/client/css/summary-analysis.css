@@ -15,8 +15,7 @@
     flex: 1;
     margin: 0 10px;
     border: 1px solid #ddd;
-    /*border-radius: 4px;*/
-    padding: 20px 30px;
+    padding: 1rem;
     text-align: center;
 }
 
@@ -29,7 +28,83 @@
 
 .analysis-summary-card p.analysis-summary-card-count
 {
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+.analysis-summary-title
+{
     font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.analysis-summary-row2
+{
+    display: flex;
+    margin: 20px 0;
+}
+.analysis-summary-row2:first-child{
+    margin-top: 0;
+}
+.analysis-summary-card2 {
+    flex: 1;
+    margin: 0 10px;
+    border: 1px solid #ddd;
+    padding:16px;
+    text-align: center;
+    /*background: #f4f4f4;*/
+    height: 120px;
+    width: 289px;
+}
+.analysis-summary-card2:first-child {
+    margin-left: 0;
+}
+.analysis-summary-card2:last-child{
+    margin-right: 0;
+}
+.analysis-summary-card2 h3
+{
+    font-size: 18px;
+    font-weight: 400;
+}
+.analysis-summary-card2 p {
+    font-size: 35px;
+    font-weight: 600;
+}
+.analysis-summary-card2 p.up{
+    color:#038eda;
+    font-size: 14px;
+    margin: 0 auto;
+    width: 75px;
+}
+.analysis-summary-card2 p.down{
+    color:#e11d4b;
+    font-size: 14px;
+    margin: 0 auto;
+    width: 75px;
+}
+.analysis-summary-card2 p.sm-title{
+    font-size: 13px;
+    font-weight: 500;
+}
+.analysis-summary-card2 p.md1{
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 7px;
+}
+.analysis-summary-card2 p.md2{
+    font-size: 18px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%;
+    margin: 8px auto;
+}
+.analysis-summary-card2 p.analysis-summary-card2-count
+{
+    font-size: 30px;
     margin-top: 10px;
 }
 
