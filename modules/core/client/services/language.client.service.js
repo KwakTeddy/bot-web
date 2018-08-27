@@ -3633,7 +3633,15 @@
                 "en": "Mobile Web Url",
                 "zh": "移动网址",
                 "jp": "モバイルウェブURL"
+            },
+            //adding BIZPLAYCHAT
+            "Report": {
+                "ko": "리포트",
+                "en": "Report",
+                "zh": "报告书",
+                "jp": "報告する"
             }
+
         };
 
         var list = {};
