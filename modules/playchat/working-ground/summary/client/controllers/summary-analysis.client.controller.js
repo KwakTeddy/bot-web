@@ -37,6 +37,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             facebook: 'rgba(59, 89, 152, 0.70)',
             navertalk: 'rgba(0, 199, 60, 0.70)',
             socket: 'gray',
+            etc: '#903cff',
             success: "rgba(66, 133, 244, 0.70)",
             fail: "rgba(221, 81, 68, 0.70)"
         },
@@ -45,6 +46,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             facebook: '#29487d',
             navertalk: '#00af35',
             socket: 'gray',
+            etc: '#722dce',
             success: "rgb(51, 126, 248)",
             fail: "rgb(147, 75, 61)"
         }
@@ -81,6 +83,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             var kakao = 0;
             var naver = 0;
             var socket = 0;
+            var etc = 0;
 
             result.list.forEach(function (data) {
                 switch (data.channel)
@@ -98,6 +101,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                         socket++;
                         break;
                     default :
+                        etc++;
                         break;
 
                 }
@@ -105,20 +109,22 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
             var context = document.getElementById("botUserByChannel").getContext('2d');
             var data = {
-                labels: [LanguageService('KaKao Talk'), LanguageService('Facebook'), LanguageService('Naver talk talk'), LanguageService('Socket')],
+                labels: [LanguageService('KaKao Talk'), LanguageService('Facebook'), LanguageService('Naver talk talk'), LanguageService('Socket'), 'ETC'],
                 datasets: [{
                     data: [],
                     backgroundColor: [
                         color.background.kakao,
                         color.background.facebook,
                         color.background.navertalk,
-                        color.background.socket
+                        color.background.socket,
+                        color.background.etc
                     ],
                     borderColor: [
                         color.border.kakao,
                         color.border.facebook,
                         color.border.navertalk,
-                        color.border.socket
+                        color.border.socket,
+                        color.border.etc
                     ],
                     borderWidth: 1
                 }]
@@ -129,6 +135,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
             data.datasets[0].data.push(facebook);
             data.datasets[0].data.push(naver);
             data.datasets[0].data.push(socket);
+            data.datasets[0].data.push(etc);
 
             var myChart = new Chart(context, {
                 type: 'doughnut',
@@ -202,6 +209,14 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                         fill:false
                     },
                     {
+                        label: 'ETC',
+                        backgroundColor: color.border.etc,
+                        borderColor: color.background.etc,
+                        data: [],
+                        lineTension: 0,
+                        fill:false
+                    },
+                    {
                         label: LanguageService('Total'),
                         backgroundColor: "#444444",
                         borderColor: "#444444",
@@ -251,20 +266,22 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                 array.push(year + '/'+ month + '/' + day)
             }
             data.labels = array;
-
             array.forEach(function (date, index) {
                 var Year =  parseInt(date.split('/')[0]);
                 var Month = parseInt(date.split('/')[1]);
                 var Day =   parseInt(date.split('/')[2]);
                 var exist = false;
+
                 for (var i = 0; i < doc.length; i++) {
                     if((doc[i]._id.year == Year) && (doc[i]._id.month == Month) && (doc[i]._id.day == Day)){
                         exist = true;
+                        var etc = doc[i].total - (doc[i].kakao + doc[i].facebook + doc[i].navertalk + doc[i].socket);
                         data.datasets[0].data.push(doc[i].kakao);
                         data.datasets[1].data.push(doc[i].facebook);
                         data.datasets[2].data.push(doc[i].navertalk);
                         data.datasets[3].data.push(doc[i].socket);
-                        data.datasets[4].data.push(doc[i].total);
+                        data.datasets[4].data.push(etc);
+                        data.datasets[5].data.push(doc[i].total);
 
                         isFailDialogCount += doc[i].fail;
                         isSuccessDialogCount += doc[i].total - doc[i].fail;
@@ -278,6 +295,7 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
                     data.datasets[2].data.push(0);
                     data.datasets[3].data.push(0);
                     data.datasets[4].data.push(0);
+                    data.datasets[5].data.push(0);
                 }
             });
 
@@ -316,7 +334,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
         UserInputStatistics.query({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
-            console.log(result)
             $scope.userInputStatistics = JSON.parse(JSON.stringify(result));
         },
         function(err)
@@ -326,7 +343,6 @@ angular.module('playchat').controller('SummaryAnalysisController', ['$scope', '$
 
         FailDialogsService.query({ botId: chatbot.id, startDate: startDate.toISOString(), endDate: endDate.toISOString(), limit: 10 }, function(result)
         {
-            console.log('ㅁㄴㅇㄹ', result);
             $scope.failDialogs = JSON.parse(JSON.stringify(result));
         },
         function(err)

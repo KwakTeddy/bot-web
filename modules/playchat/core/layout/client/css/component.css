@@ -42,9 +42,9 @@
     text-align: center;
     background: #038eda;
     cursor: pointer;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    /*-webkit-border-radius: 3px;*/
+    /*-moz-border-radius: 3px;*/
+    /*border-radius: 3px;*/
     font-weight: 600;
     padding: 10px;
     font-size: 13px;
@@ -219,12 +219,12 @@
 
 .form-row
 {
-    margin: 10px 0;
+    margin: 10px 0 0;
 }
 
 .form-row label
 {
-    width: 50%;
+    /*width: 50%;*/
 }
 
 .form-row label > .form-title
@@ -307,15 +307,19 @@
     /*cursor: pointer;*/
 /*}*/
 
-.jumbo-select
-{
+.jumbo-select {
+    outline: 0;
+    cursor: pointer;
+    background: #fff url(/modules/playchat/working-ground/biz-dialog-graph/client/imgs/select-down.png) no-repeat 90% 49%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 34px;
+    text-align: left;
     border-radius: 2px;
     border:1px solid #ddd;
-    /*width: 100px;
-    height: 35px;*/
-    outline: 0;
-    cursor:pointer;
     padding: 6px 4px;
+    min-width: 80px;
 }
 
 .codebtn
@@ -348,7 +352,7 @@
     cursor: pointer;
     font-weight: 600;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     padding: 7px 10px;
     font-size: 13px;
     color: #919191;

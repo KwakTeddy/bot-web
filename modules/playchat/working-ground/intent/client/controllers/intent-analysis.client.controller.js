@@ -2,8 +2,6 @@
 
 angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$http', '$cookies', '$resource', 'DateRangePickerService', 'ExcelDownloadService', 'LanguageService',function ($scope, $http, $cookies, $resource, DateRangePickerService, ExcelDownloadService, LanguageService)
 {
-    console.log(LanguageService);
-
     $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' > ' + LanguageService('Intent'), '/modules/playchat/gnb/client/imgs/intent.png');
 
     //서비스 선언
@@ -54,8 +52,6 @@ angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$h
             excelData = [];
             IntentService.query({ botId: chatbot.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(list)
             {
-                console.log('리스트 : ', list);
-
                 var labels = [];
 
                 var dataset = [{
@@ -102,6 +98,4 @@ angular.module("playchat").controller("IntentAnalysisController", ['$scope', '$h
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList);
     $scope.getList();
     $scope.lan=LanguageService;
-
-    console.log("$scope.lan('Excel Download')"+$scope.lan('Excel Download'));
 }]);

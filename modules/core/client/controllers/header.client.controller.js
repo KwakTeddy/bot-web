@@ -69,8 +69,6 @@ angular.module('playchat').controller('HeaderController', ['$scope', '$location'
 
         x -= angular.element('.user-menu').css('width').replace('px', '')*1;
 
-        console.log(angular.element('.user-menu'));
-
         angular.element('.user-menu').css('left', x + 'px').css('top', y + 'px').show();
 
         e.stopPropagation();

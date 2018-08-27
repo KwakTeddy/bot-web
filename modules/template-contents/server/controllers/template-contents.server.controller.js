@@ -30,7 +30,6 @@ module.exports.findDatas = function(req, res)
         if(err)
         {
             console.error(err);
-            console.log("!!!!!!!!!!!!");
             return res.status(400).send({ error: err });
         }
 
@@ -48,8 +47,6 @@ module.exports.findDatas = function(req, res)
             model = mongoose.model(name);
         else
             model = mongoose.model(name, schema);
-
-        console.log('모델명 : ', name, botId);
 
     if(req.query.page!==undefined) {
     model.find(query).skip(countPerPage * (page - 1)).limit(countPerPage).exec(function (err, list) {

@@ -45,7 +45,6 @@
                     <p>{{ lan('Organization') }}</p>
                     <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.organization">
                 </div>
-
             </div>
             <div style="clear: both;margin: 20px 0 10px; position:relative; text-align: center;">
                 <input id="checkBox1" type="checkbox" value="Read" class="styled-checkbox" ng-model="agree" ng-required="true" style="opacity: 0;">
@@ -53,9 +52,10 @@
                     <span class="agree v_line_t"><span class="fontblue">{{ lan('Agree to Terms of Use and Privacy Policy.') }}</span></span>
                 </label>
             </div>
-
-            <button class="loginbtn" id="signupButton">{{ lan('Sign up') }}</button>
-            <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" style="display: none;">
+            <div style="width:20%;margin: 0 auto;">
+                <button class="loginbtn" id="signupButton">{{ lan('Sign up') }}</button>
+                <img src="/modules/playchat/working-ground/dialog-set/client/imgs/editing.gif" style="display: none;">
+            </div>
         </form>
     </div>
 

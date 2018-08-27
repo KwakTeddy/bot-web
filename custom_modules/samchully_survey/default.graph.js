@@ -1,6 +1,7 @@
 var dialogs = [
     {
         "name": "질문 2-1",
+        "type": "5b486d4a55611f9addf74b64",
         "input": [
             {
                 "text": {
@@ -31,6 +32,7 @@ var dialogs = [
         "children": [
             {
                 "name": "질문 3-1",
+                "type": "5b486d4a55611f9addf74b64",
                 "input": [
                     {
                         "types": [
@@ -48,6 +50,7 @@ var dialogs = [
                 "children": [
                     {
                         "name": "질문 4-1",
+                        "type": "5b486d4a55611f9addf74b64",
                         "input": [
                             {
                                 "types": [
@@ -65,6 +68,7 @@ var dialogs = [
                         "children": [
                             {
                                 "name": "결과-1",
+                                "type": "5b486e6955611f9addf74b65",
                                 "input": [
                                     {
                                         "types": [
@@ -88,6 +92,7 @@ var dialogs = [
     },
     {
         "name": "질문 2-2",
+        "type": "5b486d4a55611f9addf74b64",
         "input": [
             {
                 "text": {
@@ -118,6 +123,7 @@ var dialogs = [
         "children": [
             {
                 "name": "질문 2-2-1",
+                "type": "5b486d4a55611f9addf74b64",
                 "input": [
                     {
                         "text": {
@@ -136,6 +142,7 @@ var dialogs = [
                 "children": [
                     {
                         "name": "질문 3-3",
+                        "type": "5b486d4a55611f9addf74b64",
                         "input": [
                             {
                                 "types": [
@@ -153,6 +160,7 @@ var dialogs = [
                         "children": [
                             {
                                 "name": "질문 4-3",
+                                "type": "5b486d4a55611f9addf74b64",
                                 "input": [
                                     {
                                         "types": [
@@ -170,6 +178,7 @@ var dialogs = [
                                 "children": [
                                     {
                                         "name": "결과-3",
+                                        "type": "5b486e6955611f9addf74b65",
                                         "input": [
                                             {
                                                 "types": [
@@ -193,6 +202,7 @@ var dialogs = [
             },
             {
                 "name": "질문 3-2",
+                "type": "5b486d4a55611f9addf74b64",
                 "input": [
                     {
                         "types": [
@@ -210,6 +220,7 @@ var dialogs = [
                 "children": [
                     {
                         "name": "질문 4-2",
+                        "type": "5b486d4a55611f9addf74b64",
                         "input": [
                             {
                                 "types": [
@@ -227,6 +238,7 @@ var dialogs = [
                         "children": [
                             {
                                 "name": "결과-2",
+                                "type": "5b486e6955611f9addf74b65",
                                 "input": [
                                     {
                                         "types": [
@@ -247,6 +259,27 @@ var dialogs = [
                 ]
             }
         ]
+    },
+    {
+        "name": "New Dialog",
+        "input": [
+            {
+                "text": {
+                    "raw": "3",
+                    "nlp": "3"
+                }
+            }
+        ],
+        "output": [
+            {
+                "kind": "Action",
+                "text": "",
+                "type": "call",
+                "dialogId": "default4",
+                "dialogName": "결과-1"
+            }
+        ],
+        "id": "default6"
     }
 ];
 
@@ -254,6 +287,7 @@ var commonDialogs = [
     {
         "id": "startDialog",
         "name": "시작",
+        "type": "5b486d4a55611f9addf74b64",
         "input": [
             {
                 "text": {
@@ -270,8 +304,11 @@ var commonDialogs = [
         ],
         "output": [
             {
-                "kind": "Content",
-                "text": "[삼천리도시가스] \n삼천리 인공지능 챗봇입니다. 가스 요금 전자 청구서에 대한 설문조사를 실시하고 있습니다. 끝까지 답해주신 분들 중 50분께 문화상품권을 보내드립니다.\n \n본 설문조사는 대화형 SMS 방식으로 진행되며, 고객님의 SMS 발송비용은 무료입니다.\n\n문의: 1544-3002\n무료수신거부: 080-877-5907\n\n[요금설문]\n질문1. 가스 요금 전자 청구서 (알림톡, 카카오페이 등) 가 있다는 것을 알고 계신가요?\n\n1. 예, 알고 있습니다\n2. 아니오, 모릅니다\n\n(예시. 알고 계시면 1을 입력)"
+                "kind": "Action",
+                "text": "[삼천리도시가스] \n삼천리 인공지능 챗봇입니다. 가스 요금 전자 청구서에 대한 설문조사를 실시하고 있습니다. 끝까지 답해주신 분들 중 50분께 문화상품권을 보내드립니다.\n \n본 설문조사는 대화형 SMS 방식으로 진행되며, 고객님의 SMS 발송비용은 무료입니다.\n\n문의: 1544-3002\n무료수신거부: 080-877-5907\n\n[요금설문]\n질문1. 가스 요금 전자 청구서 (알림톡, 카카오페이 등) 가 있다는 것을 알고 계신가요?\n\n1. 예, 알고 있습니다\n2. 아니오, 모릅니다\n\n(예시. 알고 계시면 1을 입력)",
+                "type": "call",
+                "dialogId": "default4-Clone",
+                "dialogName": "결과-2"
             }
         ]
     },

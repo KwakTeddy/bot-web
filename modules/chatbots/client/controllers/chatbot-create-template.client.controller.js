@@ -200,10 +200,10 @@
 
             $scope.save = function()
             {
-                console.log('123123213');
+
                 var split = location.href.split('/');
                 var type = split[split.length-1];
-                console.log($scope.bot)
+
                 ChatbotService.save({ id: $scope.bot.id, name: $scope.bot.name, language: $scope.bot.language, description: $scope.bot.description, imageFile: $scope.botImage, type: type, sampleCategory: $scope.bot.sampleCategory }, function(chatbot)
                 {
                     delete chatbot.user;
@@ -251,8 +251,6 @@
 
             $scope.saveTemplateBot = function(e)
             {
-                console.log('12331333')
-
                 var data = {};
                 angular.element(e.currentTarget).find('*[name]').each(function()
                 {

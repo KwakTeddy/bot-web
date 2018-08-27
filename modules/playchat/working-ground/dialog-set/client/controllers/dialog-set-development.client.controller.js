@@ -481,7 +481,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
                     setTimeout(function()
                     {
-                        console.log(angular.element(e.currentTarget.parentElement.parentElement).find('textarea:last'));
                         angular.element(e.currentTarget.parentElement.parentElement).find('textarea:last').focus();
                     }, 50);
                 }
@@ -574,7 +573,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
                 e.currentTarget.watchTimeout = setTimeout(function()
                 {
-                    console.log('머야');
                     // 타이핑을 멈추고 1초가 지나면 저장.
                     // printSavingImage(element); 너무 빨라서 의미가 없다.
                     $scope.saveModified(type, e);
@@ -659,7 +657,6 @@ angular.module('playchat').controller('DialogLearningDevelopmentController', ['$
 
             DialogSetsService.query({ botId: chatbot._id }, function(list)
             {
-                console.log('리스트 : ', list);
                 $scope.dialogsetList = list;
 
                 $scope.$parent.loaded('working-ground');

@@ -5,14 +5,12 @@
     {
         $scope.$parent.loading = false;
         $scope.credentials = {};
+        var href = $state.previous.href ? $state.previous.href : '/playchat/development/create-bot';
 
         var isLogin = $cookies.get('login');
         if(isLogin === true || isLogin === 'true')
         {
-            if($state.previous.href)
-                location.href = $state.previous.href;
-            else
-                location.href = '/playchat/chatbots';
+            location.href = href;
             return;
         }
 
@@ -32,10 +30,7 @@
                 $cookies.putObject('user', response);
                 $cookies.put('login', true);
 
-                if($state.previous.href)
-                    location.href = $state.previous.href;
-                else
-                    location.href = '/playchat/chatbots';
+                location.href = href;
             }).error(function(err)
             {
                 if(err == 'not registration' || err.message.startsWith('E-mail 확인절차를'))

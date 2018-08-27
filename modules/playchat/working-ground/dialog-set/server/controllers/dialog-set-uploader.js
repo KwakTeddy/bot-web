@@ -65,7 +65,6 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
                     {
                         dialogsetDialog.input = [nlpText];
 
-                        console.log('세이브 : ', dialogsetDialog.inputRaw);
                         dialogsetDialog.save(function()
                         {
                             next();
@@ -329,7 +328,6 @@ var NLPManager = require(path.resolve('./engine2/input/nlp.js'));
             {
                 dialogsetDialog.save(function()
                 {
-                    console.log(item.q);
                     next();
                 });
             });

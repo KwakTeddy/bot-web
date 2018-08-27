@@ -22,9 +22,9 @@
     justify-content: center;
 }
 
-.social, .email
-{
-    /*padding: 0 40px 0 100px;*/
+.social, .email {
+    padding: 0 60px;
+    width: 24%;
 }
 
 #logincontents
@@ -40,35 +40,77 @@
     font-size: 14px;
     color: #7e7e7e;
 }
-
+.p3{
+    font-size: 14px;
+    width: 35%;
+    margin: 0 auto;
+    line-height: 22px;
+}
+.p4{
+    font-size: 14px;
+    color: #ff4259;
+    width: 35%;
+    margin: 0 auto;
+    line-height: 22px;
+}
+.p5{
+    font-size: 15px;
+    line-height: 22px;
+    text-align: left;
+    font-weight: 500;
+}
+.p6{
+    font-size: 13px;
+    line-height: 32px;
+     /*text-align: left;*/
+    color: #038eda !important;
+    float: left;
+}
+.p6:hover{
+    text-decoration: underline;
+}
 .social p{
     font-size: 13px;
     color: #7e7e7e;
 }
 .fbbtn{
-    background: #3b589d url(/modules/authentication/client/imgs/facebook.png) no-repeat 14px 8px;
-    padding:10px;
-    border-radius: 6px;
-    /*width: 230px;*/
-    margin: 10px auto;
+    background: #3b589d url(/modules/authentication/client/imgs/facebook.png) no-repeat 16px 14px;
+    padding:5%;
+    border-radius: 2px;
+    margin: 11px auto;
+    cursor: pointer;
 }
 .fbbtn a{
     color: #fff !important;
-    margin-left: 45px;
+    margin-left: 50px;
     letter-spacing: 0.1px;
-    margin-right: 10px;
+    font-size: 16px;
 }
 .gbtn{
-    background: #d84d32 url(/modules/authentication/client/imgs/google.png) no-repeat 16px 8px;
-    padding:10px;
-    border-radius: 6px;
-    /*width: 230px;*/
-    margin: 10px auto;
+    background: #d84d32 url(/modules/authentication/client/imgs/google.png) no-repeat 20px 15px;
+    padding: 5%;
+    border-radius: 2px;
+    margin: 15px auto;
+    cursor: pointer;
 }
 .gbtn a{
     color: #fff !important;
     letter-spacing: 0.1px;
-    margin-left: 45px;
+    margin-left: 50px;
+    font-size: 16px;
+}
+.pbtn{
+    background: #038eda url(/modules/authentication/client/imgs/playchat.png) no-repeat 20px 15px;;
+    padding: 5%;
+    border-radius: 2px;
+    margin: 15px auto;
+    cursor: pointer;
+}
+.pbtn a{
+    color: #fff !important;
+    letter-spacing: 0.1px;
+    margin-left: 50px;
+    font-size: 16px;
 }
 .kbtn{
     background: #ffeb00 url(/modules/authentication/client/imgs/kakao.png) no-repeat 16px 8px;
@@ -82,10 +124,13 @@
     letter-spacing: 0px;
     margin-left: 45px;
 }
+.bottom-btn-area{
+    width: 27%;
+    margin: 1% auto;
+}
 .input_type09{
     width: 240px;
     border: 1px solid #d7d7d7;
-    border-radius: 3px;
     background: #fff;
     margin: 5px auto 0px;
     position: relative;
@@ -105,11 +150,12 @@
 }
 .loginbtn{
     background: #038eda;
-    padding:14px 0px;
-    border-radius: 3px;
-    width: 268px;
+    padding: 6%;
+    width: 100%;
     margin: 10px auto;
     color: #fff;
+    border-radius: 2px;
+    font-size: 15px;
 }
 .register{
     width: 272px;
@@ -135,15 +181,12 @@ p.find{
 .agree{
     text-align: left;
     margin-top: 8px;
-    font-size: 12px;
+    font-size: 13px;
     color: #7e7e7e;
 }
 #bottoms{
-    position: fixed;
-    bottom: 90px;
     text-align: center;
-    clear: both;
-    width: 66%;
+    margin-top: 15%;
 }
 #bottoms span{
     font-size: 13px;
@@ -161,6 +204,7 @@ a.policy{
     text-decoration: underline !important;
     margin-top: 10px;
     display: block;
+    cursor: pointer;
 }
 .exclamation{
     color: #f43e30;
@@ -237,15 +281,14 @@ a.policy{
 }
 .noticebox{
     font-family: 'Noto Sans SC', sans-serif;
-    border-radius: 6px;
     width: 560px;
     margin: 0 auto;
     padding: 18px;
-    text-align: left;
+    text-align: center;
     line-height: 20px;
     font-weight: 700;
-    background: #2f6587;
-    color: #fff;
+    color: #363636;
+    border: 1px solid #363636;
 }
 .leftbox{
     display: inline-block;
@@ -255,6 +298,9 @@ a.policy{
 .leftboxinput{
     width: 270px;
     margin: 0 auto;
+}
+.leftboxinput p.left{
+    text-align: left;
 }
 .user-singup{
     display: inline-block;

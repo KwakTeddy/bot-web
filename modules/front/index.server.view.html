@@ -755,7 +755,6 @@
 
 
             var lan = {{ lan | json | safe }};
-        console.log(lan)
             $.cookie('language', lan);
 
             $('[data-id="startBtn"]').on('click', function () {
@@ -766,7 +765,7 @@
                     return location.href = '/signin';
                 }else
                 {
-                    return location.href = '/playchat/chatbots';
+                    return location.href = '/playchat/development/create-bot';
                 }
 
             });

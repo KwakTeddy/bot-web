@@ -83,8 +83,6 @@
                 }
             }
 
-            console.log(params);
-
             EntityService.save(params, function()
             {
                 if(formElement.saveCallback)

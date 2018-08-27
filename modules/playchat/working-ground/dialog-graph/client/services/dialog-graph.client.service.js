@@ -667,7 +667,7 @@
                 if(location.href.indexOf('/playchat/development/dialog-graph') == -1 || angular.element('.dialog-graph-code-editor').is(':visible') == true)
                     return;
 
-                console.log('야 : ', that.editor.isOpen);
+
                 if(that.editor.isOpen)
                 {
                     //에디터로 포커스 이동되어있을때
@@ -1340,8 +1340,6 @@
                 {
                     if(target)
                     {
-                        console.log(target.dialog);
-                        console.log(item.dialog);
                         if($(item.parentElement).find(target.parentElement).length == 0)
                         {
                             var parentDialog = item.parentElement.parentElement.parentElement.children[0].dialog;
@@ -2224,6 +2222,7 @@
 
         DialogGraph.prototype.isDirty = function()
         {
+
             return this.dirty;
         };
 
@@ -2312,7 +2311,6 @@
 
         if(!instance)
             instance = new DialogGraph();
-
         return instance;
     });
 })();

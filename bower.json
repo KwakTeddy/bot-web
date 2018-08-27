@@ -6,6 +6,7 @@
   "dependencies": {
     "angular": "~1.5",
     "angular-resource": "~1.5",
+    "angular-cookies": "~1.6.1",
     "angular-ui-router": "~0.3",
     "angular-file-upload": "2.3.4",
     "codemirror": "^5.16.0",

@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
   Bank = mongoose.model('Bank'),
   BotUser = mongoose.model('BotUser'),
   Faq = mongoose.model('Faq'),
-  Product = mongoose.model('Product');;;;;;;;
+  Product = mongoose.model('Product');
 
 exports.receivedMoneyBot = function (from, serverText, responseCallback) {
 

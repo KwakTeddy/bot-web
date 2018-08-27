@@ -13,14 +13,19 @@ module.exports = function(globals)
 
         var matchs = inputRaw.match(re);
 
-        console.log(matchs);
-
         if(matchs && matchs.length > 0)
         {
             matched = true;
             parsed = matchs[0];
 
             // dialog.userInput.text = inputRaw.replace(matchs[0], '+' + type.name + '+');
+            if(type.name=='mobile'){
+                context.user.mobile = dialog.userInput.text
+            }else if(type.name=='name'){
+                context.user.name = dialog.userInput.text
+            }else if(type.name=='date'){
+                context.user.date = dialog.userInput.text
+            }
         }
 
         // dialog.userInput.text = inputRaw.replace(re, function(match, p1)

@@ -105,6 +105,7 @@ exports.find = function(req, res)
 
 exports.create = function(req, res)
 {
+
     var dialog = new DialogsetDialog(req.body);
 
     DialogsetDialog.find({ dialogset: req.params.dialogsetId }).sort('-id').limit(1).exec(function(err, dialogs)

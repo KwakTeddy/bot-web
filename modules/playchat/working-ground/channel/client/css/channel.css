@@ -17,10 +17,10 @@
 .channel-content-item
 {
     position: relative;
-    min-width: 18.3%;
+    min-width: 17.3%;
     height: 252px;
     border: 1px solid #d3e4ee;
-    border-radius: 6px;
+    /*border-radius: 6px;*/
     padding: 12px;
     margin: 0 5px;
     width: 50%;

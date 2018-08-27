@@ -4,6 +4,10 @@ var fs = require('fs');
 var accepts = require('accepts');
 var async = require('async');
 
+var multer = require('multer');
+
+// sample
+var utils = require(path.resolve('./engine2/utils/utils.js'));
 
 var S3 = require(path.resolve('./modules/common/s3.js'));
 
@@ -19,6 +23,9 @@ var Intent = mongoose.model('Intent');
 var IntentContent = mongoose.model('IntentContent');
 var Entity = mongoose.model('Entity');
 var EntityContent = mongoose.model('EntityContent');
+
+var BizMsgs = mongoose.model('BizMsgs');
+var Sentences = mongoose.model('Sentences');
 
 var IntentController = require(path.resolve('./modules/playchat/working-ground/intent/server/controllers/intent.server.controller.js'));
 var EntityController = require(path.resolve('./modules/playchat/working-ground/entity/server/controllers/entity.server.controller.js'));
@@ -56,6 +63,8 @@ exports.find = function (req, res)
 
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
+    if(req.query.type)
+        query.type = { $in: ['survey','consult'] };
 
     ChatBot.find(query).sort('-created').populate('templateId').populate('user').skip(countPerPage*(page-1)).limit(countPerPage).exec(function (err, bots)
     {
@@ -121,7 +130,6 @@ exports.create = function(req, res)
 {
 
     var language = req.body.language;
-    console.log(language);
 
     ChatBot.findOne({ id: req.body.id }).exec(function(err, bot)
     {
@@ -147,7 +155,7 @@ exports.create = function(req, res)
             }
 
             var chatbot = new ChatBot(req.body);
-            if(!req.body.type.startsWith('sample') && req.body.type != 'blank')
+            if(!req.body.type.startsWith('sample') && req.body.type != 'blank' && req.body.type != 'survey' && req.body.type != 'consult')
             {
                 chatbot.templateId = req.body.type;
             }
@@ -286,7 +294,6 @@ exports.create = function(req, res)
                             var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
 
                             if(!language || language != 'ko'){
-                                console.log(lanService(language));
                                 botData = botData.replace("시작",lanService(language)['start']);
                             }
 
@@ -299,8 +306,95 @@ exports.create = function(req, res)
                                 S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
                                 S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
                             }
-                        }
-                        else {
+                        }else if (type == 'survey'||type == 'consult'){
+
+                            var graphfilepath = __dirname + '/sample/' + type + '/graph.js';
+                            var botjs = fs.readFileSync(__dirname + '/sample/' + type + '/bot.js');
+                            var defaultjs = fs.readFileSync(__dirname + '/sample/' + type + '/default.js');
+                            var graphjs = fs.readFileSync(graphfilepath);
+
+
+                            fs.stat(graphfilepath, function(err, stat)
+                            {
+                                if(err || !stat)
+                                {
+                                    console.error(err);
+                                }
+
+                                var graphData = graphjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                                var defaultData = defaultjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+                                var botData = botjs.toString().replace(/{id}/gi, req.body.id).replace(/{name}/gi, req.body.name);
+
+                                fs.writeFileSync(dir + '/default.graph.js', graphData);
+                                fs.writeFileSync(dir + '/default.js', defaultData);
+                                fs.writeFileSync(dir + '/' + req.body.id + '.bot.js', botData);
+
+                                if (process.env.NODE_ENV == 'production') {
+                                    S3.uploadFile('playchat-custom-modules', req.body.id, 'default.graph.js', dir + '/default.graph.js');
+                                    S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
+                                    S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
+                                }
+
+                                var bot = {};
+
+                                bot.setDialogs = function(dialogs)
+                                {
+                                    this.dialogs = dialogs;
+                                };
+
+                                bot.setCommonDialogs = function(commonDialogs)
+                                {
+                                    this.commonDialogs = commonDialogs;
+                                };
+
+                                try
+                                {
+                                    utils.requireNoCache(graphfilepath, true)(bot);
+                                    if(type=='survey'){
+                                        var startCard = bot.commonDialogs.find((e)=>{return e.id === 'startDialog'});
+                                        var index = 0;
+                                        var bizMsg = new BizMsgs({
+                                            botId: chatbot.id,
+                                            index: index,
+                                            id : startCard.id,
+                                            name :startCard.name,
+                                            message: startCard.output[0].text
+                                        });
+
+                                        bizMsg.save((err) => {
+                                            if(err) console.error(err);
+                                        });
+                                    }else if(type=='consult'){
+                                        var arr = [];
+                                        Sentences.find({templateId:type}).sort({index:1}).exec((err,list)=>{
+                                            list.forEach((e)=>{
+                                                var it = {
+                                                    botId: chatbot.id,
+                                                    index: e.index,
+                                                    id : e.id,
+                                                    name :e.name,
+                                                    type : e.msg_type,
+                                                    message: e.message
+                                                };
+                                                e.input ? it.input = e.input : null;
+                                                e.connect ? it.connect = e.connect : null;
+                                                arr.push(it);
+                                            });
+
+                                            BizMsgs.collection.insertMany(arr,(err,dt)=>{
+                                                if(err) console.error(err);
+                                            });
+                                        })
+                                    }
+
+
+                                }
+                                catch(err)
+                                {
+                                    console.error(err);
+                                }
+                            });
+                        } else {
                             var bot_tpl_path = '';
 
                             try{
@@ -476,7 +570,6 @@ var duplicateIntent = function(srcBotId, destBotId, callback)
         });
     });
 };
-
 var duplicateEntity = function(srcBotId, destBotId, callback)
 {
     Entity.find({ botId: srcBotId }).exec(function(err, list)
@@ -632,21 +725,25 @@ exports.duplicate = function(req, res)
 
 exports.delete = function(req, res)
 {
-    ChatBot.remove({ _id: req.params.botId }).exec(function(err)
-    {
-        if(err)
+    BizMsgs.remove({botId:req.query.botDisplayId}).exec(function(err){
+        if(err) console.log(err);
+        ChatBot.remove({ _id: req.params.botId }).exec(function(err)
         {
-            console.error(err);
-            return res.status(400).send({ message: err.stack || err });
-        }
-        else
-        {
-            var rimraf = require('rimraf');
-            rimraf(path.resolve('./custom_modules') + '/' + req.query.botDisplayId, function () { res.end(); });
+            if(err)
+            {
+                console.error(err);
+                return res.status(400).send({ message: err.stack || err });
+            }
+            else
+            {
+                var rimraf = require('rimraf');
+                rimraf(path.resolve('./custom_modules') + '/' + req.query.botDisplayId, function () { res.end(); });
 
-            deleteBotObjectFromS3(req.params.botId);
-        }
+                deleteBotObjectFromS3(req.params.botId);
+            }
+        });
     });
+
 };
 
 exports.share = function(req, res)
@@ -683,6 +780,67 @@ exports.share = function(req, res)
         else
         {
             res.status(404).send({ message: req.body.data.email + ' ' + lanService(language)['L091'] });
+        }
+    });
+};
+
+exports.uploadImage = function(req,res)
+{
+    var now = new Date().getTime();
+    var originalname = '';
+
+    var storage = multer.diskStorage(
+        {
+            destination: function (req, file, cb)
+            {
+                cb(null, './public/files/');
+            },
+            filename: function (req, file, cb)
+            {
+                originalname = file.originalname;
+                cb(null, now + '-' + file.originalname);
+            }
+        });
+
+    var fileFilter = function (req, file, cb)
+    {
+        if (!file.mimetype.startsWith('image'))
+        {
+            return cb(new Error('Only image files are allowed!'), false);
+        }
+
+        cb(null, true);
+    };
+
+    var upload = multer({ storage: storage, fileFilter: fileFilter }).single('uploadFile');
+
+    upload(req, res, function (uploadError)
+    {
+        if (uploadError)
+        {
+            console.error(uploadError); return res.status(400).send({ message: uploadError.message });
+        }
+        else
+        {
+            var botId = req.params.botId;
+
+            if(process.env.NODE_ENV == 'production')
+            {
+                S3.uploadFile('playchat-files', req.user._id.toString(), now + '-' + originalname, path.resolve('./public/files/' + now + '-' + originalname), function(err, url)
+                {
+                    if(err)
+                    {
+                        console.error(err);
+                        return res.status(400).send({ message: err });
+                    }
+
+                    res.jsonp({ url : url });
+                });
+            }
+            else
+            {
+                res.jsonp({ url : '/files/' + now + '-' + originalname });
+            }
         }
     });
 };

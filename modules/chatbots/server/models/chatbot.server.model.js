@@ -13,7 +13,14 @@ var BotSchema = new Schema(
 {
     id: { type: String },
     name: { type: String },
+
+    //for bizchat
+    companyName: { type: String },
+    companyCall: { type: String },
+    rejectCall: { type: String },
+
     description: String,
+    phone: { type: String },
     language: { type: String, default: 'ko' },
     kakao: { type: Boolean, default: false },
     line: { type: Boolean, default: false },
@@ -31,6 +38,7 @@ var BotSchema = new Schema(
     learning: { type: Boolean, default: false },
     templateId: { type: Schema.ObjectId, ref: 'Template' },
     templateDataId: { type: Schema.ObjectId, ref: 'TemplateData' },
+    type: { type:String },
     topicKeywords: Schema.Types.Mixed,
     user: { type: Schema.ObjectId, ref: 'User' },
     created: { type: Date, default: Date.now }

@@ -18,4 +18,6 @@ module.exports = function (app)
     app.put('/api/chatbots/:botId/rename', chatbot.rename);
     app.post('/api/chatbots/:botId/duplicate', chatbot.duplicate);
     app.post('/api/chatbots/:botId/share', chatbot.share);
+
+    app.post('/api/chatbots/uploadImage', chatbot.uploadImage);
 };

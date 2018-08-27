@@ -9,6 +9,7 @@
         var ChatbotAuthService = $resource('/api/:botId/bot-auth/:_id', { botId: '@botId', _id: '@_id' }, { update: { method: 'PUT' } });
 
         var instance = undefined;
+        var user = $cookies.getObject('user');
 
         var Menu = function()
         {
@@ -18,6 +19,26 @@
         Menu.prototype.initialize = function()
         {
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
+            /*비즈챗 개발을 위한 설정*/
+            this.development_test = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+                { name: '샘플페이지', url: '/development/layout-sam', icon: 'scenatio_select.png' },
+                { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
+                { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' },
+                { name: '발송하기', url: '/development/outbound', icon: 'scenatio_select.png' },
+                { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' },
+
+
+                //{ name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
+                { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
+            ] };
+
+
+            this.development_global = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+
+                { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
+                { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
+                { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
+            ] };
 
             this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
                 { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
@@ -41,6 +62,8 @@
                 // { name: LanguageService('AI Chat log'), url: '/operation/chat-log/ai', icon: 'ai_select.png' },
                 { name: LanguageService('Failed Chat log'), url: '/operation/failed-dialogs', icon: 'failed_select.png' }
             ] };
+
+
 
             this.analysis = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
                 { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
@@ -70,6 +93,28 @@
                 // { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
             ] };
 
+            if(user.email=='sam@moneybrain.ai'){
+                this.analysis = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
+                    { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
+
+                    { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+
+                    { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' },
+
+                    // { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
+                    // { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
+                    // { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
+                    // { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
+                    // { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
+                    // { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
+                    // { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
+                    // { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
+                    // { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+                    // { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
+                    // { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
+                ] };
+            }
+
             this.docs = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
                     { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
 
@@ -92,6 +137,7 @@
         {
             this.initialize();
             var that = this;
+
             if(typeof templateId == 'string' && callback)
             {
                 TemplateGnbService.get({ templateId : templateId }, function(menu)
@@ -117,18 +163,35 @@
             else if(typeof templateId == 'function')
             {
                 var chatbot = $cookies.getObject('chatbot');
-
                 var menus = [];
-                menus.push(that.dashboard);
-                menus.push(that.development);
-                menus.push(that.management);
-                // menus.push(this.contents);
-                menus.push(that.channel);
-                if(chatbot.myBotAuth.edit)
-                {
-                    menus.push(that.operation);
+
+
+                if(!chatbot || (chatbot.type && (chatbot.type === 'survey'||chatbot.type === 'consult'))){
+
+                    menus.push(that.development_test);
+                }else{
+                    menus.push(that.dashboard);
+                    menus.push(that.development);
+
+                    menus.push(that.management);
+
+                    if(chatbot && chatbot.myBotAuth.edit)
+                    {
+                        menus.push(that.operation);
+                    }
+                    menus.push(that.analysis);
                 }
-                menus.push(that.analysis);
+                //menus.push(that.development_global);
+
+
+
+                // for samchully dependency
+                //if(user.email!='sam@moneybrain.ai'){
+                //    menus.push(that.development);
+                //    menus.push(that.management);
+                //    menus.push(that.channel);
+                //}
+                // menus.push(this.contents);
                 // menus.push(this.setting);
 
                 templateId(menus);

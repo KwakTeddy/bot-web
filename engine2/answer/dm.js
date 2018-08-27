@@ -534,6 +534,8 @@ var ContextManager = require('../context.js');
             if(bot.options.globalSearch && bot.options.globalSearch.use)
             {
                 var selectedDialogs = transaction.selectedDialogs;
+                //console.log('init transaction done')
+                //console.log(transaction)
                 if(selectedDialogs && selectedDialogs.length > 0)
                 {
                     if(!bot.options.globalSearch.limitOfSimilarAnswer || !bot.options.globalSearch.limitOfSimilarAnswer || bot.options.globalSearch.limitOfSimilarAnswer == 1)
@@ -552,6 +554,8 @@ var ContextManager = require('../context.js');
                     }
                     else if(bot.options.globalSearch.limitOfSimilarAnswer > 1)
                     {
+                        //console.log('init transaction done limit similar answer')
+                        //console.log(selectedDialogs)
                         //여러개 선택해서 보여준담에 다시 고르라고 해야함.
                     }
                 }
@@ -578,9 +582,9 @@ var ContextManager = require('../context.js');
 
     DialogGraphManager.prototype.exec = function(bot, context, dialogInstance, callback)
     {
-        console.log();
-        console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
-        console.log(dialogInstance);
+        //console.log();
+        //console.log(chalk.yellow('[[[ Execute DialogGraph ]]]'));
+        //console.log(dialogInstance);
 
         if(dialogInstance.userInput.types)
         {
@@ -690,9 +694,9 @@ var ContextManager = require('../context.js');
                 resultOutput = output;
             }
 
-            console.log();
-            console.log(chalk.yellow('[[[ Selected Output ]]]'));
-            console.log(resultOutput);
+            //console.log();
+            //console.log(chalk.yellow('[[[ Selected Output ]]]'));
+            //console.log(resultOutput);
 
             if(resultOutput)
             {

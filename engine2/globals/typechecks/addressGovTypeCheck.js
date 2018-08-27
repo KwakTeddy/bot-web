@@ -127,9 +127,6 @@ module.exports = function(globals)
                 task.address.detail = task.addressJibun.detail;
                 task.address.address = addr.roadAddrPart1 + ', ' + task.address.detail + addr.roadAddrPart2;
 
-                console.log(JSON.stringify(task.address));
-                console.log(JSON.stringify(task.addressJibun));
-
                 callback(text, task, true);
             }
         });

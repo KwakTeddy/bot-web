@@ -39,9 +39,6 @@ var DialogGraphManager = require('./answer/dm.js');
 
                     output = OutputManager.make(context, {}, {}, output);
                     callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
-
-                    console.log(chalk.green('================================'));
-                    console.log()
                 }
             });
         });
@@ -82,9 +79,6 @@ var DialogGraphManager = require('./answer/dm.js');
 
                             output = OutputManager.make(context, {}, {}, output);
                             callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
-
-                            console.log(chalk.green('================================'));
-                            console.log();
                         }
                     });
                 });
@@ -129,9 +123,6 @@ var DialogGraphManager = require('./answer/dm.js');
 
                             output = OutputManager.make(context, {}, {}, output);
                             callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
-
-                            console.log(chalk.green('================================'));
-                            console.log();
                         }
                     });
                 });
@@ -162,13 +153,7 @@ var DialogGraphManager = require('./answer/dm.js');
 
                     output = OutputManager.make(context, {}, {}, output);
                     callback(null, { type: 'command', dialogId: context.session.dialogCursor, output: output});
-
-                    console.log(chalk.green('================================'));
-                    console.log();
                 });
-
-                console.log(chalk.green('================================'));
-                console.log();
             }
         });
     };
@@ -176,9 +161,9 @@ var DialogGraphManager = require('./answer/dm.js');
     CommandManager.prototype.execute = function(redis, contextKey, inputRaw, bot, context, error, callback)
     {
         //FIXME 커맨드 실행
-        console.log();
-        console.log(chalk.yellow('[[[ Execute Command ]]]'));
-        console.log(inputRaw);
+        //console.log();
+        //console.log(chalk.yellow('[[[ Execute Command ]]]'));
+        //console.log(inputRaw);
 
         if(inputRaw == ':reset user')
         {
@@ -215,8 +200,8 @@ var DialogGraphManager = require('./answer/dm.js');
 
                     // callback(null, { type: 'dialog', output: { kind: 'Content', text: '상담원과 연결되었습니다.' }});
 
-                    console.log(chalk.green('================================'));
-                    console.log();
+                    //console.log(chalk.green('================================'));
+                    //console.log();
                 }
             });
         }

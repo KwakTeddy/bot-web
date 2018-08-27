@@ -21,7 +21,7 @@
         var countPerPage = $location.search().countPerPage || 50;
 
         var user = $cookies.getObject('user');
-
+        $scope.restrictService = user.email;
         $scope.selectedBot = undefined;
         $scope.openShareModal = false;
         $scope.share = {};
@@ -37,7 +37,6 @@
         {
             ChatBotService.query({ page: page, countPerPage: countPerPage, name : name }, function(list)
             {
-                console.log(list)
                 $scope.list = list;
                 
                 for(var i=0; i<list.length; i++)
@@ -89,7 +88,6 @@
                     if(!version)
                     {
                         alert(LanguageService('It is a chatbot made in old version PlayChat. Go to old version PlayChat.'));
-                        console.log('흠 : ', 'https://old.playchat.ai/playchat/chatbots');
                         window.open(
                             'https://old.playchat.ai/playchat/',
                             '_blank' // <- This is what makes it open in a new window.
@@ -129,11 +127,12 @@
             angular.element('#botContent').hide();
             angular.element('#sharedBotContent').hide();
             angular.element('#' + name).show();
-            angular.element(e.currentTarget).addClass('select_tab');
+            if(e)angular.element(e.currentTarget).addClass('select_tab');
         };
 
         $scope.toPage = function(page)
         {
+            console.log(page)
             $scope.getList(page);
         };
 
@@ -292,7 +291,9 @@
         };
 
         $scope.getList();
-
+        if($scope.restrictService=='sam@moneybrain.ai'){
+            $scope.moveTab(null, 'sharedBotContent');
+        }
         $scope.lan = LanguageService;
     }]);
 })();

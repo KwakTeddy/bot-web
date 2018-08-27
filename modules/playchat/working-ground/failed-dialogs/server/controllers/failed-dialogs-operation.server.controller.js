@@ -44,7 +44,6 @@ module.exports.clear = function(req, res)
     if(req.body.preDialogId)
         query.preDialogId = req.body.preDialogId;
 
-    console.log(query);
     UserDialog.update(query, { $set: { clear: req.body.clear || 'qna|graph|intent'} }, {multi: true}).exec(function(err, result)
     {
         if(err)

@@ -11,9 +11,11 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
     $scope.language = $cookies.get('language');
     $scope.menus = [];
-    $scope.botName = chatbot.name;
-    $scope.path = $location.path();
-    $scope.botAuth = chatbot.myBotAuth;
+    if(chatbot){
+        $scope.botName = chatbot.name;
+        $scope.path = $location.path();
+        $scope.botAuth = chatbot.myBotAuth;
+    }
 
     $scope.openReporting = false;
 
@@ -23,12 +25,10 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         $scope.drawMenu = function()
         {
             var savedMenu = [];
-            console.log(chatbot);
-            if(chatbot.templateId)
+            if(chatbot && chatbot.templateId)
             {
                 MenuService.get(chatbot.templateId.id, function(menus)
                 {
-                    console.log(menus);
                     $scope.menus = savedMenu = menus;
                     $scope.$parent.loaded('side-menu');
                 });
@@ -37,7 +37,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             {
                 MenuService.get(function(menus)
                 {
-                    console.log(menus)
                     $scope.menus = savedMenu = menus;
                     $scope.$parent.loaded('side-menu');
                 });
@@ -48,7 +47,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
         $scope.$on('changeLanguage', function()
         {
-            console.log('머냐 : ');
             $scope.drawMenu();
         });
     })();
@@ -97,8 +95,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             else
             {
                 $scope.stopToggle = true;
-                console.log('스탑 토글 : ', $scope.stopToggle);
-
                 //펼치기
                 link.attr('media', link.attr('data-media')).attr('disabled', '');
             }
@@ -157,7 +153,9 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             }
             else
             {
-                if($scope.path.startsWith('/playchat' + menu.url))
+                if(!$scope.path){
+                    return 'selected';
+                }else if($scope.path.startsWith('/playchat' + menu.url))
                 {
                     if(menu.childMenus)
                     {
@@ -206,7 +204,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             console.log('에러 : ', err);
         });
     };
-
     $scope.closeReporting = function()
     {
         $scope.openReporting = false;
