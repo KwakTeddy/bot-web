@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope', '$rootScope', 'PagingService','$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket','LanguageService','DateRangePickerService', function ($scope, $rootScope, PagingService, $state, $window, $timeout, $stateParams, $resource, $cookies, Socket, LanguageService, DateRangePickerService)
+angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope', '$rootScope', 'PagingService','$state', '$window','$timeout', '$location','$stateParams', '$resource', '$cookies', 'Socket','LanguageService','DateRangePickerService', function ($scope, $rootScope, PagingService, $state, $window, $timeout, $location, $stateParams, $resource, $cookies, Socket, LanguageService, DateRangePickerService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' >> ' + LanguageService('Summary'), '/modules/playchat/gnb/client/imgs/summary.png');
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
@@ -55,12 +55,8 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
 
         $scope.goDetailPage = function(event, data)
         {
-            var target = angular.element(event.currentTarget);
-            console.log("target: " + target);
-
-            var href = target.attr('data-href');
-            //
-            location.href = href + '#' + encodeURIComponent(JSON.stringify(data));
+            sessionStorage.setItem('botMsg',JSON.stringify(data));
+            $location.path('/playchat/analysis/biz-summary-chatbot')
         };
 
         $scope.dateFormat = function(date)

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$scope', '$rootScope','PagingService', '$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket','LanguageService','DateRangePickerService', function ($scope, $rootScope, PagingService, $state, $window, $timeout, $stateParams, $resource, $cookies, Socket, LanguageService, DateRangePickerService)
+angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$scope', '$location','$rootScope','PagingService', '$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket','LanguageService','DateRangePickerService', function ($scope,$location, $rootScope, PagingService, $state, $window, $timeout, $stateParams, $resource, $cookies, Socket, LanguageService, DateRangePickerService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' >> ' + LanguageService('Summary') + ' >> ' + LanguageService('Chatbot'), '/modules/playchat/gnb/client/imgs/summary.png');
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
@@ -11,8 +11,10 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
 
     (function()
     {
-        var hash = location.hash;
-        var data = JSON.parse(decodeURIComponent(hash.substring(1)));
+        var data = JSON.parse(sessionStorage.getItem('botMsg'));
+
+        // sessionStorage.removeItem('botMsg')
+
         console.log('데이터 : ', data);
         data.matched = true;
 
@@ -109,9 +111,9 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
                     $scope.Messages[i].reply = "70";
                     $scope.Messages[i].sendSuccAverage = "15";
                     $scope.Messages[i].replyAverage = "15";
-                    $scope.Messages[i].feeAverage = "15";
                     $scope.Messages[i].feeAverage = "1000";
                     $scope.Messages[i].feeForOneAverage = 80;
+                    $scope.Messages[i].sendNumAverage = "300";
                     $scope.Messages[i].botName = data.name;
                     //chart datas
                     datas.push(0);
@@ -260,12 +262,8 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
 
         $scope.goReportPage = function(event, data)
         {
-            var target = angular.element(event.currentTarget);
-            console.log("target: " + target);
-
-            var href = target.attr('data-href');
-            //
-            location.href = href + '#' + encodeURIComponent(JSON.stringify(data));
+            sessionStorage.setItem('SummaryReport',JSON.stringify(data));
+            $location.path('/playchat/analysis/biz-summary-chatbot-report');
         };
 
 

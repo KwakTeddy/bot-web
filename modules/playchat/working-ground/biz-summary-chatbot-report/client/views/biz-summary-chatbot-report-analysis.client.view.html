@@ -43,51 +43,11 @@
                 <canvas id="sendRateChart" width="400" height="150"></canvas>
             </div>
         </div>
-        <a href="" class="btn-style10" ng-click="modal.importModal.open();">보고서 확인</a>
+        <a href="" class="btn-style10" ng-click="openModal();">보고서 확인</a>
 
-        <div class="modal-background management-modal" ng-show="modal.importModal.isOpened">
+        <div class="modal-background management-modal" ng-show="modal.reportDetailModal.isOpened">
             <div class="modal">
                 <form name="modalFormDefault">
-                    <div class="working-ground-bizchat">
-                        <div class="analysis-summary-row2">
-                            <div class="analysis-summary-card2">
-                                <h3>성공</h3>
-                                <p class="analysis-summary-card-count">20</p>
-                                <p class="sm-title">평균대비</p>
-                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">33 %</p>
-                            </div>
-                            <div class="analysis-summary-card2">
-                                <h3>챗봇 발송 대상</h3>
-                                <p class="analysis-summary-card-count">10k</p>
-                                <p class="sm-title">10258</p>
-                            </div>
-                            <div class="analysis-summary-card2">
-                                <h3>발송 비용</h3>
-                                <p class="analysis-summary-card-count">200k</p>
-                                <p class="sm-title">200, 150</p>
-                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">10 %</p>
-                            </div>
-                        </div>
-                        <div class="analysis-summary-row2">
-                            <div class="analysis-summary-card2">
-                                <h3>응답자</h3>
-                                <p class="analysis-summary-card-count">70</p>
-                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">20 %</p>
-                            </div>
-                            <div class="analysis-summary-card2">
-                                <h3>발송 시각/봇</h3>
-                                <p class="md1">2018년 07월 18일 6시 30분</p>
-                                <p class="md2">7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇</p>
-                            </div>
-                            <div class="analysis-summary-card2">
-                                <h3>단가</h3>
-                                <p class="analysis-summary-card-count">20</p>
-                                <p class="down"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/down_.png" style="margin-right: 2px;">50 %</p>
-                            </div>
-                        </div>
-                        <a href="" class="btn-style10">보고서 확인</a>
-                    </div>
-
                     <div class="biz-window_overlay">
                         <div class="biz-window2">
                             <div class="biz-card_detail_window">
@@ -96,72 +56,80 @@
                                     <div class="edit-windo2">
                                         <div class="analysis-summary-row2">
                                             <div class="analysis-summary-card2">
-                                                <h3>성공</h3>
-                                                <p class="analysis-summary-card-count">20</p>
+                                                <h3>상담 신청 인원</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.sendSuccNum}}</p>
                                                 <p class="sm-title">평균대비</p>
-                                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">33 %</p>
+                                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages.sendSuccAverageRate}}%</p>
                                             </div>
                                             <div class="analysis-summary-card2">
                                                 <h3>챗봇 발송 대상</h3>
-                                                <p class="analysis-summary-card-count">10k</p>
-                                                <p class="sm-title">10258</p>
+                                                <p class="analysis-summary-card-count">{{Messages.sendNumK}}</p>
+                                                <p class="sm-title">{{Messages.sendNum}}</p>
                                             </div>
                                             <div class="analysis-summary-card2">
                                                 <h3>발송 비용</h3>
-                                                <p class="analysis-summary-card-count">200k</p>
-                                                <p class="sm-title">200, 150</p>
-                                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">10 %</p>
+                                                <p class="analysis-summary-card-count">{{Messages.sendFeeK}}</p>
+                                                <p class="sm-title">{{Messages.sendFee}}</p>
+                                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages.sendFeeAverageRate}}%</p>
                                             </div>
                                         </div>
                                         <div class="analysis-summary-row2 mb50">
                                             <div class="analysis-summary-card2">
                                                 <h3>응답자</h3>
-                                                <p class="analysis-summary-card-count">70</p>
-                                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">20 %</p>
+                                                <p class="analysis-summary-card-count">{{Messages.reply}}</p>
+                                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages.replyAverageRate}}%</p>
                                             </div>
                                             <div class="analysis-summary-card2">
                                                 <h3>발송 시각/봇</h3>
-                                                <p class="md1">2018년 07월 18일 6시 30분</p>
-                                                <p class="md2">7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇</p>
+                                                <p class="md1">{{Messages.sendDate}}</p>
+                                                <p class="md2">{{Messages.botName}}</p>
                                             </div>
                                             <div class="analysis-summary-card2">
                                                 <h3>단가</h3>
-                                                <p class="analysis-summary-card-count">20</p>
-                                                <p class="down"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/down_.png" style="margin-right: 2px;">50 %</p>
+                                                <p class="analysis-summary-card-count">{{Messages.sendFeeForOne}}</p>
+                                                <p class="down"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/down_.png" style="margin-right: 2px;">{{Messages.feeForOneAverageRate}}%</p>
                                             </div>
                                         </div>
-                                        <div style="height: 600px;background: #5c89b8"></div>
+                                        <div>
+                                            <div>
+                                                <canvas id="sendRateChartModal" width="400" height="150"></canvas>
+                                            </div>
+                                        </div>
                                         <div class="analysis-summary-row2 mt50">
                                             <div class="analysis-summary-card2">
                                                 <h3>평균 상담 신청 인원</h3>
-                                                <p class="analysis-summary-card-count">15</p>
+                                                <p class="analysis-summary-card-count">{{Messages.sendSuccAverage}}</p>
                                             </div>
                                             <div class="analysis-summary-card2">
                                                 <h3>평균 발송 대상</h3>
-                                                <p class="analysis-summary-card-count">10k</p>
-                                                <p class="sm-title">10258</p>
+                                                <p class="analysis-summary-card-count">{{Messages.sendNumAverageK}}</p>
+                                                <p class="sm-title">{{Messages.sendNumAverage}}</p>
                                             </div>
                                             <div class="analysis-summary-card2">
                                                 <h3>평균 발송 비용</h3>
-                                                <p class="analysis-summary-card-count">200k</p>
-                                                <p class="sm-title">200, 150</p>
+                                                <p class="analysis-summary-card-count">{{Messages.feeAverageK}}</p>
+                                                <p class="sm-title">{{Messages.feeAverage}}</p>
                                             </div>
                                         </div>
                                         <div class="analysis-summary-row2 mb50">
                                             <div class="analysis-summary-card2">
                                                 <h3>평균 응답자</h3>
-                                                <p class="analysis-summary-card-count">60</p>
+                                                <p class="analysis-summary-card-count">{{Messages.replyAverage}}</p>
                                             </div>
                                             <div class="analysis-summary-card2">
                                                 <h3>상담 신청 봇 평균</h3>
-                                                <p class="md2">머니 브레인</p>
+                                                <p class="md2">{{User.email}}</p>
                                             </div>
                                             <div class="analysis-summary-card2">
                                                 <h3>평균 단가</h3>
-                                                <p class="analysis-summary-card-count">30</p>
+                                                <p class="analysis-summary-card-count">{{Messages.feeForOneAverage}}</p>
                                             </div>
                                         </div>
-                                        <div style="height: 600px;background: #8c9eff"></div>
+                                        <div>
+                                            <div>
+                                                <canvas id="sendRateAvarageChartModal" width="400" height="150"></canvas>
+                                            </div>
+                                        </div>
                                         <div style="height: 700px;background: #9ecdfc" class="mt50 mb50"></div>
 
                                         <div class="inline-block mt30">
@@ -391,6 +359,7 @@
                                         </div>
 
                                         <a href="" class="btn-style11 mb50 mt50">Excel 다운로드</a>
+                                        <a href="" class="btn-style11 mb50 mt50" ng-click="modal.reportDetailModal.close();">close</a>
                                     </div>
                                 </div>
                             </div>
