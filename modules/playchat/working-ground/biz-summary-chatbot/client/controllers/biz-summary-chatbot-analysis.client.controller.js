@@ -99,19 +99,20 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
                 for (var i = 0; i < 6; i++) {
                     $scope.Messages[i] = {};
                     $scope.Messages[i].index = i + 1;
-                    $scope.Messages[i].sendDate = '2018.07.18.0600';
-                    $scope.Messages[i].sendNum = 100;
-                    $scope.Messages[i].sendSuccNum = 20;
-                    $scope.Messages[i].sendFee = 10000;
+                    $scope.Messages[i].sendDate = '2018.07.18 06:00';
+                    $scope.Messages[i].sendNum = "100";
+                    $scope.Messages[i].sendSuccNum = "20";
+                    $scope.Messages[i].sendFee = "100000";
                     $scope.Messages[i].sendFeeForOne = 100;
                     $scope.Messages[i].sendSuccRate = 40;
                     $scope.Messages[i].id = '123456';
-                    $scope.Messages[i].reply = 70;
-                    $scope.Messages[i].sendSuccAverage = 15;
-                    $scope.Messages[i].replyAverage = 15;
-                    $scope.Messages[i].feeAverage = 15;
-                    $scope.Messages[i].feeAverage = 1000;
+                    $scope.Messages[i].reply = "70";
+                    $scope.Messages[i].sendSuccAverage = "15";
+                    $scope.Messages[i].replyAverage = "15";
+                    $scope.Messages[i].feeAverage = "15";
+                    $scope.Messages[i].feeAverage = "1000";
                     $scope.Messages[i].feeForOneAverage = 80;
+                    $scope.Messages[i].botName = data.name;
                     //chart datas
                     datas.push(0);
                     labels.push('0');
