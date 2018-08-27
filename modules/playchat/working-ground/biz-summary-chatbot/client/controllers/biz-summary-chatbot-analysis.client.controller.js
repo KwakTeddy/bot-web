@@ -100,11 +100,18 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
                     $scope.Messages[i] = {};
                     $scope.Messages[i].index = i + 1;
                     $scope.Messages[i].sendDate = '2018.07.18.0600';
-                    $scope.Messages[i].sendNum = 0;
-                    $scope.Messages[i].sendSuccNum = 0;
-                    $scope.Messages[i].sendFee = 0;
-                    $scope.Messages[i].sendFeeForOne = 0;
+                    $scope.Messages[i].sendNum = 100;
+                    $scope.Messages[i].sendSuccNum = 20;
+                    $scope.Messages[i].sendFee = 10000;
+                    $scope.Messages[i].sendFeeForOne = 100;
                     $scope.Messages[i].sendSuccRate = 40;
+                    $scope.Messages[i].id = '123456';
+                    $scope.Messages[i].reply = 70;
+                    $scope.Messages[i].sendSuccAverage = 15;
+                    $scope.Messages[i].replyAverage = 15;
+                    $scope.Messages[i].feeAverage = 15;
+                    $scope.Messages[i].feeAverage = 1000;
+                    $scope.Messages[i].feeForOneAverage = 80;
                     //chart datas
                     datas.push(0);
                     labels.push('0');
@@ -249,6 +256,17 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
 
             return year + '-' + month + '-' + dateOfMonth + ' ' + hour + ':' + min + ':' + sec;
         };
+
+        $scope.goReportPage = function(event, data)
+        {
+            var target = angular.element(event.currentTarget);
+            console.log("target: " + target);
+
+            var href = target.attr('data-href');
+            //
+            location.href = href + '#' + encodeURIComponent(JSON.stringify(data));
+        };
+
 
     })();
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList); // startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString()

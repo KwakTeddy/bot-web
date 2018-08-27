@@ -1,4 +1,4 @@
-var SummaryAnalysisController = require('../controllers/biz-summary-chatbot-analysis.server.controller.js');
+var SummaryAnalysisController = require('../controllers/biz-summary-chatbot-report-analysis.server.controller.js');
 
 module.exports = function(app)
 {
