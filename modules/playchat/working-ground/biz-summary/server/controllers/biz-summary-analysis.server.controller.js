@@ -3,10 +3,143 @@ var mongoose = require('mongoose');
 
 var UserDialog = mongoose.model('UserDialog');
 var bot_js = require(path.resolve('./engine2/bot.js'));
+var request = require('request');
+// var mysql = require('mysql');
+//
+// var pool = mysql.createPool({
+//     // connectionLimit : 15,
+//     host: "52.79.198.53",
+//     port: '3306',
+//     user: "root",
+//     password: "Make01mb!",
+//     database: "bizchat"
+// });
+//
+// var trigger = function(insertId, imageName, imagePath, CRT_USER_ID, PARTI_MONTH){
+//     var now = new Date();
+//     if(imageName && imagePath){
+//         pool.getConnection(function(err, conn){
+//             var mmsQuery = "INSERT INTO SND_ATTFILE (MSG_SEQ, ATTFILE_SEQ, ATT_FILE_NM, FILE_PATH, CRT_USER_ID, PARTI_MONTH) VALUES ('" + insertId + "', '1', '" + imageName + "', '" + imagePath + imageName + "', '" + CRT_USER_ID + "', '" + PARTI_MONTH + "')";
+//             if(!err){
+//                 conn.query(mmsQuery, function(err, result, fields)
+//                 {
+//                     if(err) console.error('MMS data input error : ', err);
+//
+//                     con.release();
+//                     console.log('MMS data input in ', (new Date().getTime() - now.getTime()) + 'ms');
+//                 });
+//             }
+//         });
+//     }
+// };
+
+
+
+// var db = new Promise(function(resolve, reject){
+//     ssh.on('ready', function() {
+//         ssh.forwardOut(
+//             // source address, this can usually be any valid address
+//             '127.0.0.1',
+//             // source port, this can be any valid port number
+//             12345,
+//             // destination address (localhost here refers to the SSH server)
+//             '127.0.0.1',
+//             // destination port
+//             3306,
+//             function (err, stream) {
+//                 if (err) throw err; // SSH error: can also send error in promise ex. reject(err)
+//                 // use `sql` connection as usual
+//                 var connection = mysql.createConnection({
+//                     host     : 'localhost',
+//                     user     : 'root',
+//                     password : 'Make01mb!',
+//                     database : 'bizchat',
+//                     // stream: stream
+//                 });
+//
+//                 // send connection back in variable depending on success or not
+//                 connection.connect(function(err){
+//                     if (err) {
+//                         resolve(connection);
+//                     } else {
+//                         reject(err);
+//                     }
+//                 });
+//             });
+//     }).connect({
+//         host: '52.79.198.53',
+//         // port: 22,
+//         username: 'root',
+//         password: 'Make01mb!'
+//     },function(req,res){
+//         if(!err){
+//             console.log('Succ: Mysql!');
+//             // conn.query(query, function (err, results) {
+//             //     res.jsonp(results);
+//             //
+//             // })
+//         }
+//         else{
+//             console.log('Error: Mysql!');
+//         }
+//     });
+// });
+
+
+module.exports.getSendMsgsByBotId = function (req, res) {
+    request.post(
+        'https://bitchats.moneybrain.ai/BizPlaychat/sendMsg',
+        {json: {req: "02-858-5683", message: 'req.body.message'}},
+        function (error, response, body) {
+            console.log('res.status： ' + res.statusCode );
+        }
+    );
+    res.end();
+    // var mysql = require('mysql');
+    //
+    //
+    // var db = orm.connect({
+    // host: 'seo',
+    //     protocol: 'mysql',
+    //     port: '3306',
+    //     pool: true,
+    //     user: "root",
+    //     password: "Make01mb!",
+    //     database: "bizchat"})
+
+    // var pool = mysql.createPool({
+    //     connectionLimit: 15,
+    //     host: "52.79.198.53",
+    //     user: "root",
+    //     password: "Make01mb!",
+    //     database: "bizchat"
+    // });
+    //
+    // pool.getConnection(function(err, conn){
+    //     // var mmsQuery = "INSERT INTO SND_ATTFILE (MSG_SEQ, ATTFILE_SEQ, ATT_FILE_NM, FILE_PATH, CRT_USER_ID, PARTI_MONTH) VALUES ('" + insertId + "', '1', '" + imageName + "', '" + imagePath + imageName + "', '" + CRT_USER_ID + "', '" + PARTI_MONTH + "')";
+    //     console.log('err: ' + JSON.stringify(err));
+    //     console.log('conn: ' + conn);
+    //
+    //     if(!err){
+    //         console.log('Success');
+    //         // conn.query(mmsQuery, function(err, result, fields)
+    //         // {
+    //         //     if(err) console.error('MMS data input error : ', err);
+    //         //
+    //         //     con.release();
+    //         //     console.log('MMS data input in ', (new Date().getTime() - now.getTime()) + 'ms');
+    //         // });
+    //     }
+    //     else{
+    //         console.log('Error');
+    //     }
+    // });
+
+};
 
 module.exports.totalDialogCount = function(req, res)
 {
-    UserDialog.count({ botId: req.params.botId , inOut: true}).exec(function (err, count)
+    UserDialog.count({ botId: req.params.botId , inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }}).exec(function (err, count)
     {
         if (err)
         {
@@ -19,9 +152,60 @@ module.exports.totalDialogCount = function(req, res)
     });
 };
 
+module.exports.lastSendMsgDate = function(req, res)
+{
+    UserDialog.find({ botId: req.params.botId , inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }}).sort({created: -1}).exec(function (err, date)
+    {
+        if (err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            if(date[0]){
+                res.jsonp({lastDate: date[0].created});
+            }
+            else{
+                res.jsonp({lastDate: ""});
+            }
+        }
+    });
+};
+
+module.exports.TotalDialogByPeriod = function(req, res)
+{
+    UserDialog.find({ botId: req.params.botId , inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }}).sort({created: -1}).exec(function (err, result)
+    {
+        if (err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+                res.jsonp(result);
+        }
+    });
+};
+
+module.exports.totalSuccDialogCount = function(req, res)
+{
+    UserDialog.count({ botId: req.params.botId , inOut: true, isFail: false, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }}).exec(function (err, count)
+    {
+        if (err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.jsonp({ count: count });
+        }
+    });
+};
+
+
 module.exports.periodDialogCount = function(req, res)
 {
-    UserDialog.count({ botId: req.params.botId, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } }).exec(function (err, count)
+    UserDialog.find({ botId: req.params.botId, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } }).exec(function (err, count)
     {
         if (err)
         {

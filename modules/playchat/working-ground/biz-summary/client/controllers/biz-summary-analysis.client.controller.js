@@ -6,49 +6,18 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
     var user = $cookies.getObject('user');
 
+    // var TotalDialogContentService = $resource('/api/:botId/analysis/total-dialog-content', { botId: '@botId' });
+    var TotalDialogContentService = $resource('/api/:botId/:startDate/:endDate/:startTime/analysis/sendMsg', { botId: '@botId' });
+    var TotalSuccDialogCountService = $resource('/api/:botId/analysis/total-succ-dialog-count', { botId: '@botId' });
+    var LastSendDateService = $resource('/api/:botId/analysis/last-send-date', { botId: '@botId' });
+    var TotalDialogCountService = $resource('/api/:botId/analysis/total-dialog-counts', { botId: '@botId' });
+
     $scope.User = [];
     $scope.Bots = [];
     $scope.Messages = [];
     $scope.date = {};
-
-
-    var mySqlPool = new mysql.createPool({
-        // host: 'localhost',
-        host: '172.31.15.9',
-        port: '3306',
-        user: 'root',
-        password: 'Make01mb!',
-        charset : 'utf8mb4',
-        //database: 'kakao_agent',
-        database: 'kt_mcs_agent',
-        connectionLimit: 20,
-        waitForConnections: false
-    });
-
-    mySqlPool.getConnection(function (err, connection) {
-        var query = connection.query('INSERT INTO MZSENDTRAN (SN, SENDER_KEY, CHANNEL, PHONE_NUM, TMPL_CD, SND_MSG, REQ_DTM, TRAN_STS)' +
-            'VALUES (' +
-            '\'' + dateformat(new Date(), 'yyyymmddHHMMss') + '\',' +//'\'' + sendKakaoSeq + '\',' +
-            '\'484a760f0ab588a483034d6d583f0ae8c2882829\',' +
-            '\'A\',' +
-            '\'' + phoneNum + '\',' +
-            '\'code1\',' +
-            '\'' + message + '\',' +
-            '\'' + dateformat(new Date()+9*60*60, 'yyyymmddHHMMss') + '\',' +
-            '\'1\');'
-            , function (err, rows) {
-                if (err) {
-                    connection.release();
-                    throw err;
-                }
-
-                connection.release();
-            });
-    })
-
     (function()
     {
-
         $scope.toPage = function(page)
         {
             $scope.getList(page);
@@ -56,33 +25,85 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
 
         $scope.getList = function(page)
     {
+
         $scope.User.name = user.displayName;
-        $scope.User.lastSendDate = '2018.08.24.0600';
+        $scope.User.lastSendDate = '';
         $scope.User.sendNum = 0;
         $scope.User.sendSuccNum = 0;
         $scope.User.sendSuccRate = 0;
 
         ChatBotService.query({ type : true }, function(list)
         {
+
             var totalPage = list.length < 10 ? 1 : Math.round(list.length / 10);
             page = page || 1;
             $scope.pageOptions = PagingService(page, totalPage);
 
-            list.forEach((e,index) => {
-                e.created = moment(e.created).format('YYYY.MM.DD');
-                $scope.Bots[index] = {};
-                $scope.Bots[index].index = index + 1;
-                $scope.Bots[index].name = e.name;
-                // message list load
-                $scope.Bots[index].lastSendDate = '2018.08.24.0600';
-                $scope.Bots[index].sendNum = 0;
-                $scope.Bots[index].sendSuccNum = 0;
-                $scope.Bots[index].sendSuccRate = 0;
-                //
-                index++;
-            });
+            // list.forEach((e,index) => {
+            //     $scope.Bots[index] = {};
+            //     console.log("e.id: " + e.id );
+            //     console.log("e.name: " + e.name );
+            //     LastSendDateService.get({ botId: e.id,startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result1)
+            //     {
+            //         //Bot
+            //         $scope.Bots[index].lastSendDate = $scope.dateFormat(result1.lastDate);
+            //         //User
+            //         if (result1.lastDate) {
+            //             if ($scope.User.lastSendDate === '') {
+            //                 $scope.User.lastSendDate = result1.lastDate;
+            //             }
+            //             else {
+            //                 var OldTime = new Date($scope.User.lastSendDate).getTime();
+            //                 var newTime = new Date(result1.lastDate).getTime();
+            //                 if (OldTime < newTime) {
+            //                     $scope.User.lastSendDate = result1.lastDate;
+            //                 }
+            //             }
+            //         }
+            //
+            //         TotalDialogCountService.get({ botId: e.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result2)
+            //         {
+            //             //User
+            //             $scope.User.sendNum =  $scope.User.sendNum + result2.count;
+            //             //Bot
+            //             $scope.Bots[index].sendNum = result2.count;
+            //
+            //             TotalSuccDialogCountService.get({ botId: e.id,startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString()}, function(result3)
+            //             {
+            //                 //User
+            //                 $scope.User.sendSuccNum =  $scope.User.sendSuccNum + result3.count;
+            //                 if(index === list.length - 1){
+            //                     if($scope.User.sendNum === 0){
+            //                         $scope.User.sendSuccRate = 0;
+            //                     }
+            //                     else{
+            //                         $scope.User.sendSuccRate = ( $scope.User.sendSuccNum / $scope.User.sendNum ) * 100;
+            //                     }
+            //                     $scope.User.lastSendDate = $scope.dateFormat($scope.User.lastSendDate);
+            //                 }
+            //                 //Bot
+            //                 $scope.Bots[index].index = index + 1;
+            //                 $scope.Bots[index].name = e.name;
+            //                 $scope.Bots[index].sendSuccNum = result3.count;
+            //                 if($scope.Bots[index].sendNum === 0){
+            //                     $scope.Bots[index].sendSuccRate = 0;
+            //                 }
+            //                 else{
+            //                     $scope.Bots[index].sendSuccRate = ( $scope.Bots[index].sendSuccNum / $scope.Bots[index].sendNum ) * 100;
+            //                 }
+            //                 index++;
+            //             });
+            //         });
+            //     });
+            // });
+            var startTime = '2018';
+            TotalDialogContentService.get({ botId: 'ddd',startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString(), startTime }, function(result1)
+                                {
+                                    console.log("result1: " + JSON.stringify(result1));
+                                })
 
         });
+
         angular.element('.main-logo-background').css('opacity', 0);
         angular.element('.main-logo-background').css('display', 'none');
 
@@ -100,6 +121,7 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
                 return;
 
             date = new Date(date);
+
             var year = date.getFullYear();
             var month = date.getMonth() + 1;
             var dateOfMonth = date.getDate();
@@ -115,7 +137,7 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
             min = min < 10 ? '0' + min : min;
             sec = sec < 10 ? '0' + sec : sec;
 
-            return year + '-' + month + '-' + dateOfMonth + ' ' + hour + ':' + min + ':' + sec;
+            return year + '.' + month + '.' + dateOfMonth + ' ' + hour + ':' + min;
         };
 
 
