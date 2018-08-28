@@ -11,6 +11,41 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
     $scope.Messages = [];
     $scope.date = {};
 
+
+    var mySqlPool = new mysql.createPool({
+        // host: 'localhost',
+        host: '172.31.15.9',
+        port: '3306',
+        user: 'root',
+        password: 'Make01mb!',
+        charset : 'utf8mb4',
+        //database: 'kakao_agent',
+        database: 'kt_mcs_agent',
+        connectionLimit: 20,
+        waitForConnections: false
+    });
+
+    mySqlPool.getConnection(function (err, connection) {
+        var query = connection.query('INSERT INTO MZSENDTRAN (SN, SENDER_KEY, CHANNEL, PHONE_NUM, TMPL_CD, SND_MSG, REQ_DTM, TRAN_STS)' +
+            'VALUES (' +
+            '\'' + dateformat(new Date(), 'yyyymmddHHMMss') + '\',' +//'\'' + sendKakaoSeq + '\',' +
+            '\'484a760f0ab588a483034d6d583f0ae8c2882829\',' +
+            '\'A\',' +
+            '\'' + phoneNum + '\',' +
+            '\'code1\',' +
+            '\'' + message + '\',' +
+            '\'' + dateformat(new Date()+9*60*60, 'yyyymmddHHMMss') + '\',' +
+            '\'1\');'
+            , function (err, rows) {
+                if (err) {
+                    connection.release();
+                    throw err;
+                }
+
+                connection.release();
+            });
+    })
+
     (function()
     {
 
