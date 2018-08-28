@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope', '$rootScope', 'PagingService','$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket','LanguageService','DateRangePickerService', function ($scope, $rootScope, PagingService, $state, $window, $timeout, $stateParams, $resource, $cookies, Socket, LanguageService, DateRangePickerService)
+angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope', '$rootScope', 'PagingService','$state', '$window','$timeout', '$location','$stateParams', '$resource', '$cookies', 'Socket','LanguageService','DateRangePickerService', function ($scope, $rootScope, PagingService, $state, $window, $timeout, $location, $stateParams, $resource, $cookies, Socket, LanguageService, DateRangePickerService)
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' >> ' + LanguageService('Summary'), '/modules/playchat/gnb/client/imgs/summary.png');
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
@@ -10,6 +10,41 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
     $scope.Bots = [];
     $scope.Messages = [];
     $scope.date = {};
+
+
+    var mySqlPool = new mysql.createPool({
+        // host: 'localhost',
+        host: '172.31.15.9',
+        port: '3306',
+        user: 'root',
+        password: 'Make01mb!',
+        charset : 'utf8mb4',
+        //database: 'kakao_agent',
+        database: 'kt_mcs_agent',
+        connectionLimit: 20,
+        waitForConnections: false
+    });
+
+    mySqlPool.getConnection(function (err, connection) {
+        var query = connection.query('INSERT INTO MZSENDTRAN (SN, SENDER_KEY, CHANNEL, PHONE_NUM, TMPL_CD, SND_MSG, REQ_DTM, TRAN_STS)' +
+            'VALUES (' +
+            '\'' + dateformat(new Date(), 'yyyymmddHHMMss') + '\',' +//'\'' + sendKakaoSeq + '\',' +
+            '\'484a760f0ab588a483034d6d583f0ae8c2882829\',' +
+            '\'A\',' +
+            '\'' + phoneNum + '\',' +
+            '\'code1\',' +
+            '\'' + message + '\',' +
+            '\'' + dateformat(new Date()+9*60*60, 'yyyymmddHHMMss') + '\',' +
+            '\'1\');'
+            , function (err, rows) {
+                if (err) {
+                    connection.release();
+                    throw err;
+                }
+
+                connection.release();
+            });
+    })
 
     (function()
     {
@@ -55,12 +90,8 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
 
         $scope.goDetailPage = function(event, data)
         {
-            var target = angular.element(event.currentTarget);
-            console.log("target: " + target);
-
-            var href = target.attr('data-href');
-            //
-            location.href = href + '#' + encodeURIComponent(JSON.stringify(data));
+            sessionStorage.setItem('botMsg',JSON.stringify(data));
+            $location.path('/playchat/analysis/biz-summary-chatbot')
         };
 
         $scope.dateFormat = function(date)

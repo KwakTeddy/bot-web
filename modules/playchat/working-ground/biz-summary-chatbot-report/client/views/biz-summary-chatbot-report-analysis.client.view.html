@@ -5,37 +5,37 @@
         <div class="analysis-summary-row2">
             <div class="analysis-summary-card2">
                 <h3>성공</h3>
-                <p class="analysis-summary-card-count">{{Messages[0].sendSuccNum}}</p>
+                <p class="analysis-summary-card-count">{{Messages.sendSuccNum}}</p>
                 <p class="sm-title">평균대비</p>
-                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages[0].sendSuccRate}}%</p>
+                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages.sendSuccAverageRate}}%</p>
             </div>
             <div class="analysis-summary-card2">
                 <h3>챗봇 발송 대상</h3>
-                <p class="analysis-summary-card-count">10k</p>
-                <p class="sm-title">10258</p>
+                <p class="analysis-summary-card-count">{{Messages.sendNumK}}</p>
+                <p class="sm-title">{{Messages.sendNum}}</p>
             </div>
             <div class="analysis-summary-card2">
                 <h3>발송 비용</h3>
-                <p class="analysis-summary-card-count">200k</p>
-                <p class="sm-title">200, 150</p>
-                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">10 %</p>
+                <p class="analysis-summary-card-count">{{Messages.sendFeeK}}</p>
+                <p class="sm-title">{{Messages.sendFee}}</p>
+                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages.sendFeeAverageRate}}%</p>
             </div>
         </div>
         <div class="analysis-summary-row2">
             <div class="analysis-summary-card2">
                 <h3>응답자</h3>
-                <p class="analysis-summary-card-count">70</p>
-                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">20 %</p>
+                <p class="analysis-summary-card-count">{{Messages.reply}}</p>
+                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages.replyAverageRate}}%</p>
             </div>
             <div class="analysis-summary-card2">
                 <h3>발송 시각/봇</h3>
-                <p class="md1">2018년 07월 18일 6시 30분</p>
-                <p class="md2">7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇7월 마케팅 봇</p>
+                <p class="md1">{{Messages.sendDate}}</p>
+                <p class="md2">{{Messages.botName}}</p>
             </div>
             <div class="analysis-summary-card2">
                 <h3>단가</h3>
-                <p class="analysis-summary-card-count">20</p>
-                <p class="down"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/down_.png" style="margin-right: 2px;">50 %</p>
+                <p class="analysis-summary-card-count">{{Messages.sendFeeForOne}}</p>
+                <p class="down"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/down_.png" style="margin-right: 2px;">{{Messages.feeForOneAverageRate}}%</p>
             </div>
         </div>
         <div>
@@ -43,7 +43,331 @@
                 <canvas id="sendRateChart" width="400" height="150"></canvas>
             </div>
         </div>
-        <a href="" class="btn-style10">보고서 확인</a>
+        <a href="" class="btn-style10" ng-click="openModal();">보고서 확인</a>
+
+        <div class="modal-background management-modal" ng-show="modal.reportDetailModal.isOpened">
+            <div class="modal">
+                <form name="modalFormDefault">
+                    <div class="biz-window_overlay">
+                        <div class="biz-window2">
+                            <div class="biz-card_detail_window">
+                                <div class="biz-window_header">
+
+                                    <div class="edit-windo2">
+                                        <div class="analysis-summary-row2">
+                                            <div class="analysis-summary-card2">
+                                                <h3>상담 신청 인원</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.sendSuccNum}}</p>
+                                                <p class="sm-title">평균대비</p>
+                                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages.sendSuccAverageRate}}%</p>
+                                            </div>
+                                            <div class="analysis-summary-card2">
+                                                <h3>챗봇 발송 대상</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.sendNumK}}</p>
+                                                <p class="sm-title">{{Messages.sendNum}}</p>
+                                            </div>
+                                            <div class="analysis-summary-card2">
+                                                <h3>발송 비용</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.sendFeeK}}</p>
+                                                <p class="sm-title">{{Messages.sendFee}}</p>
+                                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages.sendFeeAverageRate}}%</p>
+                                            </div>
+                                        </div>
+                                        <div class="analysis-summary-row2 mb50">
+                                            <div class="analysis-summary-card2">
+                                                <h3>응답자</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.reply}}</p>
+                                                <p class="up"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/up.png" style="margin-right: 2px;">{{Messages.replyAverageRate}}%</p>
+                                            </div>
+                                            <div class="analysis-summary-card2">
+                                                <h3>발송 시각/봇</h3>
+                                                <p class="md1">{{Messages.sendDate}}</p>
+                                                <p class="md2">{{Messages.botName}}</p>
+                                            </div>
+                                            <div class="analysis-summary-card2">
+                                                <h3>단가</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.sendFeeForOne}}</p>
+                                                <p class="down"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/down_.png" style="margin-right: 2px;">{{Messages.feeForOneAverageRate}}%</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <canvas id="sendRateChartModal" width="400" height="150"></canvas>
+                                            </div>
+                                        </div>
+                                        <div class="analysis-summary-row2 mt50">
+                                            <div class="analysis-summary-card2">
+                                                <h3>평균 상담 신청 인원</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.sendSuccAverage}}</p>
+                                            </div>
+                                            <div class="analysis-summary-card2">
+                                                <h3>평균 발송 대상</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.sendNumAverageK}}</p>
+                                                <p class="sm-title">{{Messages.sendNumAverage}}</p>
+                                            </div>
+                                            <div class="analysis-summary-card2">
+                                                <h3>평균 발송 비용</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.feeAverageK}}</p>
+                                                <p class="sm-title">{{Messages.feeAverage}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="analysis-summary-row2 mb50">
+                                            <div class="analysis-summary-card2">
+                                                <h3>평균 응답자</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.replyAverage}}</p>
+                                            </div>
+                                            <div class="analysis-summary-card2">
+                                                <h3>상담 신청 봇 평균</h3>
+                                                <p class="md2">{{User.email}}</p>
+                                            </div>
+                                            <div class="analysis-summary-card2">
+                                                <h3>평균 단가</h3>
+                                                <p class="analysis-summary-card-count">{{Messages.feeForOneAverage}}</p>
+                                            </div>
+                                        </div>
+                                        <!--<div>-->
+                                            <!--<div>-->
+                                                <!--<canvas id="sendRateAvarageChartModal" width="400" height="150"></canvas>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div style="height: 700px;background: #9ecdfc" class="mt50 mb50"></div>-->
+
+                                        <div class="inline-block mt30">
+                                            <div>
+                                                <div class="bot-messages-list mt20 mb50" style="width: 39%;">
+                                                    <span class="subject02">보낸 메세지 리스트</span>
+                                                    <ul>
+                                                        <li class="select mt14 mb0" style="border: 1px solid #d0d2d3;border-bottom: none;">
+                                                            <div>
+                                                                <span class="message-title01">01.</span>
+                                                                <span class="message-title03">메세지</span>
+                                                                <span  ng-click="cardUiSet(card)" class="open-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
+                                                            </div>
+                                                            <div class="detail-select pt10">
+                                                                <div class="connection-data pl5">
+                                                                    1.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
+                                                                    <span class="message-title01 select05">06</span>
+                                                                </div>
+                                                                <div class="connection-data pl5 pt4">
+                                                                    2.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
+                                                                    <span class="message-title01 select04">03</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+
+                                                        <li class="unsel mt0 mb0 sbox-01" style="border-bottom: none;">
+                                                            <div>
+                                                                <span class="message-title01">06.</span>
+                                                                <span class="message-title03">메세지</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="unsel mt0 mb0 sbox-01" style="border-bottom: none;">
+                                                            <div>
+                                                                <span class="message-title01">04.</span>
+                                                                <span class="message-title03">메세지</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="unsel mt0 mb0 sbox-02" style="border-bottom: none;">
+                                                            <div>
+                                                                <span class="message-title01">03.</span>
+                                                                <span class="message-title03">메세지</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="unsel mt0 mb0 sbox-02">
+                                                            <div>
+                                                                <span class="message-title01">05.</span>
+                                                                <span class="message-title03">메세지</span>
+                                                            </div>
+                                                        </li>
+
+                                                        <li class="select mt0 mb0" style="border: 1px solid #d0d2d3;border-bottom: none;border-top: none;">
+                                                            <div>
+                                                                <span class="message-title01">07.</span>
+                                                                <span class="message-title03">메세지</span>
+                                                                <span  ng-click="cardUiSet(card)" class="open-btn">
+                                        <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png">
+                                    </span>
+                                                            </div>
+                                                            <div class="detail-select pt10">
+                                                                <div class="connection-data pl5">
+                                                                    1.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled>
+                                                                    <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
+                                                                    <span class="message-title01 select05">08</span>
+                                                                </div>
+                                                                <div class="connection-data pl5 pt4">
+                                                                    2.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled>
+                                                                    <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
+                                                                    <span class="message-title01 select05">09</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+
+                                                        <li class="unsel mt0 mb0 sbox-01" style="border-bottom: none;">
+                                                            <div>
+                                                                <span class="message-title01">08.</span>
+                                                                <span class="message-title03">메세지</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="unsel mt0 mb0 sbox-01">
+                                                            <div>
+                                                                <span class="message-title01">09.</span>
+                                                                <span class="message-title03">메세지</span>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div style="float: right;width:58%;">
+                                                <table class="tb02">
+                                                    <colgroup>
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>발송</th>
+                                                        <th>응답</th>
+                                                        <th>이탈</th>
+                                                        <th>응답률</th>
+                                                        <th>이탈률</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>100000</td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td>50%</td>
+                                                        <td>50%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border: none;"></td>
+                                                        <td style="border: none;"><a href="">40000</a></td>
+                                                        <td style="border: none;"></td>
+                                                        <td style="border: none;">50%</td>
+                                                        <td style="border: none;"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td><a href="">10000</a></td>
+                                                        <td></td>
+                                                        <td>50%</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>100000</td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td>50%</td>
+                                                        <td>50%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>100000</td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td>50%</td>
+                                                        <td>50%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>100000</td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td>50%</td>
+                                                        <td>50%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>100000</td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td>50%</td>
+                                                        <td>50%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>100000</td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td>50%</td>
+                                                        <td>50%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border: none;"></td>
+                                                        <td style="border: none;"><a href="">40000</a></td>
+                                                        <td style="border: none;"></td>
+                                                        <td style="border: none;">50%</td>
+                                                        <td style="border: none;"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td><a href="">40000</a></td>
+                                                        <td></td>
+                                                        <td>50%</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>100000</td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td>50%</td>
+                                                        <td>50%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>100000</td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td><a href="">50000</a></td>
+                                                        <td>50%</td>
+                                                        <td>50%</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div style="text-align: center;" >
+                                            <div class="leftbox">
+                                                <div class="leftboxinput">
+                                                    <p class="left">상담 신청 건</p>
+                                                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
+                                                </div>
+                                                <div class="leftboxinput">
+                                                    <p class="left">대화 최고 이탈</p>
+                                                    <input type="text" class="input_type09 mb10 sign-input" minlength="8" style="background: #f6f6f6;" disabled>
+                                                </div>
+                                                <div class="leftboxinput">
+                                                    <p class="left">대화 최고 응답</p>
+                                                    <input type="text" class="input_type09 mb20 sign-input" minlength="8" style="background: #f6f6f6;" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="user-singup">
+                                                <div class="leftboxinput">
+                                                    <p class="left">상담 신청률</p>
+                                                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
+                                                </div>
+                                                <div class="leftboxinput">
+                                                    <p class="left">대화 최고 이탈률</p>
+                                                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
+                                                </div>
+                                                <div class="leftboxinput">
+                                                    <p class="left">대화 최고 응답률</p>
+                                                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <a href="" class="btn-style11 mb50 mt50">Excel 다운로드</a>
+                                        <a href="" class="btn-style11 mb50 mt50" ng-click="modal.reportDetailModal.close();">close</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
 
