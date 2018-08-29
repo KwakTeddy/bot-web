@@ -1,242 +1,101 @@
+<style>
+.working-ground {
+    position:relative !important;
+}
+</style>
 
 <div ng-controller="LayoutSamDevelopmentController" class="graph-background">
-
-    <div class="working-ground-bizchat">
-        <div class="inline-block">
-            <div>
-                <div class="bot-messages-list mt20 mb50" style="width: 39%;">
-                    <span class="subject02">보낸 메세지 리스트</span>
-                    <ul>
-                        <li class="select mt14 mb0" style="border: 1px solid #d0d2d3;border-bottom: none;">
-                            <div>
-                                <span class="message-title01">01.</span>
-                                <span class="message-title03">메세지</span>
-                                <span  ng-click="cardUiSet(card)" class="open-btn"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png"></span>
-                            </div>
-                            <div class="detail-select pt10">
-                                <div class="connection-data pl5">
-                                    1.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
-                                    <span class="message-title01 select05">06</span>
-                                </div>
-                                <div class="connection-data pl5 pt4">
-                                    2.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
-                                    <span class="message-title01 select04">03</span>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="unsel mt0 mb0 sbox-01" style="border-bottom: none;">
-                            <div>
-                                <span class="message-title01">06.</span>
-                                <span class="message-title03">메세지</span>
-                            </div>
-                        </li>
-                        <li class="unsel mt0 mb0 sbox-01" style="border-bottom: none;">
-                            <div>
-                                <span class="message-title01">04.</span>
-                                <span class="message-title03">메세지</span>
-                            </div>
-                        </li>
-                        <li class="unsel mt0 mb0 sbox-02" style="border-bottom: none;">
-                            <div>
-                                <span class="message-title01">03.</span>
-                                <span class="message-title03">메세지</span>
-                            </div>
-                        </li>
-                        <li class="unsel mt0 mb0 sbox-02">
-                            <div>
-                                <span class="message-title01">05.</span>
-                                <span class="message-title03">메세지</span>
-                            </div>
-                        </li>
-
-                        <li class="select mt0 mb0" style="border: 1px solid #d0d2d3;border-bottom: none;border-top: none;">
-                            <div>
-                                <span class="message-title01">07.</span>
-                                <span class="message-title03">메세지</span>
-                                <span  ng-click="cardUiSet(card)" class="open-btn">
-                                    <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/minus_.png">
-                                </span>
-                            </div>
-                            <div class="detail-select pt10">
-                                <div class="connection-data pl5">
-                                    1.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled>
-                                    <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
-                                    <span class="message-title01 select05">08</span>
-                                </div>
-                                <div class="connection-data pl5 pt4">
-                                    2.<input type="text" class="ml3 type01" style="width: 62%;background: #f6f6f6;" disabled>
-                                    <img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/link_disable.png" class="ml5">
-                                    <span class="message-title01 select05">09</span>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="unsel mt0 mb0 sbox-01" style="border-bottom: none;">
-                            <div>
-                                <span class="message-title01">08.</span>
-                                <span class="message-title03">메세지</span>
-                            </div>
-                        </li>
-                        <li class="unsel mt0 mb0 sbox-01">
-                            <div>
-                                <span class="message-title01">09.</span>
-                                <span class="message-title03">메세지</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div style="float: right;width:58%;">
-                <table class="tb02">
-                    <colgroup>
-                        <col width="">
-                        <col width="">
-                        <col width="">
-                        <col width="">
-                        <col width="">
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th>발송</th>
-                        <th>응답</th>
-                        <th>이탈</th>
-                        <th>응답률</th>
-                        <th>이탈률</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>100000</td>
-                        <td><a href="">50000</a></td>
-                        <td><a href="">50000</a></td>
-                        <td>50%</td>
-                        <td>50%</td>
-                    </tr>
-                    <tr>
-                        <td style="border: none;"></td>
-                        <td style="border: none;"><a href="">40000</a></td>
-                        <td style="border: none;"></td>
-                        <td style="border: none;">50%</td>
-                        <td style="border: none;"></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><a href="">10000</a></td>
-                        <td></td>
-                        <td>50%</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>100000</td>
-                        <td><a href="">50000</a></td>
-                        <td><a href="">50000</a></td>
-                        <td>50%</td>
-                        <td>50%</td>
-                    </tr>
-                    <tr>
-                        <td>100000</td>
-                        <td><a href="">50000</a></td>
-                        <td><a href="">50000</a></td>
-                        <td>50%</td>
-                        <td>50%</td>
-                    </tr>
-                    <tr>
-                        <td>100000</td>
-                        <td><a href="">50000</a></td>
-                        <td><a href="">50000</a></td>
-                        <td>50%</td>
-                        <td>50%</td>
-                    </tr>
-                    <tr>
-                        <td>100000</td>
-                        <td><a href="">50000</a></td>
-                        <td><a href="">50000</a></td>
-                        <td>50%</td>
-                        <td>50%</td>
-                    </tr>
-                    <tr>
-                        <td>100000</td>
-                        <td><a href="">50000</a></td>
-                        <td><a href="">50000</a></td>
-                        <td>50%</td>
-                        <td>50%</td>
-                    </tr>
-                    <tr>
-                        <td style="border: none;"></td>
-                        <td style="border: none;"><a href="">40000</a></td>
-                        <td style="border: none;"></td>
-                        <td style="border: none;">50%</td>
-                        <td style="border: none;"></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><a href="">40000</a></td>
-                        <td></td>
-                        <td>50%</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>100000</td>
-                        <td><a href="">50000</a></td>
-                        <td><a href="">50000</a></td>
-                        <td>50%</td>
-                        <td>50%</td>
-                    </tr>
-                    <tr>
-                        <td>100000</td>
-                        <td><a href="">50000</a></td>
-                        <td><a href="">50000</a></td>
-                        <td>50%</td>
-                        <td>50%</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-
-
-        <div style="text-align: center;" >
-            <div class="leftbox">
-                <div class="leftboxinput">
-                    <p class="left">상담 신청 건</p>
-                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
-                </div>
-                <div class="leftboxinput">
-                    <p class="left">대화 최고 이탈</p>
-                    <input type="text" class="input_type09 mb10 sign-input" minlength="8" style="background: #f6f6f6;" disabled>
-                </div>
-                <div class="leftboxinput">
-                    <p class="left">대화 최고 응답</p>
-                    <input type="text" class="input_type09 mb20 sign-input" minlength="8" style="background: #f6f6f6;" disabled>
-                </div>
-            </div>
-            <div class="user-singup">
-                <div class="leftboxinput">
-                    <p class="left">상담 신청률</p>
-                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
-                </div>
-                <div class="leftboxinput">
-                    <p class="left">대화 최고 이탈률</p>
-                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
-                </div>
-                <div class="leftboxinput">
-                    <p class="left">대화 최고 응답률</p>
-                    <input type="text" class="input_type09 mb10 sign-input" style="background: #f6f6f6;" disabled>
+    <div class="working-ground-bizchat" style="margin-bottom: 10%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="boardMenu">
+                        <ul>
+                            <li>
+                                <a href="">F A Q</a>
+                            </li>
+                            <li class="active">
+                                <a href="">1:1 문의</a>
+                            </li>
+                            <li>
+                                <a href="">공지사항</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="mybot-list" style="margin: 0 3%;width: 100%;">
+            <span class="subject blue">1:1 문의</span>
+            <p class="detail">회원님들이 가장 자주 문의하시는 질문과 답변을 모아 두었습니다.</p>
+            <div class="row">
+                <div>
+                    <div class="col-sm-5 col-md-6">
+                        <div class="text-input-area">
+                            <div class="h5">이름 <span class="red">*</span></div>
+                            <input type="text" placeholder="Enter your full name">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-sm-5 col-md-6">
+                        <div class="text-input-area">
+                            <div class="h5">이메일 <span class="red">*</span></div>
+                            <input type="email" placeholder="email@sitename.com">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-area-row">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="text-input-area">
+                            <div class="h5">전화번호</div>
+                            <input type="text" placeholder="010-1234-5678">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-sm-1 col-md-1">
+                        <div class="select-wrapper">
+                            <select class="jumbo-select02" style="margin: 50px 20px 20px 0;">
+                                <option disabled selected hidden>질문유형</option>
+                                <option>서비스</option>
+                                <option>결제</option>
+                                <option>제휴</option>
+                                <option>기타</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-10" style="margin-top: 13px;">
+                        <div class="text-input-area">
+                            <p class="h5">제목 <span class="red">*</span></p>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <textarea class="data-input02" placeholder="내용을 입력해주세요." style="width: 90.7%;margin-bottom:20px;"></textarea>
+                </div>
 
-        <a href="" class="btn-style03 mb80 mt20" style="width: 100px;display: block;margin: 0 auto;">Excel 다운로드</a>
+                <div class="text-input-area">
+                    <div class="col-sm-3 col-md-3">
+                        <input type="text" style="line-height: 36px;">
+                    </div>
+                </div>
+                <a href="" class="btn-style02" style="margin: 0;">첨부</a>
+                <span style="margin-left: 10px;">*5MB 이하, 문서, 이미지 혹은 압축 파일.</span>
+            </div>
+            <div style="margin: 3% auto;">
+                <input type="checkbox" class="styled-checkbox">
+                <label class="label">
+                    <span class="agree v_line_t">개인정보 수집/이용에 동의합니다.</span>
+                </label>
+                <div>
+                    <p class="detail-sm" style="margin-top: 8px;">-   수집 항목 :이름, 이메일, 연락처</p>
+                    <p class="detail-sm">-   수집 목적 :서비스 이용에 따른 고객 문의, 불만처리, 오류 해결 등 민원 처리 및 결과 회신</p>
+                    <p class="detail-sm">-   보유 및 이용 기간 : 문의처리 후 5년간 보관</p>
+                    <p class="detail-sm">-   그 밖의 사항은 개인정보 처리방침을 준수합니다.</p>
+                </div>
+            </div>
+            <a href="" class="btn-style05">문의하기</a>
+        </div>
     </div>
-
-<!--
-    <div class="graph-body" ng-class="isFocused() ? 'focused' : ''" ng-click="toFocus();">
-
-        <!--init here the selected card
-        <div id="graphDialogCanvas"></div>
-    </div>
--->
 </div>
 
