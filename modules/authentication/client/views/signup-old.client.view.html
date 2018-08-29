@@ -1,25 +1,24 @@
 <div class="signin-background">
+
+
     <div id="logincontents" ng-if="successSignup === false && invalid === false && error === false && verified === false">
-    <!--<div id="logincontents" ng-if="verified === true">-->
         <div class="mt16" style="margin-bottom: 20px;">
             <span class="p1">{{ lan('Create your account') }}</span>
             <!--<span class="p1">{{ lan('Registration for closed beta') }}</span>-->
         </div>
         <p class="exclamation pl5" ng-show="signupErrorMessage" style="margin-bottom: 20px;"><img src="/modules/authentication/client/imgs/exclamation_mark.png">
             {{ signupErrorMessage }}</p>
+
+        <!--<p class="noticebox">-->
+            <!--<span style="font-size: 18px;">{{lan('Playchat, Super-Simple Conversational A.I. Platform')}}</span><br>-->
+            <!--{{lan('Start creating your own chatbot without a single line of coding but with PlayChat Closed Beta Service.')}}<br><br>-->
+            <!--<span style="font-size: 18px;">{{lan('Special Offer ONLY for the PlayChat Beta Service Users')}}</span><br>-->
+            <!--{{lan('One, Apply now and use for free (for the first 50 applicants)')}}<br>-->
+            <!--{{lan('Two, Apply now for Free Chatbot Development Training Course (for the first 20 applicants)')}}<br>-->
+            <!--{{lan('Three, Participate in Chatbot Development Contest and get Prize: One Thousand Dollars for the Winner, Five Hundred Dollars for the Runner-up!')}}</p>-->
+
         <form class="register" ng-submit="signup();" style="width: 100%;margin: 32px auto;">
-            <div class="leftbox social">
-                <div class="pbtn">
-                    <a href="/signin">{{ lan('Sign in with Playchat') }}</a>
-                </div>
-                <div class="fbbtn">
-                    <a href="#" ng-click="oauthCall('facebook');">{{ lan('Sign in with Facebook') }}</a>
-                </div>
-                <div class="gbtn">
-                    <a href="#" ng-click="oauthCall('google')">{{ lan('Sign in with Google') }}</a>
-                </div>
-            </div>
-            <div class="user-singup">
+            <div class="leftbox">
                 <div class="leftboxinput">
                     <p>{{ lan('Email ID') }}</p>
                     <input type="email" class="input_type09 mb10 sign-input" ng-model="credentials.email" placeholder="example@moneybrain.ai" ng-required="true" autofocus="true">
@@ -31,6 +30,20 @@
                 <div class="leftboxinput">
                     <p>{{ lan('Password confirm') }}</p>
                     <input type="password" class="input_type09 mb20 sign-input" ng-model="credentials.passwordConfirm" ng-required="true" minlength="8">
+                </div>
+            </div>
+            <div class="user-singup">
+                <div class="leftboxinput">
+                    <p>{{ lan('Username') }}</p>
+                    <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.displayName" ng-required="true">
+                </div>
+                <div class="leftboxinput">
+                    <p>{{ lan('Phone') }}</p>
+                    <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.phone" ng-required="true" pattern="/^[\.-)( ]*([0-9]{3})[\.-)( ]*([0-9]{3})[\.-)( ]*([0-9]{4})$/">
+                </div>
+                <div class="leftboxinput">
+                    <p>{{ lan('Organization') }}</p>
+                    <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.organization">
                 </div>
             </div>
             <div style="clear: both;margin: 20px 0 10px; position:relative; text-align: center;">
@@ -90,64 +103,10 @@
 
 
     <div class="signup-complete-message" ng-if="verified === true" style="text-align: center;">
-    <!--<div class="signup-complete-message" ng-if="successSignup === false && invalid === false && error === false && verified === false" style="text-align: center;">-->
-        <div class="signin-title">
-            <span class="p1" style="color: #038eda;">이메일 인증이 완료되었습니다.</span>
-            <p class="p3 mt30">
-                가입을 진심으로 축하 드립니다.<br>
-                가입기념으로 테스트를 할 수 있도록 2,000 코인을 지급해 드립니다.<br>
-                대화형 SMS 챗봇을 지금 바로 경험해보세요.
-            </p>
-        </div>
-
-        <div style="clear: both;margin:50px 0 20px;text-align: center;">
-            <p class="p3 mb20">
-                추가 정보 입력 (선택)
-            </p>
-
-            <div class="leftbox">
-                <div class="leftboxinput">
-                    <p class="left">업종</p>
-                    <select id="bizKindOfBusiness" class="select01 mb10" style="width: 266px;margin: 5px auto 0px;height: 44px;">
-                        <option disabled selected>업종을 선택하세요.</option>
-                        <option>데이터베이스</option>
-                        <option>통신업</option>
-                        <option>유통업</option>
-                    </select>
-                </div>
-                <div class="leftboxinput">
-                    <p class="left">회사명</p>
-                    <input id="organization" type="text" class="input_type09 mb10 sign-input">
-                </div>
-                <div class="leftboxinput">
-                    <p class="left">담당자명/직책</p>
-                    <input id="bizChairName" type="text" class="input_type09 mb10 sign-input" style="width: 159px;margin: 5px 8px 5px 0;">
-                    <select id="bizChair" class="select01 mb10" style="margin: 5px auto 0px;height: 43px;">
-                        <option disabled selected>직책</option>
-                        <option>과장</option>
-                        <option>차장</option>
-                        <option>부장</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="user-singup">
-                <div class="leftboxinput">
-                    <p class="left">담당 연락처</p>
-                    <input id="phone" type="text" class="input_type09 mb10 sign-input">
-                </div>
-                <div class="leftboxinput">
-                    <p class="left">담당 이메일</p>
-                    <input id="bizChairEmail" type="text" class="input_type09 mb10 sign-input">
-                </div>
-            </div>
-
-            <div class="bottom-btn-area mt30">
-                <button href="/playchat/development/create-bot" class="btn-style01 mr5" style="width: 49%;height: 42px;">다음에</button>
-                <button ng-click="updateUserInfor()" class="btn-style03" style="width: 48%;height: 42px;">입력 확인</button>
-            </div>
+        <p class="p2">{{ lan('Your email is verified.') }}</p>
+        <div>
+            <a class="blue-button" href="/playchat/chatbots"><span style="color: white;">{{ lan('Get started right away.') }}</span></a>
         </div>
     </div>
 
 </div>
-

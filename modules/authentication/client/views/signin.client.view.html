@@ -6,27 +6,27 @@
     </div>
 
     <div class="signin-body">
-        <!--<div class="social">-->
-            <!--<p class="mb25">{{ lan('Sign in with your social network account.') }}</p>-->
-            <!--<div class="fbbtn">-->
-                <!--<a href="#" ng-click="oauthCall('facebook');">{{ lan('Sign in with Facebook') }}</a>-->
-            <!--</div>-->
-            <!--<div class="gbtn">-->
-                <!--<a href="#" ng-click="oauthCall('google')">{{ lan('Sign in with Google') }}</a>-->
-            <!--</div>-->
+        <div class="social">
+            <p class="mb25">{{ lan('Sign in with your social network account.') }}</p>
+            <div class="fbbtn">
+                <a href="#" ng-click="oauthCall('facebook');">{{ lan('Sign in with Facebook') }}</a>
+            </div>
+            <div class="gbtn">
+                <a href="#" ng-click="oauthCall('google')">{{ lan('Sign in with Google') }}</a>
+            </div>
             <!--<div class="kbtn">-->
-                <!--<a href="#" ng-click="oauthCall('kakao');">{{ lan('Sign in with Kakao') }}</a>-->
+            <!--<a href="#" ng-click="oauthCall('kakao');">{{ lan('Sign in with Kakao') }}</a>-->
             <!--</div>-->
-        <!--</div>-->
+        </div>
         <div class="email">
             <form class="login" ng-submit="signin();">
                 <p>{{ lan('Email ID') }}</p>
-                <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.email" ng-required="true" style="width: 278px;">
+                <input type="text" class="input_type09 mb10 sign-input" ng-model="credentials.email" ng-required="true">
                 <p>{{ lan('Password') }}</p>
-                <input type="password" class="input_type09 sign-input" ng-model="credentials.password" ng-required="true" style="width: 278px;">
+                <input type="password" class="input_type09 sign-input" ng-model="credentials.password" ng-required="true">
                 <a href="#" ng-click="forgotPassword();"><p class="find">{{ lan('Forget your password?') }}</p></a>
                 <a href="#">
-                    <input type="submit" class="loginbtn" value="{{ lan('Sign in') }}" ng-click="signin();">
+                    <input type="submit" class="loginbtn" value="{{ lan('Sign in') }}" ng-click="signin();" style="width: 265px;">
                 </a>
             </form>
         </div>

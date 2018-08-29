@@ -521,7 +521,7 @@
             });
 
 
-            document.querySelector('#register').addEventListener('submit', function(e)
+            $('[type="submit"]').on('click', function(e)
             {
                 $("#registerBtn").hide();
                 $("#ingIcon").css('display', 'block');
@@ -532,6 +532,7 @@
 
                 if(email && password)
                 {
+                    console.log('1');
                     $.post('/api/auth/signup', {email : email, password: password, language:lan, front: true})
                         .done(function (result) {
                             $("#registerBtn").show();
@@ -539,12 +540,12 @@
 
                             if(result._id)
                             {
-                                return location.href = '/playchat/chatbots';
+                                return location.href = '/playchat/development/create-bot';
                             }
                             else
                             {
                                 var sigunup = {{ sigunup | json | safe }};
-                                window.location = '/signup'
+                                window.location = '/playchat/development/create-bot'
                                 // modalPopup('가입이 완료되었습니다.', '입력하신 이메일로 인증 메일을 보냈습니다. <br>아래에 인증 번호를 입력하시거나 인증 메일 URL로 로그인해주세요.');
 
                             }
@@ -568,6 +569,7 @@
                 }
                 else
                 {
+                    console.log('2');
                     var sigunup = {{ sigunup | json | safe }};
                     window.location = '/signup'
                 }
@@ -582,7 +584,6 @@
             $.cookie('language', lan);
 
             $('[data-id="startBtn"]').on('click', function () {
-                console.log($.cookie('login'));
 
                 if($.cookie('login') != 'true')
                 {
