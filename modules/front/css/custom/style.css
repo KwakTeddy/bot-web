@@ -2460,25 +2460,26 @@ h4.price {
 .singleTst {
 	border: 1px solid #dfebf5;
 	border-radius: 4px;
-	margin-top: 35px;
-	padding: 35px 25px 25px 20px;
+	/*margin-top: 35px;*/
+	padding: 25px 25px 5px 20px;
 	position: relative;
+	text-align: center;
 }
 
 .singleTst > p {
-	color: #8193a7;
-	font-size: 14px;
-	font-style: italic;
+	color: #6c6c6c;
+	font-size: 15px;
 	margin-bottom: 20px;
     line-height: 26px;
+	font-weight: 700;
 }
 
 .singleTst .clientName {
 	display: block;
-	font-family: "proxima_nova_rgbold";
-	font-size: 15px;
+	font-size: 22px;
 	font-style: normal;
-	margin-bottom: 0px;
+	margin-bottom:8px;
+	font-weight: 600;
 }
 
 .singleTst > a {
@@ -2491,7 +2492,7 @@ h4.price {
 .singleTst::before {
 	border: 4px solid #fff;
 	border-radius: 50%;
-	content: "��";
+	content: "“";
 	font-family: "proxima_nova_rgbold";
 	font-size: 26px;
 	height: 34px;
@@ -2506,7 +2507,6 @@ h4.price {
 .singleTst > a:hover {
 	text-decoration: underline !important;
 }
-
 
 /*****************************/
 
