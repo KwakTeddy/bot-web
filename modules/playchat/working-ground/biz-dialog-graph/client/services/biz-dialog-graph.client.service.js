@@ -250,13 +250,14 @@
 
         var _recoverProcess = (newArr,oldArr,firstInput) => {
 
-            // startDialog의 target에 parent 설정
+            // startDialog의 target에 input이 적용된 parent 설정
+            // multiple input 적용해야할 영역
             if(firstInput && firstInput.length > 0){
-                firstInput.forEach((e) => {
+                firstInput.forEach((e,i) => {
                     if(e.target){
                         var item = newArr.find((j) => {return j.id == e.target});
                         item.parent = true;
-                        if(item.input&&item.input[0].types){
+                        if(item.input){
                             item.fnInput = item.input;
                         }
                         item.input = TC.getInput(e);
@@ -354,17 +355,23 @@
         BizChat.saveGraph = (arr, cb) => {
             BizChat.cardArr = arr.sort((a,b)=>{return a.index - b.index});
             var newArr = [], oldArr = [];
-            angular.copy(BizChat.cardArr,newArr);
-            angular.copy(BizChat.cardArr,oldArr);
 
+            angular.copy(BizChat.cardArr,oldArr);
+            console.log('----saveGraph---')
+            console.log(BizChat.cardArr)
             var firstInput = oldArr[0].input;
 
             var startDialog = TC.createCard(oldArr[0],TC.firstInput());
 
-            newArr.splice(0,1);
+            // 첫번째 카드 제거
             oldArr.splice(0,1);
+            angular.copy(oldArr,newArr);
+
 
             var dialogs =_recoverProcess(newArr,oldArr,firstInput);
+
+            console.log('startDialog');
+            console.log(startDialog);
 
             BizChat.commonDialogs[0] = startDialog;
             TC._getCompleteData(dialogs, BizChat.commonDialogs,
