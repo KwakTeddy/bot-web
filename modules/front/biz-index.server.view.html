@@ -204,10 +204,10 @@
                         <div class="regist-space">
                             <form class="form-inline" id="register">
                                 <div class="form-group">
-                                    <input id="register-email" class="form-control input-lg input-regi" placeholder="email@example.com" type="email" required>
+                                    <input id="register-email" class="form-control input-lg input-regi" placeholder="email@example.com" type="email">
                                 </div>
                                 <div class="form-group">
-                                    <input id="register-password" class="form-control input-lg" type="password" placeholder="password" required minlength="8">
+                                    <input id="register-password" class="form-control input-lg" type="password" placeholder="password" minlength="8">
                                 </div>
                                 <div class="form-group">
                                     <button id="registerBtn" class="btn btn-primary btn-lg" type="submit">{{L095}}</button>
@@ -526,7 +526,6 @@
                 $("#registerBtn").hide();
                 $("#ingIcon").css('display', 'block');
 
-
                 var email = document.querySelector('#register-email').value;
                 var password = document.querySelector('#register-password').value;
                 var lan = $.cookie('language');
@@ -569,9 +568,8 @@
                 }
                 else
                 {
-                    $("#registerBtn").show();
-                    $("#ingIcon").css('display', 'none');
-                    alert('이메일 패스워드를 입력해주세요.');
+                    var sigunup = {{ sigunup | json | safe }};
+                    window.location = '/signup'
                 }
                 e.preventDefault();
                 e.stopPropagation();
