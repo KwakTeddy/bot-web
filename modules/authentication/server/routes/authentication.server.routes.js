@@ -25,6 +25,7 @@ module.exports = function(app)
 
     app.route('/auth/reset/:token/:from').get(UserController.validateResetToken);
     app.route('/auth/reset/:token').post(UserController.reset);
+
 };
 
 /**
