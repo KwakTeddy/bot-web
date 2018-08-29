@@ -533,7 +533,7 @@
 
                 if(email && password)
                 {
-                    $.post('/api/auth/biz-signup', {email : email, password: password, language:lan, front: true})
+                    $.post('/api/auth/signup', {email : email, password: password, language:lan, front: true})
                         .done(function (result) {
                             $("#registerBtn").show();
                             $("#ingIcon").css('display', 'none');
@@ -545,7 +545,7 @@
                             else
                             {
                                 var sigunup = {{ sigunup | json | safe }};
-                                window.location = '/biz-signup'
+                                window.location = '/signup'
                                 // modalPopup('가입이 완료되었습니다.', '입력하신 이메일로 인증 메일을 보냈습니다. <br>아래에 인증 번호를 입력하시거나 인증 메일 URL로 로그인해주세요.');
 
                             }
