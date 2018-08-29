@@ -653,7 +653,7 @@ exports.oauthCallback = function (strategy, scope) {
                 }
                 else
                 {
-                    return res.redirect('/playchat/chatbots');
+                    return res.redirect('/playchat/development/create-bot');
                 }
             });
         })(req, res, next);

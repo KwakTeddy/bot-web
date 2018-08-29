@@ -24,7 +24,7 @@
             {
                 PasswordChangeService.save({ newPassword: $scope.newPassword, verifyPassword: $scope.verifyPassword, token: token }, function(result)
                 {
-                    location.href = '/playchat/chatbots';
+                    location.href = '/playchat/development/create-bot';
                 },
                 function(error)
                 {
