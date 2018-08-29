@@ -5,6 +5,11 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
     $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' >> ' + LanguageService('Summary') + ' >> ' + LanguageService('Chatbot'), '/modules/playchat/gnb/client/imgs/summary.png');
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
 
+    var TotalDialogContentService = $resource('/api/:botId/analysis/total-dialog-content', { botId: '@botId' });
+    var TotalSuccDialogCountService = $resource('/api/:botId/analysis/total-succ-dialog-count', { botId: '@botId' });
+    var LastSendDateService = $resource('/api/:botId/analysis/last-send-date', { botId: '@botId' });
+    var TotalDialogCountService = $resource('/api/:botId/analysis/total-dialog-counts', { botId: '@botId' });
+
     $scope.Bot = [];
     $scope.Messages = [];
     $scope.date = {};
@@ -12,9 +17,7 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
     (function()
     {
         var data = JSON.parse(sessionStorage.getItem('botMsg'));
-
         // sessionStorage.removeItem('botMsg')
-
         console.log('데이터 : ', data);
         data.matched = true;
 
