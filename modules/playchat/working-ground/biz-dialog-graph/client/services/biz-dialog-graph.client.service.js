@@ -64,17 +64,26 @@
                     "id": "call_"
                 }
             },
-            getInput : (p) => {
+            getInput : (p,i) => {
                 var input = null;
                 if(!p){
                     input = [{'if':'true'}];
                 }else if(p.text){
                     input = [{
                         text: {
-                            raw:p.text,
-                            nlp:p.nlp ? p.nlp : p.text
+                            raw:p.text.toString(),
+                            nlp:p.nlp ? p.nlp : p.text.toString()
                         }
                     }];
+                    var ii = i&&i>-1 ? i+1 : null;
+                    if(ii&&ii!=p.text){
+                        input.push({
+                            text: {
+                                raw:ii.toString(),
+                                nlp:ii.toString()
+                            }
+                        })
+                    }
                 }else if(p[0].types){
                     input = [{types:[p[0].types]}]
                 }else{
@@ -119,7 +128,7 @@
                 return item;
             },
             setChild : (cardA, cardB, dialog) => {
-                if(cardB && !cardB.parent){
+                if(cardB && !cardB.parent && !cardA.called){
 
 
                     // dialog item A
@@ -251,16 +260,18 @@
         var _recoverProcess = (newArr,oldArr,firstInput) => {
 
             // startDialog의 target에 input이 적용된 parent 설정
-            // multiple input 적용해야할 영역
             if(firstInput && firstInput.length > 0){
                 firstInput.forEach((e,i) => {
                     if(e.target){
                         var item = newArr.find((j) => {return j.id == e.target});
                         item.parent = true;
+
+                        // old input != new input
                         if(item.input){
                             item.fnInput = item.input;
                         }
-                        item.input = TC.getInput(e);
+
+                        item.input = TC.getInput(e,i);
                     }
                 })
             }
@@ -271,13 +282,13 @@
                 newArr[i].output = TC.getOutput(item);
                 var child = [];
                 if(item.input){
-                    item.input.forEach((e) => {
+                    item.input.forEach((e,i) => {
                         if(e.target){
                             // callcard 설정
                             var c = TC.callCard();
                             c.name = c.name + callIdx;
                             c.id = c.id + callIdx;
-                            c.input = TC.getInput(e);
+                            c.input = TC.getInput(e,i);
                             var target = newArr.find((j) => {return j.id == e.target});
 
                             c.output[0].dialogId = target.id;
@@ -329,8 +340,7 @@
                     called : e.called,
                     children : e.children,
                     index : e.index
-                }
-                e.fnInput ? item.fnInput = e.fnInput : null;
+                };
                 dialog.push(item)
             });
 
