@@ -7,8 +7,7 @@ body,html{
 	overflow: hidden;
 }
 html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select, pre, optgroup {
-  -webkit-text-size-adjust:none; 
-	font-size:13px;
+  -webkit-text-size-adjust:none;
 	letter-spacing: -0.02em; 
 	font-weight:normal; 
 	color:#393939; 
@@ -19,6 +18,7 @@ html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, table , tr , td , dl, dt, dd,
 address, cite, dfn, em, var { font-style: normal; }
 code, kbd, samp { font-family:dotum,'돋움', courier new, courier, monospace; }
 header, hgroup, article, nav, footer, figure, figcaption, canvas, section , menu { display: block; margin:0; padding:0; }
+span{font-size: 13px;}
 img{box-sizing: content-box;}
 img,fieldset,iframe{border:0 none;}
 img { border: 0px; vertical-align:middle; }
