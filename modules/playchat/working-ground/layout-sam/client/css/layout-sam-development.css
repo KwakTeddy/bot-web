@@ -356,12 +356,7 @@ select.select03 option[disabled] {
     color: #fff;
 }
 /*input area*/
-.blue{
-    color: #288feb !important;
-}
-.red{
-    color:#d2322d;
-}
+
 .text-input-area .h5{
     margin-bottom: 10px;
     margin-top: 12px;
