@@ -5,7 +5,10 @@
     {
         $scope.$parent.loading = false;
         $scope.credentials = {};
-        var href = $state.previous.href ? $state.previous.href : '/playchat/development/create-bot';
+        //var href = $state.previous.href ? $state.previous.href : '/playchat/development/create-bot';
+
+        // for bizchat
+        var href = '/playchat/development/create-bot';
 
         var isLogin = $cookies.get('login');
         if(isLogin === true || isLogin === 'true')

@@ -361,7 +361,9 @@
                 e = TC.setChild(e, b_item, dialog);
             });
 
-            firstDsSet = firstDsSet.filter((e)=>{return e.first}).concat(firstDsSet.filter((e)=>{return !e.first}));
+            firstDsSet = firstDsSet.filter((e)=>{return e.first})
+                .concat()
+                .concat(firstDsSet.filter((e)=>{return !e.first}));
 
             return firstDsSet;
         };

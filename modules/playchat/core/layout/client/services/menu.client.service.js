@@ -16,188 +16,217 @@
             // this.setting = { name: 'Setting', icon: 'setting.png' };
         };
 
-        Menu.prototype.initialize = function()
-        {
+        //Menu.prototype.initialize_origin = function()
+        //{
+        //    this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
+        //    /*비즈챗 개발을 위한 설정*/
+        //    this.development_test = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+        //            { name: '샘플페이지', url: '/development/layout-sam', icon: 'scenatio_select.png' },
+        //            { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
+        //            { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' },
+        //            { name: '발송하기', url: '/development/outbound', icon: 'scenatio_select.png' },
+        //            { name: '발송내역', url: '/analysis/biz-sendlist', icon: 'scenatio_select.png' },
+        //            { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' },
+        //
+        //
+        //
+        //        { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
+        //        { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
+        //    ] };
+        //
+        //
+        //    this.development_global = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+        //
+        //        { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
+        //        { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
+        //        { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
+        //    ] };
+        //
+        //    this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
+        //        { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
+        //        { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' }
+        //    ] };
+        //
+        //    this.management = { name: LanguageService('Management'), url: '/management', icon: 'Managemant_1.png', childMenus: [
+        //        { name: LanguageService('Dialog Set'), url: '/management/dialog-set', icon: 'speech_select_mini.png' },
+        //        // { name: LanguageService('Dialog Graph'), url: '/management/dialog-graph', icon: 'scenatio_select.png' },
+        //        { name: LanguageService('Entity'), url: '/management/entity', icon: 'entity_select_mini.png' },
+        //        { name: LanguageService('Intent'), url: '/management/intent', icon: 'intent_select.png' }
+        //        // { name: LanguageService('Task'), url: '/management/task', icon: 'task_select_mini.png' }
+        //    ] };
+        //
+        //    this.contents = { name: LanguageService('Contents'), icon: 'contents.png' };
+        //    this.channel = { name: LanguageService('Channel'), url: '/channel', icon: 'channel_1.png' };
+        //
+        //    this.operation = { name: LanguageService('Operation'), icon: 'operat_1.png', url: '/operation', childMenus: [
+        //        { name: LanguageService('User'), url: '/operation/user', icon: 'user_mini.png' },
+        //        // { name: LanguageService('Human Chat log'), url: '/operation/chat-log/human', icon: 'human_select.png' },
+        //        // { name: LanguageService('AI Chat log'), url: '/operation/chat-log/ai', icon: 'ai_select.png' },
+        //        { name: LanguageService('Failed Chat log'), url: '/operation/failed-dialogs', icon: 'failed_select.png' }
+        //    ] };
+        //
+        //
+        //
+        //    this.analysis = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
+        //        { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
+        //
+        //        { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
+        //        { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
+        //        { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
+        //        { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+        //        { name: LanguageService('User Input Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
+        //
+        //        { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
+        //        { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
+        //        { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
+        //        { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
+        //        { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' },
+        //
+        //        // { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
+        //        // { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
+        //        // { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
+        //        // { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
+        //        // { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
+        //        // { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
+        //        // { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
+        //        // { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
+        //        // { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+        //        // { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
+        //        // { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
+        //    ] };
+        //
+        //    if(user.email=='sam@moneybrain.ai'){
+        //        this.analysis = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
+        //            { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
+        //
+        //            { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+        //
+        //            { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' },
+        //
+        //            // { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
+        //            // { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
+        //            // { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
+        //            // { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
+        //            // { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
+        //            // { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
+        //            // { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
+        //            // { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
+        //            // { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+        //            // { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
+        //            // { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
+        //        ] };
+        //    }
+        //
+        //    this.docs = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
+        //            { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
+        //
+        //            { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
+        //            { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
+        //            { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
+        //            { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
+        //            { name: LanguageService('User Input Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
+        //
+        //            { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
+        //            { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
+        //            { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
+        //            { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
+        //            { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
+        //
+        //        ] };
+        //};
+
+        Menu.prototype.initialize = function () {
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
-            /*비즈챗 개발을 위한 설정*/
-            this.development_test = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
-                    { name: '샘플페이지', url: '/development/layout-sam', icon: 'scenatio_select.png' },
-                    { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
-                    { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' },
-                    { name: '발송하기', url: '/development/outbound', icon: 'scenatio_select.png' },
-                    { name: '발송내역', url: '/analysis/biz-sendlist', icon: 'scenatio_select.png' },
-                    { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' },
-
-
-
-                //{ name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
-                { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
+            this.development = { name: '봇 만들기', url: '/development', icon: 'develop.png', childMenus: [
+                { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
+                { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' }
             ] };
 
-
-            this.development_global = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
-
-                { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
-                { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
-                { name: LanguageService('Biz Dialog Graph'), url: '/development/biz-dialog-graph', icon: 'scenatio_select.png' }
+            this.sending = { name: '발송하기', url: '/sending', icon: 'develop.png', childMenus: [
+                { name: '발송 하기', url: '/sending/outbound', icon: 'scenatio_select.png' }
             ] };
 
-            this.development = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
-                { name: LanguageService('Dialog Set'), url: '/development/dialog-set', icon: 'speech_select_mini.png' },
-                { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' }
+            this.analysis = { name: '통계', url: '/analysis', icon: 'analysis_1.png', childMenus: [
+                { name: '발송내역', url: '/analysis/biz-sendlist', icon: 'scenatio_select.png' },
+                { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' }
             ] };
-
-            this.management = { name: LanguageService('Management'), url: '/management', icon: 'Managemant_1.png', childMenus: [
-                { name: LanguageService('Dialog Set'), url: '/management/dialog-set', icon: 'speech_select_mini.png' },
-                // { name: LanguageService('Dialog Graph'), url: '/management/dialog-graph', icon: 'scenatio_select.png' },
-                { name: LanguageService('Entity'), url: '/management/entity', icon: 'entity_select_mini.png' },
-                { name: LanguageService('Intent'), url: '/management/intent', icon: 'intent_select.png' }
-                // { name: LanguageService('Task'), url: '/management/task', icon: 'task_select_mini.png' }
-            ] };
-
-            this.contents = { name: LanguageService('Contents'), icon: 'contents.png' };
-            this.channel = { name: LanguageService('Channel'), url: '/channel', icon: 'channel_1.png' };
-
-            this.operation = { name: LanguageService('Operation'), icon: 'operat_1.png', url: '/operation', childMenus: [
-                { name: LanguageService('User'), url: '/operation/user', icon: 'user_mini.png' },
-                // { name: LanguageService('Human Chat log'), url: '/operation/chat-log/human', icon: 'human_select.png' },
-                // { name: LanguageService('AI Chat log'), url: '/operation/chat-log/ai', icon: 'ai_select.png' },
-                { name: LanguageService('Failed Chat log'), url: '/operation/failed-dialogs', icon: 'failed_select.png' }
-            ] };
-
-
-
-            this.analysis = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
-                { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
-
-                { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
-                { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
-                { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
-                { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
-                { name: LanguageService('User Input Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
-
-                { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
-                { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
-                { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
-                { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
-                { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' },
-
-                // { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
-                // { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
-                // { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
-                // { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
-                // { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
-                // { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
-                // { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
-                // { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
-                // { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
-                // { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
-                // { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
-            ] };
-
-            if(user.email=='sam@moneybrain.ai'){
-                this.analysis = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
-                    { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
-
-                    { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
-
-                    { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' },
-
-                    // { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
-                    // { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
-                    // { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
-                    // { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
-                    // { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
-                    // { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
-                    // { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
-                    // { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
-                    // { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
-                    // { name: LanguageService('Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
-                    // { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' }
-                ] };
-            }
-
-            this.docs = { name: LanguageService('Analysis'), icon: 'analysis_1.png', url: '/analysis', childMenus: [
-                    { name: LanguageService('Summary'), url : '/analysis/summary', icon: 'summary_select.png' },
-
-                    { name: LanguageService('User'), url : '/analysis/user', icon: 'user_mini.png' },
-                    { name: LanguageService('Session'), url : '/analysis/session', icon: 'session_select.png' },
-                    { name: LanguageService('Dialog Training Input'), url : '/analysis/dialog-training-input', icon: 'traininginput_select.png' },
-                    { name: LanguageService('Dialog Graph Input'), url : '/analysis/dialog-graph-input', icon: 'graphinput_select.png' },
-                    { name: LanguageService('User Input Intent'), url : '/analysis/intent', icon: 'intent_select.png' },
-
-                    { name: LanguageService('Dialog Traffic'), url : '/analysis/dialog-traffic', icon: 'traffic_select.png' },
-                    { name: LanguageService('Dialog Set Usage'), url : '/analysis/dialog-training-usage', icon: 'training_select.png' },
-                    { name: LanguageService('Dialog Scenario Usage'), url : '/analysis/dialog-graph-usage', icon: 'userusage_select.png' },
-                    { name: LanguageService('Dialog Graph Path'), url : '/analysis/dialog-graph-path', icon: 'path_select.png' },
-                    { name: LanguageService('Failed Dialogs'), url : '/analysis/failed-dialogs', icon: 'failed_select.png' },
-
-                ] };
         };
 
         Menu.prototype.get = function(templateId, callback)
         {
             this.initialize();
+
             var that = this;
+            var menus = [];
 
-            if(typeof templateId == 'string' && callback)
-            {
-                TemplateGnbService.get({ templateId : templateId }, function(menu)
-                {
-                    var menus = menu.menus;
+            menus.push(that.development);
+            menus.push(that.sending);
+            menus.push(that.analysis);
 
-                    for(var i=0; i<menus.length; i++)
-                    {
-                        menus[i].name = LanguageService(menus[i].name);
-                    }
-
-                    menus.push(that.channel);
-                    menus.push(that.operation);
-                    menus.push(that.analysis);
-
-                    callback(menus);
-                },
-                function(err)
-                {
-                    alert(err);
-                });
-            }
-            else if(typeof templateId == 'function')
-            {
-                var chatbot = $cookies.getObject('chatbot');
-                var menus = [];
-
-
-                if(!chatbot || (chatbot.type && (chatbot.type === 'survey'||chatbot.type === 'consult'))){
-
-                    menus.push(that.development_test);
-                }else{
-                    menus.push(that.dashboard);
-                    menus.push(that.development);
-
-                    menus.push(that.management);
-
-                    if(chatbot && chatbot.myBotAuth.edit)
-                    {
-                        menus.push(that.operation);
-                    }
-                    menus.push(that.analysis);
-                }
-                //menus.push(that.development_global);
-
-
-
-                // for samchully dependency
-                //if(user.email!='sam@moneybrain.ai'){
-                //    menus.push(that.development);
-                //    menus.push(that.management);
-                //    menus.push(that.channel);
-                //}
-                // menus.push(this.contents);
-                // menus.push(this.setting);
-
+            if(typeof templateId == 'function'){
                 templateId(menus);
+            }else{
+                alert('오류가 발생했습니다. 다시 시도해주세요.');
+                history.back();
             }
+            //if(typeof templateId == 'string' && callback)
+            //{
+            //    TemplateGnbService.get({ templateId : templateId }, function(menu)
+            //    {
+            //        var menus = menu.menus;
+            //
+            //        for(var i=0; i<menus.length; i++)
+            //        {
+            //            menus[i].name = LanguageService(menus[i].name);
+            //        }
+            //
+            //        menus.push(that.channel);
+            //        menus.push(that.operation);
+            //        menus.push(that.analysis);
+            //
+            //        callback(menus);
+            //    },
+            //    function(err)
+            //    {
+            //        alert(err);
+            //    });
+            //}
+            //else if(typeof templateId == 'function')
+            //{
+            //    var chatbot = $cookies.getObject('chatbot');
+            //    var menus = [];
+            //
+            //
+            //    if(!chatbot || (chatbot.type && (chatbot.type === 'survey'||chatbot.type === 'consult'))){
+            //
+            //        menus.push(that.development_test);
+            //    }else{
+            //        menus.push(that.dashboard);
+            //        menus.push(that.development);
+            //
+            //        menus.push(that.management);
+            //
+            //        if(chatbot && chatbot.myBotAuth.edit)
+            //        {
+            //            menus.push(that.operation);
+            //        }
+            //        menus.push(that.analysis);
+            //    }
+            //    //menus.push(that.development_global);
+            //
+            //
+            //
+            //    // for samchully dependency
+            //    //if(user.email!='sam@moneybrain.ai'){
+            //    //    menus.push(that.development);
+            //    //    menus.push(that.management);
+            //    //    menus.push(that.channel);
+            //    //}
+            //    // menus.push(this.contents);
+            //    // menus.push(this.setting);
+            //
+            //    templateId(menus);
+            //}
         };
 
         return (function()

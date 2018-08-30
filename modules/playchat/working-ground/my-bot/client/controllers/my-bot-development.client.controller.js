@@ -36,6 +36,12 @@ angular.module('playchat').controller('MyBotDevelopmentController', ['$window', 
         $location.url('/playchat/development/biz-dialog-graph');
     };
 
+    $scope.botSendingPage = (bot) => {
+        bot.myBotAuth = { read: true, edit: true };
+        $cookies.putObject('chatbot', bot);
+        $location.url('/playchat/sending/outbound');
+    };
+
     // default environment setting
     (() => {
         $scope.getList();

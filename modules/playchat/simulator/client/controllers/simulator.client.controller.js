@@ -5,6 +5,7 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
 {
     $scope.$parent.loaded('simulator');
 
+
     var tempUserKey = 'socket-user-' + new Date().getTime();
 
     $scope.isAdvisorMode = false;
@@ -15,11 +16,15 @@ function ($window, $scope, $cookies, $resource, $rootScope, Socket, LanguageServ
     {
         var chatbot = $cookies.getObject('chatbot');
 
+        if(!chatbot){
+            location.href = '/playchat/development/my-bot';
+        };
+
         var user = $cookies.getObject('user');
 
         var simulatorBody = undefined;
 
-        $scope.shortCutHelp = false;
+
         $scope.isClosed = false;
 
         $scope.bot_image_url = chatbot.imageFile && chatbot.imageFile != '' ? chatbot.imageFile : 'modules/playchat/simulator/client/imgs/bot.png';
