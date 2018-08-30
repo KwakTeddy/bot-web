@@ -14,7 +14,7 @@ html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, fo
 	font-family:'Noto Sans KR','Noto Sans SC','Noto Sans JP','Nanum Gothic', 'Malgun Gothic', 'AppleSDGothicNeo-Light', 'AppleSDGothicNeo', sans-serif, Arial,dotum,'돋움';
 } 
 /*-webkit-text-size-adjust: none(글자크기 자동조정 방지) , auto (화면의 폭에 맞추어서 텍스트의 크기를 자동으로 조절 , 100%(폰트크기를 지정된사이즈로 변경);*/ 
-html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, table , tr , td , dl, dt, dd, a ,img,input,button, select,textarea { margin: 0px; padding: 0px; list-style:none; }
+html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, table , tr , td , dl, dt, dd, a ,img,input,button, select,textarea {font-size: 13px; margin: 0px; padding: 0px; list-style:none; }
 address, cite, dfn, em, var { font-style: normal; }
 code, kbd, samp { font-family:dotum,'돋움', courier new, courier, monospace; }
 header, hgroup, article, nav, footer, figure, figcaption, canvas, section , menu { display: block; margin:0; padding:0; }
@@ -25,8 +25,8 @@ img { border: 0px; vertical-align:middle; }
 table{/* table-layout:fixed; */border-collapse:collapse;border-spacing:0}
 a:link { text-decoration: none; color:#363636; }
 a:visited { text-decoration: none; color:#363636; }
-a:hover { text-decoration: none; /*color: #038eda;*/ }
-a:active { text-decoration: none; color:#363636; }
+a:hover { text-decoration: none; /*color: #038eda;*/}
+a:active { text-decoration: none; color:#363636;}
 
 
 /*clear*/

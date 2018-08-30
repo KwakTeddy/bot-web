@@ -157,10 +157,12 @@ p.detail-sm{
 a.new-bot-right{
     color: #fff;
     background: #038eda;
-    padding: 3.5% 13%;
     display: inline-block;
     vertical-align: middle;
     float: right;
+    font-size: 15px;
+    line-height: 50px;
+    padding: 0 55px;
 }
 .temp-bot-info{
     margin-top: 70px;
@@ -222,6 +224,7 @@ a.new-bot-right{
     top: 3px;
     left: 70px;
     letter-spacing: 0;
+    font-size: 13px;
 }
 .xbtn{
     position: absolute;
