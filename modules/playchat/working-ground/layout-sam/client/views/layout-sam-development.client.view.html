@@ -31,75 +31,52 @@
                 </div>
             </div>
             <div class="mybot-list" style="width: 100%;">
-                <span class="subject blue">1:1 문의</span>
-                <p class="detail">회원님들이 가장 자주 문의하시는 질문과 답변을 모아 두었습니다.</p>
+                <span class="subject blue">공지사항</span>
+                <p class="detail">비즈챗 서비스 관련공지  사항 및 새로운 소식을 알려 드립니다.</p>
                 <div class="row">
-                    <div>
-                        <div class="col-sm-5 col-md-6">
-                            <div class="text-input-area">
-                                <div class="h5">이름 <span class="red">*</span></div>
-                                <input type="text" placeholder="Enter your full name">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="col-sm-5 col-md-6">
-                            <div class="text-input-area">
-                                <div class="h5">이메일 <span class="red">*</span></div>
-                                <input type="email" placeholder="email@sitename.com">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-area-row">
-                        <div class="col-sm-6 col-md-6">
-                            <div class="text-input-area">
-                                <div class="h5">전화번호</div>
-                                <input type="text" placeholder="010-1234-5678">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="select-wrapper">
-                                <select class="jumbo-select02" style="margin: 50px 20px 20px 0;width: 178px;">
-                                    <option disabled selected hidden>질문유형</option>
-                                    <option>서비스</option>
-                                    <option>결제</option>
-                                    <option>제휴</option>
-                                    <option>기타</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-9 col-md-10" style="margin-top: 13px;">
-                            <div class="text-input-area">
-                                <p class="h5">제목 <span class="red">*</span></p>
-                                <input type="text">
-                            </div>
-                        </div>
-                        <textarea class="data-input02" placeholder="내용을 입력해주세요." style="width: 92.5%;margin-bottom:20px;"></textarea>
-                    </div>
+                    <table class="tb02">
+                        <colgroup>
+                            <col width="5%">
+                            <col width="20%">
+                            <col width="">
+                            <col width="">
+                            <col width="">
+                            <col width="">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>no</th>
+                            <th>사용자명</th>
+                            <th>최근 발송</th>
+                            <th>발송 수</th>
+                            <th>성공</th>
+                            <th>발송 비용<span class="sm-title">(단위:코인)</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>{{User.name}}</td>
+                            <td>{{User.lastSendDate}}</td>
+                            <td>{{User.sendNum}}</td>
+                            <td class="grap">{{User.sendSuccNum}}<div class="tb-b" style="width: {{User.sendSuccRate}}%;">{{User.sendSuccRate}}%</div></td>
+                            <td>0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                    <div class="text-input-area">
-                        <div class="col-sm-3 col-md-3">
-                            <input type="text" style="line-height: 36px;">
-                        </div>
-                    </div>
-                    <a href="" class="btn-style02" style="margin: 0;">첨부</a>
-                    <span style="margin-left: 10px;">*5MB 이하, 문서, 이미지 혹은 압축 파일.</span>
-                </div>
-                <div style="margin: 3% auto;">
-                    <input type="checkbox" class="styled-checkbox">
-                    <label class="label">
-                        <span class="agree v_line_t">개인정보 수집/이용에 동의합니다.</span>
-                    </label>
-                    <div>
-                        <p class="detail-sm" style="margin-top: 8px;">-   수집 항목 :이름, 이메일, 연락처</p>
-                        <p class="detail-sm">-   수집 목적 :서비스 이용에 따른 고객 문의, 불만처리, 오류 해결 등 민원 처리 및 결과 회신</p>
-                        <p class="detail-sm">-   보유 및 이용 기간 : 문의처리 후 5년간 보관</p>
-                        <p class="detail-sm">-   그 밖의 사항은 개인정보 처리방침을 준수합니다.</p>
+                <div class="tablePaging" style="margin-top: 30px;">
+                    <div class="tablePagingC">
+                        <a href="#" class="direction">
+                            <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="이전페이지이동">
+                        </a>
+                        <a href="#">1</a>
+                        <a href="#" class="direction">
+                            <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="다음페이지이동">
+                        </a>
                     </div>
                 </div>
-                <a href="" class="btn-style10" style="margin-bottom: 10%;">문의하기</a>
             </div>
         </div>
 
