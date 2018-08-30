@@ -138,14 +138,22 @@ a.question-mark span:hover + p.balloon {
 }
 span.subject{
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 500;
     display: inline-block;
     margin-right: 4px;
 }
 p.detail{
-    color: #afafaf;
-    font-size: 13px;
+    color: #7f7f7f;
+    font-size: 15px;
     padding: 8px 0px;
+    font-weight: 400;
+}
+p.detail-sm{
+    color: #7f7f7f;
+    font-size: 13px;
+    line-height: 7px;
+    padding: 8px 0px;
+    font-weight: 400;
 }
 a.new-bot-right{
     color: #fff;
@@ -166,16 +174,16 @@ a.new-bot-right{
     display: inline-block;
 }
 .temp-bot-info p.detail{
-    color: #afafaf;
-    font-size: 13px;
+    color: #7f7f7f;
+    font-size: 14px;
     padding: 2px 0px;
 }
 .temp-bot-info p.highlight{
-    font-size: 13px;
+    font-size: 14px;
     padding: 2px 0 7px 0;
     color: #ff4259;
     padding-bottom: 7px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 /*나의봇*/

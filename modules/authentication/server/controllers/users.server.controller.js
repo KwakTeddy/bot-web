@@ -259,3 +259,32 @@ exports.reset = function (req, res, next) {
         }
     });
 };
+
+
+//update bizplaychat user
+exports.saveBizAuthUserProfile = function (req, res, next) {
+    User.findOne({"email": req.body.email}, function (err, user) {
+        user.bizKindOfBusiness = '';
+        user.phone =  '';
+        user.organization =  '';
+        user.bizChairEmail = '';
+        user.bizChairName = '';
+
+        user.bizKindOfBusiness = req.body.bizKindOfBusiness;
+        user.phone = req.body.phone;
+        user.organization = req.body.organization;
+        user.bizChairEmail = req.body.bizChairEmail;
+        user.bizChairName = req.body.bizChairName;
+
+        user.save(function (err) {
+            if (err) {
+                console.log(err);
+                return  res.status(400).send({ message: 'fail' || err });
+            }
+            else{
+                console.log('success');
+                return res.jsonp({ message: 'success' });
+            }
+        })
+    })
+};

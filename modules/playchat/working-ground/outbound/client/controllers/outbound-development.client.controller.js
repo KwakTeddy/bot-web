@@ -194,12 +194,15 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
                 case 1 :
                     paramset.startTime = moment().format(dtFormat);
                     paramset.endTime = moment(new Date(range[0])).format(dtFormat);
+                    paramset.exec = 'now';
                     break;
                 case 2 :
+
                     // 임시코드
                     supported = false;
                     paramset.startTime = moment(new Date(range[0])).format(dtFormat);
                     paramset.endTime = moment(new Date(range[1])).format(dtFormat);
+                    paramset.exec = 'wait';
                     break;
             }
             paramset.tag = $scope.inputMethod == 1 ? 'numberSet' : 'telebookSet';
@@ -219,7 +222,7 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
 
             if(arr.length == 0||paramset.startTime>paramset.endTime){
                 throw '필수정보가 누락되었거나 사용불가능한 시간을 선택하셨습니다.\n입력하신 내용을 확인해주세요.';
-            };
+            }
 
             if(!supported){
                 throw '아직 지원하지 않는 기능입니다.\n나중에 다시 시도해주세요.';

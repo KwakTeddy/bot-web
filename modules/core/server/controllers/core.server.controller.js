@@ -102,7 +102,8 @@ exports.renderIndex = function (req, res, next)
 
         var code = queryLan || browserLan;
 
-        res.render('modules/front/index', frontLanguage(code));
+        res.render('modules/front/biz-index', frontLanguage(code));
+
         return;
     }
 

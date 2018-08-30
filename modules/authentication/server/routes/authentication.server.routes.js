@@ -22,9 +22,11 @@ module.exports = function(app)
     app.get('/api/auth/emailconfirm/:token', authentication.validateEmailConfirmToken);
     app.post('/api/auth/emailconfirm/code', authentication.validateEmailConfirmCode);
     app.post('/api/users', UserController.updateUser);
+    app.post('/api/users/updateBizAuthUser', UserController.saveBizAuthUserProfile);
 
     app.route('/auth/reset/:token/:from').get(UserController.validateResetToken);
     app.route('/auth/reset/:token').post(UserController.reset);
+
 };
 
 /**

@@ -142,11 +142,6 @@ span.subject{
     display: inline-block;
     margin-right: 4px;
 }
-p.detail{
-    color: #afafaf;
-    font-size: 13px;
-    padding: 8px 0px;
-}
 a.new-bot-right{
     color: #fff;
     background: #038eda;
@@ -154,28 +149,6 @@ a.new-bot-right{
     display: inline-block;
     vertical-align: middle;
     float: right;
-}
-.temp-bot-info{
-    margin-top: 70px;
-    border-top: 1px solid #b7b7b7;
-    padding:14px 0;
-}
-.temp-bot-info span.subject{
-    font-size: 18px;
-    font-weight: 600;
-    display: inline-block;
-}
-.temp-bot-info p.detail{
-    color: #afafaf;
-    font-size: 13px;
-    padding: 2px 0px;
-}
-.temp-bot-info p.highlight{
-    font-size: 13px;
-    padding: 2px 0 7px 0;
-    color: #ff4259;
-    padding-bottom: 7px;
-    font-weight: 600;
 }
 
 .pop-up{

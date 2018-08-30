@@ -104,7 +104,20 @@ var UserSchema = new Schema({
   language: {
     type: String,
     default: 'en'
-  }
+  },
+  //for biz
+    bizKindOfBusiness: {
+        type: String,
+        default: ''
+    },
+    bizChairEmail: {
+        type: String,
+        default: ''
+    },
+    bizChairName: {
+        type: String,
+        default: ''
+    }
 
 });
 

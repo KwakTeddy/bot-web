@@ -1,7 +1,7 @@
 (function()
 {
     'use strict';
-    angular.module('playchat').controller('SignupController', ['$scope', '$resource','$state', '$http', '$window', '$cookies', '$location', 'LanguageService', function ($scope, $resource, $state, $http,$window, $cookies, $location, LanguageService)
+    angular.module('playchat').controller('SignupController', ['$scope', '$state', '$http', '$cookies', '$location', 'LanguageService', function ($scope, $state, $http, $cookies, $location, LanguageService)
     {
         $scope.user = $cookies.getObject('user');
 
@@ -120,38 +120,6 @@
         $scope.moveToFront = function()
         {
             location.href = '/';
-        };
-
-        $scope.updateUserInfor = function()
-        {
-            var bizKindOfBusiness = document.getElementById("bizKindOfBusiness");
-            if(bizKindOfBusiness.options[bizKindOfBusiness.selectedIndex].text !== "업종을 선택하세요."){
-                $scope.credentials.bizKindOfBusiness = bizKindOfBusiness.options[bizKindOfBusiness.selectedIndex].text;
-            }else{
-                $scope.credentials.bizKindOfBusiness = '';
-            }
-
-            $scope.credentials.phone = document.getElementById("phone").value;
-            $scope.credentials.organization = document.getElementById("organization").value;
-            $scope.credentials.bizChairEmail = document.getElementById("bizChairEmail").value;
-            $scope.credentials.bizChairName = document.getElementById("bizChairName").value;
-            var bizChair = document.getElementById("bizChair");
-            if(bizChair.options[bizChair.selectedIndex].text !== "직책"){
-                $scope.credentials.bizChairName = $scope.credentials.bizChairName + ' ' + bizChair.options[bizChair.selectedIndex].text;
-            }
-
-            $http.post('/api/users/updateBizAuthUser', $scope.credentials).success(function (response)
-            {
-                $window.location.href = '/playchat/development/create-bot';
-            }).error(function (response)
-            {
-                console.log(response);
-            })
-        };
-
-        $scope.oauthCall = function(name)
-        {
-            $window.location.href = '/auth/' + name;
         };
 
         $scope.lan = LanguageService;
