@@ -121,7 +121,6 @@
         {
             location.href = '/';
         };
-
         $scope.updateUserInfor = function()
         {
             var bizKindOfBusiness = document.getElementById("bizKindOfBusiness");
@@ -138,6 +137,11 @@
             var bizChair = document.getElementById("bizChair");
             if(bizChair.options[bizChair.selectedIndex].text !== "직책"){
                 $scope.credentials.bizChairName = $scope.credentials.bizChairName + ' ' + bizChair.options[bizChair.selectedIndex].text;
+            }
+
+            var valid = Object.values($scope.credentials).filter((e)=>{return e == ''}).length;
+            if(valid>0){
+                return alert('빈 필드가 있습니다. 입력을 완료해주세요.');
             }
 
             $http.post('/api/users/updateBizAuthUser', $scope.credentials).success(function (response)

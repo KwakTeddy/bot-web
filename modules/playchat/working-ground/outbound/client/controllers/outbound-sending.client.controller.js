@@ -56,10 +56,12 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
 
     var _setBot = (id,cb) => {
         if(id){
-            var bot = $scope.botList.find((e) => {return e.id ==id})
+            var bot = $scope.botList.find((e) => {return e.id ==id});
 
-            bot.myBotAuth = { read: true, edit: true };
-            $cookies.putObject('chatbot', bot);
+            if(bot){
+                bot.myBotAuth = { read: true, edit: true };
+                $cookies.putObject('chatbot', bot);
+            }
             if(cb && typeof cb =='function'){
                 cb()
             }
@@ -279,13 +281,13 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
         $scope.setInputMethod(1);
         $scope.pickerSetting(true);
         angular.element('.main-logo-background').css('opacity', 0);
+        var bot = $cookies.getObject('chatbot');
+        if(bot && bot.id){
+            $scope.selectedBot = bot.id;
+            _setBot(bot.id);
+        };
         $timeout(function()
         {
-            var bot = $cookies.getObject('chatbot');
-            if(bot && bot.id){
-                $scope.selectedBot = bot.id;
-                _setBot(bot.id);
-            }
             angular.element('.main-logo-background').css('display', 'none');
         }, 1200);
 

@@ -582,14 +582,14 @@
             $.cookie('language', lan);
 
             $('[data-id="startBtn"]').on('click', function () {
-
-                if($.cookie('login') != 'true')
-                {
-                    return location.href = '/signup';
-                }else
-                {
-                    return location.href = '/playchat/development/create-bot';
-                }
+                $('#registerBtn').click();
+//                if($.cookie('login') != 'true')
+//                {
+//                    return location.href = '/signup';
+//                }else
+//                {
+//                    return location.href = '/playchat/development/create-bot';
+//                }
 
             });
 

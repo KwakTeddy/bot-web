@@ -153,9 +153,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
             }
             else
             {
-                if(!$scope.path){
-                    return 'selected';
-                }else if($scope.path.startsWith('/playchat' + menu.url))
+                if($location.path().startsWith('/playchat' + menu.url))
                 {
                     if(menu.childMenus)
                     {
