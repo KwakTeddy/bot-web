@@ -136,10 +136,9 @@ a.question-mark span:hover + p.balloon {
     color: #038eda;
     border: 1px solid #038eda;
 }
-span.subject{
+.subject{
     font-size: 18px;
     font-weight: 500;
-    display: inline-block;
     margin-right: 4px;
 }
 p.detail{

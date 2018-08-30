@@ -327,34 +327,7 @@ select.select03 option[disabled] {
     font-size: 10px;
     padding-left: 2px;
 }
-/*tab*/
-.boardMenu {
-    height: 50px;
-    margin-bottom: 40px;
-    background: #eaf5fc;
-}
-.boardMenu > ul {
-    margin: 0;
-    overflow: hidden;
-}
-.boardMenu li {
-    display: inline-block;
-    float: left;
-}
-.boardMenu a {
-    display: inline-block;
-    font-family: "proxima_nova_rgbold";
-    line-height: 50px;
-    padding: 0 80px;
-    -webkit-transition-duration: .4s;
-    transition-duration: .4s;
-    font-weight: 700;
-    font-size: 14px;
-}
-.boardMenu li.active a {
-    background: #288feb;
-    color: #fff;
-}
+
 /*input area*/
 
 .text-input-area .h5{
