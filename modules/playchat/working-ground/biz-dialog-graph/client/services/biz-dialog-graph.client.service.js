@@ -265,6 +265,7 @@
                     if(e.target){
                         var item = newArr.find((j) => {return j.id == e.target});
                         item.parent = true;
+                        item.first = true;
 
                         // old input != new input
                         if(item.input){
@@ -341,7 +342,8 @@
                     children : e.children,
                     index : e.index
                 };
-                dialog.push(item)
+                e.first ? item.first = true : null;
+                dialog.push(item);
             });
 
 
@@ -351,12 +353,15 @@
                 dialog[0].input = TC.getInput();
                 firstDsSet = [dialog[0]]
             }
+
             firstDsSet.forEach((e) => {
                 // new item of B
                 var b_item = dialog.find((j) => {return j.index == e.index+1});
 
                 e = TC.setChild(e, b_item, dialog);
             });
+
+            firstDsSet = firstDsSet.filter((e)=>{return e.first}).concat(firstDsSet.filter((e)=>{return !e.first}));
 
             return firstDsSet;
         };
@@ -367,8 +372,6 @@
             var newArr = [], oldArr = [];
 
             angular.copy(BizChat.cardArr,oldArr);
-            console.log('----saveGraph---')
-            console.log(BizChat.cardArr)
             var firstInput = oldArr[0].input;
 
             var startDialog = TC.createCard(oldArr[0],TC.firstInput());
