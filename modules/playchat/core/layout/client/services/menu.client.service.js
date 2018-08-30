@@ -27,8 +27,6 @@
                     { name: '발송하기', url: '/development/outbound', icon: 'scenatio_select.png' },
                     { name: '발송내역', url: '/analysis/biz-sendlist', icon: 'scenatio_select.png' },
                     { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' },
-                    { name: '고객센터', url: '/analysis/biz-csbbs', icon: 'scenatio_select.png' },
-                    // { name: '고객센터', url: '/analysis/biz-csboard', icon: 'scenatinodo_select.png' },
 
 
 
