@@ -354,6 +354,8 @@ a.new-bot-right{
     width: 90%;
     border-color: #e1e1e1;
     background: #f6f6f6;
+    font-size: 13px;
+    line-height: 18px;
 }
 input.type01-pop {
     border: 1px solid #BEBEBE;
@@ -384,6 +386,7 @@ input.type02-pop-unable  {
     text-overflow: ellipsis;
     padding: 8px;
     background: #f6f6f6;
+    font-size: 13px;
 }
 .radiobox {
     padding: 14px 0 6px;
