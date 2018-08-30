@@ -1203,7 +1203,7 @@ header a.cart i {
 	height: 1px;
 	left: 0;
 	bottom: 18px;
-	background: #5eaaef
+	background: #365272;
 }
 
 .homeImgTable {
@@ -4202,8 +4202,18 @@ header .topInfo li.clientAreaLi span,
 	float: right;
 	background: #288feb;
 }
-.startBtn i {
-	margin-right: 15px
+.home-btn {
+	line-height: 40px;
+	display: inline-block;
+	font-size: 13px;
+	font-family: 'proxima_nova_rgbold';
+	text-transform: uppercase;
+	padding: 0 18px;
+	color: #fff;
+	border-radius: 2px;
+	text-align: center;
+	float: right;
+	background:#365272;
 }
 .effect:hover{
 	transition: all 0.1s ease;

@@ -1,4 +1,21 @@
+/*animate*/
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
 
+.animated.hinge {
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+}
+.fadeInUp {
+    -webkit-animation-name: fadeInUp;
+    animation-name: fadeInUp;
+}
+
+/*width*/
 .col-lg-1,
 .col-lg-10,
 .col-lg-11,
@@ -565,6 +582,11 @@
         margin-left: 0
     }
 }
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 /*color*/
 .blue{
     color: #288feb !important;
@@ -574,4 +596,184 @@
 }
 .black{
     color: #393939 !important;
+}
+/*accordion*/
+.supportFaq dl.accordion {
+    width: 100%;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+.supportFaq dl {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.style2.accordion dt {
+    position: relative;
+    padding-left: 40px;
+}
+.accordion.style2 dt::after {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    content: "";
+    font-family: icofont;
+    text-align: center;
+    line-height: 30px;
+    font-size: 20px;
+}
+.accordion.style2 dt.active::after {
+    content: "";
+}
+.supportFaq dt.active {
+    border-bottom: 0px solid;
+}
+.supportFaq dt {
+    font-size: 16px;
+    line-height: 30px;
+    padding: 0 0 15px 20px;
+    cursor: pointer;
+    margin-bottom: 1px;
+    border-bottom: 1px solid #eaeaea;
+    margin-top: 20px;
+    color: #222;
+    font-weight: 700;
+}
+.supportFaq dt.active + .supportFaq dd {
+    border-bottom: 1px solid #eaeaea;
+}
+.supportFaq dd {
+    margin: 0;
+    padding: 0 0 20px 40px;
+    font-size: 14px;
+    line-height: 26px;
+    color: #848383;
+}
+/*button*/
+/*btn style*/
+.btn-style01{
+    border: 1px solid #d8d8d8;
+    padding: 8px 26px;
+    margin-top: 6px;
+    /*width: 80px;*/
+    text-align: center;
+    display: inline-block;
+}
+.btn-style01:hover{
+    background: #f5f5f5;
+    transition: all 0.3s;
+}
+.btn-style02{
+    /*padding: 8px 0;*/
+    /* width: 80px; */
+    padding: 8px 26px;
+    margin-top: 6px;
+    text-align: center;
+    border: 1px solid #038eda;
+    background: #fff;
+    color: #038eda !important;
+    display: inline-block;
+}
+.btn-style02:hover{
+    background: #f4fcff;
+    transition: all 0.3s;
+}
+
+.btn-style03{
+    /*padding: 8px 0;*/
+    /* width: 80px; */
+    padding: 9px 26px;
+    margin-top: 6px;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    display: inline-block;
+}
+
+.btn-style04 {
+    border: 1px solid #d8d8d8;
+    padding: 8px 0;
+    width: 80px;
+    float: right;
+    text-align: center;
+}
+
+.btn-style05{
+    border: 1px solid #d8d8d8;
+    padding: 8px 0;
+    margin-top: 6px;
+    width: 80px;
+    text-align: center;
+    display: inline-block;
+}
+.btn-style05:hover{
+    background: #f5f5f5;
+    transition: all 0.3s;
+}
+.btn-style06 {
+    padding: 9px 50px;
+    margin-top: 6px;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    display: inline-block;
+    cursor: pointer;
+}
+.btn-style07 {
+    border: 1px solid #d8d8d8;
+    padding: 8px 49px;
+    margin-top: 6px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+.btn-style08{
+    border: 1px solid #d8d8d8;
+    padding: 5px 10px;
+    text-align: center;
+    display: inline-block;
+    margin: 0 5px;
+    background: #fff;
+}
+.btn-style08:hover{
+    background: #f5f5f5;
+    transition: all 0.3s;
+}
+.btn-style09{
+    border: 1px solid #d8d8d8;
+    padding: 2px 6px;
+    text-align: center;
+    display: inline-block;
+    margin: 0 5px;
+    background: #fff;
+    font-size: 11px;
+    border-radius: 2px;
+}
+.btn-style09:hover{
+    border: 1px solid #038eda;
+    transition: all 0.3s;
+}
+.btn-style10 {
+    padding: 1.5% 8%;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    display: block;
+    width: 80px;
+    margin: 3% auto;
+}
+.btn-style11{
+    width: 130px;
+    display: block;
+    margin: 0 auto;
+    line-height: 32px;
+    text-align: center;
+    background: #038eda;
+    color: #fff !important;
+    padding: 9px 26px;
 }

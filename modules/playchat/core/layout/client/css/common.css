@@ -599,9 +599,10 @@ div.slide>input[type=checkbox]{
 	text-align: center;
 }
 .tabs1>li a{
-	color: #7e7e7e;
-	font-weight: 600;
-	letter-spacing: 0;
+    color: #7e7e7e;
+    font-weight: 500;
+    letter-spacing: 0;
+    font-size: 14px;
 }
 .tabs1>li.mini{
 	width: 30px;
@@ -811,6 +812,63 @@ div.slide>input[type=checkbox]{
     overflow: hidden;
     white-space: nowrap;
 }
+/*boardMenu*/
+.boardMenu {
+    height: 50px;
+    margin-bottom: 40px;
+    background: #eaf5fc;
+}
+.boardMenu > ul {
+    margin: 0;
+    overflow: hidden;
+}
+.boardMenu li {
+    display: inline-block;
+    float: left;
+}
+.boardMenu a {
+    display: inline-block;
+    font-family: "proxima_nova_rgbold";
+    line-height: 50px;
+    padding: 0 80px;
+    -webkit-transition-duration: .4s;
+    transition-duration: .4s;
+    font-weight: 700;
+    font-size: 14px;
+}
+.boardMenu li.active a {
+    background: #288feb;
+    color: #fff;
+}
+/*boardMenu02*/
+.boardMenu02 {
+    height: 45px;
+    margin-bottom: 40px;
+    background: #eaf5fc;
+}
+.boardMenu02 > ul {
+    margin: 0;
+    overflow: hidden;
+}
+.boardMenu02 li {
+    display: inline-block;
+    float: left;
+}
+.boardMenu02 a {
+    display: inline-block;
+    font-family: "proxima_nova_rgbold";
+    line-height: 50px;
+    padding: 0 80px;
+    -webkit-transition-duration: .4s;
+    transition-duration: .4s;
+    font-weight: 700;
+    font-size: 14px;
+}
+.boardMenu02 li.active a {
+    background: #288feb;
+    color: #fff;
+}
+
 /*input_type01*/
 .input_type01{
 	width: 96%;
