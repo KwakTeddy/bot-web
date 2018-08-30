@@ -21,11 +21,13 @@
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
             /*비즈챗 개발을 위한 설정*/
             this.development_test = { name: LanguageService('Development'), url: '/development', icon: 'develop.png', childMenus: [
-                { name: '샘플페이지', url: '/development/layout-sam', icon: 'scenatio_select.png' },
-                { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
-                { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' },
-                { name: '발송하기', url: '/development/outbound', icon: 'scenatio_select.png' },
-                { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' },
+                    { name: '샘플페이지', url: '/development/layout-sam', icon: 'scenatio_select.png' },
+                    { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
+                    { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' },
+                    { name: '발송하기', url: '/development/outbound', icon: 'scenatio_select.png' },
+                    { name: '발송내역', url: '/analysis/biz-sendlist', icon: 'scenatio_select.png' },
+                    { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' },
+
 
 
                 //{ name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
