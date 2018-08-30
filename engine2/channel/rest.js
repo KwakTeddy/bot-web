@@ -50,6 +50,9 @@ exports.dialog = function(req, res)
     data.output = JSON.parse(data.output);
     req.body = data;
 
+    // output이나 input이 없을경우 무시하도록 프로세스 개선해야함
+    //console.log(data.output);
+
     var dialog = new DialogsetDialog(req.body);
 
     DialogsetDialog.find({ dialogset: req.params.dialogsetId }).sort('-id').limit(1).exec(function(err, dialogs)

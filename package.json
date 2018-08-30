@@ -73,7 +73,7 @@
     "if-async": "^3.7.4",
     "itunes-api-search": "^1.1.0",
     "jasmine-core": "^2.8.0",
-    "java": "^0.7.0",
+    "java": "^0.10.0",
     "js2xmlparser": "^3.0.0",
     "json-editor": "^0.7.28",
     "jsoneditor": "^5.9.6",
