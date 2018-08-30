@@ -137,6 +137,8 @@
 
         Menu.prototype.initialize = function () {
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
+            this.forlisa = { name: 'For Lisa', url: '/development/layout-sam', icon: 'scenatio_select.png' };
+
             this.development = { name: '봇 만들기', url: '/development', icon: 'develop.png', childMenus: [
                 { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
                 { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' }
@@ -158,7 +160,7 @@
 
             var that = this;
             var menus = [];
-
+            menus.push(that.forlisa);
             menus.push(that.development);
             menus.push(that.sending);
             menus.push(that.analysis);
