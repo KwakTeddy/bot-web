@@ -137,9 +137,10 @@
 
         Menu.prototype.initialize = function () {
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
-            this.forlisa = { name: 'For Lisa', url: '/development/layout-sam', icon: 'scenatio_select.png' };
+            //this.forlisa = { name: 'For Lisa', url: '/development/layout-sam', icon: 'scenatio_select.png' };
 
             this.development = { name: '봇 만들기', url: '/development', icon: 'develop.png', childMenus: [
+                //{ name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
                 { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
                 { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' }
             ] };
