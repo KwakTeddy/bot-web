@@ -521,7 +521,6 @@
                 return location.href = '/auth/facebook';
             });
 
-
             $('[type="submit"]').on('click', function(e)
             {
                 $("#registerBtn").hide();
@@ -530,7 +529,6 @@
                 var email = document.querySelector('#register-email').value;
                 var password = document.querySelector('#register-password').value;
                 var lan = $.cookie('language');
-
                 if(email && password)
                 {
                     $.post('/api/auth/signup', {email : email, password: password, language:lan, front: true})
@@ -559,7 +557,12 @@
                             else
                             {
                                 var msg = err.responseJSON.message;
-                                alert(msg);
+                                if(msg.indexOf('ValidationError')){
+                                    alert('잘못된 이메일/패스워드 양식입니다.\n양식을 확인해주세요.');
+                                }else{
+                                    alert(msg);
+                                }
+
                             }
 
                             $("#registerBtn").show();
