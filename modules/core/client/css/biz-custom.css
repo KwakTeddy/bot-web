@@ -767,3 +767,57 @@ dd.active {
     color: #fff !important;
     padding: 9px 26px;
 }
+.fbbtn{
+    background: #3b589d url(/modules/authentication/client/imgs/facebook.png) no-repeat 16px 14px;
+    padding:5%;
+    border-radius: 2px;
+    margin: 11px auto;
+    cursor: pointer;
+}
+.fbbtn a{
+    color: #fff !important;
+    margin-left: 50px;
+    letter-spacing: 0.1px;
+    font-size: 16px;
+}
+.gbtn{
+    background: #d84d32 url(/modules/authentication/client/imgs/google.png) no-repeat 20px 15px;
+    padding: 5%;
+    border-radius: 2px;
+    margin: 15px auto;
+    cursor: pointer;
+}
+.gbtn a{
+    color: #fff !important;
+    letter-spacing: 0.1px;
+    margin-left: 50px;
+    font-size: 16px;
+}
+.pbtn{
+    background: #038eda url(/modules/authentication/client/imgs/playchat.png) no-repeat 20px 15px;;
+    padding: 5%;
+    border-radius: 2px;
+    margin: 15px auto;
+    cursor: pointer;
+}
+.pbtn a{
+    color: #fff !important;
+    letter-spacing: 0.1px;
+    margin-left: 50px;
+    font-size: 16px;
+}
+.kbtn{
+    background: #ffeb00 url(/modules/authentication/client/imgs/kakao.png) no-repeat 16px 8px;
+    padding:10px;
+    border-radius: 6px;
+    /*width: 230px;*/
+    margin: 10px auto;
+}
+.kbtn a{
+    color: #3b1e1e !important;
+    letter-spacing: 0px;
+    margin-left: 45px;
+}
+.social-btn-area{
+    margin: 10px auto;
+}
