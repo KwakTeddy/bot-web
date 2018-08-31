@@ -398,6 +398,10 @@ px      68    160    252    344    436    528    620    712    */
 		min-width:142px !important;
 		width: 172px;
 	}
+	.logo-stable2{
+		min-width: 260px !important;
+		width: 92px;
+	}
 	.container {
 		width: 92%;
 		position: relative
@@ -406,7 +410,9 @@ px      68    160    252    344    436    528    620    712    */
 	header .headerBottomArea {
 		padding: 20px 0
 	}
-
+	header .headerBottomArea2 {
+		padding: 12px 0
+	}
 	nav#navbar {
 		top: 58px
 	}
@@ -525,6 +531,23 @@ px      68    160    252    344    436    528    620    712    */
 	.domainArea input{
 		width: 80%;
 		margin: 0 auto;
+	}
+	.fbbtn{
+		padding: 14px 11px;
+		display: block;
+		width: 70%;
+		background: #3b589d url(/modules/authentication/client/imgs/facebook.png) no-repeat 14px 12px;
+		margin: 20px auto 0;
+	}
+	.fbbtn a{
+		margin-left: 37px;
+	}
+	.gbtn {
+		background: #d84d32 url(/modules/authentication/client/imgs/google.png) no-repeat 19px 9px;
+		border-radius: 2px;
+		margin: 0 auto;
+		width: 70%;
+		display: block;
 	}
 	.secPdng {
 		padding: 40px 0
