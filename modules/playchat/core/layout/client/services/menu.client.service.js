@@ -140,6 +140,7 @@
             this.forlisa = { name: 'For Lisa', url: '/development/layout-sam', icon: 'scenatio_select.png' };
 
             this.development = { name: '봇 만들기', url: '/development', icon: 'develop.png', childMenus: [
+                //{ name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
                 { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
                 { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' }
             ] };
@@ -152,6 +153,9 @@
                 { name: '발송내역', url: '/analysis/biz-sendlist', icon: 'scenatio_select.png' },
                 { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' }
             ] };
+
+
+            this.charge = { name: '충전(준비중)', url:'/', icon: 'dashboard_1.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)
@@ -160,10 +164,11 @@
 
             var that = this;
             var menus = [];
-            menus.push(that.forlisa);
+            //menus.push(that.forlisa);
             menus.push(that.development);
             menus.push(that.sending);
             menus.push(that.analysis);
+            menus.push(that.charge);
 
             if(typeof templateId == 'function'){
                 templateId(menus);

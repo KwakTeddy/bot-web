@@ -5,9 +5,10 @@
 angular.module('playchat').controller('GnbController', ['$window', '$scope', '$location', '$cookies', '$resource', 'MenuService','LanguageService', function ($window, $scope, $location, $cookies, $resource, MenuService, LanguageService)
 {
     var chatbot = $cookies.getObject('chatbot');
+    $scope.user = $cookies.getObject('user');
+
 
     var ReportingService = $resource('/api/reporting');
-
 
     $scope.language = $cookies.get('language');
     $scope.menus = [];
