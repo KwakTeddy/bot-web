@@ -15,7 +15,7 @@ var TeleBookData = mongoose.model('TeleBookData');
 module.exports.check = (req, res) => {
     var options = {
         method : 'POST',
-        url : 'https://bizchat.moneybrain.ai/bot',
+        url : 'https://biz-api.moneybrain.ai/bot',
         //url : 'http://localhost:8080/bot',
         form : req.body
     };
