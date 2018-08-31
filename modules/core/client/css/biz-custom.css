@@ -610,21 +610,9 @@
 }
 .style2.accordion dt {
     position: relative;
-    padding-left: 40px;
+    padding-left: 30px;
 }
-.accordion.style2 dt::after {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    content: "";
-    font-family: icofont;
-    text-align: center;
-    line-height: 30px;
-    font-size: 20px;
-}
-.accordion.style2 dt.active::after {
-    content: "";
-}
+
 .supportFaq dt.active {
     border-bottom: 0px solid;
 }
@@ -639,12 +627,12 @@
     color: #222;
     font-weight: 700;
 }
-.supportFaq dt.active + .supportFaq dd {
+dd.active {
     border-bottom: 1px solid #eaeaea;
 }
 .supportFaq dd {
     margin: 0;
-    padding: 0 0 20px 40px;
+    padding: 6px 0 20px 40px;
     font-size: 14px;
     line-height: 26px;
     color: #848383;
@@ -664,8 +652,7 @@
     transition: all 0.3s;
 }
 .btn-style02{
-    /*padding: 8px 0;*/
-    /* width: 80px; */
+    font-size: 13px;
     padding: 8px 26px;
     margin-top: 6px;
     text-align: center;
@@ -719,6 +706,7 @@
     color: #fff !important;
     display: inline-block;
     cursor: pointer;
+    font-size: 13px;
 }
 .btn-style07 {
     border: 1px solid #d8d8d8;
@@ -727,6 +715,7 @@
     text-align: center;
     display: inline-block;
     cursor: pointer;
+    font-size: 13px;
 }
 .btn-style08{
     border: 1px solid #d8d8d8;

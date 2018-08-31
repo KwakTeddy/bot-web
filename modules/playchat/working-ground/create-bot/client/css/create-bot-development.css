@@ -137,15 +137,6 @@ a.question-mark span:hover + p.balloon {
     border: 1px solid #038eda;
 }
 
-a.new-bot-right{
-    color: #fff;
-    background: #038eda;
-    padding: 3.5% 13%;
-    display: inline-block;
-    vertical-align: middle;
-    float: right;
-}
-
 .pop-up{
     background: #0a0a0a;
     width: 100%;
@@ -174,12 +165,7 @@ a.new-bot-right{
     position: absolute;
     top: 3px;
     left: 50px;
-}
-.data{
-    position: absolute;
-    top: 3px;
-    left: 70px;
-    letter-spacing: 0;
+    font-size: 13px;
 }
 .xbtn{
     position: absolute;
@@ -328,7 +314,6 @@ a.new-bot-right{
 
 .biz-card_detail_item .biz-card_detail_item_content3{
     font-weight: 500;
-    font-size: 15px;
     height: 88px;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
@@ -339,6 +324,7 @@ a.new-bot-right{
     margin: 2px 18px;
     width: 90%;
     border-color: #BEBEBE;
+    font-size: 13px;
 }
 .biz-card_detail_item .biz-card_detail_item_content3-disable{
     font-weight: 500;
@@ -370,6 +356,7 @@ input.type02-pop  {
     width: 98%;
     text-overflow: ellipsis;
     padding: 8px;
+    font-size: 13px;
 }
 input.type01-pop-unable {
     border: 1px solid #e1e1e1;
