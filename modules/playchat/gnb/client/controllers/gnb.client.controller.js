@@ -65,6 +65,7 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
         //         link.attr('media', link.attr('data-media'));
         // });
 
+
         if(location.href.indexOf('/development/dialog-graph') == -1)
         {
             $scope.stopToggle = true;
@@ -143,6 +144,9 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
     $scope.checkUrl = function(menu)
     {
+        if($location.path().startsWith('/playchat/undefined')){
+            $location.path('/playchat/development/my-bot');
+        }
         if(menu)
         {
             if(menu.url == '/')

@@ -155,7 +155,7 @@
             ] };
 
 
-            this.charge = { name: '충전(준비중)', url:'/', icon: 'dashboard_1.png' };
+            this.charge = { name: '충전(준비중)', url:'/undefined', icon: 'dashboard_1.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)
