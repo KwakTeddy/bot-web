@@ -137,7 +137,7 @@
 
         Menu.prototype.initialize = function () {
             this.dashboard = { name: LanguageService('Dashboard'), url:'/', icon: 'dashboard_1.png' };
-            //this.forlisa = { name: 'For Lisa', url: '/development/layout-sam', icon: 'scenatio_select.png' };
+            this.forlisa = { name: 'For Lisa', url: '/development/layout-sam', icon: 'scenatio_select.png' };
 
             this.development = { name: '봇 만들기', url: '/development', icon: 'develop.png', childMenus: [
                 //{ name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
@@ -161,7 +161,7 @@
 
             var that = this;
             var menus = [];
-            menus.push(that.forlisa);
+            //menus.push(that.forlisa);
             menus.push(that.development);
             menus.push(that.sending);
             menus.push(that.analysis);
