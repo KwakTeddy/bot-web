@@ -72,12 +72,12 @@ caption
         <a class="btn-style03" href="" ng-click="save()">저장하기</a>
 
         <div class="subtitle">
-            <div class="message-edit-list">
-                <span>메세지 서식 리스트</span>
-                <ul>
-                    <li ng-repeat="s in Data.sentences" ng-click="addCard(s)">{{s.name}}</li>
-                </ul>
-            </div>
+            <!--<div class="message-edit-list">-->
+                <!--<span>메세지 서식 리스트</span>-->
+                <!--<ul>-->
+                    <!--<li ng-repeat="s in Data.sentences" ng-click="addCard(s)">{{s.name}}</li>-->
+                <!--</ul>-->
+            <!--</div>-->
             <div class="bot-messages-list">
                 <span>{{chatbot.name}} (총 {{Data.cardArr.length}} 개의 메세지)</span>
                 <ul ondragstart="DRAG.dragStartHandler(event)" ondrop="DRAG.drop_handler(event);" ondragover="DRAG.dragover_handler(event);">
