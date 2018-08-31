@@ -1,3 +1,11 @@
+<style>
+    .biz-guide{
+        text-align: center !important;
+        background-color: #038eda !important;
+        line-height: 28px !important;
+        height: 30px !important;
+    }
+</style>
 <div ng-controller="GnbController" style="height: 100%" ng-mouseover="openGnb($event)" ng-mouseleave="closeGnb($event)">
     <div class="gnb-header">
         <a href="/" class="logo-min"><img src="/modules/playchat/gnb/client/imgs/logo.png" style="padding-top: 4px;"></a>
@@ -38,17 +46,23 @@
 
     <ul class="bottom-list">
         <li>
-            <a href="/docs/{{language}}/5minutes-{{language}}.html" target="_blank">
-                <img src="/modules/playchat/gnb/client/imgs/docs.png">
-                <span>{{ lan('Docs') }}</span>
+            <a href="https://blog.playchat.ai/2018/08/29/%ED%94%8C%EB%A0%88%EC%9D%B4%EC%B1%97-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-%EA%B0%84%ED%8E%B8%ED%95%9C-%EC%B1%97%EB%B4%87-%EB%A7%8C%EB%93%A4%EA%B8%B0"
+               target="_blank" class="biz-guide">
+                챗봇 가이드
             </a>
         </li>
-        <li>
-            <a href="#" ng-click="reporting();">
-                <img src="/modules/playchat/gnb/client/imgs/support.png">
-                <span>{{ lan('Support') }}</span>
-            </a>
-        </li>
+        <!--<li>-->
+            <!--<a href="/docs/{{language}}/5minutes-{{language}}.html" target="_blank">-->
+                <!--<img src="/modules/playchat/gnb/client/imgs/docs.png">-->
+                <!--<span>{{ lan('Docs') }}</span>-->
+            <!--</a>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a href="#" ng-click="reporting();">-->
+                <!--<img src="/modules/playchat/gnb/client/imgs/support.png">-->
+                <!--<span>{{ lan('Support') }}</span>-->
+            <!--</a>-->
+        <!--</li>-->
     </ul>
 
     <div class="modal-background import-modal" ng-show="openReporting">

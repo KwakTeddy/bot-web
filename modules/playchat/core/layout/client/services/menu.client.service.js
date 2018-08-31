@@ -153,6 +153,9 @@
                 { name: '발송내역', url: '/analysis/biz-sendlist', icon: 'scenatio_select.png' },
                 { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' }
             ] };
+
+
+            this.charge = { name: '충전(준비중)', url:'/', icon: 'dashboard_1.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)
@@ -165,6 +168,7 @@
             menus.push(that.development);
             menus.push(that.sending);
             menus.push(that.analysis);
+            menus.push(that.charge);
 
             if(typeof templateId == 'function'){
                 templateId(menus);
