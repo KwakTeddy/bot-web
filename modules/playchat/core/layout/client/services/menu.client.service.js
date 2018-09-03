@@ -141,8 +141,8 @@
 
             this.development = { name: '봇 만들기', url: '/development', icon: 'develop.png', childMenus: [
                 //{ name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
-                { name: '봇 생성하기', url: '/development/create-bot', icon: 'scenatio_select.png' },
-                { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' }
+                { name: '봇 생성하기', url: '/development/create-bot', icon: 'develop_sub.png' },
+                { name: '나의 봇', url: '/development/my-bot', icon: 'training_select.png' }
             ] };
 
             this.sending = { name: '발송하기', url: '/sending', icon: 'ai.png', childMenus: [
