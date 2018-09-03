@@ -70,9 +70,7 @@
 {
     background: #424242;
     color: #fff;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.1px;
+    letter-spacing: 0.5px;
     padding: 0px 30px 0 11px;
     height: 48px;
     line-height: 46px;
@@ -151,7 +149,7 @@
 .playchat-background .gnb .menu-item-group .close
 {
     position: absolute;
-    top: 10px;
+    top: 12px;
     right: 25px;
     display: inline-block;
     cursor: pointer;
