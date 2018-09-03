@@ -154,7 +154,6 @@
                 { name: '결과분석', url: '/analysis/biz-summary', icon: 'traffic_select.png' }
             ] };
 
-
             this.charge = { name: '충전(준비중)', url:'/undefined', icon: 'charging.png' };
         };
 
