@@ -145,17 +145,17 @@
                 { name: '나의 봇', url: '/development/my-bot', icon: 'scenatio_select.png' }
             ] };
 
-            this.sending = { name: '발송하기', url: '/sending', icon: 'develop.png', childMenus: [
-                { name: '발송 하기', url: '/sending/outbound', icon: 'scenatio_select.png' }
+            this.sending = { name: '발송하기', url: '/sending', icon: 'ai.png', childMenus: [
+                { name: '발송 하기', url: '/sending/outbound', icon: 'ai_select.png' }
             ] };
 
             this.analysis = { name: '통계', url: '/analysis', icon: 'analysis_1.png', childMenus: [
-                { name: '발송내역', url: '/analysis/biz-sendlist', icon: 'scenatio_select.png' },
-                { name: '결과분석', url: '/analysis/biz-summary', icon: 'scenatio_select.png' }
+                { name: '발송내역', url: '/analysis/biz-sendlist', icon: 'traininginput_select.png' },
+                { name: '결과분석', url: '/analysis/biz-summary', icon: 'traffic_select.png' }
             ] };
 
 
-            this.charge = { name: '충전(준비중)', url:'/undefined', icon: 'dashboard_1.png' };
+            this.charge = { name: '충전(준비중)', url:'/undefined', icon: 'charging.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)
