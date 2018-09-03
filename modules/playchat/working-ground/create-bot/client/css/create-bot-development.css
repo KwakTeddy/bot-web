@@ -345,11 +345,10 @@ a.question-mark span:hover + p.balloon {
 }
 input.type01-pop {
     border: 1px solid #BEBEBE;
-    width: 50%;
+    width: 45%;
     text-overflow: ellipsis;
     padding: 7px;
     font-size: 16px;
-    text-align: center;
 }
 input.type02-pop  {
     border: 1px solid #BEBEBE;
@@ -425,8 +424,8 @@ label{
 .styled-radio:checked + label:after{
     content: '';
     position: absolute;
-    left: 4px;
-    top: 4px;
+    left: 3px;
+    top: 3px;
     background: #038eda;
     width: 10px;
     height: 10px;

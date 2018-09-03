@@ -429,8 +429,8 @@ label{
 .styled-checkbox:checked + label:after{
 	content: '';
     position: absolute;
-    left: 4px;
-    top: 8px;
+    left: 2px;
+    top: 10px;
     background: white;
     width: 2px;
     height: 2px;

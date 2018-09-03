@@ -23,8 +23,8 @@
 }
 
 .social, .email {
-    padding: 0 60px;
-    width: 24%;
+    padding: 25px 60px;
+    width: 18%;
 }
 
 #logincontents
@@ -232,12 +232,12 @@ a.policy{
 
 .signup-complete-message p
 {
-    margin: 5px 0;
+    margin: 5px 며새;
 }
 
 .signup-complete-message div
 {
-    margin-top: 20px;
+    /*margin-top: 20px;*/
 }
 .authentication-code-area{
     background: #eaf5fc;
@@ -275,7 +275,7 @@ a.policy{
 }
 .noti-email a.link{
     color: #038eda;
-    font-weight: 800;
+    font-weight: 600;
     font-size: 14px;
     text-decoration: underline;
 }

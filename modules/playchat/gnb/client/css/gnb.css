@@ -70,16 +70,16 @@
 {
     background: #424242;
     color: #fff;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.7px;
     padding: 0px 30px 0 11px;
     height: 48px;
     line-height: 46px;
-
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     word-wrap: normal !important;
+    font-weight: 300;
 }
 
 .playchat-background .gnb .gnb-bot-name .gnb-bot-name-modify
