@@ -469,6 +469,7 @@ header .logo-sub{
 header .logo-sub img {
 	width: 89px;
 	display: inline-block;
+	vertical-align: -webkit-baseline-middle;
  }
 header .headerBottomArea {
 	padding: 10px 0;
@@ -1819,12 +1820,10 @@ form.domainForm {
 }
 
 .ctaTwo .ctaTxtTwo {
-	font-size: 28px;
-	font-family: 'proxima_novasemibold';
+	font-size: 22px;
 	margin-right: 100px;
-	line-height: 50px;
 	display: inline-block;
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
 .ctaTwo .ctaBtn {

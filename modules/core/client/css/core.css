@@ -82,7 +82,20 @@ body
     margin: -40px 0 0 -105px;
     animation: blink normal 3s infinite ease-in-out;
 }
-
+.main-logo-background > .logo-biz
+{
+    display: block;
+    width: 209px;
+    height: 80px;
+    background-repeat: no-repeat;
+    background-image: url(/modules/core/client/img/logo-biz.png);
+    background-size: contain;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    margin: -40px 0 0 -105px;
+    animation: blink normal 3s infinite ease-in-out;
+}
 @-moz-keyframes blink {
     0% {}
     50% { opacity: 0; }
