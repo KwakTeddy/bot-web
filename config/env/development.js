@@ -92,8 +92,10 @@ module.exports = {
       callbackURL: '/auth/kakao/callback'
   },
   google: {
-      clientID: process.env.GOOGLE_ID || '567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com',
-      clientSecret: process.env.GOOGLE_SECRET || 'cM_Rcn6dxCNeipINWI8K2QG7',
+      // clientID: process.env.GOOGLE_ID || '567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com',
+      // clientSecret: process.env.GOOGLE_SECRET || 'cM_Rcn6dxCNeipINWI8K2QG7',
+      clientID: '567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com',
+      clientSecret: 'cM_Rcn6dxCNeipINWI8K2QG7',
       callbackURL: '/auth/google/callback'
   },
   linkedin: {
