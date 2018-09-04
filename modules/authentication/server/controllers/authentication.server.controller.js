@@ -599,9 +599,8 @@ exports.oauthCall = function (strategy, scope) {
 
         var redirectTo = req.query.redirect_to;
         req.session.redirect_to = redirectTo;
-        console.log('strategy: ' + strategy);
-        console.log('scope: ' + scope);
-        console.log('req.query.redirect_to: ' + req.query.redirect_to);
+        console.log(req);
+
         passport.authenticate(strategy, scope)(req, res, next);
     };
 };
