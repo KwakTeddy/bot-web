@@ -78,7 +78,7 @@ caption
                 <!--</ul>-->
             <!--</div>-->
             <div class="bot-messages-list">
-                <span>{{chatbot.name}} (총 {{Data.cardArr.length}} 개의 메세지)</span>
+                <span>{{chatbot.name}} (총 {{Data.cardArr.length}} 개의 메시지)</span>
                 <ul ondragstart="DRAG.dragStartHandler(event)" ondrop="DRAG.drop_handler(event);" ondragover="DRAG.dragover_handler(event);">
                     <li ng-repeat="card in Data.cardArr | orderBy:'index'" draggable="true" data-value="{{card}}" class="dragline unsel" ng-class="card.is_open? 'select' : ''" ng-click="addudtList(card)">
                         <div ng-if="!card.is_open">
@@ -211,7 +211,7 @@ caption
                                 </div>
                             </div>
                             <div style="text-align: right">
-                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메시지 추가</a>
                             </div>
                         </div>
                         <!-- 단답형, 일반형, 연락처수집형, 날짜수집형 -->
@@ -225,7 +225,7 @@ caption
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
                             <div style="text-align: right">
-                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메시지 추가</a>
                             </div>
                         </div>
                         <!-- 정보형 -->
@@ -242,7 +242,7 @@ caption
                                 <label>URL</label><input type="text" class="ml3 type03" value="{{addCardSentence.output.url}}">
                             </div>
                             <div style="text-align: right">
-                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메시지 추가</a>
                             </div>
                         </div>
                         <!-- 이미지형 -->
@@ -262,7 +262,7 @@ caption
                             <p class="cd">내용입력</p>
                             <textarea placeholder="내용을 입력해주세요." ng-model="addCardSentence.message"></textarea>
                             <div style="text-align: right">
-                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메세지 추가</a>
+                                <a class="btn-style03" href="" ng-click="addCard(addCardSentence)">메시지 추가</a>
                             </div>
                         </div>
                     </li>
