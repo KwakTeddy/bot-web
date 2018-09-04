@@ -95,8 +95,6 @@ module.exports = {
       clientID: process.env.GOOGLE_ID || '567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com',
       clientSecret: process.env.GOOGLE_SECRET || 'cM_Rcn6dxCNeipINWI8K2QG7',
       callbackURL: '/auth/google/callback'
-      // clientID: process.env.GOOGLE_ID || '836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com',
-      // clientSecret: process.env.GOOGLE_SECRET || '_NEHSeUNPc7kEeHZZeu-DXoS',
   },
   linkedin: {
     clientID: process.env.LINKEDIN_ID || 'APP_ID',
