@@ -3,39 +3,48 @@ var mongoose = require('mongoose');
 
 var UserDialog = mongoose.model('UserDialog');
 var bot_js = require(path.resolve('./engine2/bot.js'));
+var mysql = require('mysql');
 
-module.exports.totalDialogCount = function(req, res)
-{
-    UserDialog.count({ botId: req.params.botId , inOut: true}).exec(function (err, count)
-    {
-        if (err)
-        {
+
+var connection = mysql.createConnection({
+    host: "127.0.0.1",
+    user: 'root',
+    password: 'newpassword',
+    port: 3306
+});
+
+
+connection.connect(function(err) {
+    if (err) {
+        console.error('Error connecting: ' + err.stack);
+        return;
+    }
+    console.log('Connected as id ' + connection.threadId);
+});
+
+
+
+module.exports.totalDialogCount = function(req, res)  {
+    UserDialog.count({ botId: req.params.botId , inOut: true}).exec(function (err, count) {
+        if (err) {
             return res.status(400).send({ message: err.stack || err });
-        }
-        else
-        {
+        } else {
             res.jsonp({ count: count });
         }
     });
 };
 
-module.exports.periodDialogCount = function(req, res)
-{
-    UserDialog.count({ botId: req.params.botId, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } }).exec(function (err, count)
-    {
-        if (err)
-        {
+module.exports.periodDialogCount = function(req, res) {
+    UserDialog.count({ botId: req.params.botId, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } }).exec(function (err, count) {
+        if (err) {
             return res.status(400).send({ message: err.stack || err });
-        }
-        else
-        {
+        } else {
             res.jsonp({ count: count });
         }
     });
 };
 
-module.exports.totalUserCount = function (req, res)
-{
+module.exports.totalUserCount = function (req, res) {
     var query = [
         { $match: { botId: req.params.botId, inOut: true } },
         // { $project:
@@ -81,8 +90,7 @@ module.exports.totalUserCount = function (req, res)
     });
 };
 
-module.exports.liveUserCount = function(req, res)
-{
+module.exports.liveUserCount = function(req, res) {
     var startDate = new Date();
     startDate.setMinutes(startDate.getMinutes() - 5);
     var endDate = new Date();
@@ -92,21 +100,16 @@ module.exports.liveUserCount = function(req, res)
         { $group: { _id: '$userId', count: { $sum: 1 }} }
     ];
 
-    UserDialog.aggregate(query).exec(function(err, list)
-    {
-        if(err)
-        {
+    UserDialog.aggregate(query).exec(function(err, list) {
+        if(err) {
             return res.status(400).send({ message: err.stack || err });
-        }
-        else
-        {
+        } else {
             res.jsonp({ count: list.length });
         }
     });
 };
 
-module.exports.periodUserCount = function(req, res)
-{
+module.exports.periodUserCount = function(req, res) {
     var query = [
         { $match:
                 {

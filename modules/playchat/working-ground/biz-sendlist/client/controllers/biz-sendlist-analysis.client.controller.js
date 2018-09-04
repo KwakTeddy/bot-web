@@ -26,6 +26,7 @@ angular.module('playchat').controller('BizSendlistAnalysisController', ['$scope'
             $scope.User.sendNum = 0;
             $scope.User.sendSuccNum = 0;
             $scope.User.sendSuccRate = 0;
+            $scope.User.sendfailNum = 0;
 
             ChatBotService.query({ type : true }, function(list)
             {
@@ -43,6 +44,7 @@ angular.module('playchat').controller('BizSendlistAnalysisController', ['$scope'
                     $scope.Bots[index].sendNum = 0;
                     $scope.Bots[index].sendSuccNum = 0;
                     $scope.Bots[index].sendSuccRate = 0;
+                    $scope.Bots[index].sendfailNum = 0;
                     //
                     index++;
                 });
