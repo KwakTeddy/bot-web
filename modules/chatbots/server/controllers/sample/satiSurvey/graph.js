@@ -1,7 +1,7 @@
 var dialogs = [
     {
         "id": "dialog_1",
-        "name": "이름 수집",
+        "name": "이름수집",
         "input": [
             {
                 "text": {
@@ -20,7 +20,7 @@ var dialogs = [
         "children": [
             {
                 "id": "dialog_2",
-                "name": "전화번호 수집",
+                "name": "연락처수집",
                 "input": [
                     {
                         "if": "true"
@@ -35,7 +35,7 @@ var dialogs = [
                 "children": [
                     {
                         "id": "dialog_3",
-                        "name": "서비스 친절 만족도",
+                        "name": "친절만족도",
                         "input": [
                             {
                                 "types": [
@@ -52,7 +52,7 @@ var dialogs = [
                         "children": [
                             {
                                 "id": "dialog_4",
-                                "name": "서비스 안내 만족도",
+                                "name": "안내만족도",
                                 "input": [
                                     {
                                         "if": "true"
@@ -67,7 +67,7 @@ var dialogs = [
                                 "children": [
                                     {
                                         "id": "dialog_5",
-                                        "name": "서비스 비용 만족도",
+                                        "name": "비용만족도",
                                         "input": [
                                             {
                                                 "if": "true"
@@ -82,7 +82,7 @@ var dialogs = [
                                         "children": [
                                             {
                                                 "id": "dialog_6",
-                                                "name": "서비스 결과 만족도",
+                                                "name": "결과만족도",
                                                 "input": [
                                                     {
                                                         "if": "true"
@@ -97,7 +97,7 @@ var dialogs = [
                                                 "children": [
                                                     {
                                                         "id": "dialog_7",
-                                                        "name": "서비스 추천 의사",
+                                                        "name": "추천의사",
                                                         "input": [
                                                             {
                                                                 "if": "true"
@@ -112,7 +112,7 @@ var dialogs = [
                                                         "children": [
                                                             {
                                                                 "id": "dialog_8",
-                                                                "name": "설문 종료",
+                                                                "name": "설문완료",
                                                                 "input": [
                                                                     {
                                                                         "if": "true"
@@ -177,7 +177,7 @@ var dialogs = [
     },
     {
         "id": "dialog_9",
-        "name": "설문 거부 처리",
+        "name": "거부완료",
         "input": [
             {
                 "text": {
@@ -201,7 +201,7 @@ var dialogs = [
 var commonDialogs = [
     {
         "id": "startDialog",
-        "name": "안내 설문조사 동의",
+        "name": "시작",
         "input": [
             {
                 "text": {
