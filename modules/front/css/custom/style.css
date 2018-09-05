@@ -471,6 +471,16 @@ header .logo-sub img {
 	display: inline-block;
 	vertical-align: -webkit-baseline-middle;
  }
+header .logo-sub2 {
+	display: inline-block;
+	position: relative;
+	z-index: 9;
+	margin: 0 10px;
+}
+
+header .logo-sub2 img {
+	display: inline-block;
+}
 header .headerBottomArea {
 	padding: 10px 0;
 	border-bottom: 1px solid #eaeaea;
@@ -3500,6 +3510,12 @@ article.singleBlog {
 	width: 190px;
 }
 
+.commentInput input.submitB{
+	margin: 0 auto;
+	float: none;
+	display: block;
+}
+
 .commentInput > * {
 	/*border-radius: 2px;*/
 	font-family: 'proxima_nova_rgregular';
@@ -3598,6 +3614,7 @@ article.singleBlog {
 	font-weight: 600;
 	margin-bottom: 15px;
 	text-align: center;
+	line-height: 33px;
 }
 
 .supportForm .subTitle {
@@ -4208,7 +4225,6 @@ header .topInfo li.clientAreaLi span,
 	line-height: 40px;
 	display: inline-block;
 	font-size: 13px;
-	font-family: 'proxima_nova_rgbold';
 	text-transform: uppercase;
 	padding: 0 18px;
 	color: #fff;
