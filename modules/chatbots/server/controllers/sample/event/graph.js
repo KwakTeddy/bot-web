@@ -1,7 +1,7 @@
 var dialogs = [
     {
         "id": "dialog_1",
-        "name": "이름수집",
+        "name": "이벤트 참여자 이름 접수",
         "input": [
             {
                 "text": {
@@ -20,7 +20,7 @@ var dialogs = [
         "children": [
             {
                 "id": "dialog_2",
-                "name": "연락처수집",
+                "name": "이벤트 참여자 연락처 접수",
                 "input": [
                     {
                         "if": "true"
@@ -34,8 +34,8 @@ var dialogs = [
                 ],
                 "children": [
                     {
-                        "id": "dialog_6",
-                        "name": "날짜수집",
+                        "id": "dialog_3",
+                        "name": "이벤트 접수 완료 및 안내 ",
                         "input": [
                             {
                                 "types": [
@@ -74,8 +74,8 @@ var dialogs = [
         "first": true
     },
     {
-        "id": "dialog_3",
-        "name": "입력확인",
+        "id": "dialog_4",
+        "name": "이벤트 거부 완료 및 안내",
         "input": [
             {
                 "text": {
@@ -99,7 +99,7 @@ var dialogs = [
 var commonDialogs = [
     {
         "id": "startDialog",
-        "name": "시작",
+        "name": "이벤트 안내 및 참여 의사 확인",
         "input": [
             {
                 "text": {
