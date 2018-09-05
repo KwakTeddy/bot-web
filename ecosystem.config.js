@@ -46,9 +46,8 @@ module.exports =
                 "FACEBOOK_ID" : "299548697231251",
                 "FACEBOOK_SECRET" : "f4f156d25ec93050376af77967ed500e",
                 "KAKAO_KEY": "14d5a3ad7584cf6cf2bee86dc6f34935",
-                "GOOGLE_ID": "836859697511-qlvufftcjjhmfivkeoiv0l7i7lgm41oo.apps.googleusercontent.com",
-                "GOOGLE_SECRET": "_NEHSeUNPc7kEeHZZeu-DXoS",
-
+                "GOOGLE_ID": "567723322080-pofpo61olppueufq2r57j2cufgb65tg3.apps.googleusercontent.com",
+                "GOOGLE_SECRET": "cM_Rcn6dxCNeipINWI8K2QG7",
                 "LOG_ROTATING_ACTIVE":'true',
                 "LOG_LEVEL":'debug',
                 "NODE_ENV": "development"

@@ -2507,6 +2507,9 @@ pre code {
     .col-md-3-1 {
         width: 28%
     }
+    .col-md-3-0 {
+        width: 26%;
+    }
     .col-md-3 {
         width: 25%
     }
@@ -5219,7 +5222,36 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .navbar-toggle .icon-bar+.icon-bar {
     margin-top: 4px
 }
+@media (min-width: 0px) and (max-width: 480px) {
+    .col-xs-1-1 {width: 71%;padding-left: 0;}
+}
+@media (min-width: 0px) and (max-width: 660px) {
+    .col-xs-1-1 {width: 303px;}
+}
+@media (min-width: 580px){
+    header .logo-sub {
+        padding-left: 10px;
+        width: 32%;
+    }
+    header .logo {
+        width: 52%;
+        padding-right: 0;
+    }
 
+}
+@media (max-width: 580px){
+    header .logo-sub {
+        display: inline-block;
+        padding-left: 8px;
+        margin-left: 8px;
+        border-left: 1px solid #e1e1e1;
+        width: 42%;
+    }
+    header .logo {
+        width: 52%;
+        padding-right: 0;
+    }
+}
 @media (min-width:992px) {
     .navbar-toggle {
         display: none
@@ -7928,6 +7960,10 @@ button.close {
     td.visible-md,
     th.visible-md {
         display: table-cell!important
+    }
+    .col-md-3-2 {
+        width: 32%;
+        float: left;
     }
 }
 

@@ -360,7 +360,7 @@ header .langIcon {
 	cursor: pointer;
 	margin: 10px 0;
 	padding: 0 15px;
-	width: 110px;
+	width: 92px;
 }
 
 header .lang {
@@ -467,7 +467,7 @@ header .logo-sub{
 	border-left: 1px solid #e1e1e1;
 }
 header .logo-sub img {
-	width: 89px;
+	width: 84px;
 	display: inline-block;
 	vertical-align: -webkit-baseline-middle;
  }
@@ -4325,7 +4325,6 @@ header .topInfo li.clientAreaLi span,
 	.cartCol{
 		float: right;
 		line-height: 40px;
-		margin-right: 2%;
 	}
 	.startBtn{
 		float: right;
