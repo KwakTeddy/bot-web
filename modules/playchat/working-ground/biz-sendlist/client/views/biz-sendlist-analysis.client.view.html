@@ -15,8 +15,9 @@
         <h3 class="title02 mt30">사용자</h3>
         <table class="tb03">
             <colgroup>
-                <col width="5%">
-                <col width="20%">
+                <col width="3%">
+                <col width="15%">
+                <col width="">
                 <col width="">
                 <col width="">
                 <col width="">
@@ -24,12 +25,13 @@
             </colgroup>
             <thead>
             <tr>
-                <th></th>
+                <th>#</th>
                 <th>사용자명</th>
                 <th>최근 발송</th>
                 <th>발송 수</th>
-                <th>성공</th>
-                <th>발송 비용<span class="sm-title">(단위:코인)</span></th>
+                <th>발송 성공</th>
+                <th>발송 실패</th>
+                <th>발송 성공률</th>
             </tr>
             </thead>
             <tbody>
@@ -38,8 +40,9 @@
                 <td>{{User.name}}</td>
                 <td>{{User.lastSendDate}}</td>
                 <td>{{User.sendNum}}</td>
-                <td class="grap">{{User.sendSuccNum}}<div class="tb-b" style="width: {{User.sendSuccRate}}%;">{{User.sendSuccRate}}%</div></td>
-                <td>0</td>
+                <td class="grap">{{ result.count }}</td>
+                <td>{{result}}</td>
+                <td>{{(User.sendSuccRate)}}%</td>
             </tr>
             </tbody>
         </table>
@@ -47,25 +50,27 @@
         <h3 class="title02 mt30">봇</h3>
         <table class="tb03">
             <colgroup>
-                <col width="4%">
-                <col width="20%">
-                <col width="5%">
+                <col width="3%">
+                <col width="">
+                <col width="10%">
                 <col width="">
                 <col width="">
                 <col width="">
                 <col width="">
                 <col width="">
+                <col width="10%">
             </colgroup>
             <thead>
             <tr>
-                <th></th>
+                <th>#</th>
                 <th>봇 이름</th>
                 <th></th>
                 <th>최근 발송<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>발송 수<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
-                <th>성공<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
-                <th>발송 비용<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
-                <th>분석 단가<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 성공<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 실패<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 성공률<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>엑셀 파일</th>
             </tr>
             </thead>
             <tbody>
@@ -75,9 +80,13 @@
                 <td><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></td>
                 <td>{{bot.lastSendDate}}</td>
                 <td>{{bot.sendNum}}</td>
-                <td class="grap">{{bot.sendSuccNum}}<div class="tb-b" style="width: {{bot.sendSuccRate}}%;">{{bot.sendSuccRate}}%</div></td>
-                <td>0</td>
-                <td>0</td>
+                <td class="grap">{{bot.sendSuccNum}}</td>
+                <td>{{bot.sendfailNum}}</td>
+                <td>{{bot.sendSuccRate}}%</td>
+                <td>
+                    <input type="button" id="btnShowMsg" value="Click Me!" onClick='showMessage()'/>
+                </td>
+
             </tr>
             </tbody>
         </table>
@@ -96,3 +105,10 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+    function showMessage(){
+        alert("준비중입니다.");
+    }
+</script>
+
