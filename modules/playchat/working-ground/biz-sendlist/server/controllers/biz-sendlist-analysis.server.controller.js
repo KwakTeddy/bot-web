@@ -49,6 +49,11 @@ module.exports.UserSend = function (req, res) {
                     "9999-12-31 12:00:00"
                 ];
 
+                console.log('req.body.param: ' + JSON.stringify(req.query));
+                param[0] = req.query.startDateTime;
+                param[1] = req.query.endDateTime;
+
+
                 console.log('parameters are', param);
 
                 connection.query(query, param, function (err, rows) {
@@ -96,6 +101,11 @@ module.exports.BotSend = function (req, res) {
                     "1900-01-01 00:00:00",
                     "9999-12-31 12:00:00"
                 ];
+
+                console.log('req.body.param: ' + JSON.stringify(req.query));
+                param[0] = req.query.startDateTime;
+                param[1] = req.query.endDateTime;
+
 
                 console.log('parameters are', param);
 

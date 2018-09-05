@@ -93,11 +93,11 @@
 
         <div class="tablePaging">
             <div class="tablePagingC">
-                <a href="/playchat/analysis/biz-summary?page={{ pageOptions.prev }}" class="direction">
+                <a href="/playchat/analysis/biz-sendlist?page={{ pageOptions.prev }}" class="direction">
                     <img src="modules/playchat/working-ground/common/client/imgs/btn_prev.png" alt="{{lan('Move to the preivious page')}}">
                 </a>
-                <a ng-repeat="page in pageOptions.pages" href="/playchat/analysis/biz-summary?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
-                <a href="/playchat/analysis/biz-summary?page={{ pageOptions.next }}" class="direction">
+                <a ng-repeat="page in pageOptions.pages" href="/playchat/analysis/biz-sendlist?page={{ page }}" ng-click="toPage(page);" ng-class="pageOptions.currentPage == page ? 'selected' : ''">{{ page }}</a>
+                <a href="/playchat/analysis/biz-sendllist?page={{ pageOptions.next }}" class="direction">
                     <img src="modules/playchat/working-ground/common/client/imgs/btn_next.png" alt="{{lan('Move to the next page')}}">
                 </a>
             </div>
@@ -110,5 +110,10 @@
     function showMessage(){
         alert("준비중입니다.");
     }
+
+
 </script>
+
+
+
 
