@@ -5,7 +5,8 @@ var SendlistAnalysisController = require('../controllers/biz-sendlist-analysis.s
 module.exports = function(app)
 {
 
-    app.get('/api/:botId/analysis/botRegister', SendlistAnalysisController.botRegister);
-    app.get('/api/:botId/analysis/successSend', SendlistAnalysisController.sendMsg);
+    app.get('/api/analysis/userSend', SendlistAnalysisController.UserSend);
+    app.get('/api/analysis/botSend', SendlistAnalysisController.BotSend);
+    app.get('/api/analysis/botSend', SendlistAnalysisController.BotOneSend);
 
 };
