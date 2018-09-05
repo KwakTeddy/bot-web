@@ -64,7 +64,7 @@ exports.find = function (req, res)
     if(req.query.name)
         query.name = { "$name": req.query.name, "$options": 'i' };
     if(req.query.type)
-        query.type = { $in: ['survey','consult','event'] };
+        query.type = { $in: ['survey','consult','event','satiSurvey'] };
 
     ChatBot.find(query).sort('-created').populate('templateId').populate('user').skip(countPerPage*(page-1)).limit(countPerPage).exec(function (err, bots)
     {
@@ -155,7 +155,7 @@ exports.create = function(req, res)
             }
 
             var chatbot = new ChatBot(req.body);
-            if(!req.body.type.startsWith('sample') && req.body.type != 'blank' && req.body.type != 'survey' && req.body.type != 'consult' && req.body.type != 'event')
+            if(!req.body.type.startsWith('sample') && req.body.type != 'blank' && req.body.type != 'survey' && req.body.type != 'consult' && req.body.type != 'event' && req.body.type != 'satiSurvey')
             {
                 chatbot.templateId = req.body.type;
             }
@@ -306,7 +306,7 @@ exports.create = function(req, res)
                                 S3.uploadFile('playchat-custom-modules', req.body.id, 'default.js', dir + '/default.js');
                                 S3.uploadFile('playchat-custom-modules', req.body.id, 'bot.js', dir + '/bot.js');
                             }
-                        }else if (type == 'survey'||type == 'consult'||type == 'event'){
+                        }else if (type == 'survey'||type == 'consult'||type == 'event'||type == 'satiSurvey'){
 
                             var graphfilepath = __dirname + '/sample/' + type + '/graph.js';
                             var botjs = fs.readFileSync(__dirname + '/sample/' + type + '/bot.js');
@@ -364,28 +364,7 @@ exports.create = function(req, res)
                                         bizMsg.save((err) => {
                                             if(err) console.error(err);
                                         });
-                                    }else if(type=='consult'){
-                                        var arr = [];
-                                        Sentences.find({templateId:type}).sort({index:1}).exec((err,list)=>{
-                                            list.forEach((e)=>{
-                                                var it = {
-                                                    botId: chatbot.id,
-                                                    index: e.index,
-                                                    id : e.id,
-                                                    name :e.name,
-                                                    type : e.msg_type,
-                                                    message: e.message
-                                                };
-                                                e.input ? it.input = e.input : null;
-                                                e.connect ? it.connect = e.connect : null;
-                                                arr.push(it);
-                                            });
-
-                                            BizMsgs.collection.insertMany(arr,(err,dt)=>{
-                                                if(err) console.error(err);
-                                            });
-                                        })
-                                    }else if(type=='event'){
+                                    }else if(type=='consult' || type=='event' || type=='satiSurvey'){
                                         var arr = [];
                                         Sentences.find({templateId:type}).sort({index:1}).exec((err,list)=>{
                                             list.forEach((e)=>{
