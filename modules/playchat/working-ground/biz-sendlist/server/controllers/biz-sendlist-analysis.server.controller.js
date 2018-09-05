@@ -8,7 +8,7 @@ var Bot = mongoose.model('Bot');
 
 var mySqlPool = mysql.createPool({
     // host: 'localhost',
-    host: '52.79.225.156',
+    host: '172.31.20.219',
     port: '3306',
     user: 'root',
     password: 'Make01mb!',
