@@ -7,32 +7,11 @@
 
         var user = $cookies.getObject('user');
         $scope.user = user;
-        console.log("user: " + JSON.stringify($scope.user));
 
+        $scope.password = '';
+        $scope.passwordConfirm = '';
         (function()
         {
-            $scope.getList = function () {
-                // var bizKindOfBusiness = document.getElementById("bizKindOfBusiness");
-                // if(bizKindOfBusiness.options[bizKindOfBusiness.selectedIndex].text !== "업종을 선택하세요."){
-                //     $scope.credentials.bizKindOfBusiness = bizKindOfBusiness.options[bizKindOfBusiness.selectedIndex].text;
-                // }else{
-                //     $scope.credentials.bizKindOfBusiness = '';
-                // }
-
-
-
-               //  if($scope.user.bizKindOfBusiness === ""){
-               //      $scope.user.bizKindOfBusiness = "업종을 선택하세요.";
-               //  }
-               //
-               //  if($scope.user.bizChair === ""){
-               //      $scope.user.bizChair = "직책";
-               // }
-
-                $scope.password = '';
-                $scope.passwordConfirm = '';
-                console.log("bizKindOfBusiness: " + $scope.user.bizKindOfBusiness);
-            };
 
             $scope.save = function()
             {
@@ -62,6 +41,7 @@
                 $http.post('/api/users/updateBizAuthUser', $scope.user).success(function (response)
                 {
                     $window.location.href = '/playchat/development/create-bot';
+                    user.language = $scope.user.language;
                     $cookies.putObject('user', user);
                     $rootScope.$broadcast('changeLanguage');
 
@@ -76,7 +56,6 @@
         })();
 
         $scope.lan = LanguageService;
-        $scope.getList();
     }]);
 
 })();
