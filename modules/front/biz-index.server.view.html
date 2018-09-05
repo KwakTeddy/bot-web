@@ -380,10 +380,10 @@
                             <a href="mailto:info@moneybrain.ai">info@playchat.ai</a>
                         </div>
                         <div class="commentInput">
-                            <input type="text" placeholder="Your name*">
-                            <input type="text" placeholder="Email Address *">
-                            <textarea placeholder="Leave a comment"></textarea>
-                            <input type="submit" value="문의하기" style="margin: 0 auto;">
+                            <input id="name" name="name" type="text" placeholder="Your name*">
+                            <input id="email" name="email" type="email" placeholder="Email Address *">
+                            <textarea id="message" name="message" placeholder="Leave a comment"></textarea>
+                            <input type="submit" onclick="sendMail()" value="문의하기" style="margin: 0 auto;">
                         </div>
                     </form>
                 </div>
@@ -651,6 +651,15 @@
                 $('#openPolicy').parent().parent().parent().remove();
             }
         });
+    </script>
+
+    <script>
+        function sendMail() {
+            var link = "mailto:info@playchat.ai"
+                + "?subject=" + encodeURIComponent("From Playchat Bizz Homepage by ") + encodeURIComponent(document.getElementById('name').value)
+                + "&body=" + encodeURIComponent(document.getElementById('message').value) + encodeURIComponent("\n\n") + document.getElementById('email').value;
+            window.location.href = link;
+        }
     </script>
 
     <div class="modal fade" tabindex="-1" role="dialog" id="policyModal">
