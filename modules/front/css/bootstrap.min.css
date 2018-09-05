@@ -5224,18 +5224,27 @@ textarea.input-group-sm>.input-group-btn>.btn {
 }
 @media (min-width: 0px) and (max-width: 480px) {
     .col-xs-1-1 {width: 71%;padding-left: 0;}
+    .xs-hidden {
+        padding: 0 8px;
+    }
+    .startBtn {
+        line-height: 37px;
+        float: right;
+        font-size: 12px;
+    }
 }
 @media (min-width: 0px) and (max-width: 660px) {
     .col-xs-1-1 {width: 303px;}
+    .col-xs-1-2 {
+        width: 63%;
+        margin-right: 0;
+        padding-right: 0;
+    }
 }
 @media (min-width: 580px){
     header .logo-sub {
         padding-left: 10px;
         width: 32%;
-    }
-    header .logo {
-        width: 52%;
-        padding-right: 0;
     }
 
 }
@@ -5250,6 +5259,11 @@ textarea.input-group-sm>.input-group-btn>.btn {
     header .logo {
         width: 52%;
         padding-right: 0;
+    }
+    header .logo-sub2 {
+        width: 42%;
+        padding-right: 0;
+        margin: 0;
     }
 }
 @media (min-width:992px) {
@@ -7899,15 +7913,9 @@ button.close {
     .visible-xs-block {
         display: block!important
     }
-}
-
-@media (max-width:767px) {
     .visible-xs-inline {
         display: inline!important
     }
-}
-
-@media (max-width:767px) {
     .visible-xs-inline-block {
         display: inline-block!important
     }
