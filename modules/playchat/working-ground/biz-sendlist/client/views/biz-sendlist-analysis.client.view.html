@@ -16,7 +16,7 @@
         <table class="tb03">
             <colgroup>
                 <col width="3%">
-                <col width="10%">
+                <col width="15%">
                 <col width="">
                 <col width="">
                 <col width="">
@@ -40,9 +40,9 @@
                 <td>{{User.name}}</td>
                 <td>{{User.lastSendDate}}</td>
                 <td>{{User.sendNum}}</td>
-                <td class="grap">{{User.sendSuccNum}}</td>
-                <td>{{User.sendfailNum}}</td>
-                <td>{{User.sendSuccRate}}%</td>
+                <td class="grap">{{ result.count }}</td>
+                <td>{{result}}</td>
+                <td>{{(User.sendSuccRate)}}%</td>
             </tr>
             </tbody>
         </table>
@@ -51,14 +51,14 @@
         <table class="tb03">
             <colgroup>
                 <col width="3%">
-                <col width="10%">
-                <col width="7%">
                 <col width="">
                 <col width="10%">
-                <col width="10%">
-                <col width="10%">
-                <col width="15%">
                 <col width="">
+                <col width="">
+                <col width="">
+                <col width="">
+                <col width="">
+                <col width="10%">
             </colgroup>
             <thead>
             <tr>
@@ -68,7 +68,7 @@
                 <th>최근 발송<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>발송 수<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>발송 성공<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
-                <th>발송 살패<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송 실패<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>발송 성공률<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>엑셀 파일</th>
             </tr>
@@ -111,3 +111,4 @@
         alert("준비중입니다.");
     }
 </script>
+
