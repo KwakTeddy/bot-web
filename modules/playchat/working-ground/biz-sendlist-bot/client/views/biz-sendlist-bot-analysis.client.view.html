@@ -1,5 +1,5 @@
 
-<div ng-controller="BizSendlistAnalysisController" class="graph-background">
+<div ng-controller="BizSendlistBotAnalysisController" class="graph-background">
 
     <div class="working-ground-bizchat">
         <ul>
@@ -12,42 +12,7 @@
             </li>
         </ul>
 
-        <h3 class="title02 mt30">사용자</h3>
-        <table class="tb03">
-            <colgroup>
-                <col width="5%">
-                <col width="20%">
-                <col width="">
-                <col width="">
-                <col width="">
-                <col width="">
-                <col width="">
-            </colgroup>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>사용자명</th>
-                <th>최근 발송</th>
-                <th>발송 수</th>
-                <th>발송 성공</th>
-                <th>발송 실패</th>
-                <th>발송 성공률</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="user in Users">
-                <td></td>
-                <td>{{user.username}}</td>
-                <td>{{user.regDate}}</td>
-                <td>{{user.total}}</td>
-                <td class="grap">{{user.total - user.fail}}</td>
-                <td>{{user.fail}}</td>
-                <td>{{((user.total - user.fail)/user.total)*100}}%</td>
-            </tr>
-            </tbody>
-        </table>
-
-        <h3 class="title02 mt30">봇</h3>
+        <h3 class="title02 mt30">내역</h3>
         <table class="tb03">
             <colgroup>
                 <col width="3%">
@@ -63,9 +28,9 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>봇 이름</th>
+                <th>발송번호</th>
                 <th></th>
-                <th>최근 발송<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>발송일<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>발송 수<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>발송 성공<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>발송 실패<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
@@ -76,21 +41,13 @@
             <tbody>
             <tr ng-repeat="bot in Bots">
                 <td></td>
-                <td><a type="button" data-href="/playchat/analysis/biz-sendlist-bot" ng-click="goDetailPage($event,bot)">{{bot.botId}}</a></td>
+                <td>{{bot.number}}</td>
                 <td><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></td>
-<<<<<<< HEAD
-                <td>{{bot.lastSendDate}}</td>
-                <td>{{bot.sendNum}}</td>
-                <td class="grap">{{bot.sendSuccNum}}</td>
-                <td>{{bot.sendFailedNum}}</td>
-                <td>{{bot.sendSuccRate}}%</td>
-=======
                 <td>{{bot.regDate}}</td>
                 <td>{{bot.total}}</td>
                 <td class="grap">{{bot.total - bot.fail}}</td>
                 <td>{{bot.fail}}</td>
                 <td>{{((bot.total - bot.fail)/bot.total)*100}}%</td>
->>>>>>> bc0c2cfbe8c31e02edd9d9645f2e18db58bc6f38
                 <td>
                     <input type="button" id="btnShowMsg" value="Click Me!" onClick='showMessage()'/>
                 </td>

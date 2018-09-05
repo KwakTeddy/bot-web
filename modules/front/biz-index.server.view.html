@@ -131,8 +131,8 @@
     	<div class="headerBottomArea stick-fixed">
     		<div class="container">
     			<div class="row">
-    				<div class="col-md-3-0 col-md-3-2 col-sm-5 col-xs-6 col-xs-1-1">
-    					<a href="/" class="logo"><img src="/front/img/logo_biz.png" alt=""></a>
+    				<div class="col-md-3-0 col-md-3-2 col-sm-5 col-xs-6 col-xs-1-1 col-xs-1-2">
+    					<a href="/" class="logo-sub2"><img src="/front/img/logo_biz.png" alt=""></a>
                         <a href="https://playchat.ai" class="logo-sub" target="_blank"><img src="/front/img/logo.png" alt=""></a>
     				</div>
     				<div class="col-md-4 menuCol col-md-3-3">
@@ -164,7 +164,7 @@
     					</div>
                     </div>
                     <!--<a href="https://playchat.ai" class="home-btn" target="_blank">플레이챗으로 가기</a>-->
-                    <a href="#" class="startBtn" data-id="startBtn" style="margin-right: 10px;">마케팅 시작하기</a>
+                    <a href="#" class="startBtn xs-hidden" data-id="startBtn">마케팅 시작하기</a>
     			</div>
     		</div>
     	</div>
@@ -364,6 +364,35 @@
     </div>
     <!-- ======= /1.08 ctaTwo Area ====== -->
 
+    <div class="secPdng animated fadeInUp">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="supportForm">
+                        <div class="supportTitle h3">
+                            Playchat Bizz으로 연락주세요!
+                        </div>
+                        <div class="subTitle">
+                            챗봇 마케팅에 대한 문의는 아래 메일로 보내주세요.<br>신속히 답변 드리겠습니다.
+                        </div>
+                        <div class="singleContactInfo">
+                            <span>Email</span>
+                            <a href="mailto:info@moneybrain.ai">info@playchat.ai</a>
+                        </div>
+                        <div class="commentInput">
+                            <input id="name" name="name" type="text" placeholder="Your name*">
+                            <input id="email" name="email" type="email" placeholder="Email Address *">
+                            <textarea id="message" name="message" placeholder="Leave a comment"></textarea>
+                            <button onclick="sendMail()" class="btn btn-primary btn-lg" style="margin: 0 auto;">문의하기</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sectionBar"></div>
+
     <!-- ======= 1.09 footer Area ====== -->
     <footer class="secPdngT animated">
     	<div class="container">
@@ -404,7 +433,7 @@
     					<div class="h4">Contact with us</div>
 						<span class="call"><a href="tel:+1-650-399-3013"><i class="icofont icofont-ui-call"></i>+82-2-858-5683</a></span>
 						<span class="email"><a href="mailto:info@moneybrain.ai"><i class="icofont icofont-ui-v-card"></i>info@playchat.ai</a></span>
-   						</div>
+                    </div>
     			</div>
     		</div>
     	</div>
@@ -622,6 +651,16 @@
                 $('#openPolicy').parent().parent().parent().remove();
             }
         });
+    </script>
+
+    <script>
+        function sendMail() {
+            var link = "mailto:info@playchat.ai"
+                + "?subject=" + encodeURIComponent("From Playchat Bizz Homepage by ") + encodeURIComponent(document.getElementById('name').value)
+                + "&body=" + encodeURIComponent(document.getElementById('message').value) + encodeURIComponent("\n\n") + document.getElementById('email').value;
+
+            window.location.href = link;
+        }
     </script>
 
     <div class="modal fade" tabindex="-1" role="dialog" id="policyModal">

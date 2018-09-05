@@ -4,11 +4,11 @@ var mongoose = require('mongoose');
 var UserDialog = mongoose.model('UserDialog');
 var bot_js = require(path.resolve('./engine2/bot.js'));
 var mysql = require('mysql');
-
+var Bot = mongoose.model('Bot');
 
 var mySqlPool = mysql.createPool({
     // host: 'localhost',
-    host: '52.79.225.156',
+    host: '172.31.20.219',
     port: '3306',
     user: 'root',
     password: 'Make01mb!',
@@ -18,36 +18,55 @@ var mySqlPool = mysql.createPool({
     waitForConnections: false
 });
 
+module.exports.UserSend = function (req, res) {
 
-module.exports.botRegister = function (req, res) {
+  var bots = [];
+  var botsStr = '';
+  Bot.find({ user: req.user._id }).exec(function(err, _bots) {
+    for(var i = 0 ; i < _bots.length; i ++ ) {
+      bots.push('"' + _bots[i].id + '"')
+    }
+    botsStr = bots.join(', ');
 
     mySqlPool.getConnection(function (err, connection) {
-        if(err) {
-            console.log(err);
-            callback(task, context);
-        } else {
+      if (err) {
+        console.log(err);
+        callback(task, context);
+      } else {
 
-            var query = 'select * from BOT_REGISTER where botId = ? and startTime >= ? and endTime <= ?;';
+        // var bots = ['"survey_user10_1536025545075"', '"consult_user10_1536021940065"'];
+        // var botsStr = bots.join(', ');
+        var query = 'SELECT count(*) as total, count(FAIL_CD) as fail, s.SND_REQ_DTTM as regDate ' +
+          'FROM BOT_REGISTER b, SND_MSG s WHERE b.botId IN (' + botsStr + ') ' +
+          'AND s.SND_REQ_DTTM >= ? AND s.SND_REQ_DTTM <= ? ' +
+          'AND b.number=s.SND_PHONE_NUM AND s.SND_REQ_DTTM >= b.startTime and s.SND_REQ_DTTM <= b.endTime ' +
+          'ORDER BY s.SND_REQ_DTTM DESC;';
 
-            var param = [
-                req.params.botId,
-                new Date(req.query.startDate),
-                new Date(req.query.endDate)
-                ];
+        console.log(query);
 
-            console.log('parameters are', param);
+        var param = [
+          "1900-01-01 00:00:00",
+          "9999-12-31 12:00:00"
+        ];
+
+        console.log('parameters are', param);
 
             connection.query(query, param, function (err, rows) {
                 console.log('rows: ' + JSON.stringify(rows[0].botId));
 
-                res.jsonp(rows);
-            });
+          for(var j = 0; j < rows.length; j++) {
+            rows[j].username = req.user.username;
+          }
 
-            console.log(query);
-        };
-    });
+          res.jsonp({list: rows});
+        });
+
+      }
+    })
+  });
 };
 
+<<<<<<< HEAD
 module.exports.sendMsg = function (req, res) {
 
     mySqlPool.getConnection(function (err, connection) {
@@ -55,15 +74,40 @@ module.exports.sendMsg = function (req, res) {
             console.log(err);
             callback(task, context);
         } else {
+=======
+module.exports.BotSend = function (req, res) {
 
-            var query = 'select * from SND_MSG where SND_PHONE_NUM= ? and SND_REQ_DTTM >= ? and SND_REQ_DTTM <= ?;';
+  var bots = [];
+  var botsStr = '';
+  Bot.find({ user: req.user._id }).exec(function(err, _bots) {
+    for(var i = 0 ; i < _bots.length; i ++ ) {
+      bots.push('"' + _bots[i].id + '"')
+    }
+    botsStr = bots.join(', ');
 
-            var param = [
-                req.params.phoneNumber,
-                new Date(req.query.startDate),
-                new Date(req.query.endDate)
-            ];
+    mySqlPool.getConnection(function (err, connection) {
+      if (err) {
+        console.log(err);
+        callback(task, context);
+      } else {
 
+        // var bots = ['"survey_user10_1536025545075"', '"consult_user10_1536021940065"'];
+        // var botsStr = bots.join(', ');
+        var query = 'SELECT botId, number, count(*) as total, count(FAIL_CD) as fail, startTime, endTime, s.SND_REQ_DTTM as regDate ' +
+          'FROM BOT_REGISTER b, SND_MSG s WHERE b.botId IN (' + botsStr + ') ' +
+          'AND s.SND_REQ_DTTM >= ? AND s.SND_REQ_DTTM <= ? ' +
+          'AND b.number=s.SND_PHONE_NUM AND s.SND_REQ_DTTM >= b.startTime and s.SND_REQ_DTTM <= b.endTime ' +
+          'GROUP BY botId ORDER BY s.SND_REQ_DTTM DESC;';
+>>>>>>> bc0c2cfbe8c31e02edd9d9645f2e18db58bc6f38
+
+        console.log(query);
+
+        var param = [
+          "1900-01-01 00:00:00",
+          "9999-12-31 12:00:00"
+        ];
+
+<<<<<<< HEAD
             console.log('parameters are', param);
             connection.query(query, param, function (err, rows) {
                 // console.log('rows: ' + JSON.stringify(rows));
@@ -72,307 +116,57 @@ module.exports.sendMsg = function (req, res) {
             console.log(query);
         };
     });
+=======
+        console.log('parameters are', param);
+
+        connection.query(query, param, function (err, rows) {
+          // console.log('rows: ' + JSON.stringify(rows));
+
+          res.jsonp({list: rows});
+        });
+
+      }
+    })
+  });
+>>>>>>> bc0c2cfbe8c31e02edd9d9645f2e18db58bc6f38
 };
 
 
+module.exports.BotOneSend = function (req, res) {
+  mySqlPool.getConnection(function (err, connection) {
+    if (err) {
+      console.log(err);
+      callback(task, context);
+    } else {
 
-//
-// module.exports.sendMsg = function (req, res) {
-//
-//     mySqlPool.getConnection(function (err, connection) {
-//         if(err) {
-//             console.log(err);
-//             callback(task, context);
-//         } else {
-//             var query = 'SELECT * from SND_MSG where FAIL_CD is not null';
-//             connection.query(query, function (err, rows) {
-//                 res.json(rows);
-//             });
-//
-//             console.log(query);
-//         }
-//     });
-// };
+      // var bots = ['"survey_user10_1536025545075"', '"consult_user10_1536021940065"'];
+      // var botsStr = bots.join(', ');
 
+      var query = 'SELECT seq, number, count(*) as total, count(FAIL_CD) as fail, startTime, endTime, s.SND_REQ_DTTM as regDate ' +
+        'FROM BOT_REGISTER b, SND_MSG s WHERE b.botId = ? ' +
+        'AND s.SND_REQ_DTTM >= ? AND s.SND_REQ_DTTM <= ? ' +
+        'AND b.number=s.SND_PHONE_NUM AND s.SND_REQ_DTTM >= b.startTime and s.SND_REQ_DTTM <= b.endTime ' +
+        'GROUP BY b.seq ORDER BY s.SND_REQ_DTTM DESC;';
 
+      console.log(query);
 
+      var param = [
+        req.query.botId,
+        "1900-01-01 00:00:00",
+        "9999-12-31 12:00:00"
+      ];
 
+      console.log('parameters are', param);
 
+      connection.query(query, param, function (err, rows) {
+        // console.log('rows: ' + JSON.stringify(rows));
 
-// module.exports.failedSend = function (req, res) {
-//
-//     mySqlPool.getConnection(function (err, connection) {
-//         if (err) {
-//             console.log(err);
-//             callback(task, context);
-//         } else {
-//             var query = 'SELECT * from SND_MSG;';
-//             connection.query(query, function (err, rows) {
-//                 res.json(rows);
-//             })
-//             console.log(query);
-//         }
-//     });
-// };
+        res.jsonp({list: rows});
+      });
+
+    }
+  })
 
 
-// module.exports.totalDialogCount = function(req, res)  {
-//     UserDialog.count({ botId: req.params.botId , inOut: true}).exec(function (err, count) {
-//         if (err) {
-//             return res.status(400).send({ message: err.stack || err });
-//         } else {
-//             res.jsonp({ count: count });
-//         }
-//     });
-// };
-//
-// module.exports.periodDialogCount = function(req, res) {
-//     UserDialog.count({ botId: req.params.botId, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } }).exec(function (err, count) {
-//         if (err) {
-//             return res.status(400).send({ message: err.stack || err });
-//         } else {
-//             res.jsonp({ count: count });
-//         }
-//     });
-// };
-//
-// module.exports.totalUserCount = function (req, res) {
-//     var query = [
-//         { $match: { botId: req.params.botId, inOut: true } },
-//         // { $project:
-//         //     {
-//         //         _id: 0,
-//         //         userId: 1,
-//         //         fail: {$cond:[{$eq: ["$isFail", true]}, 1,0]},
-//         //         kakao: {$cond:[{$eq: ["$channel.name", "kakao"]}, 1,0]},
-//         //         facebook: {$cond:[{$eq: ["$channel.name", "facebook"]}, 1,0]},
-//         //         navertalk: {$cond:[{$eq: ["$channel.name", "navertalk"]}, 1,0]},
-//         //         socket: {$cond:[{$eq: ["$channel.name", "socket"]}, 1,0]}
-//         //     }
-//         // },
-//         { $group:
-//                 {
-//                     _id: { userId: '$userId'},
-//                     channel: {$first: '$channel'}
-//                 }
-//         }
-//         // { $group:
-//         //         {
-//         //             _id: { userId: '$userId', channel: '$channel.name' },
-//         //             total: {$sum: 1},
-//         //             fail: {$sum: "$fail"},
-//         //             kakao: {$sum: "$kakao"},
-//         //             facebook: {$sum: "$facebook"},
-//         //             navertalk: {$sum: "$navertalk"},
-//         //             socket: {$sum: '$socket'}
-//         //         }
-//         // }
-//     ];
-//
-//     UserDialog.aggregate(query).exec(function(err, list)
-//     {
-//         if(err)
-//         {
-//             return res.status(400).send({ message: err.stack || err });
-//         }
-//         else
-//         {
-//             res.jsonp({ list: list });
-//         }
-//     });
-// };
-//
+};
 
-//
-// module.exports.periodUserCount = function(req, res) {
-//     var query = [
-//         { $match:
-//                 {
-//                     botId: req.params.botId,
-//                     inOut: true,
-//                     created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }
-//                 }
-//         },
-//         { $group: { _id: '$userId', count: { $sum: 1 }} }
-//     ];
-//
-//     UserDialog.aggregate(query).exec(function(err, list)
-//     {
-//         if(err)
-//         {
-//             return res.status(400).send({ message: err.stack || err });
-//         }
-//         else
-//         {
-//             res.jsonp({ count: list.length });
-//         }
-//     });
-// };
-//
-// module.exports.dailyDialogUsage = function (req, res)
-// {
-//     var query = [
-//         { $match: { botId: req.params.botId, inOut: true, created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) } } },
-//         { $project:
-//                 {
-//                     _id: 0,
-//                     created: {$add:["$created", 9*60*60*1000]},
-//                     fail: {$cond:[{$eq: ["$isFail", true]}, 1,0]},
-//                     kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
-//                     facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
-//                     navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]},
-//                     socket: {$cond:[{$eq: ["$channel", "socket"]}, 1,0]}
-//                 }
-//         },
-//         { $group:
-//                 {
-//                     _id: {year: { $year: "$created" }, month: { $month: "$created" }, day: { $dayOfMonth: "$created" }},
-//                     total: {$sum: 1},
-//                     fail: {$sum: "$fail"},
-//                     kakao: {$sum: "$kakao"},
-//                     facebook: {$sum: "$facebook"},
-//                     navertalk: {$sum: "$navertalk"},
-//                     socket: {$sum: '$socket'}
-//                 }
-//         },
-//         { $sort: {_id:-1,  day: -1} }
-//     ];
-//
-//     UserDialog.aggregate(query).exec(function (err, dailyDialog)
-//     {
-//         if (err)
-//         {
-//             return res.status(400).send({ message: err.stack || err });
-//         }
-//         else
-//         {
-//             res.jsonp(dailyDialog);
-//         }
-//     });
-// };
-//
-// exports.userInputStatistics = function (req, res)
-// {
-//     var query = [
-//         { $match:
-//                 {
-//                     inOut: true,
-//                     dialog: { $nin: [null, ':reset user', ':build'] },
-//                     botId: req.params.botId,
-//                     created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }
-//                 }
-//         },
-//         { $group: { _id: { dialog:'$dialog'}, count: { $sum: 1 } } },
-//         { $sort: { count: -1 } }
-//     ];
-//
-//     if(req.query.limit)
-//         query.push({ $limit: parseInt(req.query.limit) });
-//
-//     UserDialog.aggregate(query).exec(function (err, list)
-//     {
-//         if (err)
-//         {
-//             return res.status(400).send({ message: err.stack || err });
-//         }
-//         else
-//         {
-//             res.jsonp(list);
-//         }
-//     });
-// };
-//
-// exports.failDailogs = function (req, res)
-// {
-//     var query = [
-//         { $match:
-//                 {
-//                     botId: req.params.botId,
-//                     dialog: { $nin: [null,":reset user", ":build " + req.params.botId + " reset", ':build'] },
-//                     inOut: true,
-//                     isFail: true,
-//                     created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) },
-//                     "channel" : { $ne: 'channel' }
-//
-//                 }
-//         },
-//         { $group: { _id: { dialog: "$dialog" }, count: { $sum: 1 } } },
-//         { $sort: {count: -1} }
-//     ];
-//
-//     if(req.query.limit)
-//     {
-//         query.push({ $limit: parseInt(req.query.limit) });
-//     }
-//
-//     UserDialog.aggregate(query).exec(function (err, list)
-//     {
-//         if (err)
-//         {
-//             return res.status(400).send({ message: err.stack || err });
-//         }
-//         else
-//         {
-//             res.jsonp(list);
-//         }
-//     });
-// };
-//
-// exports.scenarioUsage = function (req, res)
-// {
-//     var query = [
-//         { $match:
-//                 {
-//                     botId: req.params.botId,
-//                     inOut: true,
-//                     dialogType: 'dialog',
-//                     dialogName: { $nin: [null, "답변없음"] },
-//                     created: { $gte: new Date(req.query.startDate), $lte: new Date(req.query.endDate) }
-//                 }
-//         },
-//         {$project:
-//                 {
-//                     _id: 0,
-//                     channel: 1,
-//                     dialogName:1,
-//                     kakao: {$cond:[{$eq: ["$channel", "kakao"]}, 1,0]},
-//                     facebook: {$cond:[{$eq: ["$channel", "facebook"]}, 1,0]},
-//                     navertalk: {$cond:[{$eq: ["$channel", "navertalk"]}, 1,0]},
-//                     socket: {$cond:[{$eq: ["$channel", "socket"]}, 1,0]}
-//                 }
-//         },
-//         {$group:
-//                 {
-//                     _id: {dialogName: '$dialogName'},
-//                     total: {$sum: 1},
-//                     kakao: {$sum: "$kakao"},
-//                     facebook: {$sum: "$facebook"},
-//                     navertalk: {$sum: "$navertalk"},
-//                     socket: {$sum: '$socket'}
-//                 }
-//         },
-//         {$sort: {total: -1}}
-//     ];
-//
-//     if(req.query.limit)
-//     {
-//         query.push({ $limit: parseInt(req.query.limit) });
-//     }
-//
-//     UserDialog.aggregate(query).exec(function (err, scenarioUsage)
-//     {
-//         if (err)
-//         {
-//             return res.status(400).send({ message: err.stack || err });
-//         }
-//         else
-//         {
-//             var result = {};
-//             bot_js.load(req.params.botId, function () {
-//                 result["scenarioUsage"] = scenarioUsage;
-//                 result["botScenario"] = bot_js.bots[req.params.botId].dialogs;
-//                 res.jsonp(result);
-//             });
-//         }
-//     });
-// };
