@@ -2916,12 +2916,14 @@ ul.regDomains .domainName a:hover {
 .singleInfo:first-child {
 	margin-top: 0;
 }
-
+.singleContactInfo{
+	text-align: center;
+}
 .singleContactInfo > span {
 	color: #222;
 	font-family: "proxima_nova_rgbold";
 	font-size: 15px;
-	width: 110px;
+	width: 60px;
     margin-bottom: 6px;
 }
 
@@ -3459,12 +3461,13 @@ article.singleBlog {
 .commentInput {
 	margin-top: 65px;
 	overflow: hidden;
-	padding-right: 115px;
+	padding: 0 6%;
 }
 
 .commentInput > input {
 	background: #f6fbff none repeat scroll 0 0;
-	border: 1px solid #dfe9f1;
+	/*border: 1px solid #dfe9f1;*/
+	border: 1px solid #dbe5f0;
 	display: inline-block;
 	float: left;
 	line-height: 50px;
@@ -3475,8 +3478,10 @@ article.singleBlog {
 }
 
 .commentInput textarea {
+	/*background: transparent none repeat scroll 0 0;*/
+	border: 1px solid #dbe5f0;
 	background: #f6fbff none repeat scroll 0 0;
-	border: 1px solid #dfe9f1;
+	/*border: 1px solid #dfe9f1;*/
 	height: 190px;
 	margin-bottom: 20px;
 	padding: 15px 25px;
@@ -3496,7 +3501,7 @@ article.singleBlog {
 }
 
 .commentInput > * {
-	border-radius: 3px;
+	/*border-radius: 2px;*/
 	font-family: 'proxima_nova_rgregular';
 	-webkit-transition: .4s;
 	transition: .4s;
@@ -3505,22 +3510,22 @@ article.singleBlog {
 
 .commentInput > *::-webkit-input-placeholder {
 	/* Chrome/Opera/Safari */
-	color: #288feb;
+	color: #738191;
 }
 
 .commentInput > *::-moz-placeholder {
 	/* Firefox 19+ */
-	color: #288feb;
+	color: #738191;
 }
 
 .commentInput > *:-ms-input-placeholder {
 	/* IE 10+ */
-	color: #288feb;
+	color: #738191;
 }
 
 .commentInput > *:-moz-placeholder {
 	/* Firefox 18- */
-	color: #288feb;
+	color: #738191;
 }
 
 
@@ -3590,13 +3595,17 @@ article.singleBlog {
 }
 
 .supportTitle.h3 {
-	font-family: "proxima_nova_rgbold";
+	font-weight: 600;
 	margin-bottom: 15px;
+	text-align: center;
 }
 
 .supportForm .subTitle {
-	font-size: 16px;
+	font-size: 15px;
 	margin-bottom: 35px;
+	line-height: 22px;
+	color: #738191;
+	text-align: center;
 }
 
 .supportInput > input,
