@@ -362,7 +362,7 @@
 		display: none;
 	}
 	.supportForm {
-		border-bottom: 1px solid #e8e8e8;
+		/*border-bottom: 1px solid #e8e8e8;*/
 		margin-bottom: 35px;
 		padding-bottom: 35px;
 	}
@@ -520,7 +520,7 @@ px      68    160    252    344    436    528    620    712    */
 	.main h1{
 		margin: 10px auto 8px;
 		font-size: 28px;
-		line-height: 48px;
+		line-height: 40px;
 	}
 	.main p:first-of-type{
 		font-size: 17px;
@@ -1197,7 +1197,7 @@ px      68    160    252    344    436    528    620    712    */
 	}
 
 	.supportForm {
-		border-bottom: 1px solid #e8e8e8;
+		/*border-bottom: 1px solid #e8e8e8;*/
 		margin-bottom: 35px;
 		padding-bottom: 35px;
 	}
