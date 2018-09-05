@@ -50,8 +50,9 @@ console.log('get connection');
                 $scope.User.lastSendDate = user.lastSendDate;
                 $scope.User.sendNum = result;
                 $scope.User.sendSuccNum = 0;
+                $scope.User.sendfailedNum = 0;
                 $scope.User.sendSuccRate = 0;
-                $scope.User.sendfailNum = 0;
+
 
 
             });

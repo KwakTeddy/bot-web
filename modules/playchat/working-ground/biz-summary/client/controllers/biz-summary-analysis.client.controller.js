@@ -30,6 +30,7 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
         $scope.User.lastSendDate = '';
         $scope.User.sendNum = 0;
         $scope.User.sendSuccNum = 0;
+        $scope.User.sendFailedNum = 0;
         $scope.User.sendSuccRate = 0;
 
         ChatBotService.query({ type : true }, function(list)

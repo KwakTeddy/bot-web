@@ -38,7 +38,7 @@ module.exports.botRegister = function (req, res) {
             console.log('parameters are', param);
 
             connection.query(query, param, function (err, rows) {
-                // console.log('rows: ' + JSON.stringify(rows));
+                console.log('rows: ' + JSON.stringify(rows[0].botId));
 
                 res.jsonp(rows);
             });
@@ -48,14 +48,13 @@ module.exports.botRegister = function (req, res) {
     });
 };
 
+module.exports.sendMsg = function (req, res) {
 
-            module.exports.sendMsg = function (req, res) {
-
-                mySqlPool.getConnection(function (err, connection) {
-                    if(err) {
-                        console.log(err);
-                        callback(task, context);
-                    } else {
+    mySqlPool.getConnection(function (err, connection) {
+        if(err) {
+            console.log(err);
+            callback(task, context);
+        } else {
 
             var query = 'select * from SND_MSG where SND_PHONE_NUM= ? and SND_REQ_DTTM >= ? and SND_REQ_DTTM <= ?;';
 
@@ -66,13 +65,10 @@ module.exports.botRegister = function (req, res) {
             ];
 
             console.log('parameters are', param);
-
             connection.query(query, param, function (err, rows) {
                 // console.log('rows: ' + JSON.stringify(rows));
-
                 res.jsonp(rows);
             });
-
             console.log(query);
         };
     });
