@@ -78,7 +78,9 @@
                 <td></td>
                 <td><a type="button" data-href="/playchat/analysis/biz-sendlist-bot" ng-click="goDetailPage($event,bot)">{{bot.botId}}</a></td>
                 <td><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></td>
-                <td> git </td>
+
+                <td></td>
+                <td>{{bot.regDate | date: 'yyyy년 MM월 dd일, HH시 mm분'}}</td>
 
                 <td>{{bot.total}}</td>
                 <td class="grap">{{bot.total - bot.fail}}</td>
