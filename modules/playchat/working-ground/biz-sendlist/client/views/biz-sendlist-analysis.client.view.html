@@ -17,7 +17,7 @@
             <colgroup>
                 <col width="3%">
                 <col width="15%">
-                <col width="">
+                <col width="20%">
                 <col width="">
                 <col width="">
                 <col width="">
@@ -38,7 +38,7 @@
             <tr ng-repeat="user in Users">
                 <td></td>
                 <td>{{user.username}}</td>
-                <td>{{user.regDate}}</td>
+                <td>{{user.regDate | date: 'yyyy년 MM월 dd일, HH시 mm분'}}</td>
                 <td>{{user.total}}</td>
                 <td class="grap">{{user.total - user.fail}}</td>
                 <td>{{user.fail}}</td>
@@ -51,9 +51,9 @@
         <table class="tb03">
             <colgroup>
                 <col width="3%">
-                <col width="">
-                <col width="10%">
-                <col width="">
+                <col width="15%">
+                <col width="5%">
+                <col width="20%">
                 <col width="">
                 <col width="">
                 <col width="">
@@ -78,7 +78,8 @@
                 <td></td>
                 <td><a type="button" data-href="/playchat/analysis/biz-sendlist-bot" ng-click="goDetailPage($event,bot)">{{bot.botId}}</a></td>
                 <td><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></td>
-                <td>{{bot.regDate}}</td>
+                <td> {{bot.regDate | date: 'yyyy년 MM월 dd일, HH시 mm분'}}</td>
+
                 <td>{{bot.total}}</td>
                 <td class="grap">{{bot.total - bot.fail}}</td>
                 <td>{{bot.fail}}</td>
@@ -113,7 +114,4 @@
 
 
 </script>
-
-
-
 

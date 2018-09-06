@@ -36,27 +36,18 @@ angular.module('playchat').controller('BizSendlistAnalysisController', ['$scope'
                 endDateTime: $scope.date.end
             }, function (result) {
                 $scope.Users = result.list;
-
-                // var totalPage = result.list.length < 10 ? 1 : Math.round(result.list.length / 10);
-                // page = page || 1;
-                // $scope.pageOptions = PagingService(page, totalPage);
-
-
-                // console.log($scope.Users);
-
             });
         };
 
         $scope.getBots = function (page) {
-            BotSendService.get({startDateTime: $scope.date.start,
+            BotSendService.get({
+                startDateTime: $scope.date.start,
                 endDateTime: $scope.date.end}, function (result) {
                 $scope.Bots = result.list;
 
                 var totalPage = result.list.length < 10 ? 1 : Math.round(result.list.length / 10);
                 page = page || 1;
                 $scope.pageOptions = PagingService(page, totalPage);
-
-                console.log($scope.Bots);
 
             });
         };
@@ -66,6 +57,7 @@ angular.module('playchat').controller('BizSendlistAnalysisController', ['$scope'
 
             $scope.date.start = $scope.dateFormat($scope.date.start);
             $scope.date.end = $scope.dateFormat($scope.date.end);
+
             $scope.getUsers();
             $scope.getBots();
         };
