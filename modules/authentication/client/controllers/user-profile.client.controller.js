@@ -1,30 +1,28 @@
 (function()
 {
     'use strict';
-    angular.module('playchat').controller('UserProfileController', ['$window', '$scope', '$resource', '$cookies', '$rootScope', 'LanguageService', function ($window, $scope, $resource, $cookies, $rootScope, LanguageService)
+    angular.module('playchat').controller('UserProfileController', ['$window', '$http','$scope', '$resource', '$cookies', '$rootScope', 'LanguageService', function ($window,$http, $scope, $resource, $cookies, $rootScope, LanguageService)
     {
-        var UserService = $resource('/api/users');
-
         $scope.$parent.loading = false;
 
         var user = $cookies.getObject('user');
         $scope.user = user;
-        // $scope.language = user.language;
 
         $scope.password = '';
         $scope.passwordConfirm = '';
-
         (function()
         {
+
             $scope.save = function()
             {
-                user.language = $scope.user.language;
-
                 if($scope.password && $scope.passwordConfirm)
                 {
                     if($scope.password != $scope.passwordConfirm)
                     {
                         return alert(LanguageService('Password is disaccord'));
+                    }
+                    else{
+                        $scope.user.password = $scope.password;
                     }
                 }
                 else
@@ -32,19 +30,29 @@
                     $scope.password = '';
                 }
 
-                UserService.save({ language: $scope.user.language, password: $scope.password }, function(result)
+                if($scope.user.bizKindOfBusiness === "업종을 선택하세요." ){
+                    $scope.user.bizKindOfBusiness = "";
+                }
+
+                if($scope.bizChair === "직책"){
+                    $scope.user.bizChair = "";
+                }
+
+                $http.post('/api/users/updateBizAuthUser', $scope.user).success(function (response)
                 {
-                    // user.language = $scope.language;
+                    $window.location.href = '/playchat/development/create-bot';
+                    user.language = $scope.user.language;
                     $cookies.putObject('user', user);
                     $rootScope.$broadcast('changeLanguage');
 
                     alert(LanguageService('Has been applied'));
-                },
-                function(err)
+                }).error(function (response)
                 {
-                    alert(err);
-                });
+                    console.log(response);
+                    alert(response);
+                })
             };
+
         })();
 
         $scope.lan = LanguageService;

@@ -154,6 +154,8 @@
                 { name: '결과분석', url: '/analysis/biz-summary', icon: 'traffic_select.png' }
             ] };
 
+            // this.common = { name: '고객센터', url:'/common/biz-cs', icon: 'help.png' };
+
             this.charge = { name: '충전(준비중)', url:'/undefined', icon: 'charging.png' };
         };
 
@@ -167,6 +169,7 @@
             menus.push(that.development);
             menus.push(that.sending);
             menus.push(that.analysis);
+            menus.push(that.common);
             menus.push(that.charge);
 
             if(typeof templateId == 'function'){

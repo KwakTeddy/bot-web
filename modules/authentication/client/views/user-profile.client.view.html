@@ -46,6 +46,51 @@
         </div>
         <div class="form-row">
             <label>
+                <span class="form-title">업종</span>
+                <div class="select-wrapper">
+                    <select id="bizKindOfBusiness" class="jumbo-select" ng-model="user.bizKindOfBusiness" style="height: 33px; width:140px">
+                        <option value="">업종을 선택하세요.</option>
+                        <option value="데이터베이스">데이터베이스</option>
+                        <option value="통신업">통신업</option>
+                        <option value="유통업">유통업</option>
+                    </select>
+                </div>
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">회사명</span>
+                <input type="text" ng-model="user.organization" class="data-input" style="width: 100%;">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">담당자명/직책</span>
+                <input type="text" ng-model="user.bizChairName" class="data-input" style="width: 100%;">
+                <div class="select-wrapper">
+                    <select class="jumbo-select" ng-model="user.bizChair" style="height: 33px;">
+                        <option value="">직책</option>
+                        <option value="과장">과장</option>
+                        <option value="차장">차장</option>
+                        <option value="부장">부장</option>
+                    </select>
+                </div>
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">담당 연락처</span>
+                <input type="text" ng-model="user.phone" class="data-input" style="width: 100%;">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span class="form-title">담당 이메일</span>
+                <input type="text" ng-model="user.bizChairEmail" class="data-input" style="width: 100%;">
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
                 <span class="form-title">{{ lan('Password') }}</span>
                 <input type="password" ng-model="password" class="data-input" style="width: 100%;">
             </label>
