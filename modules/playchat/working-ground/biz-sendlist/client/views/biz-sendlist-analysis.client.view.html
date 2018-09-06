@@ -38,7 +38,7 @@
             <tr ng-repeat="user in Users">
                 <td></td>
                 <td>{{user.username}}</td>
-                <td>{{user.regDate}}</td>
+                <td>{{user.regDate | date: 'yyyy년 MM월 dd일, HH시 mm분'}}</td>
                 <td>{{user.total}}</td>
                 <td class="grap">{{user.total - user.fail}}</td>
                 <td>{{user.fail}}</td>
