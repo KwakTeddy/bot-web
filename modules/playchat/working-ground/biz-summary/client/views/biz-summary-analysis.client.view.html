@@ -69,7 +69,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="bot in Bots">
+            <tr ng-repeat="bot in Bots track by $index">
                 <td>{{bot.index}}</td>
                 <td>{{bot.name}}</td>
                 <!--<td><a type="button" data-href="/playchat/analysis/biz-summary-chatbot" ng-click="goDetailPage($event,bot)">{{bot.name}}</a></td>-->

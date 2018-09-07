@@ -2,6 +2,9 @@ var SummaryAnalysisController = require('../controllers/biz-summary-analysis.ser
 
 module.exports = function(app)
 {
+    //mysql
     app.get('/api/:botId/:startDate/:endDate/analysis/sendMsgNum', SummaryAnalysisController.getSendMsgsNumAndLastSendDateByBotId);
-    app.get('/api/:botId/:startDate/:endDate/analysis/sendMsgLastDate', SummaryAnalysisController.getLastSendDateByBotId);
+    // app.get('/api/:botId/:startDate/:endDate/analysis/sendMsgLastDate', SummaryAnalysisController.getLastSendDateByBotId);
+    //mongodb
+    app.get('/api/:botId/:startDate/:endDate/analysis/resHumNum', SummaryAnalysisController.getresHumNumByBotId);
 };
