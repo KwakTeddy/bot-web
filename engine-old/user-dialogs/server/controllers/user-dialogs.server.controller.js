@@ -322,12 +322,13 @@ function addDialog(inText, outText, isFail, dialog, context, callback)
     }
 
     var query = {
-      botId: context.bot.botName,
-      userId: context.user.userKey,
-      channel: context.channel.name,
-      year: (new Date()).getYear() + 1900,
-      month: (new Date()).getMonth() + 1,
-      date: (new Date()).getDate()
+        botId: context.bot.botName,
+        userId: context.user.userKey,
+        channel: context.channel.name,
+        year: (new Date()).getYear() + 1900,
+        month: (new Date()).getMonth() + 1,
+        date: (new Date()).getDate(),
+        created: new Date()
     };
 
     if(dialoglogCache.length < LIMIT_CACHE_DIALOG) {

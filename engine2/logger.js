@@ -72,6 +72,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
                 var bulk = UserDialogLog.collection.initializeOrderedBulkOp();
                 for(var i = 0; i < dialoglogCache.length; i++)
                 {
+                    dialoglogCache[i].created = new Date();
                     bulk.find(dialoglogCache[i]).upsert().updateOne(dialoglogCache[i]);
                 }
 
