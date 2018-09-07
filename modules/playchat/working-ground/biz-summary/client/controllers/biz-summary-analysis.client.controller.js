@@ -6,11 +6,8 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
     var user = $cookies.getObject('user');
 
-    // var TotalDialogContentService = $resource('/api/:botId/analysis/total-dialog-content', { botId: '@botId' });
-    var TotalDialogContentService = $resource('/api/:botId/:startDate/:endDate/:startTime/analysis/sendMsg', { botId: '@botId' });
-    var TotalSuccDialogCountService = $resource('/api/:botId/analysis/total-succ-dialog-count', { botId: '@botId' });
-    var LastSendDateService = $resource('/api/:botId/analysis/last-send-date', { botId: '@botId' });
-    var TotalDialogCountService = $resource('/api/:botId/analysis/total-dialog-counts', { botId: '@botId' });
+    var TotalSendNumService = $resource('/api/:botId/:startDate/:endDate/analysis/sendMsgNum', { botId: '@botId' });
+    var TotalSendLastDateService = $resource('/api/:botId/:startDate/:endDate/analysis/sendMsgLastDate', { botId: '@botId' });
 
     $scope.User = [];
     $scope.Bots = [];
@@ -26,7 +23,12 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
         $scope.getList = function(page)
     {
 
-        $scope.User.name = user.displayName;
+        if(user.organization && user.organization !== ""){
+            $scope.User.name = user.organization;
+        }else{
+            $scope.User.name = user.username;
+        }
+
         $scope.User.lastSendDate = '';
         $scope.User.sendNum = 0;
         $scope.User.sendSuccNum = 0;
@@ -39,8 +41,35 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
             var totalPage = list.length < 10 ? 1 : Math.round(list.length / 10);
             page = page || 1;
             $scope.pageOptions = PagingService(page, totalPage);
+            $scope.date.start = $scope.dateFormat($scope.date.start);
+            $scope.date.end = $scope.dateFormat($scope.date.end);
 
-            // list.forEach((e,index) => {
+            list.forEach((e,index) => {
+                TotalSendNumService.get({ botId: e.id, startDate: $scope.date.start, endDate: $scope.date.end}, function(result)
+                {
+                    //User:
+                    console.log("bot: " + e.id + ', sendNum: ' + result.data[0].total + ', lastSendDate: ' + result.data[0].lastDate);
+                    $scope.User.sendNum = $scope.User.sendNum + result.data[0].total;
+
+                    if($scope.User.lastSendDate === '' && result.data[0].lastDate !== null){
+                        $scope.User.lastSendDate = $scope.dateFormat(result.data[0].lastDate);
+                    }else if(result.data[0].lastDate !== null){
+                        $scope.User.lastSendDate = $scope.compareDate($scope.User.lastSendDate, result.data[0].lastDate);
+                    }
+
+                    $scope.User.sendSuccNum = 0;
+
+                    //Bot:
+                    $scope.Bots[index] = {};
+                    $scope.Bots[index].index = index + 1;
+                    $scope.Bots[index].name = e.name;
+                    $scope.Bots[index].lastSendDate =  $scope.dateFormat(result.data[0].lastDate);
+                    $scope.Bots[index].sendNum = result.data[0].total;
+                    $scope.Bots[index].sendSuccNum = 0;
+
+                })
+            })
+
             //     $scope.Bots[index] = {};
             //     console.log("e.id: " + e.id );
             //     console.log("e.name: " + e.name );
@@ -97,11 +126,8 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
             //         });
             //     });
             // });
-            var startTime = '2018';
-            TotalDialogContentService.get({ botId: 'ddd',startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString(), startTime }, function(result1)
-                                {
-                                    console.log("result1: " + JSON.stringify(result1));
-                                })
+
+
 
         });
 
@@ -109,6 +135,21 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
         angular.element('.main-logo-background').css('display', 'none');
 
     };
+
+        $scope.compareDate = function(olddate, newdate)
+        {
+            var oldDate = new Date(olddate);
+            var oldTimesheet = oldDate.getTime();
+            var newDate = new Date(newdate);
+            var newTimesheet = newDate.getTime();
+            if(oldTimesheet < newTimesheet){
+                olddate =  $scope.dateFormat(newdate);
+                return olddate;
+            }else{
+                return olddate;
+            }
+        };
+
 
         $scope.goDetailPage = function(event, data)
         {
@@ -138,7 +179,7 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
             min = min < 10 ? '0' + min : min;
             sec = sec < 10 ? '0' + sec : sec;
 
-            return year + '.' + month + '.' + dateOfMonth + ' ' + hour + ':' + min;
+            return year + '.' + month + '.' + dateOfMonth + ' ' + hour + ':' + min + ':' + sec;
         };
 
 
