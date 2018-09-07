@@ -5235,7 +5235,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
 }
 @media (min-width: 0px) and (max-width: 660px) {
     .col-xs-1-1 {width: 303px;}
-    .col-xs-1-2 {
+     .col-xs-1-2 {
         width: 63%;
         margin-right: 0;
         padding-right: 0;
@@ -5246,7 +5246,6 @@ textarea.input-group-sm>.input-group-btn>.btn {
         padding-left: 10px;
         width: 32%;
     }
-
 }
 @media (max-width: 580px){
     header .logo-sub {
@@ -5264,6 +5263,12 @@ textarea.input-group-sm>.input-group-btn>.btn {
         width: 42%;
         padding-right: 0;
         margin: 0;
+    }
+    .col-xs-1-2 {
+        width: 66%;
+        margin-right: 0;
+        padding-right: 0;
+        padding-left: 0;
     }
 }
 @media (min-width:992px) {
