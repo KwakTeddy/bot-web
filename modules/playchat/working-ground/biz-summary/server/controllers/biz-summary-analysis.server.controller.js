@@ -6,8 +6,7 @@ var UserDialogLog = mongoose.model('UserDialogLog');
 
 var mySqlPool = mysql.createPool({
     // host: 'localhost',
-    // host: '52.79.225.156',
-    host: '172.31.28.192',
+    host: '52.79.225.156',
     port: '3306',
     user: 'root',
     password: 'Make01mb!',
