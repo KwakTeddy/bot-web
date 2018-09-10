@@ -43,25 +43,6 @@ module.exports.check = (req, res) => {
             }catch(e){
                 res.send(body);
             }
-
-            //if(body.status){
-            //    var logDt = body.data;
-            //    var schedulerLog = {
-            //        botId : logDt.botId,
-            //        userId : req.body.user,
-            //        registerSeq : logDt.regsterSeq,
-            //        sender : logDt.number,
-            //        totalReceiver : req.body.totalReceiver,
-            //        sendDate : logDt.startTime
-            //    };
-            //    console.log(schedulerLog);
-            //    var sclog = new Scheduler(schedulerLog);
-            //    sclog.save((err)=>{
-            //        res.send(body);
-            //    });
-            //}else{
-            //    res.send(body);
-            //}
         }
     })
 
@@ -214,16 +195,3 @@ var _registerTelebook = (data,cb) => {
         cb(result)
     }
 };
-
-
-/*
- dialogsetUploader.upload(req.params.botId, req.body.language || 'ko', dialogset._id, dialogset.filename, function(err)
- {
- dialogset.importState = err || '';
- dialogset.save(function()
- {
-
- });
- });
-
- */
