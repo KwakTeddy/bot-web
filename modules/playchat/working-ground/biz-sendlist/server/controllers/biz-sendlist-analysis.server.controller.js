@@ -84,7 +84,7 @@ module.exports.BotSend = function (req, res) {
         mySqlPool.getConnection(function (err, connection) {
             if (err) {
                 console.log(err);
-                callback(task, context);
+                // callback(task, context);
             } else {
 
                 // var bots = ['"survey_user10_1536025545075"', '"consult_user10_1536021940065"'];
@@ -105,9 +105,6 @@ module.exports.BotSend = function (req, res) {
                 console.log('req.body.param: ' + JSON.stringify(req.query));
                 param[0] = req.query.startDateTime;
                 param[1] = req.query.endDateTime;
-
-
-                console.log('parameters are', param);
 
                 connection.query(query, param, function (err, rows) {
                     // console.log('rows: ' + JSON.stringify(rows));
@@ -144,8 +141,6 @@ module.exports.BotOneSend = function (req, res) {
                 "1900-01-01 00:00:00",
                 "9999-12-31 12:00:00"
             ];
-
-            console.log('parameters are', param);
 
             connection.query(query, param, function (err, rows) {
                 // console.log('rows: ' + JSON.stringify(rows));

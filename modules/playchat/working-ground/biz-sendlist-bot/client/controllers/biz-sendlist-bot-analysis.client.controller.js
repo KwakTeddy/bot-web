@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('playchat').controller('BizSendlistBotAnalysisController', ['$scope', '$rootScope', 'PagingService','$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket','LanguageService','DateRangePickerService', '$http', function ($scope, $rootScope, PagingService, $state, $window, $timeout, $stateParams, $resource, $cookies, Socket, LanguageService, DateRangePickerService, $http)
+angular.module('playchat').controller('BizSendlistBotAnalysisController', ['$scope', '$rootScope', 'PagingService','$state', '$window','$timeout', '$stateParams', '$resource', '$cookies', 'Socket','LanguageService','DateRangePickerService', function ($scope, $rootScope, PagingService, $state, $window, $timeout, $stateParams, $resource, $cookies, Socket, LanguageService, DateRangePickerService )
 {
   $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' >> ' + LanguageService('Summary'), '/modules/playchat/gnb/client/imgs/summary.png');
 
@@ -19,21 +19,39 @@ angular.module('playchat').controller('BizSendlistBotAnalysisController', ['$sco
 
   (function () {
 
-    $scope.getBotSend = function () {
-      BotOneSendService.get({
-        botId: 'bot',
-        // startDate: '2018-08-28 10:39:00',
-        // endDate: '2018-09-05 10:39:00'
-      }, function (result) {
+      $scope.toPage = function(page)
+      {
+          $scope.getBotSend(page);
+      };
+
+      $scope.getBotSend = function () {
+       BotOneSendService.get({
+           startDateTime: $scope.date.start,
+           endDateTime: $scope.date.end}, function (result) {
         // console.log('result: ' + JSON(result));
         $scope.Bots = result.list;
-      });
+
+        var totalPage = result.list.length < 10 ? 1 : Math.round(result.list.length / 10);
+        page = page || 1;
+        $scope.pageOptions = PagingService(page, totalPage);
+
+       });
     };
+
+    $scope.getList = function () {
+
+      $scope.date.start = $scope.dateFormat($scope.date.start);
+      $scope.date.end = $scope.dateFormat($scope.date.end);
+      $scope.getBotSend();
+    };
+
+
+
   })();
 
-  // DateRangePickerService.init('#createdRange', $scope.date, $scope.getList); // startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString()
+  DateRangePickerService.init('#createdRange', $scope.date, $scope.getList); // startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString()
   $scope.getBotSend();
-  
+
   $scope.$parent.loaded('working-ground');
   $scope.lan = LanguageService;
 

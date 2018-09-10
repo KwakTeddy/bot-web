@@ -215,8 +215,8 @@ a.new-bot-right{
 .num{
     font-weight: 600;
     position: absolute;
-    top: 3px;
-    left: 50px;
+    top: 5px;
+    left: 10px;
 }
 .data{
     position: absolute;

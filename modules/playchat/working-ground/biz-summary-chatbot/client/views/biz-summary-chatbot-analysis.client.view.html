@@ -48,7 +48,7 @@
             <tr ng-repeat="Message in Messages">
                 <td>{{Message.index}}</td>
                 <td><a><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></a></td>
-                <td>{{Message.sendDate}}</td>
+                <td>{{Message.sendDate | date: 'yyyy년 MM월 dd일, HH시 mm분' }}</td>
                 <td>{{Message.sendNum}}</td>
                 <td class="grap">{{Message.sendSuccNum}}<div class="tb-b" style="width: {{Message.sendSuccRate}}%;">{{Message.sendSuccRate}}%</div></td>
                 <td>{{Message.sendFee}}</td>

@@ -78,8 +78,6 @@
                 <td></td>
                 <td><a type="button" data-href="/playchat/analysis/biz-sendlist-bot" ng-click="goDetailPage($event,bot)">{{bot.botId}}</a></td>
                 <td><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></td>
-
-                <td></td>
                 <td>{{bot.regDate | date: 'yyyy년 MM월 dd일, HH시 mm분'}}</td>
 
                 <td>{{bot.total}}</td>
@@ -87,7 +85,7 @@
                 <td>{{bot.fail}}</td>
                 <td>{{((bot.total - bot.fail)/bot.total)*100}}%</td>
                 <td>
-                    <input type="button" id="btnShowMsg" value="Click Me!" onClick='showMessage()'/>
+                    <input type="button" id="btnShowMsg" value="Click Me!" onClick='doit('xlsx')'/>
                 </td>
 
             </tr>
@@ -117,3 +115,33 @@
 
 </script>
 
+
+<script type="text/javascript">
+
+    function doit(type, fn, dl) {
+        var elt = document.getElementById('data-table');
+        var wb = XLSX.utils.table_to_book(elt, {sheet:"Sheet JS"});
+        return dl ?
+            XLSX.write(wb, {bookType:type, bookSST:true, type: 'base64'}) :
+            XLSX.writeFile(wb, fn || ('test.' + (type || 'xlsx')));
+    }
+
+
+    function tableau(pid, iid, fmt, ofile) {
+        if(typeof Downloadify !== 'undefined') Downloadify.create(pid,{
+            swf: 'downloadify.swf',
+            downloadImage: 'download.png',
+            width: 100,
+            height: 30,
+            filename: ofile, data: function() { return doit(fmt, ofile, true); },
+            transparent: false,
+            append: false,
+            dataType: 'base64',
+            onComplete: function(){ alert('Your File Has Been Saved!'); },
+            onCancel: function(){ alert('You have cancelled the saving of this file.'); },
+            onError: function(){ alert('You must put something in the File Contents or there will be nothing to save!'); }
+        });
+    }
+    tableau('xlsxbtn',  'xportxlsx',  'xlsx',  'test.xlsx');
+
+</script>
