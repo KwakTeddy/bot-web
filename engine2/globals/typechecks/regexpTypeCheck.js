@@ -12,13 +12,11 @@ module.exports = function(globals)
 
 
         var matchs = inputRaw.match(re);
-
         if(matchs && matchs.length > 0)
         {
             matched = true;
             parsed = matchs[0];
 
-            // dialog.userInput.text = inputRaw.replace(matchs[0], '+' + type.name + '+');
             if(type.name=='mobile'){
                 context.user.mobile = dialog.userInput.text
             }else if(type.name=='name'){

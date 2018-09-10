@@ -144,9 +144,6 @@ angular.module('playchat').controller('GnbController', ['$window', '$scope', '$l
 
     $scope.checkUrl = function(menu)
     {
-        if($location.path().startsWith('/playchat/undefined')){
-            $location.path('/playchat/development/my-bot');
-        }
         if(menu)
         {
             if(menu.url == '/')

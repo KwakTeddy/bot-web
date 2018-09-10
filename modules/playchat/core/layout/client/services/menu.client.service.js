@@ -140,7 +140,7 @@
             this.forlisa = { name: 'For Lisa', url: '/development/layout-sam', icon: 'scenatio_select.png' };
 
             this.development = { name: '봇 만들기', url: '/development', icon: 'develop.png', childMenus: [
-                //{ name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
+                { name: LanguageService('Dialog Graph'), url: '/development/dialog-graph', icon: 'scenatio_select.png' },
                 { name: '봇 생성하기', url: '/development/create-bot', icon: 'develop_sub.png' },
                 { name: '나의 봇', url: '/development/my-bot', icon: 'training_select.png' }
             ] };
@@ -156,7 +156,7 @@
 
             // this.common = { name: '고객센터', url:'/common/biz-cs', icon: 'help.png' };
 
-            this.charge = { name: '충전(준비중)', url:'/undefined', icon: 'charging.png' };
+            this.charge = { name: '충전(준비중)', icon: 'charging.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)
