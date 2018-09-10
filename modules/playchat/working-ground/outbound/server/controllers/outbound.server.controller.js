@@ -25,7 +25,8 @@ module.exports.check = (req, res) => {
         if(err){
             res.send(err);
         }else{
-            console.log('get date result =================>>>>>>>>')
+            console.log('get date result =================>>>>>>>>');
+            console.log(body);
             if(body.status){
                 var logDt = body.data;
                 var schedulerLog = {
