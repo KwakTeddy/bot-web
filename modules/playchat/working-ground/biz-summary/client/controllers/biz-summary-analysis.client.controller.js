@@ -23,12 +23,7 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
 
         $scope.getList = function(page)
     {
-
-        if(user.organization && user.organization !== ""){
-            $scope.User.name = user.organization;
-        }else{
-            $scope.User.name = user.username;
-        }
+        $scope.User.name = user.email;
 
         $scope.User.lastSendDate = '';
         $scope.User.sendNum = 0;
