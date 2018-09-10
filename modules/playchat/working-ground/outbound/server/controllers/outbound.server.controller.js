@@ -11,6 +11,7 @@ var outboundUploader = require('./outbound-uploader.js');
 
 var TeleBook = mongoose.model('TeleBook');
 var TeleBookData = mongoose.model('TeleBookData');
+var Scheduler = mongoose.model('Scheduler');
 
 module.exports.check = (req, res) => {
     var options = {
@@ -25,8 +26,21 @@ module.exports.check = (req, res) => {
             res.send(err);
         }else{
             console.log('get date result =================>>>>>>>>')
-            console.log(req.body)
-            console.log(body)
+            if(body.status){
+                var logDt = body.data;
+                var schedulerLog = {
+                    botId : logDt.botId,
+                    userId : req.body.user,
+                    registerSeq : logDt.regsterSeq,
+                    sender : logDt.number,
+                    totalReceiver : req.body.totalReceiver,
+                    sendDate : logDt.startTime
+                };
+
+                var sclog = new Scheduler(schedulerLog);
+                sclog.save();
+            };
+
             res.send(body);
         }
     })
