@@ -72,8 +72,8 @@
             <tr ng-repeat="bot in Bots track by $index">
                 <td>{{bot.index}}</td>
                 <td>{{bot.name}}</td>
-                <!--<td><a type="button" data-href="/playchat/analysis/biz-summary-chatbot" ng-click="goDetailPage($event,bot)">{{bot.name}}</a></td>-->
-                <td><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></td>
+                <td><a type="button" data-href="/playchat/analysis/biz-summary-chatbot" ng-click="goDetailPage($event,bot)">{{bot.name}}</a></td>
+                <!--<td><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></td>-->
                 <td>{{bot.lastSendDate}}</td>
                 <td>{{bot.sendNum}}</td>
                 <td class="grap">{{bot.sendSuccNum}}<div class="tb-b" style="width: {{bot.sendSuccRate}}%;">{{bot.sendSuccRate}}%</div></td>

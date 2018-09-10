@@ -1,4 +1,3 @@
-var path = require('path');
 var mongoose = require('mongoose');
 
 var mysql = require('mysql');
@@ -12,7 +11,7 @@ var mySqlPool = mysql.createPool({
     password: 'Make01mb!',
     charset : 'utf8mb4',
     database: 'bizchat',
-    connectionLimit: 20,
+    connectionLimit: 400,
     waitForConnections: false
 });
 

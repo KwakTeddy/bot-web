@@ -59,6 +59,7 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
                     //Bot:
                     $scope.Bots[index] = {};
                     $scope.Bots[index].index = index + 1;
+                    $scope.Bots[index].id = e.id;
                     $scope.Bots[index].name = e.name;
                     $scope.Bots[index].lastSendDate =  $scope.dateFormat(result.data[0].lastDate);
                     $scope.Bots[index].sendNum = result.data[0].total;
