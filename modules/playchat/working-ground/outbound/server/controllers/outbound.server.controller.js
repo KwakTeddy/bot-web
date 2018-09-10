@@ -24,6 +24,9 @@ module.exports.check = (req, res) => {
         if(err){
             res.send(err);
         }else{
+            console.log('get date result =================>>>>>>>>')
+            console.log(req.body)
+            console.log(body)
             res.send(body);
         }
     })
