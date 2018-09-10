@@ -26,7 +26,9 @@ module.exports.check = (req, res) => {
             res.send(err);
         }else{
             try{
-                var logDt = JSON.parse(body.data);
+                console.log(body.data)
+                var logDt = JSON.parse(body).data;
+                console.log(logDt);
                 var schedulerLog = {
                     botId : logDt.botId,
                     userId : req.body.user,
