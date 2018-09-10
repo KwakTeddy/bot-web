@@ -30,7 +30,7 @@ module.exports.getSendMsgsNumAndLastSendDateByBotId = function (req, res) {
         } else {
 
             var query = 'SELECT COUNT(*) as total, max(reqDate) as lastDate FROM BOT_REGISTER b, MSG_RESULT s WHERE b.botId = ' + botsStr +
-                ' AND b.number = s.sender AND unix_timestamp(s.reqDate) between unix_timestamp((select min(startTime) from BOT_REGISTER b WHERE b.botId = ' + botsStr +
+                ' AND b.number = s.sender AND unix_timestamp(b.startTime) between unix_timestamp(' + param[0] + ') and unix_timestamp(' + param[1] + ') AND unix_timestamp(s.reqDate) between unix_timestamp((select min(startTime) from BOT_REGISTER b WHERE b.botId = ' + botsStr +
                 ' AND unix_timestamp(b.startTime) between unix_timestamp(' + param[0] + ') and unix_timestamp(' + param[1] +
                 '))) and unix_timestamp((select max(endTime) from BOT_REGISTER b WHERE b.botId = ' + botsStr +
                 ' AND unix_timestamp(b.startTime) between unix_timestamp(' + param[0] + ') and unix_timestamp(' + param[1] +')))';
