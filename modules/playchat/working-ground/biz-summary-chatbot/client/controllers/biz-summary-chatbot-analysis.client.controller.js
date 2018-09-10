@@ -4,13 +4,12 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
 {
     $scope.$parent.changeWorkingGroundName(LanguageService('Analysis') + ' >> ' + LanguageService('Summary') + ' >> ' + LanguageService('Chatbot'), '/modules/playchat/gnb/client/imgs/summary.png');
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
+    var user = $cookies.getObject('user');
 
-    var TotalDialogContentService = $resource('/api/:botId/analysis/total-dialog-content', { botId: '@botId' });
-    var TotalSuccDialogCountService = $resource('/api/:botId/analysis/total-succ-dialog-count', { botId: '@botId' });
-    var LastSendDateService = $resource('/api/:botId/analysis/last-send-date', { botId: '@botId' });
-    var TotalDialogCountService = $resource('/api/:botId/analysis/total-dialog-counts', { botId: '@botId' });
+    var SendNumBySendDateService = $resource('/api/:botId/:startDate/:endDate/analysis/sendMsgNumForSendDate', { botId: '@botId' });
+    var ResponseHumNumService = $resource('/api/:botId/:startDate/:endDate/analysis/resHumNum', { botId: '@botId' });
 
-    $scope.Bot = [];
+    $scope.Bot = {};
     $scope.Messages = [];
     $scope.date = {};
 
@@ -36,27 +35,26 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
 
                     ChatBotService.query({ type : true}, function(lists)
                     {
+                        $scope.Bot = {};
                         var Matched = false;
                         if(lists.length > 0 ){
                             lists.forEach((list,index) => {
                                 if(list.name === $scope.searchword){
                                     $scope.Bot.name = list.name;
-                                    $scope.Bot.lastSendDate = '2018.08.24.0600';
-                                    $scope.Bot.sendNum = 0;
-                                    $scope.Bot.sendSuccNum = 0;
-                                    $scope.Bot.sendSuccRate = 0;
+                                    $scope.Bot.id = list.id;
+
                                     data = $scope.Bot;
 
                                     data.matched = true;
                                     Matched = true;
-                                    $scope.getList(1,e.currentTarget.value);
+                                    $scope.getList(1);
                                 }
                                 else if(index === lists.length -1 && Matched === false ){
                                     data = {};
                                     data.name = e.currentTarget.value;
 
                                     data.matched = false;
-                                    $scope.getList(1,e.currentTarget.value);
+                                    $scope.getList(1);
                                 }
                             });
                         }
@@ -64,7 +62,7 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
                             data = {};
                             data.name = e.currentTarget.value;
                             data.matched = false;
-                            $scope.getList(1,e.currentTarget.value);
+                            $scope.getList(1);
                         }
                     });
                 }
@@ -74,7 +72,7 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
 
                     data.matched = false;
                     $scope.searchword = undefined;
-                    $scope.getList(1, $scope.searchword);
+                    $scope.getList(1);
                 }
             }
             else if(e.keyCode == 8)
@@ -86,8 +84,8 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
                     data = {};
                     data.name = e.currentTarget.value;
                     data.matched = false;
-                    $scope.searchword=undefined;
-                    $scope.getList(1,$scope.searchword);
+                    $scope.searchword = undefined;
+                    $scope.getList(1);
                 }
             }
         };
@@ -100,41 +98,52 @@ angular.module('playchat').controller('BizSummaryChatbotAnalysisController', ['$
             var dataPoints = [];
             angular.element('#search').val(data.name);
 
-            if(data.matched) {
-                for (var i = 0; i < 6; i++) {
-                    $scope.Messages[i] = {};
-                    $scope.Messages[i].index = i + 1;
-                    $scope.Messages[i].sendDate = '2018.07.18 06:00';
-                    $scope.Messages[i].sendNum = "100";
-                    $scope.Messages[i].sendSuccNum = "20";
-                    $scope.Messages[i].sendFee = "100000";
-                    $scope.Messages[i].sendFeeForOne = 100;
-                    $scope.Messages[i].sendSuccRate = 40;
-                    $scope.Messages[i].id = '123456';
-                    $scope.Messages[i].reply = "70";
-                    $scope.Messages[i].sendSuccAverage = "15";
-                    $scope.Messages[i].replyAverage = "15";
-                    $scope.Messages[i].feeAverage = "1000";
-                    $scope.Messages[i].feeForOneAverage = 80;
-                    $scope.Messages[i].sendNumAverage = "300";
-                    $scope.Messages[i].botName = data.name;
-                    //chart datas
-                    datas.push(0);
-                    labels.push('0');
-                    dataPoints.push(
-                        {
-                            sendSuccNum: 100,
-                            sendSuccFee: 1000,
-                            sendDate: "2018.08.24 0601"
-                        }
-                    );
+            $scope.date.start = $scope.dateFormat($scope.date.start);
+            $scope.date.end = $scope.dateFormat($scope.date.end);
 
-                    // var totalPage = list.length < 10 ? 1 : Math.round(list.length / 10);
-                    var totalPage = 5 < 10 ? 1 : Math.round(5 / 10);
-                    page = page || 1;
-                    $scope.pageOptions = PagingService(page, totalPage);
-                    console.log('$scope.pageOptions: ' + JSON.stringify($scope.pageOptions));
-                }
+            if(data.matched) {
+                SendNumBySendDateService.get({ botId: data.id, startDate: $scope.date.start, endDate: $scope.date.end},function (result) {
+                    // var totalPage = 5 < 10 ? 1 : Math.round(5 / 10);
+                    //     page = page || 1;
+                    //     $scope.pageOptions = PagingService(page, totalPage);
+                    //     console.log('$scope.pageOptions: ' + JSON.stringify($scope.pageOptions));
+
+                    console.log('result: ' + JSON.stringify(result));
+                });
+                // for (var i = 0; i < 6; i++) {
+                //     $scope.Messages[i] = {};
+                //     $scope.Messages[i].index = i + 1;
+                //     $scope.Messages[i].sendDate = '2018.07.18 06:00';
+                //     $scope.Messages[i].sendNum = "100";
+                //     $scope.Messages[i].sendSuccNum = "20";
+                //     $scope.Messages[i].sendFee = "100000";
+                //     $scope.Messages[i].sendFeeForOne = 100;
+                //     $scope.Messages[i].sendSuccRate = 40;
+                //     $scope.Messages[i].id = '123456';
+                //     $scope.Messages[i].reply = "70";
+                //     $scope.Messages[i].sendSuccAverage = "15";
+                //     $scope.Messages[i].replyAverage = "15";
+                //     $scope.Messages[i].feeAverage = "1000";
+                //     $scope.Messages[i].feeForOneAverage = 80;
+                //     $scope.Messages[i].sendNumAverage = "300";
+                //     $scope.Messages[i].botName = data.name;
+                //     //chart datas
+                //     datas.push(0);
+                //     labels.push('0');
+                //     dataPoints.push(
+                //         {
+                //             sendSuccNum: 100,
+                //             sendSuccFee: 1000,
+                //             sendDate: "2018.08.24 0601"
+                //         }
+                //     );
+                //
+                //     // var totalPage = list.length < 10 ? 1 : Math.round(list.length / 10);
+                //     var totalPage = 5 < 10 ? 1 : Math.round(5 / 10);
+                //     page = page || 1;
+                //     $scope.pageOptions = PagingService(page, totalPage);
+                //     console.log('$scope.pageOptions: ' + JSON.stringify($scope.pageOptions));
+                // }
             }else{
                 $scope.Messages = [];
             }
