@@ -11,6 +11,7 @@ var outboundUploader = require('./outbound-uploader.js');
 
 var TeleBook = mongoose.model('TeleBook');
 var TeleBookData = mongoose.model('TeleBookData');
+var Scheduler = mongoose.model('Scheduler');
 
 module.exports.check = (req, res) => {
     var options = {
@@ -24,7 +25,24 @@ module.exports.check = (req, res) => {
         if(err){
             res.send(err);
         }else{
-            res.send(body);
+            try{
+                var logDt = JSON.parse(body).data;
+                var schedulerLog = {
+                    botId : logDt.botId,
+                    userId : req.body.user,
+                    registerSeq : logDt.regsterSeq,
+                    sender : logDt.number,
+                    totalReceiver : req.body.totalReceiver,
+                    sendDate : logDt.startTime
+                };
+
+                var sclog = new Scheduler(schedulerLog);
+                sclog.save((err)=>{
+                    res.send(body);
+                });
+            }catch(e){
+                res.send(body);
+            }
         }
     })
 
@@ -177,16 +195,3 @@ var _registerTelebook = (data,cb) => {
         cb(result)
     }
 };
-
-
-/*
- dialogsetUploader.upload(req.params.botId, req.body.language || 'ko', dialogset._id, dialogset.filename, function(err)
- {
- dialogset.importState = err || '';
- dialogset.save(function()
- {
-
- });
- });
-
- */

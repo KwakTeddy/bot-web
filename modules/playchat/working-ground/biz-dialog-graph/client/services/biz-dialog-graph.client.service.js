@@ -47,6 +47,21 @@
                     }
                 ]
             },
+            undefined : () => {
+                var ar = {
+                    "id": "noanswer_c",
+                    "name": "답변없음",
+                    "input": [{if: "true"}],
+                    "output": [
+                        {
+                            text: "알아듣지 못했습니다.",
+                            kind: 'Content'
+                        }
+                    ]
+                };
+
+                return ar;
+            },
             callCard : () => {
                 return {
                     "name": "call_",
@@ -280,6 +295,7 @@
             // dialog 내 call 설정
             for(var i in oldArr){
                 var item = oldArr[i];
+                var recall = false;
                 newArr[i].output = TC.getOutput(item);
                 var child = [];
                 if(item.input){
@@ -303,6 +319,7 @@
                                 target.parent = true;
                                 target.input = TC.getInput(null);
                             }
+                            recall = true;
                         }
                     })
                 }else if(item.target&&item.target!=''){
@@ -322,6 +339,17 @@
                         target.parent = true;
                         target.input = TC.getInput(null);
                     }
+                }
+                if(recall){
+                    var c = TC.callCard();
+                    c.name = c.name + callIdx;
+                    c.id = c.id + callIdx;
+                    c.input = TC.getInput(null);
+                    c.output[0].dialogId = item.id;
+                    c.output[0].text = '보기에 따라 다시 선택해주세요.';
+                    c.output[0].type = 'returnCall';
+                    child.push(c);
+                    callIdx ++;
                 }
 
                 if(child.length > 0){
@@ -343,6 +371,7 @@
                     index : e.index
                 };
                 e.first ? item.first = true : null;
+                e.fnInput ? item.fnInput = e.fnInput : null;
                 dialog.push(item);
             });
 
@@ -360,12 +389,18 @@
 
                 e = TC.setChild(e, b_item, dialog);
             });
+            if(firstDsSet.filter((e)=>{return e.first}).length > 0){
+                return firstDsSet.filter((e)=>{return e.first})
+                    .concat(TC.undefined())
+                    .concat(firstDsSet.filter((e)=>{return !e.first}))
 
-            firstDsSet = firstDsSet.filter((e)=>{return e.first})
-                .concat()
-                .concat(firstDsSet.filter((e)=>{return !e.first}));
+            }else{
+                firstDsSet = firstDsSet.filter((e)=>{return e.first})
+                    .concat(firstDsSet.filter((e)=>{return !e.first}));
+                firstDsSet.splice(1,0,TC.undefined());
 
-            return firstDsSet;
+                return firstDsSet;
+            }
         };
 
 
@@ -386,7 +421,7 @@
             var dialogs =_recoverProcess(newArr,oldArr,firstInput);
 
             console.log('startDialog');
-            console.log(startDialog);
+            console.log(dialogs);
 
             BizChat.commonDialogs[0] = startDialog;
             TC._getCompleteData(dialogs, BizChat.commonDialogs,

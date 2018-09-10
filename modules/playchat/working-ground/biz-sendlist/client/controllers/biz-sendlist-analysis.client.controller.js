@@ -34,7 +34,6 @@ angular.module('playchat').controller('BizSendlistAnalysisController', ['$scope'
                 botId: '1',
                 startDateTime: $scope.date.start,
                 endDateTime: $scope.date.end
-
             }, function (result) {
                 $scope.Users = result.list;
             });
@@ -54,7 +53,6 @@ angular.module('playchat').controller('BizSendlistAnalysisController', ['$scope'
         };
 
         $scope.getList = function () {
-
             $scope.date.start = $scope.dateFormat($scope.date.start);
             $scope.date.end = $scope.dateFormat($scope.date.end);
 
@@ -109,3 +107,4 @@ angular.module('playchat').controller('BizSendlistAnalysisController', ['$scope'
     $scope.lan = LanguageService;
 
 }]);
+

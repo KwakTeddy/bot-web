@@ -17,13 +17,41 @@
     height: 520px;
     margin-top: 26px;
     width: 100%;
-    background: #f8f8f8;
-    border-left: #e7e7e7 solid 1px;
+    background: #cde6f0;
+    border: 1px solid #bbd5dc;
+    height: 685px;
+}
+.simulator .answer > img{
+    position: absolute;
+    top: 16px;
+    left: 2px;
 }
 
-
+.simulator .simulator-header{
+    background: #cde6f0;
+}
 .simulator .input-box{
-    width: 258px;
+    width: 96.7%;
+    bottom: -1px;
+    right: -1px;
+    padding: 9px 10px 9px 4px;
+}
+.simulator .answer .speech{
+    background: #fffbe7;
+    border-radius: 3px;
+    margin: 7px 42px;
+}
+.simulator .question .speech{
+    background: #1eace5;
+    color: #fff;
+    margin-right: 13px;
+}
+.simulator .question em.tail{
+    border-top: 10px solid #1eace5;
+}
+.simulator .answer em.tail{
+    border-top: 10px solid #fff;
+    left: 36px;
 }
 </style>
 
@@ -36,7 +64,7 @@
             <ul class="nal1">
                 <li class="first">봇 선택</li>
                 <li>
-                    <select ng-model="selectedBot" class="select01" style="width: 324px;">
+                    <select ng-model="selectedBot" class="select01" style="width: 321px;border-radius:0;">
                         <option  selected value="null">발송할 봇을 선택하세요.</option>
                         <option ng-repeat="bot in botList" value="{{bot.id}}"><img src="/modules/playchat/working-ground/biz-dialog-graph/client/imgs/template.png"> {{bot.name}}</option>
                     </select>
@@ -151,7 +179,7 @@
             <ul class="nal1">
                 <li class="first">유효기간 설정</li>
                 <li>
-                    <input id="createdRange" placeholder="유효기간을 설정해주세요" ng-model="datetimeRange" style="width:250px"/>
+                    <input class="type05" id="createdRange" placeholder="유효기간을 설정해주세요" ng-model="datetimeRange" style="width:250px"/>
                 </li>
             </ul>
 
@@ -161,7 +189,7 @@
 
         <div class="subtitle">
             <div class="message-view">
-                <section class="simulator" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'"></section>
+                <section class="simulator mobile-view-practice" ng-include="'/modules/playchat/simulator/client/views/simulator.client.view.html'"></section>
                 <!--<div class="mobile-view-practice">-->
                     <!--<div class="header">-->
                         <!--<p>설문조사 봇</p>-->
@@ -196,3 +224,4 @@
 
 
 </script>
+

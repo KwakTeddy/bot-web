@@ -6,11 +6,9 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
     var ChatBotService = $resource('/api/chatbots/:botId', { botId: '@botId', botDisplayId: '@botDisplayId' }, { update: { method: 'PUT' } });
     var user = $cookies.getObject('user');
 
-    // var TotalDialogContentService = $resource('/api/:botId/analysis/total-dialog-content', { botId: '@botId' });
-    var TotalDialogContentService = $resource('/api/:botId/:startDate/:endDate/:startTime/analysis/sendMsg', { botId: '@botId' });
-    var TotalSuccDialogCountService = $resource('/api/:botId/analysis/total-succ-dialog-count', { botId: '@botId' });
-    var LastSendDateService = $resource('/api/:botId/analysis/last-send-date', { botId: '@botId' });
-    var TotalDialogCountService = $resource('/api/:botId/analysis/total-dialog-counts', { botId: '@botId' });
+    var TotalSendNumService = $resource('/api/:botId/:startDate/:endDate/analysis/sendMsgNum', { botId: '@botId' });
+    var ResponseHumNumService = $resource('/api/:botId/:startDate/:endDate/analysis/resHumNum', { botId: '@botId' });
+    var TotalHumNumService = $resource('/api/:botId/:startDate/:endDate/analysis/TotalHumNum', { botId: '@botId' });
 
     $scope.User = [];
     $scope.Bots = [];
@@ -25,12 +23,12 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
 
         $scope.getList = function(page)
     {
+        $scope.User.name = user.email;
 
-        $scope.User.name = user.displayName;
         $scope.User.lastSendDate = '';
         $scope.User.sendNum = 0;
         $scope.User.sendSuccNum = 0;
-        $scope.User.sendFailedNum = 0;
+        $scope.User.sendTotalNum = 0;
         $scope.User.sendSuccRate = 0;
 
         ChatBotService.query({ type : true }, function(list)
@@ -39,76 +37,81 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
             var totalPage = list.length < 10 ? 1 : Math.round(list.length / 10);
             page = page || 1;
             $scope.pageOptions = PagingService(page, totalPage);
+            $scope.date.start = $scope.dateFormat($scope.date.start);
+            $scope.date.end = $scope.dateFormat($scope.date.end);
 
-            // list.forEach((e,index) => {
-            //     $scope.Bots[index] = {};
-            //     console.log("e.id: " + e.id );
-            //     console.log("e.name: " + e.name );
-            //     LastSendDateService.get({ botId: e.id,startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result1)
-            //     {
-            //         //Bot
-            //         $scope.Bots[index].lastSendDate = $scope.dateFormat(result1.lastDate);
-            //         //User
-            //         if (result1.lastDate) {
-            //             if ($scope.User.lastSendDate === '') {
-            //                 $scope.User.lastSendDate = result1.lastDate;
-            //             }
-            //             else {
-            //                 var OldTime = new Date($scope.User.lastSendDate).getTime();
-            //                 var newTime = new Date(result1.lastDate).getTime();
-            //                 if (OldTime < newTime) {
-            //                     $scope.User.lastSendDate = result1.lastDate;
-            //                 }
-            //             }
-            //         }
-            //
-            //         TotalDialogCountService.get({ botId: e.id, startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString() }, function(result2)
-            //         {
-            //             //User
-            //             $scope.User.sendNum =  $scope.User.sendNum + result2.count;
-            //             //Bot
-            //             $scope.Bots[index].sendNum = result2.count;
-            //
-            //             TotalSuccDialogCountService.get({ botId: e.id,startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString()}, function(result3)
-            //             {
-            //                 //User
-            //                 $scope.User.sendSuccNum =  $scope.User.sendSuccNum + result3.count;
-            //                 if(index === list.length - 1){
-            //                     if($scope.User.sendNum === 0){
-            //                         $scope.User.sendSuccRate = 0;
-            //                     }
-            //                     else{
-            //                         $scope.User.sendSuccRate = ( $scope.User.sendSuccNum / $scope.User.sendNum ) * 100;
-            //                     }
-            //                     $scope.User.lastSendDate = $scope.dateFormat($scope.User.lastSendDate);
-            //                 }
-            //                 //Bot
-            //                 $scope.Bots[index].index = index + 1;
-            //                 $scope.Bots[index].name = e.name;
-            //                 $scope.Bots[index].sendSuccNum = result3.count;
-            //                 if($scope.Bots[index].sendNum === 0){
-            //                     $scope.Bots[index].sendSuccRate = 0;
-            //                 }
-            //                 else{
-            //                     $scope.Bots[index].sendSuccRate = ( $scope.Bots[index].sendSuccNum / $scope.Bots[index].sendNum ) * 100;
-            //                 }
-            //                 index++;
-            //             });
-            //         });
-            //     });
-            // });
-            var startTime = '2018';
-            TotalDialogContentService.get({ botId: 'ddd',startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString(), startTime }, function(result1)
-                                {
-                                    console.log("result1: " + JSON.stringify(result1));
-                                })
+            list.forEach((e,index) => {
+                //get total send number of User and Bot
+                TotalSendNumService.get({ botId: e.id, startDate: $scope.date.start, endDate: $scope.date.end}, function(result)
+                {
+                    //User:
+                    $scope.User.sendNum = $scope.User.sendNum + result.data[0].total;
 
+                    if($scope.User.lastSendDate === '' && result.data[0].lastDate !== null){
+                        $scope.User.lastSendDate = $scope.dateFormat(result.data[0].lastDate);
+                    }else if(result.data[0].lastDate !== null){
+                        $scope.User.lastSendDate = $scope.compareDate($scope.User.lastSendDate, result.data[0].lastDate);
+                    }
+
+                    //Bot:
+                    $scope.Bots[index] = {};
+                    $scope.Bots[index].index = index + 1;
+                    $scope.Bots[index].sendTotalNum = 0;
+                    $scope.Bots[index].sendSuccRate = 0;
+                    $scope.Bots[index].sendNum = 0;
+                    $scope.Bots[index].id = e.id;
+                    $scope.Bots[index].name = e.name;
+                    $scope.Bots[index].lastSendDate =  $scope.dateFormat(result.data[0].lastDate);
+                    $scope.Bots[index].sendNum = result.data[0].total;
+
+
+                    //get response people number of User and Bot
+                    ResponseHumNumService.get({ botId: e.id, startDate: $scope.date.start, endDate: $scope.date.end},function (count) {
+                        //User
+                        $scope.User.sendSuccNum = $scope.User.sendSuccNum + count.result;
+
+                        //bots
+                        $scope.Bots[index].sendSuccNum = count.result;
+
+                        TotalHumNumService.get({ botId: e.id, startDate: $scope.date.start, endDate: $scope.date.end},function (totalCount) {
+                            if(totalCount[0] && totalCount[0].count){
+                                $scope.User.sendTotalNum = $scope.User.sendTotalNum + totalCount[0].count;
+                                $scope.Bots[index].sendTotalNum = totalCount[0].count;
+                            }
+
+                            if (index === list.length - 1) {
+                                if($scope.User.sendTotalNum !== 0){
+                                    $scope.User.sendSuccRate =($scope.User.sendSuccNum / $scope.User.sendTotalNum )* 100;
+                                }
+                            }
+
+                            if($scope.Bots[index].sendTotalNum !== 0){
+                                $scope.Bots[index].sendSuccRate = ($scope.Bots[index].sendSuccNum / $scope.Bots[index].sendTotalNum) * 100;
+                            }
+                        });
+                    })
+                })
+            })
         });
 
         angular.element('.main-logo-background').css('opacity', 0);
         angular.element('.main-logo-background').css('display', 'none');
 
     };
+
+        $scope.compareDate = function(olddate, newdate)
+        {
+            var oldDate = new Date(olddate);
+            var oldTimesheet = oldDate.getTime();
+            var newDate = new Date(newdate);
+            var newTimesheet = newDate.getTime();
+            if(oldTimesheet < newTimesheet){
+                olddate =  $scope.dateFormat(newdate);
+                return olddate;
+            }else{
+                return olddate;
+            }
+        };
 
         $scope.goDetailPage = function(event, data)
         {
@@ -138,10 +141,8 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
             min = min < 10 ? '0' + min : min;
             sec = sec < 10 ? '0' + sec : sec;
 
-            return year + '.' + month + '.' + dateOfMonth + ' ' + hour + ':' + min;
+            return year + '.' + month + '.' + dateOfMonth + ' ' + hour + ':' + min + ':' + sec;
         };
-
-
 
     })();
     DateRangePickerService.init('#createdRange', $scope.date, $scope.getList); // startDate: new Date($scope.date.start).toISOString(), endDate: new Date($scope.date.end).toISOString()
