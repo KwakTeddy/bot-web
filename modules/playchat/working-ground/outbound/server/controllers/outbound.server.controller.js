@@ -40,11 +40,11 @@ module.exports.check = (req, res) => {
                 console.log(schedulerLog);
                 var sclog = new Scheduler(schedulerLog);
                 sclog.save((err)=>{
-                    console.log(err)
+                    res.send(body);
                 });
-            };
-
-            res.send(body);
+            }else{
+                res.send(body);
+            }
         }
     })
 
