@@ -36,9 +36,11 @@ module.exports.check = (req, res) => {
                     totalReceiver : req.body.totalReceiver,
                     sendDate : logDt.startTime
                 };
-
+                console.log(schedulerLog);
                 var sclog = new Scheduler(schedulerLog);
-                sclog.save();
+                sclog.save((err)=>{
+                    console.log(err)
+                });
             };
 
             res.send(body);
