@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var mysql = require('mysql');
 var UserDialogLog = mongoose.model('UserDialogLog');
+var Scheduler = mongoose.model('Scheduler');
 
 var mySqlPool = mysql.createPool({
     // host: 'localhost',
@@ -62,6 +63,29 @@ module.exports.getresHumNumByBotId = function (req, res) {
         else
         {
             res.jsonp({ result: list.length});
+        }
+    });
+};
+
+module.exports.getTotalHumNumByBotId = function (req, res) {
+
+    var startDate = new Date(req.params.startDate);
+    var endDate = new Date(req.params.endDate);
+
+    var query = [
+        { $match: { botId: req.params.botId, created: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: null, count: { $sum: '$totalReceiver'}} }
+    ];
+
+    Scheduler.aggregate(query).exec(function(err, list)
+    {
+        if(err)
+        {
+            return res.status(400).send({ message: err.stack || err });
+        }
+        else
+        {
+            res.jsonp({ result: list});
         }
     });
 };
