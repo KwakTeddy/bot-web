@@ -26,9 +26,7 @@ module.exports.check = (req, res) => {
             res.send(err);
         }else{
             try{
-                console.log(body.data)
                 var logDt = JSON.parse(body).data;
-                console.log(logDt);
                 var schedulerLog = {
                     botId : logDt.botId,
                     userId : req.body.user,
@@ -37,7 +35,7 @@ module.exports.check = (req, res) => {
                     totalReceiver : req.body.totalReceiver,
                     sendDate : logDt.startTime
                 };
-                console.log(schedulerLog);
+
                 var sclog = new Scheduler(schedulerLog);
                 sclog.save((err)=>{
                     res.send(body);
