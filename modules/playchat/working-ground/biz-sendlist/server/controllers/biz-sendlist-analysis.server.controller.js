@@ -14,7 +14,7 @@ var mySqlPool = mysql.createPool({
     password: 'Make01mb!',
     charset : 'utf8mb4',
     database: 'bizchat',
-    connectionLimit: 400,
+    connectionLimit: 20,
     waitForConnections: false
 });
 
@@ -57,6 +57,7 @@ module.exports.UserSend = function (req, res) {
                     for(var j = 0; j < rows.length; j++) {
                         rows[j].username = req.user.username;
                     }
+                    connection.release();
 
                     res.jsonp({list: rows});
                 });
@@ -101,7 +102,7 @@ module.exports.BotSend = function (req, res) {
 
                 connection.query(query, param, function (err, rows) {
                     // console.log('rows: ' + JSON.stringify(rows));
-
+                    connection.release();
                     res.jsonp({list: rows});
                 });
 
@@ -139,7 +140,7 @@ module.exports.BotOneSend = function (req, res) {
 
             connection.query(query, param, function (err, rows) {
                 // console.log('rows: ' + JSON.stringify(rows));
-
+                connection.release();
                 res.jsonp({list: rows});
             });
 

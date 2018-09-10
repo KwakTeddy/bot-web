@@ -63,17 +63,17 @@
                 <th></th>
                 <th>최근 발송<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>발송 수<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
-                <th>성공<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>음답자수<a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
                 <th>발송 비용<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
-                <th>분석 단가<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
+                <th>단가<span class="sm-title">(단위:코인)</span><a href=""><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/reorder.png"></a></th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="bot in Bots track by $index">
                 <td>{{bot.index}}</td>
                 <td>{{bot.name}}</td>
-                <td><a type="button" data-href="/playchat/analysis/biz-summary-chatbot" ng-click="goDetailPage($event,bot)">{{bot.name}}</a></td>
-                <!--<td><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></td>-->
+                <!--<td><a type="button" data-href="/playchat/analysis/biz-summary-chatbot" ng-click="goDetailPage($event,bot)">{{bot.name}}</a></td>-->
+                <td><img src="/modules/playchat/working-ground/dialog-graph/client/imgs/kakao.png"></td>
                 <td>{{bot.lastSendDate}}</td>
                 <td>{{bot.sendNum}}</td>
                 <td class="grap">{{bot.sendSuccNum}}<div class="tb-b" style="width: {{bot.sendSuccRate}}%;">{{bot.sendSuccRate}}%</div></td>
