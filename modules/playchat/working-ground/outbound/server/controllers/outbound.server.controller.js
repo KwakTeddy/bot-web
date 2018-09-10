@@ -25,10 +25,8 @@ module.exports.check = (req, res) => {
         if(err){
             res.send(err);
         }else{
-            console.log('get date result =================>>>>>>>>');
-            console.log(body);
-            if(body.status){
-                var logDt = body.data;
+            try{
+                var logDt = JSON.parse(body.data);
                 var schedulerLog = {
                     botId : logDt.botId,
                     userId : req.body.user,
@@ -42,9 +40,28 @@ module.exports.check = (req, res) => {
                 sclog.save((err)=>{
                     res.send(body);
                 });
-            }else{
+            }catch(e){
                 res.send(body);
             }
+
+            //if(body.status){
+            //    var logDt = body.data;
+            //    var schedulerLog = {
+            //        botId : logDt.botId,
+            //        userId : req.body.user,
+            //        registerSeq : logDt.regsterSeq,
+            //        sender : logDt.number,
+            //        totalReceiver : req.body.totalReceiver,
+            //        sendDate : logDt.startTime
+            //    };
+            //    console.log(schedulerLog);
+            //    var sclog = new Scheduler(schedulerLog);
+            //    sclog.save((err)=>{
+            //        res.send(body);
+            //    });
+            //}else{
+            //    res.send(body);
+            //}
         }
     })
 
