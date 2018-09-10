@@ -61,7 +61,6 @@ module.exports.getresHumNumByBotId = function (req, res) {
         }
         else
         {
-            connection.release();
             res.jsonp({ result: list.length});
         }
     });
