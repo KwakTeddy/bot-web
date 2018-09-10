@@ -8,6 +8,7 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
 
     var TotalSendNumService = $resource('/api/:botId/:startDate/:endDate/analysis/sendMsgNum', { botId: '@botId' });
     var ResponseHumNumService = $resource('/api/:botId/:startDate/:endDate/analysis/resHumNum', { botId: '@botId' });
+    var TotalHumNumService = $resource('/api/:botId/:startDate/:endDate/analysis/TotalHumNum', { botId: '@botId' });
 
     $scope.User = [];
     $scope.Bots = [];
@@ -32,6 +33,7 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
         $scope.User.lastSendDate = '';
         $scope.User.sendNum = 0;
         $scope.User.sendSuccNum = 0;
+        $scope.User.sendTotalNum = 0;
         $scope.User.sendSuccRate = 0;
 
         ChatBotService.query({ type : true }, function(list)
@@ -59,6 +61,9 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
                     //Bot:
                     $scope.Bots[index] = {};
                     $scope.Bots[index].index = index + 1;
+                    $scope.Bots[index].sendTotalNum = 0;
+                    $scope.Bots[index].sendSuccRate = 0;
+                    $scope.Bots[index].id = e.id;
                     $scope.Bots[index].name = e.name;
                     $scope.Bots[index].lastSendDate =  $scope.dateFormat(result.data[0].lastDate);
                     $scope.Bots[index].sendNum = result.data[0].total;
@@ -68,18 +73,26 @@ angular.module('playchat').controller('BizSummaryAnalysisController', ['$scope',
                     ResponseHumNumService.get({ botId: e.id, startDate: $scope.date.start, endDate: $scope.date.end},function (count) {
                         //User
                         $scope.User.sendSuccNum = $scope.User.sendSuccNum + count.result;
-                        if (index === list.length - 1) {
-                            if($scope.User.sendNum !== 0){
-                                $scope.User.sendSuccRate = ( $scope.User.sendSuccNum / $scope.User.sendNum ) * 100;
-                            }
-                        }
+
                         //bots
                         $scope.Bots[index].sendSuccNum = count.result;
-                        if($scope.Bots[index].sendNum !== 0){
-                            $scope.Bots[index].sendSuccRate = ( $scope.Bots[index].sendSuccNum / $scope.Bots[index].sendNum ) * 100;
-                        }else{
-                            $scope.Bots[index].sendSuccRate = 0;
-                        }
+
+                        TotalHumNumService.get({ botId: e.id, startDate: $scope.date.start, endDate: $scope.date.end},function (totalCount) {
+                            if(totalCount[0] && totalCount[0].count){
+                                $scope.User.sendTotalNum = $scope.User.sendTotalNum + totalCount[0].count;
+                                $scope.Bots[index].sendTotalNum = totalCount[0].count;
+                            }
+
+                            if (index === list.length - 1) {
+                                if($scope.User.sendTotalNum !== 0){
+                                    $scope.User.sendSuccRate =($scope.User.sendSuccNum / $scope.User.sendTotalNum )* 100;
+                                }
+                            }
+
+                            if($scope.Bots[index].sendTotalNum !== 0){
+                                $scope.Bots[index].sendSuccRate = ($scope.Bots[index].sendSuccNum / $scope.Bots[index].sendTotalNum) * 100;
+                            }
+                        });
                     })
                 })
             })

@@ -230,6 +230,9 @@ angular.module('playchat').controller('OutboundController', ['$window', '$scope'
                 throw '아직 지원하지 않는 기능입니다.\n나중에 다시 시도해주세요.';
             }
 
+            paramset.totalReceiver = arr.length;
+            paramset.user = user.email;
+
 
             _send_process(paramset);
         }catch(e){

@@ -1,7 +1,7 @@
 var dialogs = [
     {
         "id": "dialog_1",
-        "name": "일반형_1",
+        "name": "이름수집",
         "input": [
             {
                 "text": {
@@ -20,7 +20,7 @@ var dialogs = [
         "children": [
             {
                 "id": "dialog_2",
-                "name": "일반형_2",
+                "name": "연락처수집",
                 "input": [
                     {
                         "types": [
@@ -37,7 +37,7 @@ var dialogs = [
                 "children": [
                     {
                         "id": "dialog_6",
-                        "name": "일반형_6",
+                        "name": "날짜수집",
                         "input": [
                             {
                                 "types": [
@@ -54,7 +54,7 @@ var dialogs = [
                         "children": [
                             {
                                 "id": "dialog_3",
-                                "name": "일반형_3",
+                                "name": "입력확인",
                                 "input": [
                                     {
                                         "types": [
@@ -85,7 +85,7 @@ var dialogs = [
                                                 "text": "",
                                                 "type": "call",
                                                 "dialogId": "dialog_4",
-                                                "dialogName": "일반형_4"
+                                                "dialogName": "신청완료"
                                             }
                                         ],
                                         "id": "call_0"
@@ -98,6 +98,12 @@ var dialogs = [
                                                     "raw": "아니오",
                                                     "nlp": "아니다"
                                                 }
+                                            },
+                                            {
+                                                "text": {
+                                                    "raw": "2",
+                                                    "nlp": "2"
+                                                }
                                             }
                                         ],
                                         "output": [
@@ -106,15 +112,32 @@ var dialogs = [
                                                 "text": "",
                                                 "type": "call",
                                                 "dialogId": "dialog_1",
-                                                "dialogName": "일반형_1"
+                                                "dialogName": "이름수집"
                                             }
                                         ],
                                         "id": "call_1"
+                                    },
+                                    {
+                                        "name": "call_2",
+                                        "input": [
+                                            {
+                                                "if": "true"
+                                            }
+                                        ],
+                                        "output": [
+                                            {
+                                                "kind": "Action",
+                                                "text": "보기에 따라 다시 선택해주세요.",
+                                                "type": "returnCall",
+                                                "dialogId": "dialog_3"
+                                            }
+                                        ],
+                                        "id": "call_2"
                                     }
                                 ]
                             },
                             {
-                                "name": "call_2",
+                                "name": "call_3",
                                 "input": [
                                     {
                                         "if": "true"
@@ -128,12 +151,12 @@ var dialogs = [
                                         "dialogId": "dialog_6"
                                     }
                                 ],
-                                "id": "call_2"
+                                "id": "call_3"
                             }
                         ]
                     },
                     {
-                        "name": "call_3",
+                        "name": "call_4",
                         "input": [
                             {
                                 "if": "true"
@@ -147,12 +170,12 @@ var dialogs = [
                                 "dialogId": "dialog_2"
                             }
                         ],
-                        "id": "call_3"
+                        "id": "call_4"
                     }
                 ]
             },
             {
-                "name": "call_4",
+                "name": "call_5",
                 "input": [
                     {
                         "if": "true"
@@ -166,10 +189,11 @@ var dialogs = [
                         "dialogId": "dialog_1"
                     }
                 ],
-                "id": "call_4"
+                "id": "call_5"
             }
         ],
         "index": 1,
+        "first": true,
         "fnInput": [
             {
                 "types": "name"
@@ -177,25 +201,8 @@ var dialogs = [
         ]
     },
     {
-        "id": "dialog_4",
-        "name": "일반형_4",
-        "input": [
-            {
-                "if": "true"
-            }
-        ],
-        "output": [
-            {
-                "kind": "Content",
-                "text": "상담 신청 예약이 완료 되었습니다.\n오늘도 좋은 하루 되시기 바랍니다.\n+bot.name+"
-            }
-        ],
-        "parent": true,
-        "index": 5
-    },
-    {
         "id": "dialog_5",
-        "name": "일반형_5",
+        "name": "신청거부",
         "input": [
             {
                 "text": {
@@ -208,6 +215,39 @@ var dialogs = [
             {
                 "kind": "Content",
                 "text": "거부 처리 완료되었습니다.\n오늘도 좋은 하루 되시기 바랍니다.\n+bot.name+"
+            }
+        ],
+        "parent": true,
+        "index": 6,
+        "first": true
+    },
+    {
+        "id": "noanswer_c",
+        "name": "답변없음",
+        "input": [
+            {
+                "if": "true"
+            }
+        ],
+        "output": [
+            {
+                "text": "알아듣지 못했습니다.",
+                "kind": "Content"
+            }
+        ]
+    },
+    {
+        "id": "dialog_4",
+        "name": "신청완료",
+        "input": [
+            {
+                "if": "true"
+            }
+        ],
+        "output": [
+            {
+                "kind": "Content",
+                "text": "상담 신청 예약이 완료 되었습니다.\n오늘도 좋은 하루 되시기 바랍니다.\n+bot.name+"
             }
         ],
         "parent": true,
@@ -272,7 +312,7 @@ var commonDialogs = [
                 "kind": "Action"
             }
         ],
-        "created": "2018-08-20T09:42:35.694Z",
+        "created": "2018-09-10T01:53:28.238Z",
         "useYN": 1
     },
     {
@@ -301,7 +341,7 @@ var commonDialogs = [
                 "kind": "Action"
             }
         ],
-        "created": "2018-08-20T09:42:35.694Z",
+        "created": "2018-09-10T01:53:28.238Z",
         "useYN": 1
     },
     {
@@ -317,7 +357,7 @@ var commonDialogs = [
                 "text": "알아듣지 못했습니다."
             }
         ],
-        "created": "2018-08-20T09:42:35.694Z",
+        "created": "2018-09-10T01:53:28.238Z",
         "useYN": 1
     }
 ];

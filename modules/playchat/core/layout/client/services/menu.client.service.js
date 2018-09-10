@@ -156,7 +156,7 @@
 
             // this.common = { name: '고객센터', url:'/common/biz-cs', icon: 'help.png' };
 
-            this.charge = { name: '충전(준비중)', url:'/undefined', icon: 'charging.png' };
+            this.charge = { name: '충전(준비중)', icon: 'charging.png' };
         };
 
         Menu.prototype.get = function(templateId, callback)

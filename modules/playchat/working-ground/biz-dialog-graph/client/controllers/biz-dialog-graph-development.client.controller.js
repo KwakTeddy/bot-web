@@ -116,8 +116,14 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
             $scope.Data.cardArr.push(item);
             $scope.Data.defaultSentences[2].message = '';
 
-            angular.copy($scope.Data.defaultSentences[2], $scope.addCardSentence);
-            $scope.addCardSentence.type = $scope.Data.defaultSentences[2]._id;
+            var dc = $scope.Data.defaultSentences[2];
+            $scope.addCardSentence = {
+                type : dc._id,
+                message : '',
+                name: dc.name,
+                templateId : dc.templateId
+
+            };
 
             _isUpdated = true;
         })
@@ -144,11 +150,11 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         var connectType = $scope.Data.defaultSentences.find((a) => {return a.name == '선택형'});
         var imageType = $scope.Data.defaultSentences.find((a) => {return a.name == '이미지형'});
         $scope.Data.cardArr.forEach((e) => {
-            if(e.type != connectType._id){
+            if(connectType && (e.type != connectType._id)){
                 delete e.connect;
             }
 
-            if(e.type != imageType._id){
+            if(imageType && (e.type != imageType._id)){
                 e.output && e.output.image ? delete e.output.image : null;
             }
         });
@@ -248,10 +254,11 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
                 delete card.target;
                 card.connect == undefined ? card.connect = false : null;
                 if(!card.input || card.input.length < 2){
-                    card.input = $scope.Data.defaultSentences.find((e) => {return e.name == typeNm}).input;
+                    card.input = [{text:"1"},{text:"2"}];
                 }
                 break;
         }
+        console.log(card.input);
     };
 
     $scope.refresh = function(bizchatId){
@@ -277,9 +284,15 @@ angular.module('playchat').controller('BizDialogGraphDevelopmentController', ['$
         BizChatService.bizchatId = BizChatService.chatbot.type;
         BizChatService.onReady(function(bizchat){
             $scope.Data = bizchat;
-            $scope.addCardSentence = {};
-            angular.copy($scope.Data.defaultSentences[2], $scope.addCardSentence);
-            $scope.addCardSentence.type = bizchat.defaultSentences[2]._id;
+
+            var dc = $scope.Data.defaultSentences[2];
+            $scope.addCardSentence = {
+                type : dc._id,
+                message : '',
+                name: dc.name,
+                templateId : dc.templateId
+
+            };
 
             angular.element('.log-analysis').css('display', 'none');
 

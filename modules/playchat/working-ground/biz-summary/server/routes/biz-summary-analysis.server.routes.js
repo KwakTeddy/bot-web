@@ -7,4 +7,5 @@ module.exports = function(app)
     // app.get('/api/:botId/:startDate/:endDate/analysis/sendMsgLastDate', SummaryAnalysisController.getLastSendDateByBotId);
     //mongodb
     app.get('/api/:botId/:startDate/:endDate/analysis/resHumNum', SummaryAnalysisController.getresHumNumByBotId);
+    app.get('/api/:botId/:startDate/:endDate/analysis/TotalHumNum', SummaryAnalysisController.getTotalHumNumByBotId);
 };

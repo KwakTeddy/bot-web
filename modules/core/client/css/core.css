@@ -88,7 +88,7 @@ body
     width: 209px;
     height: 80px;
     background-repeat: no-repeat;
-    background-image: url(/modules/core/client/img/logo-biz.png);
+    background-image: url(/modules/core/client/img/logo_biz.png);
     background-size: contain;
     position:absolute;
     top: 50%;

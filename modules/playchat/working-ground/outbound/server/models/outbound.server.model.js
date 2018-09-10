@@ -24,13 +24,15 @@ var TeleBookSchema = new Schema(
 var SchedulerSchema = new Schema(
     {
         botId : { type: String },
+        userId : { type: String },
+        registerSeq : { type: Number },
+        sender : { type: String },
+        totalReceiver : { type: Number },
         sendDate: { type: String },
-        numberSet : Schema.Types.Mixed,
-        telebookSet : Schema.Types.Mixed,
-        message : { type: String },
         created: { type: Date, default: Date.now }
     });
 
 mongoose.model('TeleBookData', TeleBookDataSchema);
 mongoose.model('TeleBook', TeleBookSchema);
 mongoose.model('Scheduler', SchedulerSchema);
+
