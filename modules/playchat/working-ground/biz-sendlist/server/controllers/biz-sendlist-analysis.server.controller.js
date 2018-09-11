@@ -18,6 +18,34 @@ var mySqlPool = mysql.createPool({
     waitForConnections: false
 });
 
+// module.exports.getSendMsgsNumAndLastSendDateByBotId = function (req, res) {
+//     var botsStr = '';
+//     botsStr = "'" + req.params.botId + "'";
+//
+//     var param = [];
+//     param[0] = "'" + req.params.startDate + "'";
+//     param[1] = "'" + req.params.endDate + "'";
+//
+//     mySqlPool.getConnection(function (err, connection) {
+//         if (err) {
+//             console.log(err);
+//         } else {
+//
+//             var query = 'SELECT COUNT(*) as total, max(reqDate) as lastDate FROM BOT_REGISTER b, MSG_RESULT s WHERE b.botId = ' + botsStr +
+//                 ' AND b.number = s.sender AND unix_timestamp(b.startTime) between unix_timestamp(' + param[0] + ') and unix_timestamp(' + param[1] +
+//                 ') AND unix_timestamp(s.reqDate) between unix_timestamp(b.startTime) and unix_timestamp(b.endTime)';
+//
+//             connection.query(query, function (err, rows) {
+//                 connection.release();
+//                 res.send({status:true, data:rows});
+//             });
+//         }
+//     });
+// };
+
+
+
+
 module.exports.UserSend = function (req, res) {
 
     var bots = [];
@@ -36,11 +64,20 @@ module.exports.UserSend = function (req, res) {
 
                 // var bots = ['"survey_user10_1536025545075"', '"consult_user10_1536021940065"'];
                 // var botsStr = bots.join(', ');
-                var query = 'SELECT count(*) as total, count(FAIL_CD) as fail, s.SND_REQ_DTTM as regDate ' +
-                    'FROM BOT_REGISTER b, SND_MSG s WHERE b.botId IN (' + botsStr + ') ' +
-                    'AND s.SND_REQ_DTTM >= ? AND s.SND_REQ_DTTM <= ? ' +
-                    'AND b.number=s.SND_PHONE_NUM AND s.SND_REQ_DTTM >= b.startTime and s.SND_REQ_DTTM <= b.endTime ' +
-                    'ORDER BY s.SND_REQ_DTTM DESC;';
+
+
+                // var query = 'SELECT count(*) as total, count(FAIL_CD) as fail, s.SND_REQ_DTTM as regDate ' +
+                //     'FROM BOT_REGISTER b, SND_MSG s WHERE b.botId IN (' + botsStr + ') ' +
+                //     'AND s.SND_REQ_DTTM >= ? AND s.SND_REQ_DTTM <= ? ' +
+                //     'AND b.number=s.SND_PHONE_NUM AND s.SND_REQ_DTTM >= b.startTime and s.SND_REQ_DTTM <= b.endTime ' +
+                //     'ORDER BY s.SND_REQ_DTTM DESC;';
+
+
+                var query = 'SELECT COUNT(*) as total, max(reqDate) as lastDate FROM BOT_REGISTER b, MSG_RESULT s WHERE b.botId = ' + botsStr +
+                    ' AND b.number = s.sender AND unix_timestamp(b.startTime) between unix_timestamp(' + param[0] + ') and unix_timestamp(' + param[1] +
+                    ') AND unix_timestamp(s.reqDate) between unix_timestamp(b.startTime) and unix_timestamp(b.endTime)';
+
+
 
                 console.log(query);
 
@@ -60,11 +97,11 @@ module.exports.UserSend = function (req, res) {
                     // console.log('rows: ' + JSON.stringify(rows));
 
                     for(var j = 0; j < rows.length; j++) {
-                        rows[j].username = req.user.username;
+                        rows[j].username = req.user.name;
                     }
                     connection.release();
 
-                    res.jsonp({list: rows});
+                    res.send({status:true, data:rows});
                 });
 
             }
@@ -90,6 +127,12 @@ module.exports.BotSend = function (req, res) {
 
                 // var bots = ['"survey_user10_1536025545075"', '"consult_user10_1536021940065"'];
                 // var botsStr = bots.join(', ');
+
+                var param = [];
+                param[0] = "'" + req.query.startDate + "'";
+                param[1] = "'" + req.query.endDate + "'";
+
+
                 var query = 'SELECT botId, number, count(*) as total, count(FAIL_CD) as fail, startTime, endTime, s.SND_REQ_DTTM as regDate ' +
                     'FROM BOT_REGISTER b, SND_MSG s WHERE b.botId IN (' + botsStr + ') ' +
                     'AND s.SND_REQ_DTTM >= ? AND s.SND_REQ_DTTM <= ? ' +
@@ -98,20 +141,26 @@ module.exports.BotSend = function (req, res) {
 
                 console.log(query);
 
-                var param = [
-                    "1900-01-01 00:00:00",
-                    "9999-12-31 12:00:00"
-                ];
+                // var param = [
+                //     "1900-01-01 00:00:00",
+                //     "9999-12-31 12:00:00"
+                // ];
+                //
+                // console.log('req.body.param: ' + JSON.stringify(req.query));
+                // param[0] = req.query.startDateTime;
+                // param[1] = req.query.endDateTime;
 
-                console.log('req.body.param: ' + JSON.stringify(req.query));
-                param[0] = req.query.startDateTime;
-                param[1] = req.query.endDateTime;
-
-                connection.query(query, param, function (err, rows) {
-                    // console.log('rows: ' + JSON.stringify(rows));
+                connection.query(query, function (err, rows) {
                     connection.release();
-                    res.jsonp({list: rows});
+                    res.jsonp({status:true, data:rows});
                 });
+
+                //
+                // connection.query(query, param, function (err, rows) {
+                //     // console.log('rows: ' + JSON.stringify(rows));
+                //     connection.release();
+                //     res.jsonp({list: rows});
+                // });
 
             }
         })

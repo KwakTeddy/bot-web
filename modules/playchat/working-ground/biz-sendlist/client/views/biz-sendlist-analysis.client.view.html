@@ -37,10 +37,11 @@
             <tbody>
             <tr ng-repeat="user in Users">
                 <td></td>
-                <td>{{user.username}}</td>
+                <td>{{user.usernamename}}</td>
                 <td>{{user.regDate | date: 'yyyy년 MM월 dd일, HH시 mm분'}}</td>
                 <td>{{user.total}}</td>
-                <td class="grap">{{user.total - user.fail}}</td>
+
+                <td class="grap">{{User.total - user.fail}}</td>
                 <td>{{user.fail}}</td>
                 <td>{{((user.total - user.fail)/user.total)*100}}%</td>
             </tr>
@@ -127,21 +128,21 @@
     }
 
 
-    function tableau(pid, iid, fmt, ofile) {
-        if(typeof Downloadify !== 'undefined') Downloadify.create(pid,{
-            swf: 'downloadify.swf',
-            downloadImage: 'download.png',
-            width: 100,
-            height: 30,
-            filename: ofile, data: function() { return doit(fmt, ofile, true); },
-            transparent: false,
-            append: false,
-            dataType: 'base64',
-            onComplete: function(){ alert('Your File Has Been Saved!'); },
-            onCancel: function(){ alert('You have cancelled the saving of this file.'); },
-            onError: function(){ alert('You must put something in the File Contents or there will be nothing to save!'); }
-        });
-    }
-    tableau('xlsxbtn',  'xportxlsx',  'xlsx',  'test.xlsx');
+    // function tableau(pid, iid, fmt, ofile) {
+    //     if(typeof Downloadify !== 'undefined') Downloadify.create(pid,{
+    //         swf: 'downloadify.swf',
+    //         downloadImage: 'download.png',
+    //         width: 100,
+    //         height: 30,
+    //         filename: ofile, data: function() { return doit(fmt, ofile, true); },
+    //         transparent: false,
+    //         append: false,
+    //         dataType: 'base64',
+    //         onComplete: function(){ alert('Your File Has Been Saved!'); },
+    //         onCancel: function(){ alert('You have cancelled the saving of this file.'); },
+    //         onError: function(){ alert('You must put something in the File Contents or there will be nothing to save!'); }
+    //     });
+    // }
+    // tableau('xlsxbtn',  'xportxlsx',  'xlsx',  'test.xlsx');
 
 </script>
